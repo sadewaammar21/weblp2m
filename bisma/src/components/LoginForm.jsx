@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { login } from './services/authService';
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState('');
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -16,12 +18,12 @@ const LoginForm = () => {
     const validate = () => {
         const errors = {};
 
-        if (!username.trim()) {
-            errors.username = 'ERROR ON USERNAME | user status is inactive';
+        if (!email.trim()) {
+            errors.email = 'Email is required';
         }
 
         if (!password) {
-            errors.password = 'ERROR ON PASSWORD | user status is inactive';
+            errors.password = 'Password is required';
         } else if (password.length < 6) {
             errors.password = 'Password must be at least 6 characters long';
         }
@@ -29,15 +31,21 @@ const LoginForm = () => {
         return errors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validate();
 
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            // Simulate successful login and navigate to /dashboard
-            navigate('/dashboard');
+            try {
+                const data = await login(email, password);
+                // Simpan token di localStorage atau context
+                localStorage.setItem('token', data.token);
+                navigate('/dashboard');
+            } catch (error) {
+                setServerError(error);
+            }
         }
     };
 
@@ -54,18 +62,19 @@ const LoginForm = () => {
                 </div>
                 <div className="p-8">
                     <form onSubmit={handleSubmit} className="w-full">
+                        {serverError && <p className="text-red-500 text-xs mt-1">{serverError}</p>}
                         <div className="mb-4">
                             <label className="inter-semiBold text-sm pb-2 block">
-                                Username
+                                Email
                             </label>
                             <input
-                                type="text"
-                                className={`text-sm p-2 w-full border rounded shadow focus:outline-none focus:shadow-outline ${errors.username ? 'border-red-500' : ''}`}
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder="Masukkan Username"
+                                type="email"
+                                className={`text-sm p-2 w-full border rounded shadow focus:outline-none focus:shadow-outline ${errors.email ? 'border-red-500' : ''}`}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Masukkan Email"
                             />
-                            {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
+                            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                         </div>
                         <div className="mb-4">
                             <label className="inter-semiBold text-sm pb-2 block">
@@ -97,7 +106,6 @@ const LoginForm = () => {
                                 type="checkbox"
                                 id="rememberMe"
                                 className="mr-2"
-                                
                             />
                             <label
                                 htmlFor="rememberMe"
