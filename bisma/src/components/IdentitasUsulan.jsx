@@ -3,8 +3,10 @@ import TextfieldCmp from './TextfieldCmp';
 import DropdownCmp from './DropdownCmp';
 import TextAreaCmp from './TextAreaCmp';
 import { FaPlus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import PopupTKT from './PopupTKT';
+import PopUpDosen from './PopUpDosen';
+import PopUpMhs from './PopUpMhs';
 
 const IdentitasUsulan = () => {
   const [Judul,setJudul] = useState('');
@@ -12,8 +14,11 @@ const IdentitasUsulan = () => {
     const [taTKT,setTatkt] = useState('');
     const [UTDP,setUTDP] = useState('');
     const [selectedOption, setSelectedOption] = useState('');
-    const navigate = useNavigate(); // Hook untuk navigasi
+    // const navigate = useNavigate(); // Hook untuk navigasi
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenDos, setIsOpenDos] = useState(false);
+    const [isOpenMhs, setIsOpenMhs] = useState(false);
+
 
   const openModal = () => {
     setIsOpen(true);
@@ -23,9 +28,25 @@ const IdentitasUsulan = () => {
     setIsOpen(false);
   };
 
-  const handleClick = () => {
-    navigate('/usulan-baru-penelitian'); // Arahkan ke halaman 'usulan-baru-penelitian'
+  const openModalDos = () => {
+    setIsOpenDos(true);
   };
+
+  const closeModalDos = () => {
+    setIsOpenDos(false);
+  };
+
+  const openModalMhs = () => {
+    setIsOpenMhs(true);
+  };
+
+  const closeModalMhs = () => {
+    setIsOpenMhs(false);
+  };
+
+  // const handleClick = () => {
+  //   navigate('/usulan-baru-penelitian'); // Arahkan ke halaman 'usulan-baru-penelitian'
+  // };
 
 
     const handleInputChange = (setter) =>(e)=>{
@@ -67,6 +88,8 @@ const IdentitasUsulan = () => {
     ukur
   </button>
   <PopupTKT isOpen={isOpen} onRequestClose={closeModal}/>
+  <PopUpDosen isOpen={isOpenDos} onRequestClose={closeModalDos}/>
+  <PopUpMhs isOpen={isOpenMhs} onRequestClose={closeModalMhs}/>
 </div>
         <TextfieldCmp
           label="3. Target Akir TKT*"
@@ -177,7 +200,7 @@ const IdentitasUsulan = () => {
           <h1 className='text-xl font-bold text-violet-800 mx-5 my-5'>1.4 Identitas Pengusul - Anggota Peneliti Dosen </h1>
           <div>
             <button className="flex items-center px-4 py-2 mx-5 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
-              onClick={handleClick}>
+              onClick={openModalDos}>
               <FaPlus className="mr-2" /> {/* Icon tambah */}
               Tambah Usulan
             </button>
@@ -198,13 +221,14 @@ const IdentitasUsulan = () => {
 
             </tbody>
           </table>
+          
         </div>
           </div>
           <div>
           <h1 className='text-xl font-bold text-violet-800 mx-5 my-5'>1.5 Identitas Pengusul - Anggota Peneliti Mahasiswa </h1>
           <div>
             <button className="flex items-center px-4 py-2 mx-5 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
-              onClick={handleClick}>
+              onClick={openModalMhs}>
               <FaPlus className="mr-2" /> {/* Icon tambah */}
               Tambah Usulan
             </button>
