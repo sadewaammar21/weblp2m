@@ -75,18 +75,21 @@ const IdentitasUsulan = () => {
           placeholder="Judul usulan baru"
           />
         <div className="relative">
-  <TextfieldCmp
-    label="2. TKT Saat ini*"
-    value={tktSaatini}
-    onChange={handleInputChange(SetTktsaatini)}
-    placeholder="TKT"
-  />
-  <button 
-    className="absolute mt-2 right-2 top-1/2 transform -translate-y-1/2 bg-bluef-500 text-white px-3 py-1 rounded-lg hover:bg-bluef-300 focus:outline-none"
-    onClick={openModal}
-  >
-    ukur
-  </button>
+        <div className="relative w-full "> {/* Set width as needed (e.g., w-1/2 for half page) */}
+      <TextfieldCmp
+        label="2. TKT Saat ini*"
+        value={tktSaatini}
+        onChange={handleInputChange(SetTktsaatini)}
+        placeholder="TKT"
+      />
+      {/* Button placed outside the TextfieldCmp */}
+      <button 
+        className="absolute right-1 top-8 bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-300 focus:outline-none"
+        onClick={openModal}
+      >
+        ukur
+      </button>
+    </div>
   <PopupTKT isOpen={isOpen} onRequestClose={closeModal}/>
   <PopUpDosen isOpen={isOpenDos} onRequestClose={closeModalDos}/>
   <PopUpMhs isOpen={isOpenMhs} onRequestClose={closeModalMhs}/>

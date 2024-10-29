@@ -1,9 +1,9 @@
 import React from 'react';
 import { FaSearch } from 'react-icons/fa'; // FontAwesome search icon (optional)
 
-const SearchInput = ({ label, placeholder, value, onChange, onSearch }) => {
+const SearchInput = ({ label, placeholder, value, onChange, onSearch, width = 'w-1/2' }) => { // Default width is half-page
   return (
-    <div className="flex flex-col space-y-2">
+    <div className={`flex flex-col space-y-2 ${width}`}>
       {label && <label className="text-gray-700 font-semibold">{label}</label>}
       <div className="flex items-center border border-gray-400 rounded-lg overflow-hidden">
         <input
