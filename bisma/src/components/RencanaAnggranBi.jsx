@@ -18,11 +18,11 @@ const RencanaAnggranBi = (navigate) => {
     setSelectedOption(option);
   };
   
-  const [selectedFile, setSelectedFile] = useState(null);
+  // const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  // const handleFileChange = (event) => {
+  //   setSelectedFile(event.target.files[0]);
+  // };
 
   const options = [
     { label: 'Option 1', value: '1' },
@@ -31,16 +31,16 @@ const RencanaAnggranBi = (navigate) => {
   ];
   const kelompokOptions = ["Kelompok 1", "Kelompok 2", "Kelompok 3"];
   const komponenOptions = ["Komponen 1", "Komponen 2", "Komponen 3"];
-  const satuanOptions = ["Satuan 1", "Satuan 2", "Satuan 3"];
+  // const satuanOptions = ["Satuan 1", "Satuan 2", "Satuan 3"];
 
 
   const handleClick = () => {
     navigate('#'); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
-  const handleInputChange = (setter) =>(e)=>{
-    setter(e.target.value);
-  }
+  // const handleInputChange = (setter) =>(e)=>{
+  //   setter(e.target.value);
+  // }
 
   return (
     <div>
