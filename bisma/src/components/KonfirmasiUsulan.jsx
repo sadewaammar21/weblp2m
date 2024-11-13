@@ -2,8 +2,8 @@ import React from 'react'
 
 const KonfirmasiUsulan = () => {
   return (
-    <div>
-      <div className='px-10'>
+    <div className='px-10'>
+      <div className=''>
         <div className='p-4 bg-violet-100 w-full rounded-md '>
         <div className='flex'>
         <img 
@@ -135,7 +135,162 @@ const KonfirmasiUsulan = () => {
 
         </tbody>
       </table>
-    </div>
+        </div>
+        </div>
+        <div className='mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md '>
+        <div className=''>
+          <h2 className='text-md font-bold text-violet-800'> Identitas Pengusul Ketua</h2>
+        </div>
+        </div>
+
+        <div className='mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md '>
+        <div className=''>
+          <h2 className='text-md font-bold text-violet-800'> Anggota Usulan Dosen</h2>
+        </div>
+        </div>
+
+        <div className="relative overflow-x-auto  my-10">
+          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="border border-black">
+                <th className="border border-black px-4 py-2">NIDN</th>
+                <th className="border border-black px-4 py-2">Nama Anggota</th>
+                <th className="border border-black px-4 py-2">Peram</th>
+                <th className="border border-black px-4 py-2">Urain Tugas</th>
+                <th className="border border-black px-4 py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div className='mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md '>
+        <div className=''>
+          <h2 className='text-md font-bold text-violet-800'> Anggota Usulan Mahasiswa</h2>
+        </div>
+        </div>
+
+        <div className="relative overflow-x-auto  my-10">
+          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="border border-black">
+                <th className="border border-black px-4 py-2">NIM</th>
+                <th className="border border-black px-4 py-2">Nama</th>
+                <th className="border border-black px-4 py-2">Instansi</th>
+                <th className="border border-black px-4 py-2">Prodi</th>
+                <th className="border border-black px-4 py-2">Peran</th>
+                <th className="border border-black px-4 py-2">No.HP</th>
+                <th className="border border-black px-4 py-2">Uraian Tugas</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div className='mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md '>
+        <div className=''>
+          <h2 className='text-md font-bold text-violet-800'> Substansi</h2>
+        </div>
+        </div>
+
+        <div className='mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md '>
+        <div className=''>
+          <h2 className='text-md font-bold text-violet-800'> Luaran Yang dijanjikan</h2>
+        </div>
+        </div>
+
+        <div className="relative overflow-x-auto  my-10">
+          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="border border-black">
+                <th className="border border-black px-4 py-2">Uraian Tahun Kegiatan</th>
+                <th className="border border-black px-4 py-2">Kelompok Luaran</th>
+                <th className="border border-black px-4 py-2">Jenis Luaran</th>
+                <th className="border border-black px-4 py-2">Target </th>
+                <th className="border border-black px-4 py-2">Keterangan</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div className='mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md '>
+        <div className=''>
+          <h2 className='text-md font-bold text-violet-800'> Rencana Angggaran Biaya</h2>
+        </div>
+        </div>
+
+        <div className=''>
+          <h2 className='mb-2 text-md font-bold text-violet-800'> Total RAB 2 Tahun Rp.0,00</h2>
+        </div>
+        <div className=''>
+          <h2 className='text-sm font-sans text-violet-800'> Tahun 1</h2>
+        </div>
+        <div className="relative overflow-x-auto  my-2">
+          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="border border-black">
+                <th className="border border-black px-4 py-2">Kelompok</th>
+                <th className="border border-black px-4 py-2">Komponen</th>
+                <th className="border border-black px-4 py-2">Item</th>
+                <th className="border border-black px-4 py-2">Satuan </th>
+                <th className="border border-black px-4 py-2">Harga Satuan </th>
+                <th className="border border-black px-4 py-2">Volume</th>
+                <th className="border border-black px-4 py-2">Total</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div className='flex justify-between'>
+          <h2 className='mb-2 text-md font-bold text-violet-800'> Total Anggaran</h2>
+          <h2 className='mb-2 text-md font-bold text-violet-800'> Rp.0,00</h2>
+        </div>
+        <div className=''>
+          <h2 className='text-sm font-sans text-violet-800'> Tahun 2</h2>
+        </div>
+        <div className="relative overflow-x-auto  my-2">
+          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="border border-black">
+                <th className="border border-black px-4 py-2">Kelompok</th>
+                <th className="border border-black px-4 py-2">Komponen</th>
+                <th className="border border-black px-4 py-2">Item</th>
+                <th className="border border-black px-4 py-2">Satuan </th>
+                <th className="border border-black px-4 py-2">Harga Satuan </th>
+                <th className="border border-black px-4 py-2">Volume</th>
+                <th className="border border-black px-4 py-2">Total</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div className='flex justify-between'>
+          <h2 className='mb-2 text-md font-bold text-violet-800'> Total Anggaran</h2>
+          <h2 className='mb-2 text-md font-bold text-violet-800'> Rp.0,00</h2>
+        </div>
+
+        <div className='mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md '>
+        <div className=''>
+          <h2 className='text-md font-bold text-violet-800'> Rencana Angggaran Biaya</h2>
+        </div>
+        </div>
+        <div className="relative overflow-x-auto  my-2">
+          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="border border-black">
+                <th className="border border-black px-4 py-2">Nama Mitra</th>
+                <th className="border border-black px-4 py-2">Instunsi</th>
+                <th className="border border-black px-4 py-2">Alamat Instunsi</th>
+                <th className="border border-black px-4 py-2">Negara </th>
+                <th className="border border-black px-4 py-2">Surel</th>
+                <th className="border border-black px-4 py-2">Surat Kesanggupan</th>
+                <th className="border border-black px-4 py-2">Dana th 1</th>
+                <th className="border border-black px-4 py-2">Dana th 2</th>
+                <th className="border border-black px-4 py-2">Dana th 3</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
     </div>
   )

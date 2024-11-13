@@ -101,11 +101,11 @@ const PopupTKT = ({ isOpen, onRequestClose }) => {
           {/* Tampilkan tombol hanya jika `showTable` bernilai true */}
           <div className="flex justify-end space-x-4">
           <button
-  className="bg-white text-red-500 border border-red-500 px-4 py-2 rounded hover:bg-red-100"
-  onClick={onRequestClose}
- >
-  Tutup
-</button>
+            className="bg-white text-red-500 border border-red-500 px-4 py-2 rounded hover:bg-red-100"
+            onClick={onRequestClose}
+          >
+            Tutup
+          </button>
             <button
               className="bg-bluef-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               onClick={() => alert('Selesai')} // Ganti dengan aksi yang sesuai
