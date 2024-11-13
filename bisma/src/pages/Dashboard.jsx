@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
         <NavBar>
           {/* <DashboardKaprodi/> */}
-          <ListUsulanKaprodi/>
+          {/* <ListUsulanKaprodi/> */}
         </NavBar>
     
   )

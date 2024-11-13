@@ -142,13 +142,15 @@ const NavBar = ({ children }) => {
         <nav className="bg-violet-800 p-4">
           <div className="container mx-auto flex justify-between items-center">
             <ul className="flex justify-between items-center w-full">
-              <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
+              <li className="text-white hover:text-gray-300 cursor-pointer flex items-center" >
+              <Link to="/dashboard" className="flex items-center">
                 <img 
                   src={process.env.PUBLIC_URL + "/assets/dashboard.svg"} 
                   alt="dashboard" 
                   className="w-5 h-5 mr-2"
                 />
                 Dashboard
+                </Link>
               </li>
 
               {/* Dropdown di Penelitian */}

@@ -4,6 +4,8 @@ import { FaPlus, FaPen } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { getToken } from '../Features/AuthSlice';
 import { Link } from 'react-router-dom';
+import { getResearch } from '../Features/ResearchSlice';
+
 const UsulanBaruList = () => {
 
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -16,11 +18,17 @@ const [error, setError] = useState(null);
 
 const getFixed= async ()=>{
   try {
-      const response = await axios.get(`${apiUrl}/api/research`,getToken());
-      setFixed(response.data.data);
-      console.log(response)
-  }catch (error){
-    setError("failed fetch data")
+    const result = await getResearch({
+      pageSize: 5,
+      currentPage: 1,
+      status: 1,
+      year: 2024,
+      userId: 2
+  });
+  setFixed(result.data);
+      console.log(result)
+  }catch (e){
+    setError(e.message)
   }
 }
 
