@@ -7,7 +7,7 @@ import ListUsulanKaprodi from '../components/ListUsulanKaprodi';
 const Dashboard = () => {
   return (
         <NavBar>
-
+          <DashboardComponent/>
         </NavBar>
     
   )
