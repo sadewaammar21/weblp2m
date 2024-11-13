@@ -149,7 +149,8 @@ const NavBar = ({ children }) => {
                   alt="dashboard" 
                   className="w-5 h-5 mr-2"
                 />
-                Dashboard
+                {/* Dashboard */}
+                <Link to="/dashboard">Dashboard</Link>
                 </Link>
               </li>
 
