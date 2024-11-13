@@ -1,17 +1,17 @@
 import React from 'react';
 import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';  // pastikan untuk mengimpor style library
+import 'react-dropdown/style.css'; // Make sure to import the CSS for the dropdown
 
-const DropdownCmp = ({ label, options, selectedOption, onChange, placeholder, width='w-full' }) => {
+const  DropdownCmp = ({ label, options, selectedOption, onChange, name, placeholder }) => {
   return (
-    <div className="mb-4">
-      {label && <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>}
+    <div className="dropdown">
+      <label>{label}</label>
       <Dropdown
-        options={options}
-        onChange={(selected) => onChange(selected.value)} // Akses selected.value di onChange
-        value={selectedOption}
-        placeholder={placeholder || "Select an option"}
-        className={width}
+        options={options} // Array of options { label: 'Label', value: 'Value' }
+        onChange={(selected) => onChange(selected.value)} // Pass the selected value to the handler
+        value={selectedOption} // The selected value, not the whole object
+        placeholder={placeholder || "Select an option"} // Default placeholder if none provided
+        name={name} // This is optional if you need the name for form handling
       />
     </div>
   );

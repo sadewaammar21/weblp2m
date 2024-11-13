@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { getToken } from '../Features/AuthSlice';
+import { Link,useNavigate } from 'react-router-dom';
+import { getToken,LogOut,reset } from '../Features/AuthSlice';
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { MdLogout, MdErrorOutline } from "react-icons/md";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const NavBar = ({ children }) => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [dropdown, setDropdown] = useState(false);
   const [subDropdown, setSubDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -50,6 +58,49 @@ const NavBar = ({ children }) => {
         console.log(err);
       });
   }, []);
+
+  const logout = () => {
+    dispatch(LogOut());
+    dispatch(reset());
+    navigate("/");
+    toast.success("Successfully logged out");
+  };
+
+  const showLogoutConfirmation = () => {
+    toast(
+      ({ closeToast }) => (
+        <div className="text-center">
+          <MdErrorOutline className="text-red-500 text-4xl mx-auto mb-2" />
+          <p className="font-semibold text-lg">Are you sure you want to logout?</p>
+          <div className="flex justify-center space-x-4 mt-4">
+            <button
+              className="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600"
+              onClick={() => {
+                logout();
+                closeToast();
+              }}
+            >
+              Yes
+            </button>
+            <button
+              className="px-4 py-2 bg-gray-300 text-black font-semibold rounded hover:bg-gray-400"
+              onClick={closeToast}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      ),
+      // {
+      //   position: "top-right",  // Required but will be overridden by CSS
+      //   autoClose: 5000,  // Close after 5 seconds
+      //   closeOnClick: false,
+      //   draggable: false,
+      //   className: "Toastify__toast-container--centered",  // Apply custom CSS class
+      // }
+    );
+  };
+  
 
   return (
     <div>
@@ -120,7 +171,7 @@ const NavBar = ({ children }) => {
                     ref={dropdownRef}
                   >
                     <li 
-                      className="px-4 py-2  hover:bg-gray-100 relative"
+                      className="px-4 py-2  hover:bg-violet-800 relative"
                       onMouseEnter={handleSubDropdownEnter}
                       onMouseLeave={handleSubDropdownLeave}
                     >
@@ -130,28 +181,28 @@ const NavBar = ({ children }) => {
                       </div>
                       {subDropdown && (
                         <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
-                          <li className="px-4 py-2 hover:bg-gray-200 flex items-center">
+                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                             <Link to="/usulanbaru">Usulan Baru</Link>
                           </li>
-                          <li className="px-4 py-2 hover:bg-gray-200 flex items-center">
+                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                             <Link to="/perbaikanusulan">Perbaikan Usulan</Link>
                           </li>
-                          <li className="px-4 py-2 hover:bg-gray-200 flex items-center">
+                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                             <Link to="/laporankemajuan">Laporan Kemajuan</Link>
                           </li>
-                          <li className="px-4 py-2 hover:bg-gray-200 flex items-center">
+                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                             <Link to="/laporanakhir">Laporan Akhir</Link>
                           </li>
-                          <li className="px-4 py-2 hover:bg-gray-200 flex items-center">
+                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                             <Link to="/catatanakhir">Catatan Akhir</Link>
                           </li>
-                          <li className="px-4 py-2 hover:bg-gray-200 flex items-center">
+                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                             <Link to="/luaran">Luaran</Link>
                           </li>
                         </ul>
                       )}
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100">
+                    <li className="px-4 py-2 hover:bg-violet-800">
                       Penelitian Eksternal
                     </li>
                   </ul>
@@ -182,12 +233,30 @@ const NavBar = ({ children }) => {
                 />
                 Pengabdian
               </li>
+              <li className="text-white hover:text-gray-300 cursor-pointer flex items-center"
+              onClick={showLogoutConfirmation}>
+                <MdLogout className="w-5 h-5 mr-2" />
+                LogOut
+              </li>
             </ul>
           </div>
         </nav>
       </div>
 
+      
+
       <div className='bg-neutral-30 p-8 shadow-md min-h-screen'>
+      <ToastContainer 
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+      />
         {children}
       </div>
     </div>
