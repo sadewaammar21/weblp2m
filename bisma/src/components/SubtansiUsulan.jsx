@@ -3,12 +3,16 @@ import DropdownCmp from './DropdownCmp';
 import TextAreaCmp from './TextAreaCmp';
 import { FaPlus } from 'react-icons/fa';
 
-const SubtansiUsulan = ({navigate}) => {
+const SubtansiUsulan = ({navigate, data, setData}) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [UTDP,setUTDP] = useState('');
 
-  const handleDropdownChange = (option) => {
-    setSelectedOption(option);
+  const handleDropdownChange = (option, fieldName) => {
+    setData((prevData) => ({
+      ...prevData, // Spread previous state
+      [fieldName]: option, // Add or update the key-value pair
+    }));
+  console.log('clicked' + option)
   };
   
   const [selectedFile, setSelectedFile] = useState(null);
@@ -38,8 +42,8 @@ const SubtansiUsulan = ({navigate}) => {
         <DropdownCmp
           label="Kelompok Makro Riset *"
           options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}// Corrected here
+            value={data.substance_id}
+            onChange={(option)=>handleDropdownChange(option.value, 'substance_id')}
           placeholder="Kelompok Riset teknologi tinggi"
         />
       

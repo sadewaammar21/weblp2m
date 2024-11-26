@@ -8,12 +8,7 @@ import PopupTKT from "./PopupTKT";
 import PopUpDosen from "./PopUpDosen";
 import PopUpMhs from "./PopUpMhs";
 
-const IdentitasUsulan = () => {
-  const [Judul, setJudul] = useState("");
-  const [tktSaatini, SetTktsaatini] = useState("");
-  const [taTKT, setTatkt] = useState("");
-  const [UTDP, setUTDP] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
+const IdentitasUsulan = ({data, setData}) => {
   // const navigate = useNavigate(); // Hook untuk navigasi
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDos, setIsOpenDos] = useState(false);
@@ -47,12 +42,22 @@ const IdentitasUsulan = () => {
   //   navigate('/usulan-baru-penelitian'); // Arahkan ke halaman 'usulan-baru-penelitian'
   // };
 
-  const handleInputChange = (setter) => (e) => {
-    setter(e.target.value);
+  const handleInputChange = () => (e) => {
+    const inputName = e.target.name; 
+  const inputValue = e.target.value; 
+
+  setData((prevData) => ({
+      ...prevData, 
+      [inputName]: inputValue, 
+    }));
   };
 
-  const handleDropdownChange = (option) => {
-    setSelectedOption(option);
+  const handleDropdownChange = (option, fieldName) => {
+    setData((prevData) => ({
+      ...prevData, 
+      [fieldName]: option, 
+    }));
+  console.log('clicked' + option)
   };
 
   const options = [
@@ -70,8 +75,9 @@ const IdentitasUsulan = () => {
         <div className="grid grid-cols-3 gap-4">
           <TextfieldCmp
             label="1. Judul*"
-            value={Judul}
-            onChange={handleInputChange(setJudul)}
+            value={data.title}
+            name='title'
+            onChange={handleInputChange()}
             placeholder="Judul usulan baru"
           />
           <div className="relative">
@@ -80,8 +86,9 @@ const IdentitasUsulan = () => {
               {/* Set width as needed (e.g., w-1/2 for half page) */}
               <TextfieldCmp
                 label="2. TKT Saat ini*"
-                value={tktSaatini}
-                onChange={handleInputChange(SetTktsaatini)}
+                value={data.tkt_current}
+                name={'tkt_current'}
+                onChange={handleInputChange()}
                 placeholder="TKT"
               />
               {/* Button placed outside the TextfieldCmp */}
@@ -98,8 +105,9 @@ const IdentitasUsulan = () => {
           </div>
           <TextfieldCmp
             label="3. Target Akir TKT*"
-            value={taTKT}
-            onChange={handleInputChange(setTatkt)}
+            value={data.tkt_final}
+                name='tkt_final'
+            onChange={handleInputChange()}
             placeholder="Judul usulan baru"
           />
         </div>
@@ -112,74 +120,74 @@ const IdentitasUsulan = () => {
           <DropdownCmp
             label="4. Kelompok Skema *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.scheme_id}
+            onChange={(option)=>handleDropdownChange(option.value, 'scheme_id')}
           />
           <DropdownCmp
             label="10. Rumpun Ilmu Level 1 *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.cluster_lv1}
+            onChange={(option)=>handleDropdownChange(option.value, 'cluster_lv1')}
           />
           <DropdownCmp
             label="5. Ruang Lingkup *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.scope_id}
+            onChange={(option)=>handleDropdownChange(option.value, 'scope_id')}
           />
           <DropdownCmp
             label="11. Rumpun Ilmu Level 2 *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.cluster_lv2}
+            onChange={(option)=>handleDropdownChange(option.value, 'cluster_lv2')}
           />
           <DropdownCmp
             label="6. Kategori SBK *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.category_id}
+            onChange={(option)=>handleDropdownChange(option.value, 'category_id')}
           />
           <DropdownCmp
             label="12. Rumpun Ilmu Level 3 *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.cluster_lv3}
+            onChange={(option)=>handleDropdownChange(option.value, 'cluster_lv3')}
           />
           <DropdownCmp
             label="7. Bidang Fokus Penelitian *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.focus_id}
+            onChange={(option)=>handleDropdownChange(option.value, 'focus_id')}
           />
           <DropdownCmp
             label="13. Prioritas Riset "
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.priority_id}
+            onChange={(option)=>handleDropdownChange(option.value, 'priority_id')}
           />
           <DropdownCmp
             label="8. Tema Penelitian *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.theme_id}
+            onChange={(option)=>handleDropdownChange(option.value, 'theme_id')}
           />
           <DropdownCmp
             label="14. Tahun Pertama Usulan *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.year}
+            onChange={(option)=>handleDropdownChange(option.value, 'year')}
           />
           <DropdownCmp
             label="9. Topik Penelitian *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.topic_id}
+            onChange={(option)=>handleDropdownChange(option.value, 'topic_id')}
           />
           <DropdownCmp
             label="15. Lama Kegiatan *"
             options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
+            value={data.duration}
+            onChange={(option)=>handleDropdownChange(option.value, 'duration')}
           />
         </div>
         <div>
@@ -189,16 +197,17 @@ const IdentitasUsulan = () => {
           <div className="grid grid-cols-2 gap-x-10  ">
             <TextfieldCmp
               label="Nama Ketua *"
-              value={tktSaatini}
-              onChange={handleInputChange(SetTktsaatini)}
-              placeholder="TKT"
+              value={data.leader_name}
+                name={'leader_name'}
+                onChange={handleInputChange()}
+              placeholder="Ketua"
             />
 
             <TextAreaCmp
               label="Uraian Tugas Dalam Penelitian *"
-              name="description"
-              value={UTDP}
-              onChange={handleInputChange(setUTDP)}
+              value={data.leader_task}
+                name={'leader_task'}
+                onChange={handleInputChange()}
               placeholder="Enter your description here..."
               rows={6}
             />

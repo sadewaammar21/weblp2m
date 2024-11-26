@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SubtansiUsulan from './SubtansiUsulan';
 import IdentitasUsulan from './IdentitasUsulan';
 import RencanaAnggranBi from './RencanaAnggranBi';
 import DokumenPendukung from './DokumenPendukung';
 import KonfirmasiUsulan from './KonfirmasiUsulan';
 import UsulanBaruList from './UsulanBaruList';
+import { addResearch } from '../Features/ResearchSlice';
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { getToken } from "../Features/AuthSlice";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const steps = [
     { id: 1, label: "Identitas Usulan" },
@@ -40,23 +47,76 @@ const steps = [
   };
 
 const ProgressBarUsulan = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  //progress bar
     const [currentStep, setCurrentStep] = React.useState(1);
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
+    console.log(data);
   };
 
   const handlePrevStep = () => {
     setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
+  //data management
+  const [data, setData] = useState({
+    title:'',
+    tkt_current:'',
+    tkt_final:''
+  })
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+    const response = await axios.post(
+      `${apiUrl}/api/research`,
+      {
+        title: data.title,
+        tkt_current: data.tkt_current,
+        tkt_final: data.tkt_final,
+        scheme_id: data.scheme_id,
+        scope_id: data.scope_id,
+        category_id: data.category_id,
+        focus_id: data.focus_id,
+        theme_id: data.theme_id,
+        topic_id: data.topic_id,
+        cluster_lv1: data.cluster_lv1,
+        cluster_lv2: data.cluster_lv2,
+        cluster_lv3: data.cluster_lv3,
+        priority_id: data.priority_id,
+        year: data.year,
+        duration: data.duration,
+        leader_name: data.leader_name,
+        leader_task: data.leader_task,
+        substance_id: data.substance_id,
+        status: 1,
+      },
+      getToken()
+    );
+    console.log(response.data);
+    navigate("/usulanbaru");
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+
+  };
+  
+
+  //element page
     const renderStepContent = (step) =>{
 
         switch (step) {
             case 1:
-                return <IdentitasUsulan/>;
+                return <IdentitasUsulan data={data} setData={setData}/>;
             case 2:
-                return <SubtansiUsulan/>;
+                return <SubtansiUsulan data={data} setData={setData}/>;
             case 3:
                 return <RencanaAnggranBi/>;
             case 4:
@@ -67,6 +127,8 @@ const ProgressBarUsulan = () => {
                 return <UsulanBaruList/>
         }
     }
+
+
 
   return (
     <div>
@@ -83,8 +145,11 @@ const ProgressBarUsulan = () => {
         <button onClick={handlePrevStep} disabled={currentStep === 1} className="px-4 py-2 bg-gray-500 text-white rounded">
           Previous
         </button>
-        <button onClick={handleNextStep} disabled={currentStep === steps.length} className="px-4 py-2 bg-blue-600 text-white rounded">
+        <button onClick={handleNextStep} disabled={currentStep === steps.length} className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === steps.length ? 'hidden' : ''}`}>
           Next
+        </button>
+        <button onClick={handleSubmit} disabled={currentStep < steps.length} className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === steps.length ? '' : 'hidden'}`}>
+          Submit
         </button>
       </div>
     </div>
