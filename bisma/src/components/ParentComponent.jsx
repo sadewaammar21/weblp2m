@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PopUpDosen from './PopUpDosen';
+import PopUpDosen from './UsulanBaru/PopUpDosen';
 
 const ParentComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

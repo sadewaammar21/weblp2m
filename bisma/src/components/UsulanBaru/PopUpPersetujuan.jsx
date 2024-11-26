@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { updateStatus } from "../Features/ResearchSlice";
+import { updateStatus } from "../../Features/ResearchSlice";
 
 Modal.setAppElement("#root");
 

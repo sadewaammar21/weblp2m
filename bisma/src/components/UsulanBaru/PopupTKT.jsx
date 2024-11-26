@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import TextfieldCmp from './TextfieldCmp';
-import DropdownCmp from './DropdownCmp';
+import TextfieldCmp from '../TextfieldCmp';
+import DropdownCmp from '../DropdownCmp';
 
 Modal.setAppElement('#root');
 

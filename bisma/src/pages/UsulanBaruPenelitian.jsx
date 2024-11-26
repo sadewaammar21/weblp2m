@@ -1,6 +1,6 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
-import ProgressBarUsulan from '../components/ProgressBarUsulan'
+import ProgressBarUsulan from '../components/UsulanBaru/ProgressBarUsulan'
 
 const UsulanBaruPenelitian = () => {
   return (

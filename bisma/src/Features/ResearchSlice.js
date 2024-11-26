@@ -1,7 +1,6 @@
 // src/api.js
 import axios from "axios";
 import { getToken } from "./AuthSlice";
-import { FaNotEqual } from "react-icons/fa";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 

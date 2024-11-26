@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import DropdownCmp from './DropdownCmp';
-import TextAreaCmp from './TextAreaCmp';
+import DropdownCmp from '../DropdownCmp';
+import TextAreaCmp from '../TextAreaCmp';
 import { FaPlus } from 'react-icons/fa';
 
 const SubtansiUsulan = ({navigate}) => {

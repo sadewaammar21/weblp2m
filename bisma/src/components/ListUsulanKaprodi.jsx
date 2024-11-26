@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DropdownCmp from './DropdownCmp'
 import { getResearch } from '../Features/ResearchSlice';
-import PopUpPersetujuan from './PopUpPersetujuan';
+import PopUpPersetujuan from './UsulanBaru/PopUpPersetujuan';
 
 const ListUsulanKaprodi = () => {
 

@@ -18,15 +18,33 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user || isSuccess) {
-      navigate("/dashboard");
+      const userRoles = user?.roles || [];
+  
+      // Cek role dan navigasi
+      switch (true) {
+        case userRoles.includes("Dosen"):
+          navigate("/dashboard");
+          break;
+        case userRoles.includes("Operator"):
+          navigate("/dashboard-operator");
+          break;
+        case userRoles.includes("Reviewer"):
+          navigate("/dashboard-reviewer");
+          break;
+        default:
+          navigate("/dashboard");
+          break;
+      }
     }
-
+  
     if (isError) {
       toast.error(message);
     }
-
+  
     dispatch(reset());
   }, [user, isSuccess, isError, message, dispatch, navigate]);
+  
+  
 
   const Auth = (e) => {
     e.preventDefault();

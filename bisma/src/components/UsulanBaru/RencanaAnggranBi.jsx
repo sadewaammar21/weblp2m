@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { FaPlus } from 'react-icons/fa';
-import DropdownCmp from './DropdownCmp';
-import TextfieldCmp from './TextfieldCmp';
+import DropdownCmp from '../DropdownCmp';
+import TextfieldCmp from '../TextfieldCmp';
 
 const RencanaAnggranBi = (navigate) => {
 
@@ -44,11 +44,11 @@ const RencanaAnggranBi = (navigate) => {
 
   return (
     <div>
-       <h1 className='text-xl font-bold text-violet-800 mx-5 my-5'>3.1 Rencana Anggran Biaya </h1>
-       <div className='px-10'>
-       <div className='p-4 bg-violet-100 w-full rounded-md '>
+      <h1 className='text-xl font-bold text-violet-800 mx-5 my-5'>3.1 Rencana Anggran Biaya </h1>
+      <div className='px-10'>
+      <div className='p-4 bg-violet-100 w-full rounded-md '>
         <div className='flex'>
-       <img 
+        <img 
           src={process.env.PUBLIC_URL + "/assets/information.svg"} 
           alt="logo" 
           className="w-6 h-6 mr-4 "  
@@ -59,9 +59,9 @@ const RencanaAnggranBi = (navigate) => {
         <h2 className='text-sm font-medium text-violet-800 mr-1'> Maksimal Usulan Dana Pertahun</h2>
         <h2 className='text-md font-bold text-violet-800'> Rp. 10.000.000</h2>
         </div>
-       </div>
-       </div>
-       <div className='my-5 flex items-start space-x-4'>
+        </div>
+        </div>
+        <div className='my-5 flex items-start space-x-4'>
         <div className='mt-7'>
             <button className="flex items-center px-2 py-2 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
               onClick={handleClick}>
@@ -106,7 +106,7 @@ const RencanaAnggranBi = (navigate) => {
             onChange={(e) => setSatuan(e.target.value)}
             width="w-20" // Custom width untuk text input
           />
-           <TextfieldCmp
+          <TextfieldCmp
             label="Volume"
             type="number"
             value={volume}

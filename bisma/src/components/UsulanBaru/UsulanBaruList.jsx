@@ -2,9 +2,9 @@ import axios from 'axios';
 import React, {useState,useEffect} from 'react';
 import { FaPlus, FaPen } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { getToken } from '../Features/AuthSlice';
+import { getToken } from '../../Features/AuthSlice';
 import { Link } from 'react-router-dom';
-import { getResearch } from '../Features/ResearchSlice';
+import { getResearch } from '../../Features/ResearchSlice';
 
 const UsulanBaruList = () => {
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import SearchInput from './SearchInput';
-import TextfieldCmp from './TextfieldCmp';
-import TextAreaCmp from './TextAreaCmp';
+import SearchInput from '../SearchInput';
+import TextfieldCmp from '../TextfieldCmp';
+import TextAreaCmp from '../TextAreaCmp';
 
 Modal.setAppElement('#root');
 
