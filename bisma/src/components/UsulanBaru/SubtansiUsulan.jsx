@@ -18,7 +18,10 @@ const SubtansiUsulan = ({navigate, data, setData}) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setData((prevData) => ({
+      ...prevData, 
+      substance: event.target.files[0],
+    }));
   };
 
   const options = [
