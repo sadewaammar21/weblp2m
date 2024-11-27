@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import { Link,useNavigate } from 'react-router-dom';
-import { getToken,LogOut,reset } from '../Features/AuthSlice';
+import { getToken,LogOut,reset } from '../../Features/AuthSlice';
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { MdLogout, MdErrorOutline } from "react-icons/md";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const NavBar = ({ children }) => {
+const NavbarOperator = ({children}) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -93,7 +93,6 @@ const NavBar = ({ children }) => {
       ),
     );
   };
-  
 
   return (
     <div className='flex flex-col h-screen'>
@@ -131,7 +130,7 @@ const NavBar = ({ children }) => {
         </div>
       </div>
 
-      <div className='mx-2'>
+      <div>
         <header className='sticky top-0 z-50 bg-violet-800 p-4'>
         <nav className="">
           <div className="container mx-auto flex justify-between items-center">
@@ -159,7 +158,7 @@ const NavBar = ({ children }) => {
                   className="w-5 h-5 mr-2"
                 />
                 <div className="flex items-center">
-                  Penelitian
+                  Monitoring
                   <FaChevronDown className="ml-2" />
                 </div>
                 {dropdown && (
@@ -212,7 +211,7 @@ const NavBar = ({ children }) => {
                   alt="kekayaan intelektual" 
                   className="w-5 h-5 mr-2"
                 />
-                Kekayaan Intelektual
+                Data Pendukung
               </li>
               <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
                 <img 
@@ -220,16 +219,9 @@ const NavBar = ({ children }) => {
                   alt="laporan" 
                   className="w-5 h-5 mr-2"
                 />
-                Laporan
+                Pengelola Review
               </li>
-              <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
-                <img 
-                  src={process.env.PUBLIC_URL + "/assets/pengabdian.svg"} 
-                  alt="pengabdian" 
-                  className="w-5 h-5 mr-2"
-                />
-                Pengabdian
-              </li>
+              
               <li className="text-white hover:text-gray-300 cursor-pointer flex items-center"
               onClick={showLogoutConfirmation}>
                 <MdLogout className="w-5 h-5 mr-2" />
@@ -261,4 +253,4 @@ const NavBar = ({ children }) => {
   );
 }
 
-export default NavBar;
+export default NavbarOperator

@@ -22,6 +22,9 @@ export const LoginAuth = createAsyncThunk(
       console.log(response);
 
       const  accessToken  = response.data.token;
+      const id = response.data.roles[0];
+
+      console.log(id);
 
       localStorage.setItem("accessToken", accessToken);
 
