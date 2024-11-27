@@ -21,12 +21,13 @@ export const LoginAuth = createAsyncThunk(
       });
       console.log(response);
 
-      const  accessToken  = response.data.token;
-      const id = response.data.roles[0];
+      const accessToken = response.data.token;
+      const userData = response.data.user;
 
-      console.log(id);
-
+      localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("currentRole", userData.roles[0].id);
+      console.log(userData);
 
       return response.data;
     } catch (error) {
@@ -51,8 +52,9 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
 });
 
 export const LogOut = createAsyncThunk("user/api/LogOut", async () => {
-  await axios.delete(`${apiUrl}/logout`);
+  const response = await axios.delete(`${apiUrl}/logout`);
   localStorage.removeItem("accessToken");
+  return response;
 });
 
 export const authSlice = createSlice({
