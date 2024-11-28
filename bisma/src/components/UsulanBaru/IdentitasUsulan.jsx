@@ -38,10 +38,6 @@ const IdentitasUsulan = ({ data, setData }) => {
     setIsOpenMhs(false);
   };
 
-  // const handleClick = () => {
-  //   navigate('/usulan-baru-penelitian'); // Arahkan ke halaman 'usulan-baru-penelitian'
-  // };
-
   const handleInputChange = () => (e) => {
     const inputName = e.target.name;
     const inputValue = e.target.value;
@@ -60,14 +56,17 @@ const IdentitasUsulan = ({ data, setData }) => {
     console.log("clicked" + option);
   };
 
+  //menambah anggota dan mahasiswa
   const handleMembersChange = (index, memberData) => {
     const updatedMembers = [...data.members];
     updatedMembers[index] = memberData;
     setData({...data, members: updatedMembers});
   }
 
-  const addMembersField = () => {
-    setData({...data, members: [...data.members, {id: 0, task: '', research_role: '', status: ''}]})
+  const handleAddStudents = (index, studentData) => {
+    const updatedStudent = [...data.students];
+    updatedStudent[index] = studentData;
+    setData({...data, students: updatedStudent});
   }
 
   const options = [
@@ -111,7 +110,7 @@ const IdentitasUsulan = ({ data, setData }) => {
             </div>
             <PopupTKT isOpen={isOpen} onRequestClose={closeModal} />
             <PopUpDosen isOpen={isOpenDos} onRequestClose={closeModalDos} index={data['members'].length} onSave={handleMembersChange}/>
-            <PopUpMhs isOpen={isOpenMhs} onRequestClose={closeModalMhs} />
+            <PopUpMhs isOpen={isOpenMhs} onRequestClose={closeModalMhs} index={data['students'].length} onSave={handleAddStudents}/>
           </div>
           <TextfieldCmp
             label="3. Target Akir TKT*"
@@ -271,7 +270,18 @@ const IdentitasUsulan = ({ data, setData }) => {
                 <th className="border border-black px-4 py-2">Aksi</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              {data.members.map((item, index) => (
+                <tr key={index}>
+                  <td>{index+1}</td>
+                  <td>{item.id}</td>
+                  <td>{item.research_role}</td>
+                  <td>{item.task}</td>
+                  <td>{item.status}</td>
+                  <td>action here</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>
@@ -300,7 +310,18 @@ const IdentitasUsulan = ({ data, setData }) => {
                 <th className="border border-black px-4 py-2">Aksi</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              {data.students.map((item, index) => (
+                <tr key={index}>
+                  <td>{index+1}</td>
+                  <td>{item.nim}</td>
+                  <td>{item.name}</td>
+                  <td>{item.prodi}</td>
+                  <td>{item.task}</td>
+                  <td>action here</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>

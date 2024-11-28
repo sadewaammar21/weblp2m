@@ -66,7 +66,11 @@ const ProgressBarUsulan = () => {
     title:'',
     tkt_current:'',
     tkt_final:'',
-    members: []
+    members: [],
+    students: [],
+    output: [],
+    budgetPlan: [],
+    supportingDocument: []
   })
 
   const handleSubmit = async (e) => {
@@ -105,6 +109,49 @@ const ProgressBarUsulan = () => {
       formData.append(`members[${index}][status]`, member.status);
     })
 
+    data.students.forEach((student, index) => {
+      formData.append(`students[${index}][name]`, student.name);
+      formData.append(`students[${index}][nim]`, student.nim);
+      formData.append(`students[${index}][address]`, student.address);
+      formData.append(`students[${index}][email]`, student.email);
+      formData.append(`students[${index}][phone]`, student.phone);
+      formData.append(`students[${index}][prodi]`, student.prodi);
+      formData.append(`students[${index}][role]`, student.role);
+      formData.append(`students[${index}][task]`, student.task);
+    })
+
+    data.output.forEach((output, index) => {
+      formData.append(`output[${index}][year]`,output.year);
+      formData.append(`output[${index}][id_category_output]`, output.id_category_output);
+      formData.append(`output[${index}][id_type_output]`,output.id_type_output);
+      formData.append(`output[${index}][status]`,output.status);
+      formData.append(`output[${index}][description]`,output.description);
+    })
+
+    data.budgetPlan.forEach((budgetPlan, index) => {
+      formData.append(`budgetPlan[${index}][year]`, budgetPlan.year);
+      formData.append(`budgetPlan[${index}][id_group_budget]`, budgetPlan.id_group_budget);
+      formData.append(`budgetPlan[${index}][id_component_budget]`, budgetPlan.id_component_budget);
+      formData.append(`budgetPlan[${index}][item]`, budgetPlan.item);
+      formData.append(`budgetPlan[${index}][unit]`, budgetPlan.unit);
+      formData.append(`budgetPlan[${index}][volume]`, budgetPlan.volume);
+      formData.append(`budgetPlan[${index}][price_unit]`, budgetPlan.price_unit);
+      formData.append(`budgetPlan[${index}][total]`, budgetPlan.total);
+    })
+
+    data.supportingDocument.forEach((supportingDocument, index) => {
+      formData.append(`supportingDocument[${index}][partner_name]`, supportingDocument.partner_name);
+      formData.append(`supportingDocument[${index}][email]`, supportingDocument.email);
+      formData.append(`supportingDocument[${index}][institution]`, supportingDocument.institution);
+      formData.append(`supportingDocument[${index}][country_code]`, supportingDocument.country_code);
+      formData.append(`supportingDocument[${index}][institution_address]`, supportingDocument.institution_address);
+      formData.append(`supportingDocument[${index}][funding_contribution1]`, supportingDocument.funding_contribution1);
+      formData.append(`supportingDocument[${index}][funding_contribution2]`, supportingDocument.funding_contribution2);
+      if(supportingDocument.document){
+        formData.append(`supportingDocument[${index}][document]`, supportingDocument.document);
+      }
+    })
+
     try {
     const response = await axios.post(
       `${apiUrl}/api/research`, formData,
@@ -135,11 +182,11 @@ const ProgressBarUsulan = () => {
             case 2:
                 return <SubtansiUsulan data={data} setData={setData}/>;
             case 3:
-                return <RencanaAnggranBi/>;
+                return <RencanaAnggranBi data={data} setData={setData}/>;
             case 4:
-                return <DokumenPendukung/>;
+                return <DokumenPendukung data={data} setData={setData}/>;
             case 5:
-                return <KonfirmasiUsulan/>;
+                return <KonfirmasiUsulan data={data}/>;
             default:
                 return <UsulanBaruList/>
         }
