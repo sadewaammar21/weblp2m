@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SubtansiUsulan from './SubtansiUsulan';
 import IdentitasUsulan from './IdentitasUsulan';
 import RencanaAnggranBi from './RencanaAnggranBi';
 import DokumenPendukung from '../DokumenPendukung';
 import KonfirmasiUsulan from './KonfirmasiUsulan';
 import UsulanBaruList from './UsulanBaruList';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getToken } from "../../Features/AuthSlice";
@@ -47,7 +47,9 @@ const steps = [
 
 const ProgressBarUsulan = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const {id} = useParams();
+  console.log(id);
+  const isEdit = Boolean(id);
 
   //progress bar
     const [currentStep, setCurrentStep] = React.useState(1);
@@ -62,7 +64,7 @@ const ProgressBarUsulan = () => {
   };
 
   //data management
-  const [data, setData] = useState({//menyimpan data lebih mudah pake object dan passing ke tiap elemen daripada bikin state untuk tiap input
+  const [data, setData] = useState({
     title:'',
     tkt_current:'',
     tkt_final:'',
@@ -71,6 +73,23 @@ const ProgressBarUsulan = () => {
     output: [],
     budgetPlan: [],
     supportingDocument: []
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const response = await axios.get(`${apiUrl}/api/research/${id}`, getToken());
+        console.log(response.data);
+        setData({
+            ...data, 
+            ...response.data, 
+        });
+    };
+    if (isEdit) fetchData();
+    console.log(data);
+  }, [id]);
+
+  useEffect(()=>{
+    console.log(data)
   })
 
   const handleSubmit = async (e) => {
@@ -153,18 +172,31 @@ const ProgressBarUsulan = () => {
     })
 
     try {
-    const response = await axios.post(
-      `${apiUrl}/api/research`, formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${accessToken}`,
-        }
-      }
-    );
-    console.log(response.data);
+      // if(isEdit){
+      //   formData.append('_method', "PUT");
+      //   const response = await axios.post(
+      //     `${apiUrl}/api/research`, formData,
+      //     {
+      //       headers: {
+      //         'Content-Type': 'multipart/form-data',
+      //         Authorization: `Bearer ${accessToken}`,
+      //       }
+      //     }
+      //   );
+      //   console.log(response.data);
+      // }else{
+        const response = await axios.post(
+          `${apiUrl}/api/research`, formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${accessToken}`,
+            }
+          }
+        );
+        console.log(response.data);
+      // }
     navigate("/usulanbaru");
-    return response.data;
   } catch (error) {
     console.log(error);
     throw error;

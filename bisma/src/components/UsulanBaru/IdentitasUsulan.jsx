@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextfieldCmp from "../TextfieldCmp";
 import DropdownCmp from "../DropdownCmp";
 import TextAreaCmp from "../TextAreaCmp";
@@ -74,6 +74,10 @@ const IdentitasUsulan = ({ data, setData }) => {
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
   ];
+
+  useEffect(() => {
+    console.log(data);
+  },[])
 
   return (
     <div>

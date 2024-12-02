@@ -38,6 +38,7 @@ function App() {
         <Route path="/catatanakhir" element={<CatatanAkhir />} />
         <Route path="/luaran" element={<Luaran />} />
         <Route path="/usulan-baru-penelitian" element={<UsulanBaruPenelitian />} />
+        <Route path="/usulan-penelitian-edit/:id" element={<UsulanBaruPenelitian />} />
         <Route path="/perbaikan-usulan-penelitian" element={<PerbaikanUsulanPeneitian />} />
       </Routes>
     </BrowserRouter>
