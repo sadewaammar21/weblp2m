@@ -1,11 +1,11 @@
 import React from 'react';
 import NavbarReviewer from '../components/Reviewer/NavbarReviewer';
-import DashboardComponent from '../components/DashboardComponent';
+import DashboardReviewerCmp from '../components/Reviewer/DashboardReviewerCmp';
 
 const DashboardReviewer = () => {
   return (
     <NavbarReviewer>
-        <DashboardComponent/>
+        <DashboardReviewerCmp/>
     </NavbarReviewer>
   )
 }

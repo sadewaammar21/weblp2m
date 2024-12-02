@@ -142,7 +142,7 @@ const NavbarReviewer = ({children}) => {
                     className="w-5 h-5 mr-2"
                   />
                   {/* Dashboard */}
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/dashboard-reviewer">Dashboard</Link>
                   </Link>
                 </li>
   

@@ -136,14 +136,14 @@ const NavbarOperator = ({children}) => {
           <div className="container mx-auto flex justify-between items-center">
             <ul className="flex justify-between items-center w-full">
               <li className="text-white hover:text-gray-300 cursor-pointer flex items-center" >
-              <Link to="/dashboard" className="flex items-center">
+              <Link to="/dashboard-operator" className="flex items-center">
                 <img 
                   src={process.env.PUBLIC_URL + "/assets/dashboard.svg"} 
                   alt="dashboard" 
                   className="w-5 h-5 mr-2"
                 />
                 {/* Dashboard */}
-                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/dashboard-operator">Dashboard</Link>
                 </Link>
               </li>
 
@@ -168,58 +168,57 @@ const NavbarOperator = ({children}) => {
                   >
                     <li 
                       className="px-4 py-2  hover:bg-violet-800 relative"
-                      onMouseEnter={handleSubDropdownEnter}
-                      onMouseLeave={handleSubDropdownLeave}
                     >
+                      <Link to="/monitoring-usulan-reguler">
                       <div className="flex items-center justify-between">
-                        Penelitian Internal
-                        <FaChevronRight className="w-4 h-4" />
+                        Usulan Reguler
                       </div>
-                      {subDropdown && (
-                        <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
-                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                            <Link to="/usulanbaru">Usulan Baru</Link>
-                          </li>
-                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                            <Link to="/perbaikanusulan">Perbaikan Usulan</Link>
-                          </li>
-                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                            <Link to="/laporankemajuan">Laporan Kemajuan</Link>
-                          </li>
-                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                            <Link to="/laporanakhir">Laporan Akhir</Link>
-                          </li>
-                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                            <Link to="/catatanakhir">Catatan Akhir</Link>
-                          </li>
-                          <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                            <Link to="/luaran">Luaran</Link>
-                          </li>
-                        </ul>
-                      )}
+                      </Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-violet-800">
-                      Penelitian Eksternal
+                      <Link to="/monitoring-perbaikan-usulan">
+                      <div className="flex items-center justify-between">
+                      Perbaikan Usulan
+                      </div>
+                      </Link>
+                    </li>
+                    <li className="px-4 py-2 hover:bg-violet-800">
+                      Catatan Harian
+                    </li>
+                    <li className="px-4 py-2 hover:bg-violet-800">
+                      Laporan Kemajuan
+                    </li>
+                    <li className="px-4 py-2 hover:bg-violet-800">
+                      Perbaikan Akhir
                     </li>
                   </ul>
                 )}
               </li>
 
-              <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
+              <li className="text-white hover:text-gray-300 cursor-pointer ">
+              <Link to="/monitoring-data-pendukung">
+              <div className='flex items-center'>
                 <img 
                   src={process.env.PUBLIC_URL + "/assets/kkyint.svg"} 
                   alt="kekayaan intelektual" 
                   className="w-5 h-5 mr-2"
                 />
                 Data Pendukung
+                </div>
+                </Link>
+                
               </li>
               <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
+              <Link to="/monitoring-pengelola-review">
+              <div className='flex items-center'>
                 <img 
                   src={process.env.PUBLIC_URL + "/assets/laporan.svg"} 
                   alt="laporan" 
                   className="w-5 h-5 mr-2"
                 />
                 Pengelola Review
+                </div>
+                </Link>
               </li>
               
               <li className="text-white hover:text-gray-300 cursor-pointer flex items-center"

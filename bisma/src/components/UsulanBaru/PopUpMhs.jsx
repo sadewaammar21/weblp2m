@@ -37,6 +37,7 @@ const PopUpMhs = ({ isOpen, onRequestClose }) => {
                     onChange={(e) => setNim(e.target.value)}
                     onSearch={handleSearch}
                     width="w-[50%]"
+                    color={`bg-blue-800`}
                 />
             </div>
 

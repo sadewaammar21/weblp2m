@@ -1,39 +1,37 @@
-import React, {useState} from 'react';
-import ModalEditDPPenelitian from './ModalEditDPPenelitian';
-import ModalEditDPPenelitianDosen from './ModalEditDPPenelitianDosen';
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+import SearchInput from '../SearchInput';
+import TextfieldCmp from '../TextfieldCmp';
+import TextAreaCmp from '../TextAreaCmp';
 
-const OperatorPenelitian = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenDos, setIsOpenDos] = useState(false);
+Modal.setAppElement('#root');
 
-  const openModal = () => {
-    setIsOpen(true);
+const ModalEditDPPenelitian = ({ isOpen, onRequestClose }) => {
+  const [nidn, setNidn] = useState('');
+//   const [textInput, setTextInput] = useState('');
+//   const [UTDP,setUTDP] = useState('');
+
+  const handleSearch = () => {
+    console.log('Search for:', nidn);
+    // Add search logic here
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
-  const openModalDos = () => {
-    setIsOpenDos(true);
-  };
-
-  const closeModalDos = () => {
-    setIsOpenDos(false);
-  };
+//   const handleInputChange = (setter) => (e) => {
+//     setter(e.target.value);
+//   };
 
   return (
-    <div className="p-5 mx-5">
-      <div className="flex justify-between">
-        <h2 className="text-purple-600 font-bold text-lg mb-4">
-          PROFIL LEMBAGA PENELITIAN
-        </h2>
-        <button onClick={openModal} className="bg-orange-500 text-white rounded-md px-4 py-2 hover:bg-orange-300">
-          Edit
-        </button>
-      </div>
-      <ModalEditDPPenelitian isOpen={isOpen} onRequestClose={closeModal}/>
-      <ModalEditDPPenelitianDosen isOpen={isOpenDos} onRequestClose={closeModalDos}/>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      className="bg-white rounded-lg shadow-lg p-6 w-[50%] mx-auto mt-20 max-h-[80vh] overflow-y-auto" // Limit height and add scrolling
+      overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <h1 className="text-xl text-violet-800 font-bold mx-2 my-4"> EDIT PROFIL LEMABAGA PENELITIAN</h1>
+      
+        
+      
+
       <div className="space-y-2">
   <div className="flex items-center gap-x-4">
     <p className=" w-1/3">Kode PT</p>
@@ -98,15 +96,6 @@ const OperatorPenelitian = () => {
   
 </div>
 
-<div className="flex-grow border-t border-black my-10"></div>
-<div className="flex justify-between">
-        <h2 className="text-purple-600 font-bold text-lg mb-4">
-          PROFIL PIMPINAN LEMBAGA PENELITIAN
-        </h2>
-        <button onClick={openModalDos} className="bg-orange-500 text-white rounded-md px-4 py-2 hover:bg-orange-300">
-          Edit
-        </button>
-      </div>
       <div className="space-y-2">
       <div className="flex items-center gap-x-4">
     <p className=" w-1/3">Nama Jabatan Pimpinan</p>
@@ -127,8 +116,22 @@ const OperatorPenelitian = () => {
   </div>
 
   </div>
-    </div>
+      <div className="flex justify-end space-x-4">
+          <button
+  className="bg-white text-red-500 border border-red-500 px-4 py-2 rounded hover:bg-red-100"
+  onClick={onRequestClose}
+ >
+  Tutup
+</button>
+            <button
+              className="bg-bluef-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              onClick={() => alert('Selesai')} // Ganti dengan aksi yang sesuai
+            >
+              Selesai
+            </button>
+          </div>
+    </Modal>
   );
 };
 
-export default OperatorPenelitian;
+export default ModalEditDPPenelitian;

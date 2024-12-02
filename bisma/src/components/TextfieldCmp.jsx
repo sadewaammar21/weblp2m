@@ -9,7 +9,7 @@ const TextfieldCmp = ({label,value,onChange,placeholder,type='text', width='w-fu
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className='text-sm p-2 w-full border rounded shadow focus:outline-none focus:shadow-outline'
+            className={`text-sm border border-black rounded shadow focus:outline-none focus:shadow-outline ${width}`} // Gabungkan kelas dengan `width`
         />
     </div>
   )

@@ -1,16 +1,39 @@
-import React from 'react'
+import React, {useState} from 'react';
+import ModalEditDPPengabdian from './ModalEditDPPengabdian';
+import ModalEditDPPengabdianDosen from './ModalEditDPPengabdianDosen';
 
 const OperatorPengabdian = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDos, setIsOpenDos] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const openModalDos = () => {
+    setIsOpenDos(true);
+  };
+
+  const closeModalDos = () => {
+    setIsOpenDos(false);
+  };
+
   return (
 <div className="p-5 mx-5">
       <div className="flex justify-between">
         <h2 className="text-purple-600 font-bold text-lg mb-4">
           PROFIL LEMBAGA PENGABDIAN
         </h2>
-        <button className="bg-orange-500 text-white rounded-md px-4 py-2 hover:bg-orange-300">
+        <button onClick={openModal} className="bg-orange-500 text-white rounded-md px-4 py-2 hover:bg-orange-300">
           Edit
         </button>
       </div>
+      <ModalEditDPPengabdian isOpen={isOpen} onRequestClose={closeModal}/>
+      <ModalEditDPPengabdianDosen isOpen={isOpenDos} onRequestClose={closeModalDos}/>
       <div className="space-y-2">
   <div className="flex items-center gap-x-4">
     <p className=" w-1/3">Kode PT</p>
@@ -80,7 +103,7 @@ const OperatorPengabdian = () => {
         <h2 className="text-purple-600 font-bold text-lg mb-4">
           PROFIL PIMPINAN LEMBAGA PENGABDIAN
         </h2>
-        <button className="bg-orange-500 text-white rounded-md px-4 py-2 hover:bg-orange-300">
+        <button onClick={openModalDos} className="bg-orange-500 text-white rounded-md px-4 py-2 hover:bg-orange-300">
           Edit
         </button>
       </div>

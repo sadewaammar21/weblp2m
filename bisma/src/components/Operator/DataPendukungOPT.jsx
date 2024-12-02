@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import UsulanBaruOPT from './UsulanBaruOPT';
-import OperatorDashbordPenelitian from './OperatorDashbordPenelitian';
-import OperatorDashboardPengabdian from './OperatorDashboardPengabdian';
+import OperatorPenelitian from './OperatorPenelitian';
+import OperatorPengabdian from './OperatorPengabdian';
 
-const DashboardOperatorCmp = () => {
+const DataPendukungOPT = () => {
     const [activeTab, setActiveTab] = useState("penelitian");
   return (
     <div className=" min-h-screen p-5">
@@ -42,15 +42,15 @@ const DashboardOperatorCmp = () => {
         
 
         {/* Render Komponen Berdasarkan Tab Aktif */}
-        {activeTab === "penelitian" && <OperatorDashbordPenelitian />}
-        {activeTab === "pengabdian" && <OperatorDashboardPengabdian />}
+        {activeTab === "penelitian" && <OperatorPenelitian/>}
+        {activeTab === "pengabdian" && <OperatorPengabdian />}
       </div>
       <div className='mx-5 my-5'>
-      <UsulanBaruOPT />
+      
       </div>
       </div>
     </div>
   );
 };
 
-export default DashboardOperatorCmp
+export default DataPendukungOPT;

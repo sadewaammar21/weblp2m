@@ -20,30 +20,30 @@ const KonfirmasiPerbUsulan = ({navigate}) => {
     const [total, setTotal] = useState("");
 
 
-  const handleDropdownChange = (option) => {
+    const handleDropdownChange = (option) => {
     setSelectedOption(option);
-  };
-  
-  const [selectedFile, setSelectedFile] = useState(null);
+    };
+    
+    const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleFileChange = (event) => {
+    const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
-  };
+    };
 
-  const options = [
+    const options = [
     { label: 'Option 1', value: '1' },
     { label: 'Option 2', value: '2' },
     { label: 'Option 3', value: '3' },
-  ];
+    ];
 
-  const handleClick = () => {
+    const handleClick = () => {
     navigate('#'); // Arahkan ke halaman 'usulan-baru-penelitian'
-  };
+    };
 
-  const handleInputChange = (setter) =>(e)=>{
+    const handleInputChange = (setter) =>(e)=>{
     setter(e.target.value);
-  }
-  return (
+    }
+    return (
     <div className='mx-5'>
         <div>
         <h1 className='text-xl font-bold text-violet-800 mx-5 my-5'> Substansi Usulan</h1>
