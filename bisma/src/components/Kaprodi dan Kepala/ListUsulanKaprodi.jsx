@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import DropdownCmp from './DropdownCmp'
-import { getResearch } from '../Features/ResearchSlice';
-import PopUpPersetujuan from './UsulanBaru/PopUpPersetujuan';
+import DropdownCmp from '../DropdownCmp'
+import { downloadDocument, getResearch } from '../../Features/ResearchSlice';
+import PopUpPersetujuan from '../UsulanBaru/PopUpPersetujuan';
 
 const ListUsulanKaprodi = () => {
 
@@ -23,6 +23,7 @@ const ListUsulanKaprodi = () => {
                     userId: 2
                 });
                 setData(result.data);
+                console.log(data)
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -48,6 +49,10 @@ const ListUsulanKaprodi = () => {
         setIsAccepted(accepted)
         setStatus(status)
         openModal()
+    }
+
+    const displayDocument = (id) => {
+        downloadDocument(id);
     }
 
   return (
@@ -77,12 +82,11 @@ const ListUsulanKaprodi = () => {
                     </thead>
                     <tbody>
                         {data.filter(item => item.status !== 1 ).map((item, index) => (//here
-                            
                             <tr key={index}>
                                 <td className="border border-gray-300 p-2 text-center">{index + 1}</td>
                                 <td className="border border-gray-300 p-2">
-                                    <p>Ketua: {item.user.name}</p>
-                                    <p>NIDN: {item.user.nidn}</p>
+                                    <p>Ketua: {item.user?.name}</p>
+                                    <p>NIDN: {item.user?.nidn}</p>
                                     <p>Tahun Pelaksanaan: {item.year}</p>
                                     <p>Lama Kegiatan: {item.duration}</p>
                                     <p>Bidang Fokus: {item.focus.name}</p>
@@ -92,8 +96,11 @@ const ListUsulanKaprodi = () => {
                                     <p className="text-blue-600 font-bold">{item.scheme.name}</p>
                                 </td>
                                 <td className="border border-gray-300 p-2 text-center">
-                                    <button className="text-red-600 text-2xl">
+                                    <button onClick={()=>downloadDocument(item.id)} className="text-red-600 text-2xl">
+                                        <a href={`http://localhost:8000/api/research/download/${item.id}`} target='_blank'>
+                                
                                         📄
+                                        </a>
                                     </button>
                                 </td>
                                 <td className="border border-gray-300 p-2 text-center">

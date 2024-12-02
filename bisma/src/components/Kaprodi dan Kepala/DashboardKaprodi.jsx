@@ -1,5 +1,5 @@
 import React from 'react'
-import DropdownCmp from './DropdownCmp'
+import DropdownCmp from '../DropdownCmp'
 
 const DashboardKaprodi = () => {
   return (  
