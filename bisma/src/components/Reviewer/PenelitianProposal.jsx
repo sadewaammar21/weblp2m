@@ -1,7 +1,8 @@
 import React from 'react';
 import PenelitianProposalTab1 from './PenelitianProposalTab1';
 import PenelitianProposalTab2 from './PenelitianProposalTab2';
-import UsulanBelumDiriview from './UsulanBelumDiriview';
+import UsulanBelumDiriview from './PenilaianProposal';
+import PenilaianProposal from './PenilaianProposal';
 
 const steps = [
   { id: 1, label: "Administrasi" },
@@ -68,7 +69,7 @@ const PenelitianProposal = () => {
 
   // Jika `isUsulanView` true, langsung render halaman `UsulanBelumDiriview`
   if (isUsulanView) {
-    return <UsulanBelumDiriview />;
+    return <PenilaianProposal />;
   }
 
   return (

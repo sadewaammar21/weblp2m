@@ -149,59 +149,21 @@ const NavbarReviewer = ({children}) => {
                 {/* Dropdown di Penelitian */}
                 <li 
                   className="text-white hover:text-gray-300 cursor-pointer relative flex items-center"
-                  onMouseEnter={handleDropdownEnter}
                 >
+                  <Link to='/review-penilaian-proposal'>
+                  <div className='flex items-center'>
                   <img 
                     src={process.env.PUBLIC_URL + "/assets/penelitian.svg"} 
                     alt="penelitian" 
                     className="w-5 h-5 mr-2"
                   />
+                  <Link to="/review-penilaian-proposal">
                   <div className="flex items-center">
                     Penilaian Proposal
-                    <FaChevronDown className="ml-2" />
                   </div>
-                  {dropdown && (
-                    <ul 
-                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
-                      ref={dropdownRef}
-                    >
-                      <li 
-                        className="px-4 py-2  hover:bg-violet-800 relative"
-                        onMouseEnter={handleSubDropdownEnter}
-                        onMouseLeave={handleSubDropdownLeave}
-                      >
-                        <div className="flex items-center justify-between">
-                          Penelitian Internal
-                          <FaChevronRight className="w-4 h-4" />
-                        </div>
-                        {subDropdown && (
-                          <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/usulanbaru">Usulan Baru</Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/perbaikanusulan">Perbaikan Usulan</Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/laporankemajuan">Laporan Kemajuan</Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/laporanakhir">Laporan Akhir</Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/catatanakhir">Catatan Akhir</Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/luaran">Luaran</Link>
-                            </li>
-                          </ul>
-                        )}
-                      </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
-                        Penelitian Eksternal
-                      </li>
-                    </ul>
-                  )}
+                  </Link>
+                  </div>
+                  </Link>
                 </li>
   
                 <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">

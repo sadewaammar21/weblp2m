@@ -6,7 +6,7 @@ import { FaArrowLeft, FaLessThan } from 'react-icons/fa';
 import * as XLSX from 'xlsx'; // Library for Excel
 import { saveAs } from 'file-saver'; // Library for saving files
 
-const UsulanBelumDiriview = () => {
+const PenilaianProposal = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
@@ -168,4 +168,4 @@ const UsulanBelumDiriview = () => {
   );
 };
 
-export default UsulanBelumDiriview;
+export default PenilaianProposal;

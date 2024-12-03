@@ -30,9 +30,10 @@ import SBRPelakasanaanPage1 from "./pages/SBRPelakasanaanPage1";
 import SBRPelakasanaanPage2 from "./pages/SBRPelakasanaanPage2";
 import ReviewerInternalPage from "./pages/ReviewerInternalPage";
 import ReviewerEksternalPage from "./pages/ReviewerEksternalPage";
-import UsulanBelumDiriviewPage from "./pages/UsulanBelumDiriviewPage";
+import UsulanBelumDiriviewPage from "./pages/PenilaianProposalPage";
 import PenelitianProposalPage from "./pages/PenelitianProposalPage";
 import UsulanSudahDinilaiRvwPage from "./pages/UsulanSudahDinilaiRvwPage";
+import PenilaianProposalPage from "./pages/PenilaianProposalPage";
 
 
 function App() {
@@ -77,7 +78,7 @@ function App() {
         <Route path="/monitoring-pengelola-review-internal" element={<ReviewerInternalPage />} />
         <Route path="/monitoring-pengelola-review-eksternal" element={<ReviewerEksternalPage />} />
         {/* Reviewer */}
-        <Route path="/review-usulan-belum-diriview-penelitian" element={<UsulanBelumDiriviewPage />} />
+        <Route path="/review-penilaian-proposal" element={<PenilaianProposalPage />} />
         <Route path="/review-penelitian-proposal" element={<PenelitianProposalPage />} />
         <Route path="/review-usulan-sudah-dinilai-penelitian" element={<UsulanSudahDinilaiRvwPage />} />
       </Routes>

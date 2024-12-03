@@ -153,56 +153,60 @@ const PenelitianProposalTab1 = () => {
       <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">Penilaian Administrasi Usulan Penelitian</h1>
       <table className="table-auto w-full border-collapse border border-gray-300">
-        <thead>
-          <tr>
-            <th className="border border-gray-300 p-2 border-b-0 border-r-2">No</th>
-            <th className="border border-gray-300 p-2 border-b-0">Usulan Pengusul</th>
-            <th className="border border-gray-300 p-2" colSpan={2}>
-              Indikator
-            </th>
-          </tr>
-          <tr>
-            <th className="border border-gray-300 p-2 border-t-0  border-r-2" colSpan={2}></th>
-            <th className="border border-gray-300 p-2">Sesuai</th>
-            <th className="border border-gray-300 p-2">Tidak Sesuai</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[
-            { id: 1, text: "Kesesuaian Isi Per Bagian" },
-            { id: 2, text: "Jumlah Kata Per Bagian" },
-            { id: 3, text: "Model Penulisan Sitasi Dan Penulisan Daftar Pustaka" },
-            { id: 4, text: "Lampiran Surat Keterangan/Surat Tugas Mahasiswa Bimbingan" },
-            { id: 5, text: "Ketua Pengusul Memiliki Hasil Penelitian Yang Relevan" },
-            { id: 6, text: "Memiliki Mitra Yang Dibuktikan Dengan Surat Pernyataan" },
-          ].map((item) => (
-            <tr key={item.id} className="text-center">
-              <td className="border border-gray-300 p-2">{item.id}</td>
-              <td className="border border-gray-300 p-2">{item.text}</td>
-              <td className="border border-gray-300 p-2">
-                <input
-                  type="checkbox"
-                  name={`response-${item.id}`}
-                  value="Sesuai"
-                  checked={responses[item.id] === "Sesuai"}
-                  onChange={() => handleResponseChange(item.id, "Sesuai")}
-                  className="w-5 h-5 text-blue-600"
-                />
-              </td>
-              <td className="border border-gray-300 p-2">
-                <input
-                  type="checkbox"
-                  name={`response-${item.id}`}
-                  value="Tidak Sesuai"
-                  checked={responses[item.id] === "Tidak Sesuai"}
-                  onChange={() => handleResponseChange(item.id, "Tidak Sesuai")}
-                  className="w-5 h-5 text-red-600"
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+  <thead>
+    <tr>
+      <th className="border border-gray-300 p-2 border-b-0 border-r-2" rowSpan={2}>
+        No
+      </th>
+      <th className="border border-gray-300 p-2 border-b-0" rowSpan={2}>
+        Usulan Pengusul
+      </th>
+      <th className="border border-gray-300 p-2" colSpan={2}>
+        Indikator
+      </th>
+    </tr>
+    <tr>
+      {/* Sub-header for the indikator columns */}
+      <th className="border border-gray-300 p-2">Sesuai</th>
+      <th className="border border-gray-300 p-2">Tidak Sesuai</th>
+    </tr>
+  </thead>
+  <tbody>
+    {[
+      { id: 1, text: "Kesesuaian Isi Per Bagian" },
+      { id: 2, text: "Jumlah Kata Per Bagian" },
+      { id: 3, text: "Model Penulisan Sitasi Dan Penulisan Daftar Pustaka" },
+      { id: 4, text: "Lampiran Surat Keterangan/Surat Tugas Mahasiswa Bimbingan" },
+      { id: 5, text: "Ketua Pengusul Memiliki Hasil Penelitian Yang Relevan" },
+      { id: 6, text: "Memiliki Mitra Yang Dibuktikan Dengan Surat Pernyataan" },
+    ].map((item, index) => (
+      <tr key={item.id} className="text-center">
+        <td className="border border-gray-300 p-2">{item.id}</td>
+        <td className="border border-gray-300 p-2">{item.text}</td>
+        <td className="border border-gray-300 p-2">
+          <input
+            type="checkbox"
+            name={`response-${item.id}`}
+            value="Sesuai"
+            checked={responses[item.id] === "Sesuai"}
+            onChange={() => handleResponseChange(item.id, "Sesuai")}
+            className="w-5 h-5 text-blue-600"
+          />
+        </td>
+        <td className="border border-gray-300 p-2">
+          <input
+            type="checkbox"
+            name={`response-${item.id}`}
+            value="Tidak Sesuai"
+            checked={responses[item.id] === "Tidak Sesuai"}
+            onChange={() => handleResponseChange(item.id, "Tidak Sesuai")}
+            className="w-5 h-5 text-red-600"
+          />
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
     </div>
     </div>
   );

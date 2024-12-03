@@ -22,7 +22,7 @@ const DashboardReviewerCmp = () => {
       ];
 
     const metrics = [
-        { title: 'Usulan Belum Direview', count: 0, icon: <FaHdd size={24} className="text-violet-800" />, path: "/review-usulan-belum-diriview-penelitian" },
+        { title: 'Usulan Belum Direview', count: 0, icon: <FaHdd size={24} className="text-violet-800" />, path: "/review-penilaian-proposal" },
         { title: 'Usulan Sudah Dinilai', count: 0, icon: <FaBullseye size={24} className="text-violet-800" />, path: "/review-usulan-sudah-dinilai-penelitian" },
       ];
 

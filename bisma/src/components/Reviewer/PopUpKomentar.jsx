@@ -6,7 +6,7 @@ import TextAreaCmp from '../TextAreaCmp';
 
 Modal.setAppElement('#root');
 
-const ModalEditDPPengabdian = ({ isOpen, onRequestClose }) => {
+const PopUpKomentar = ({ isOpen, onRequestClose }) => {
   const [nidn, setNidn] = useState('');
   const [komentar1, setKomentar1] = useState('');
   const [komentar2, setKomentar2] = useState('');
@@ -34,20 +34,20 @@ const handleInputChange = (setter) => (e) => setter(e.target.value);
       <h1 className="text-xl text-violet-800 font-bold mx-2 my-4"> EDIT PROFIL LEMABAGA PENGABDIAN</h1>
 
         <TextAreaCmp
-              label="Uraian Tugas Dalam Penelitian *"
+              label="Catatan Reviewer 1 *"
               name="description"
               value={komentar1}
               onChange={handleInputChange(setKomentar1)}
               placeholder="Enter your description here..."
-              rows={6}
+              rows={3}
             />
         <TextAreaCmp
-              label="Uraian Tugas Dalam Penelitian *"
+              label="Catatan Reviewer 2 *"
               name="description"
               value={komentar2}
               onChange={handleInputChange(setKomentar2)}
               placeholder="Enter your description here..."
-              rows={6}
+              rows={3}
             />
 
 
@@ -70,4 +70,4 @@ const handleInputChange = (setter) => (e) => setter(e.target.value);
   );
 };
 
-export default ModalEditDPPengabdian;
+export default PopUpKomentar;

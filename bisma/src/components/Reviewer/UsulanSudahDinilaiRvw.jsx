@@ -5,15 +5,25 @@ import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaLessThan } from 'react-icons/fa';
 import * as XLSX from 'xlsx'; // Library for Excel
 import { saveAs } from 'file-saver'; // Library for saving files
+import PopUpKomentar from './PopUpKomentar';
 
 const UsulanSudahDinilaiRvw = () => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
   const [judul, setJudul] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
-  };
+    };
+
+    const openModal = () => {
+    setIsOpen(true);
+    };
+
+    const closeModal = () => {
+    setIsOpen(false);
+    };
 
 //   const handleInputChange = (setter) => (e) => {
 //     setter(e.target.value);
@@ -113,6 +123,7 @@ const UsulanSudahDinilaiRvw = () => {
               width="w-64 p-2"
             />
           </div>
+          <PopUpKomentar isOpen={isOpen} onRequestClose={closeModal}/>
           {/* Tabel */}
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500 border border-black">
@@ -154,7 +165,7 @@ const UsulanSudahDinilaiRvw = () => {
                         </button>
                   </td>
                   <td className="border px-4 py-2 text-center">
-                  <button onClick={handleAction} className='bg-bluef-500 text-white px-4 py-2 rounded-md'>
+                  <button onClick={openModal} className='bg-bluef-500 text-white px-4 py-2 rounded-md'>
                     Komentar
                         </button>
                   </td>
