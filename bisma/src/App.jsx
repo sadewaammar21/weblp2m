@@ -34,6 +34,8 @@ import UsulanBelumDiriviewPage from "./pages/PenilaianProposalPage";
 import PenelitianProposalPage from "./pages/PenelitianProposalPage";
 import UsulanSudahDinilaiRvwPage from "./pages/UsulanSudahDinilaiRvwPage";
 import PenilaianProposalPage from "./pages/PenilaianProposalPage";
+import CatatanHarianPenelitianPage from "./pages/CatatanHarianPenelitianPage";
+import ViewCatatanHarianPage from "./pages/ViewCatatanHarianPage";
 
 
 function App() {
@@ -47,10 +49,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        {/* Dashboard */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard-operator" element={<DashboardOperator />} />
         <Route path="/dashboard-reviewer" element={<DashboardReviewer />} />
         <Route path="/dashboard-kaprodi-dan-kepala" element={<DashboardKaprKepl />} />
+        {/* Dosen */}
         <Route path="/usulanbaru" element={<UsulanBaru />} />
         <Route path="/perbaikanusulan" element={<PerbaikanUsulan />} />
         <Route path="/laporankemajuan" element={<LaporanKemajuan />} />
@@ -60,6 +64,8 @@ function App() {
         <Route path="/usulan-baru-penelitian" element={<UsulanBaruPenelitian />} />
         <Route path="/usulan-penelitian-edit/:id" element={<UsulanBaruPenelitian />} />
         <Route path="/perbaikan-usulan-penelitian" element={<PerbaikanUsulanPeneitian />} />
+        <Route path="/catatan-harian" element={<CatatanHarianPenelitianPage />} />
+        <Route path="/catatan-harian-view" element={<ViewCatatanHarianPage />} />
         {/* Operator */}
         <Route path="/monitoring-usulan-reguler" element={<UsulanRegulerPage />} />
         <Route path="/monitoring-usulan-reguler-usulan-draft" element={<UsulanDraftOPTPage />} />
