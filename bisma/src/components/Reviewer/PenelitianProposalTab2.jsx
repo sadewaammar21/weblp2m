@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextAreaCmp from "../TextAreaCmp";
 
-const PenelitianProposalTab2 = () => {
+const PenelitianProposalTab2 = ({review, setReview}) => {
     const [des, setDes] = useState('');
     const [checked, setChecked] = useState({
         row1: [false, false, true, false],

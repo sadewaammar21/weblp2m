@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PenelitianProposalTab1 from './PenelitianProposalTab1';
 import PenelitianProposalTab2 from './PenelitianProposalTab2';
 import UsulanBelumDiriview from './PenilaianProposal';
 import PenilaianProposal from './PenilaianProposal';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { getToken } from '../../Features/AuthSlice';
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const steps = [
   { id: 1, label: "Administrasi" },
@@ -10,6 +15,7 @@ const steps = [
 ];
 
 const ProgressBar = ({ currentStep }) => {
+  
   return (
     <div className="flex items-center">
       {steps.map((step, index) => (
@@ -41,6 +47,39 @@ const ProgressBar = ({ currentStep }) => {
 };
 
 const PenelitianProposal = () => {
+  //data business
+  const location = useLocation();
+  const [data, setData] = useState();
+  const [reviewData, setReviewData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        const response = await axios.get(`${apiUrl}/api/research/${location.state.id}`, getToken());
+        console.log(response.data);
+        setData({
+            ...data, 
+            ...response.data, 
+        });
+      } catch (error) {
+        setError(error.message);
+      }finally{
+        setLoading(false);
+      }
+    };
+    fetchData();
+    setReviewData({...reviewData, ['research_id']: location.state.id});
+    setReviewData({...reviewData, ['reviewer_id']: user.id});
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+  }, [location.state.id]);
+
+
+  //step and stuff
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isUsulanView, setIsUsulanView] = React.useState(false);
 
@@ -59,9 +98,9 @@ const PenelitianProposal = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <PenelitianProposalTab1 />;
+        return <PenelitianProposalTab1 data={data} review={reviewData} setReview={setReviewData}/>;
       case 2:
-        return <PenelitianProposalTab2 />;
+        return <PenelitianProposalTab2 review={reviewData} setReview={setReviewData}/>;
       default:
         return null;
     }

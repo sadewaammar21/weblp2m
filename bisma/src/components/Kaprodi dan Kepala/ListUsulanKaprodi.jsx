@@ -16,7 +16,7 @@ const ListUsulanKaprodi = () => {
         const fetchData = async () => {
             try {
                 const result = await getResearch({
-                    pageSize: 5,
+                    pageSize: 10,
                     currentPage: 1,
                     status: 1,
                     year: 2024,
