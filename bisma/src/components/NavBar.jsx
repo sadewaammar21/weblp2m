@@ -227,7 +227,7 @@ const NavBar = ({ children }) => {
                               <Link to="/laporanakhir">Laporan Akhir</Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/catatanakhir">Catatan Akhir</Link>
+                              <Link to="/catatan-harian">Catatan Harian</Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                               <Link to="/luaran">Luaran</Link>
