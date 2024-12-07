@@ -3,7 +3,7 @@ import PenelitianProposalTab1 from './PenelitianProposalTab1';
 import PenelitianProposalTab2 from './PenelitianProposalTab2';
 import UsulanBelumDiriview from './PenilaianProposal';
 import PenilaianProposal from './PenilaianProposal';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getToken } from '../../Features/AuthSlice';
 
@@ -48,36 +48,37 @@ const ProgressBar = ({ currentStep }) => {
 
 const PenelitianProposal = () => {
   //data business
+  const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState();
   const [reviewData, setReviewData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const id = location.state.id;
   const user = JSON.parse(localStorage.getItem('user'));
+  const fetchData = async () => {
+    try {
+      
+      const response = await axios.get(`${apiUrl}/api/research/${id}`, getToken());
+      console.log(response.data);
+      setData({
+          ...data, 
+          ...response.data, 
+      });
+      setReviewData({...reviewData, ['research_id']: id});
+    } catch (error) {
+      setError(error.message);
+    }finally{
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        
-        const response = await axios.get(`${apiUrl}/api/research/${location.state.id}`, getToken());
-        console.log(response.data);
-        setData({
-            ...data, 
-            ...response.data, 
-        });
-      } catch (error) {
-        setError(error.message);
-      }finally{
-        setLoading(false);
-      }
-    };
     fetchData();
-    setReviewData({...reviewData, ['research_id']: location.state.id});
-    setReviewData({...reviewData, ['reviewer_id']: user.id});
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
-  }, [location.state.id]);
-
+    return () => console.log(data);
+  }, []);
 
   //step and stuff
   const [currentStep, setCurrentStep] = React.useState(1);
@@ -89,6 +90,7 @@ const PenelitianProposal = () => {
     } else {
       setIsUsulanView(true); // Pindah ke halaman UsulanBelumDiriview
     }
+    setReviewData({...reviewData, ['reviewer_id']: user.id});
   };
 
   const handlePrevStep = () => {
@@ -105,6 +107,16 @@ const PenelitianProposal = () => {
         return null;
     }
   };
+
+  const handleSubmit = async() => {
+    try {
+      const response = await axios.post(`${apiUrl}/api/research-reviews`, reviewData, getToken());
+      console.log(response.data);
+      navigate('/review-penilaian-proposal');
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   // Jika `isUsulanView` true, langsung render halaman `UsulanBelumDiriview`
   if (isUsulanView) {
@@ -131,10 +143,10 @@ const PenelitianProposal = () => {
                 Previous
               </button>
               <button
-                onClick={handleNextStep}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
+                onClick={currentStep === 2 ? handleSubmit : handleNextStep}
+                className={`px-4 py-2 bg-blue-600 text-white rounded`}
               >
-                Next
+                {currentStep === 2 ? 'Submit' : 'Next'}
               </button>
             </div>
           </div>

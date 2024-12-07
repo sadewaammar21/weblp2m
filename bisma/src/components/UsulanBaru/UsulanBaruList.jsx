@@ -100,7 +100,11 @@ const UsulanBaruList = () => {
                   <td>{item.year}</td>
                   <td>{item.roles}</td>
                   <td>{item.status}</td>
-                  <td>action here</td>
+                  <td>
+                    <button onClick={() => navigate(`/usulan-penelitian-edit/${item.id}`)}>
+                      action here
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
