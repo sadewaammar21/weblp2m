@@ -8,8 +8,7 @@ import DashboardOperator from "./pages/DashboardOperator";
 import DashboardReviewer from "./pages/DashboardReviewer";
 import UsulanBaru from "./pages/UsulanBaru";
 import PerbaikanUsulan from "./pages/PerbaikanUsulan";
-import LaporanKemajuan from "./pages/LaporanKemajuan";
-import LaporanAkhir from "./pages/LaporanAkhir";
+import LaporanKemajuanPage from "./pages/LaporanKemajuanPage";
 import CatatanAkhir from "./pages/CatatanAkhir";
 import Luaran from "./pages/Luaran";
 import UsulanBaruPenelitian from "./pages/UsulanBaruPenelitian";
@@ -36,7 +35,9 @@ import UsulanSudahDinilaiRvwPage from "./pages/UsulanSudahDinilaiRvwPage";
 import PenilaianProposalPage from "./pages/PenilaianProposalPage";
 import CatatanHarianPenelitianPage from "./pages/CatatanHarianPenelitianPage";
 import ViewCatatanHarianPage from "./pages/ViewCatatanHarianPage";
-
+import LaporanKemajuanPnltnPage from "./pages/LaporanKemajuanPnltnPage";
+import LaporanAkhirPage from "./pages/LaporanAkhirPage";
+import LaporanAkhirPnltPage from "./pages/LaporanAkhirPnltPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,40 +54,127 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard-operator" element={<DashboardOperator />} />
         <Route path="/dashboard-reviewer" element={<DashboardReviewer />} />
-        <Route path="/dashboard-kaprodi-dan-kepala" element={<DashboardKaprKepl />} />
-        {/* Dosen */}
+        <Route
+          path="/dashboard-kaprodi-dan-kepala"
+          element={<DashboardKaprKepl />}
+        />
+        {/* Dosen Penelitian*/}
         <Route path="/usulanbaru" element={<UsulanBaru />} />
         <Route path="/perbaikanusulan" element={<PerbaikanUsulan />} />
-        <Route path="/laporankemajuan" element={<LaporanKemajuan />} />
-        <Route path="/laporanakhir" element={<LaporanAkhir />} />
+        <Route path="/laporankemajuan" element={<LaporanKemajuanPage />} />
+        <Route path="/laporanakhir" element={<LaporanAkhirPage />} />
         <Route path="/catatanakhir" element={<CatatanAkhir />} />
         <Route path="/luaran" element={<Luaran />} />
-        <Route path="/usulan-baru-penelitian" element={<UsulanBaruPenelitian />} />
-        <Route path="/usulan-penelitian-edit/:id" element={<UsulanBaruPenelitian />} />
-        <Route path="/perbaikan-usulan-penelitian" element={<PerbaikanUsulanPeneitian />} />
-        <Route path="/catatan-harian" element={<CatatanHarianPenelitianPage />} />
-        <Route path="/catatan-harian-view" element={<ViewCatatanHarianPage />} />
+        <Route
+          path="/usulan-baru-penelitian"
+          element={<UsulanBaruPenelitian />}
+        />
+        <Route
+          path="/usulan-penelitian-edit/:id"
+          element={<UsulanBaruPenelitian />}
+        />
+        <Route
+          path="/perbaikan-usulan-penelitian"
+          element={<PerbaikanUsulanPeneitian />}
+        />
+        <Route
+          path="/catatan-harian"
+          element={<CatatanHarianPenelitianPage />}
+        />
+        <Route
+          path="/catatan-harian-view"
+          element={<ViewCatatanHarianPage />}
+        />
+        <Route
+          path="/laporan-kemajuan-progres"
+          element={<LaporanKemajuanPnltnPage />}
+        />
+
+        <Route
+          path="/laporan-akhir-progres"
+          element={<LaporanAkhirPnltPage />}
+        />
+
+        {/* Dosen Pengabdian*/}
+
         {/* Operator */}
-        <Route path="/monitoring-usulan-reguler" element={<UsulanRegulerPage />} />
-        <Route path="/monitoring-usulan-reguler-usulan-draft" element={<UsulanDraftOPTPage />} />
-        <Route path="/monitoring-usulan-reguler-usulan-dikirm" element={<UsulanDikirimOPTPage />} />
-        <Route path="/monitoring-usulan-reguler-usulan-disetujui" element={<UsulanDisetujuiOPTPage />} />
-        <Route path="/monitoring-usulan-reguler-usulan-ditolak" element={<UsulanDikirimOPTPage />} />
-        <Route path="/monitoring-usulan-reguler-hasil-review" element={<HasilReviewPage />} />
-        <Route path="/monitoring-usulan-reguler-belum-ditinjau-review" element={<UsulanBelumDitinjauOPTPage />} />
-        <Route path="/monitoring-perbaikan-usulan" element={<PerbaikanUsulanOPTPage />} />
-        <Route path="/monitoring-perbaikan-usulan-penelitian" element={<MonitoringUsulanPenelitianPage />} />
-        <Route path="/monitoring-perbaikan-usulan-pengabdian" element={<MonitoringUsulanPengabdianPage />} />
-        <Route path="/monitoring-data-pendukung" element={<DataPendukungPage />} />
-        <Route path="/monitoring-pengelola-review" element={<PengelolaReviewPage />} />
-        <Route path="/monitoring-pengelola-review-sbr1" element={<SBRPelakasanaanPage1 />} />
-        <Route path="/monitoring-pengelola-review-sbr2" element={<SBRPelakasanaanPage2 />} />
-        <Route path="/monitoring-pengelola-review-internal" element={<ReviewerInternalPage />} />
-        <Route path="/monitoring-pengelola-review-eksternal" element={<ReviewerEksternalPage />} />
+        <Route
+          path="/monitoring-usulan-reguler"
+          element={<UsulanRegulerPage />}
+        />
+        <Route
+          path="/monitoring-usulan-reguler-usulan-draft"
+          element={<UsulanDraftOPTPage />}
+        />
+        <Route
+          path="/monitoring-usulan-reguler-usulan-dikirm"
+          element={<UsulanDikirimOPTPage />}
+        />
+        <Route
+          path="/monitoring-usulan-reguler-usulan-disetujui"
+          element={<UsulanDisetujuiOPTPage />}
+        />
+        <Route
+          path="/monitoring-usulan-reguler-usulan-ditolak"
+          element={<UsulanDikirimOPTPage />}
+        />
+        <Route
+          path="/monitoring-usulan-reguler-hasil-review"
+          element={<HasilReviewPage />}
+        />
+        <Route
+          path="/monitoring-usulan-reguler-belum-ditinjau-review"
+          element={<UsulanBelumDitinjauOPTPage />}
+        />
+        <Route
+          path="/monitoring-perbaikan-usulan"
+          element={<PerbaikanUsulanOPTPage />}
+        />
+        <Route
+          path="/monitoring-perbaikan-usulan-penelitian"
+          element={<MonitoringUsulanPenelitianPage />}
+        />
+        <Route
+          path="/monitoring-perbaikan-usulan-pengabdian"
+          element={<MonitoringUsulanPengabdianPage />}
+        />
+        <Route
+          path="/monitoring-data-pendukung"
+          element={<DataPendukungPage />}
+        />
+        <Route
+          path="/monitoring-pengelola-review"
+          element={<PengelolaReviewPage />}
+        />
+        <Route
+          path="/monitoring-pengelola-review-sbr1"
+          element={<SBRPelakasanaanPage1 />}
+        />
+        <Route
+          path="/monitoring-pengelola-review-sbr2"
+          element={<SBRPelakasanaanPage2 />}
+        />
+        <Route
+          path="/monitoring-pengelola-review-internal"
+          element={<ReviewerInternalPage />}
+        />
+        <Route
+          path="/monitoring-pengelola-review-eksternal"
+          element={<ReviewerEksternalPage />}
+        />
         {/* Reviewer */}
-        <Route path="/review-penilaian-proposal" element={<PenilaianProposalPage />} />
-        <Route path="/review-penelitian-proposal" element={<PenelitianProposalPage />} />
-        <Route path="/review-usulan-sudah-dinilai-penelitian" element={<UsulanSudahDinilaiRvwPage />} />
+        <Route
+          path="/review-penilaian-proposal"
+          element={<PenilaianProposalPage />}
+        />
+        <Route
+          path="/review-penelitian-proposal"
+          element={<PenelitianProposalPage />}
+        />
+        <Route
+          path="/review-usulan-sudah-dinilai-penelitian"
+          element={<UsulanSudahDinilaiRvwPage />}
+        />
       </Routes>
     </BrowserRouter>
   );

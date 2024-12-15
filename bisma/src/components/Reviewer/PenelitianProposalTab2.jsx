@@ -39,13 +39,13 @@ const PenelitianProposalTab2 = () => {
             <tr>
               <th className="border border-black px-4 py-2" rowSpan={2}>No</th>
               <th className="border border-black px-4 py-2" rowSpan={2}>Usulan Pengusul</th>
-	  	<th className="border border-gray-400 px-4 py-2" colSpan={4}>Skor</th>
+	  	<th className="border border-black px-4 py-2" colSpan={4}>Skor</th>
             </tr>	
 		<tr>
-      <th className="border border-gray-300 p-2">1</th>
-      <th className="border border-gray-300 p-2">2</th>
-      <th className="border border-gray-300 p-2">3</th>
-      <th className="border border-gray-300 p-2">4</th>
+      <th className="border border-black p-2">1</th>
+      <th className="border border-black p-2">2</th>
+      <th className="border border-black p-2">3</th>
+      <th className="border border-black p-2">4</th>
     </tr>
 
           </thead>
