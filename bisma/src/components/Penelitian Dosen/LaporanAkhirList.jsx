@@ -11,11 +11,11 @@ const LaporanAkhirList = () => {
   const [error, setError] = useState(null);
 
   const handleView = () => {
-    navigate("/catatan-harian-view"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/penelitian/catatan-harian/:id"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   const handleClick = () => {
-    navigate("/laporan-akhir-progres"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/penelitian/laporan-akhir"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   //   useEffect(() => {

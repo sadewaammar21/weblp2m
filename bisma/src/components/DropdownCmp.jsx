@@ -9,7 +9,7 @@ const DropdownCmp = ({ label, options, value, onChange, placeholder, width='w-fu
       <Dropdown
         options={options}
         onChange={onChange} 
-        value={value}//ganti nama, sebelumnya bikin bingung
+        value={value}
         placeholder={placeholder || "Select an option"}
         className={width}
       />

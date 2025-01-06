@@ -7,6 +7,10 @@ import { FaPlus } from "react-icons/fa";
 import PopupTKT from "./PopupTKT";
 import PopUpDosen from "./PopUpDosen";
 import PopUpMhs from "./PopUpMhs";
+import axios from "axios";
+import { id } from "date-fns/locale";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const IdentitasUsulan = ({ data, setData }) => {
   // const navigate = useNavigate(); // Hook untuk navigasi
@@ -51,9 +55,8 @@ const IdentitasUsulan = ({ data, setData }) => {
   const handleDropdownChange = (option, fieldName) => {
     setData((prevData) => ({
       ...prevData,
-      [fieldName]: option,
+      [fieldName]: option.value,
     }));
-    console.log("clicked" + option);
   };
 
   //menambah anggota dan mahasiswa
@@ -75,9 +78,96 @@ const IdentitasUsulan = ({ data, setData }) => {
     { label: "Option 3", value: "3" },
   ];
 
+  //research components
+  const [scheme, setScheme] = useState([]);
+  const [scope, setScope] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [focus, setFocus] = useState([]);
+  const [theme, setTheme] = useState([]);
+  const [topic, setTopic] = useState([]);
+  const [cluster1, setCluster1] = useState([]);
+  const [cluster2, setCluster2] = useState([]);
+  const [cluster3, setCluster3] = useState([]);
+  const [priority, setPriority] = useState([]);
+  const [year, setYear] = useState([
+    {id: 1, value: 2025},
+    {id: 2, value: 2026},
+    {id: 3, value: 2027},
+    {id: 4, value: 2028},
+    {id: 5, value: 2029},
+  ]);
+  const [duration, setDuration] = useState([
+    {id:1, value: 1},
+    {id:2, value: 2},
+    {id:3, value: 3},
+    {id:4, value: 4},
+    {id:5, value: 5},
+  ]);
+
+  const fetchScheme = async(target) =>{
+    const response = await axios.get(`${apiUrl}/api/research-scheme/${target}`);
+    setScheme(response.data);
+  }
+  const fetchScope = async() =>{
+    const response = await axios.get(`${apiUrl}/api/scope`);
+    setScope(response.data);
+  }
+  const fetchCategory = async() =>{
+    const response = await axios.get(`${apiUrl}/api/category`);
+    setCategory(response.data);
+  }
+  const fetchFocus = async() =>{
+    const response = await axios.get(`${apiUrl}/api/research-focus`);
+    setFocus(response.data);
+  }
+  const fetchTheme = async(focus) =>{
+    const response = await axios.get(`${apiUrl}/api/research-theme/${focus}`);
+    setTheme(response.data);
+  }
+  const fetchTopic = async(theme) =>{
+    const response = await axios.get(`${apiUrl}/api/research-topic/${theme}`);
+    setTopic(response.data);
+  }
+  const fetchCluster1 = async() =>{
+    const response = await axios.get(`${apiUrl}/api/cluster1`);
+    setCluster1(response.data);
+  }
+  const fetchCluster2 = async() =>{
+    const response = await axios.get(`${apiUrl}/api/cluster2`);
+    setCluster2(response.data);
+  }
+  const fetchCluster3 = async() =>{
+    const response = await axios.get(`${apiUrl}/api/cluster3`);
+    setCluster3(response.data);
+  }
+  const fetchPriority = async() =>{
+    const response = await axios.get(`${apiUrl}/api/research-priority`);
+    setPriority(response.data);
+  }
+
   useEffect(() => {
-    console.log(data);
-  },[])
+    fetchScheme(data.tkt_final);
+    fetchScope();
+    fetchCategory();
+    fetchFocus();
+    fetchTheme(data.focus_id);
+    fetchTopic(data.theme_id);
+    fetchCluster1();
+    fetchCluster2();
+    fetchCluster3();
+    fetchPriority();
+  },[data.tkt_final, data.focus_id, data.theme_id])
+
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey]
+    }))
+  }
+
+  useEffect(()=>{
+    console.log(scope, category, focus)
+  })
 
   return (
     <div>
@@ -132,96 +222,96 @@ const IdentitasUsulan = ({ data, setData }) => {
         <div className="grid grid-cols-2 gap-x-10  ">
           <DropdownCmp
             label="4. Kelompok Skema *"
-            options={options}
-            value={data.scheme_id}
+            options={mapToDropdown(scheme, 'name', 'id')}
+            value={mapToDropdown(scheme, 'name', 'id').find((option) => option.value === data.scheme_id)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "scheme_id")
+              handleDropdownChange(option, "scheme_id")
             }
           />
           <DropdownCmp
             label="10. Rumpun Ilmu Level 1 *"
-            options={options}
-            value={data.cluster_lv1}
+            options={mapToDropdown(cluster1, 'name', 'id')}
+            value={mapToDropdown(cluster1, 'name', 'id').find((option) => option.value === data.cluster_lv1)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "cluster_lv1")
+              handleDropdownChange(option, "cluster_lv1")
             }
           />
           <DropdownCmp
             label="5. Ruang Lingkup *"
-            options={options}
-            value={data.scope_id}
+            options={mapToDropdown(scope, 'name', 'id')}
+            value={mapToDropdown(scope, 'name', 'id').find((option) => option.value === data.scope_id)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "scope_id")
+              handleDropdownChange(option, "scope_id")
             }
           />
           <DropdownCmp
             label="11. Rumpun Ilmu Level 2 *"
-            options={options}
-            value={data.cluster_lv2}
+            options={mapToDropdown(cluster2, 'name', 'id')}
+            value={mapToDropdown(cluster2, 'name', 'id').find((option) => option.value === data.cluster_lv2)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "cluster_lv2")
+              handleDropdownChange(option, "cluster_lv2")
             }
           />
           <DropdownCmp
             label="6. Kategori SBK *"
-            options={options}
-            value={data.category_id}
+            options={mapToDropdown(category, 'name', 'id')}
+            value={mapToDropdown(category, 'name', 'id').find((option) => option.value === data.category_id)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "category_id")
+              handleDropdownChange(option, "category_id")
             }
           />
           <DropdownCmp
             label="12. Rumpun Ilmu Level 3 *"
-            options={options}
-            value={data.cluster_lv3}
+            options={mapToDropdown(cluster3, 'name', 'id')}
+            value={mapToDropdown(cluster3, 'name', 'id').find((option) => option.value === data.cluster_lv3)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "cluster_lv3")
+              handleDropdownChange(option, "cluster_lv3")
             }
           />
           <DropdownCmp
             label="7. Bidang Fokus Penelitian *"
-            options={options}
-            value={data.focus_id}
+            options={mapToDropdown(focus, 'name', 'id')}
+            value={mapToDropdown(focus, 'name', 'id').find((option) => option.value === data.focus_id)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "focus_id")
+              handleDropdownChange(option, "focus_id")
             }
           />
           <DropdownCmp
             label="13. Prioritas Riset "
-            options={options}
-            value={data.priority_id}
+            options={mapToDropdown(priority, 'name', 'id')}
+            value={mapToDropdown(priority, 'name', 'id').find((option) => option.value === data.priority_id)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "priority_id")
+              handleDropdownChange(option, "priority_id")
             }
           />
           <DropdownCmp
             label="8. Tema Penelitian *"
-            options={options}
-            value={data.theme_id}
+            options={mapToDropdown(theme, 'name', 'id')}
+            value={mapToDropdown(theme, 'name', 'id').find((option) => option.value === data.theme_id)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "theme_id")
+              handleDropdownChange(option, "theme_id")
             }
           />
           <DropdownCmp
             label="14. Tahun Pertama Usulan *"
-            options={options}
-            value={data.year}
-            onChange={(option) => handleDropdownChange(option.value, "year")}
+            options={mapToDropdown(year, 'value', 'value')}
+            value={mapToDropdown(year, 'value', 'value').find((option) => option.value === data.year)}
+            onChange={(option) => handleDropdownChange(option, "year")}
           />
           <DropdownCmp
             label="9. Topik Penelitian *"
-            options={options}
-            value={data.topic_id}
+            options={mapToDropdown(topic, 'name', 'id')}
+            value={mapToDropdown(topic, 'name', 'id').find((option) => option.value === data.topic_id)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "topic_id")
+              handleDropdownChange(option, "topic_id")
             }
           />
           <DropdownCmp
             label="15. Lama Kegiatan *"
-            options={options}
-            value={data.duration}
+            options={mapToDropdown(duration, 'value', 'id')}
+            value={mapToDropdown(duration, 'value', 'id').find((option) => option.value === data.duration)}
             onChange={(option) =>
-              handleDropdownChange(option.value, "duration")
+              handleDropdownChange(option, "duration")
             }
           />
         </div>
@@ -279,9 +369,9 @@ const IdentitasUsulan = ({ data, setData }) => {
                 <tr key={index}>
                   <td>{index+1}</td>
                   <td>{item.id}</td>
-                  <td>{item.research_role}</td>
-                  <td>{item.task}</td>
-                  <td>{item.status}</td>
+                  <td>{item.pivot.research_roles}</td>
+                  <td>{item.pivot.task}</td>
+                  <td>{item.pivot.status}</td>
                   <td>action here</td>
                 </tr>
               ))}

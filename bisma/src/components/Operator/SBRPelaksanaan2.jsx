@@ -25,8 +25,7 @@ const SBRPelaksanaan2 = () => {
   const [nidn, setNidn] = useState("");
 
   //get research data
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
       const response = await axios.get(
         `${apiUrl}/api/research/${location.state.id}`,
         getToken()
@@ -39,7 +38,14 @@ const SBRPelaksanaan2 = () => {
       // setReviewer(response.data.reviewers);
       console.log(data.reviewers);
     };
+  const fetchUsers = async() => {
+    const response = await axios.get(`${apiUrl}/api/users/roles/2`, getToken());
+    setReviewer(response.data);
+    console.log(response.data);
+  }
+  useEffect(() => {
     fetchData();
+    fetchUsers();
     console.log(data);
   }, [location]);
 
@@ -237,7 +243,7 @@ const SBRPelaksanaan2 = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.reviewers && data.reviewers.map((reviewer) => (
+                {reviewer && reviewer.map((reviewer) => (
                   <tr key={reviewer.id}>
                     <td className="border px-4 py-2 text-center">
                       {reviewer.id}

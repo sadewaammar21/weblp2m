@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getToken } from "../../Features/AuthSlice";
+import { updateStatus } from "../../Features/ResearchSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -67,12 +68,12 @@ const ProgressBarUsulan = () => {
   //data management
   const [data, setData] = useState({
     title: "",
-    tkt_current: "",
-    tkt_final: "",
+    tkt_current: 0,
+    tkt_final: 0,
     members: [],
     students: [],
     output: [],
-    budgetPlan: [],
+    budget_plan: [],
     supportingDocument: [],
   });
 
@@ -91,10 +92,6 @@ const ProgressBarUsulan = () => {
     if (isEdit) fetchData();
     console.log(data);
   }, [id]);
-
-  useEffect(() => {
-    console.log(data);
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -131,9 +128,9 @@ const ProgressBarUsulan = () => {
 
     data.members.forEach((member, index) => {
       formData.append(`members[${index}][id]`, member.id);
-      formData.append(`members[${index}][research_role]`, member.research_role);
-      formData.append(`members[${index}][task]`, member.task);
-      formData.append(`members[${index}][status]`, member.status);
+      formData.append(`members[${index}][research_role]`, member.pivot.research_roles);
+      formData.append(`members[${index}][task]`, member.pivot.task);
+      formData.append(`members[${index}][status]`, member.pivot.status);
     });
 
     data.students.forEach((student, index) => {
@@ -161,7 +158,7 @@ const ProgressBarUsulan = () => {
       formData.append(`output[${index}][description]`, output.description);
     });
 
-    data.budgetPlan.forEach((budgetPlan, index) => {
+    data.budget_plan.forEach((budgetPlan, index) => {
       formData.append(`budgetPlan[${index}][year]`, budgetPlan.year);
       formData.append(
         `budgetPlan[${index}][id_group_budget]`,
@@ -226,6 +223,12 @@ const ProgressBarUsulan = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
+        if(e.target.name === 'ajukan'){
+          if(response.data.data.members.every(member => member.pivot.status === '2' || member.pivot.status === 'accepted')){
+            const responseStatus = await updateStatus({ researchId: response.data.data.id, newStatus: 2, note: 'diajukan' });
+            console.log('Response:', responseStatus);
+          }
+        }
         console.log(response.data);
       } else {
         const response = await axios.post(`${apiUrl}/api/research`, formData, {
@@ -234,14 +237,21 @@ const ProgressBarUsulan = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
+        if(e.target.name === 'ajukan'){
+          if(response.data.data.members.every(member => member.pivot.status === '2' || member.pivot.status === 'accepted')){
+            const responseStatus = await updateStatus({ researchId: response.data.data.id, newStatus: 2, note: 'diajukan' });
+            console.log('Response:', responseStatus);
+          }
+        }
         console.log(response.data);
       }
-      navigate("/usulanbaru");
+      navigate("/penelitian/usulan");
     } catch (error) {
       console.log(error);
       throw error;
     }
   };
+  
 
   //element page
   const renderStepContent = (step) => {
@@ -287,13 +297,23 @@ const ProgressBarUsulan = () => {
               >
                 Next
               </button>
-              <button
-                onClick={handleSubmit}
-                disabled={currentStep < steps.length}
-                className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === steps.length ? "" : "hidden"}`}
-              >
-                Submit
-              </button>
+              <div className={`${currentStep === steps.length ? "" : "hidden"}`}>
+                <button
+                  onClick={(e) =>handleSubmit(e)}
+                  disabled={currentStep < steps.length}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded mx-5 ${currentStep === steps.length ? "" : "hidden"}`}
+                >
+                  Submit
+                </button>
+                <button
+                  onClick={(e) =>handleSubmit(e)}
+                  name="ajukan"
+                  disabled={currentStep < steps.length}
+                  className={`px-4 py-2 bg-green-600 text-white rounded ${data.members.every(member => member.pivot.status === '2' || member.pivot.status === 'accepted') ? "" : "hidden"}`}
+                >
+                  Ajukan
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -4,25 +4,42 @@ import { getToken } from "./AuthSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
+//research
 export const getResearch = async ({
   pageSize,
   currentPage,
   status,
   year,
   userId,
+  prodiId,
 }) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/research`, getToken(), {
+    const response = await axios.get(`${apiUrl}/api/research`, {
+      ...getToken(),
       params: {
         page_size: pageSize,
         current_page: currentPage,
         status: status,
         year: year,
         user_id: userId,
+        prodi_id: prodiId,
       },
     });
     console.log(response.data);
     return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getResearchDetail = async (id) => {
+  try {
+    const response = await axios.get(
+      `${apiUrl}/api/research/${id}`,
+      getToken()
+    );
+    console.log(response);
+    return response;
   } catch (error) {
     throw error;
   }
@@ -63,6 +80,14 @@ export const addResearch = async ({ data }) => {
   }
 };
 
+export const deleteResearch = async (id) => {
+  const response = await axios.delete(
+    `${apiUrl}/api/research/${id}`,
+    getToken()
+  );
+  return response.data;
+};
+
 export const updateStatus = async ({ researchId, newStatus, note }) => {
   try {
     console.log(researchId, newStatus, note);
@@ -94,3 +119,90 @@ export const downloadDocument = async (researchId) => {
     throw error;
   }
 };
+
+//logbook
+export const getLogbooks = async ({ user_id, id, pageSize, currentPage }) => {
+  try {
+    const response = await axios.get(`${apiUrl}/api/logbook`, {
+      ...getToken(),
+      params: {
+        user_id: user_id,
+        id: id,
+        page_size: pageSize,
+        current_page: currentPage,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getDetailLogbook = async (id) => {
+  try {
+    const response = await axios.get(`${apiUrl}/api/logbook/${id}`, getToken());
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addLogbook = async ({
+  id,
+  dateActivity,
+  activityDescription,
+  percentage,
+  document,
+  isEdit,
+  logbookId,
+}) => {
+  try {
+    const formData = new FormData();
+
+    if (isEdit) {
+      formData.append("_method", "PUT");
+    }
+
+    formData.append("type", "research");
+    formData.append("id", id);
+    formData.append("date_activity", dateActivity);
+    formData.append("activity_description", activityDescription);
+    formData.append("percentage", percentage);
+    if (document) {
+      formData.append("percentage", percentage);
+    }
+    if (isEdit) {
+      const response = await axios.post(
+        `${apiUrl}/api/logbook/${logbookId}`,
+        formData,
+        getToken()
+      );
+      console.log(response);
+    } else {
+      const response = await axios.post(
+        `${apiUrl}/api/logbook`,
+        formData,
+        getToken()
+      );
+      console.log(response);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteLogbook = async (id) => {
+  try {
+    const response = await axios.delete(
+      `${apiUrl}/api/logbook/${id}`,
+      getToken()
+    );
+    console.log(response);
+  } catch (error) {
+    throw error;
+  }
+};
+
+//progress report

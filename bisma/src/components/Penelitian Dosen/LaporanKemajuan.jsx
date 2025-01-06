@@ -11,11 +11,11 @@ const LaporanKemajuan = () => {
   const [error, setError] = useState(null);
 
   const handleView = () => {
-    navigate("/catatan-harian-view"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/penelitian/catatan-harian/:id"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   const handleClick = () => {
-    navigate("/laporan-kemajuan-progres"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/penelitian/laporan-kemajuan"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
     

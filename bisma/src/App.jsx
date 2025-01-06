@@ -59,42 +59,41 @@ function App() {
           element={<DashboardKaprKepl />}
         />
         {/* Dosen Penelitian*/}
-        <Route path="/usulanbaru" element={<UsulanBaru />} />
-        <Route path="/perbaikanusulan" element={<PerbaikanUsulan />} />
-        <Route path="/laporankemajuan" element={<LaporanKemajuanPage />} />
-        <Route path="/laporanakhir" element={<LaporanAkhirPage />} />
-        <Route path="/catatanakhir" element={<CatatanAkhir />} />
-        <Route path="/luaran" element={<Luaran />} />
+        <Route path="/penelitian/usulan" element={<UsulanBaru />} />
         <Route
-          path="/usulan-baru-penelitian"
+          path="/penelitian/usulan/baru"
           element={<UsulanBaruPenelitian />}
         />
         <Route
-          path="/usulan-penelitian-edit/:id"
+          path="/penelitian/usulan/edit/:id"
           element={<UsulanBaruPenelitian />}
         />
+        <Route path="/penelitian/perbaikan" element={<PerbaikanUsulan />} />
         <Route
-          path="/perbaikan-usulan-penelitian"
+          path="/penelitian/perbaikan/:id"
           element={<PerbaikanUsulanPeneitian />}
         />
         <Route
-          path="/catatan-harian"
+          path="/penelitian/catatan-harian"
           element={<CatatanHarianPenelitianPage />}
         />
         <Route
-          path="/catatan-harian-view"
+          path="/penelitian/catatan-harian/:id"
           element={<ViewCatatanHarianPage />}
         />
+        <Route path="/penelitian/laporan-kemajuan" element={<LaporanKemajuanPage />} />
         <Route
-          path="/laporan-kemajuan-progres"
+          path="/penelitian/laporan-kemajuan/baru"
           element={<LaporanKemajuanPnltnPage />}
         />
-
+        <Route path="/penelitian/laporan-akhir" element={<LaporanAkhirPage />} />
         <Route
-          path="/laporan-akhir-progres"
+          path="/penelitian/laporan-akhir/baru"
           element={<LaporanAkhirPnltPage />}
         />
 
+        <Route path="/catatanakhir" element={<CatatanAkhir />} />
+        <Route path="/luaran" element={<Luaran />} />
         {/* Dosen Pengabdian*/}
 
         {/* Operator */}

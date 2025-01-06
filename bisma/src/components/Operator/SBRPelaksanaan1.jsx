@@ -26,10 +26,9 @@ const SBRPelaksanaan1 = () => {
     // Add search logic here
   };
 
-//   const handleInputChange = (setter) => (e) => {
-//     setter(e.target.value);
-//   };
-
+  const handlePlus = () => {
+      navigate("/monitoring-pengelola-review-internal");
+    };
   // Fungsi untuk ekspor data ke Excel
   const handleExportExcel = () => {
 
@@ -128,7 +127,7 @@ const SBRPelaksanaan1 = () => {
             </div>
             <div className="mx-2 my-2">
               <button
-                onClick={handleExportExcel}
+                onClick={handlePlus}
                 className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
               >
                 <FaPlus size={15} />

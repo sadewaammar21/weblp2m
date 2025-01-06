@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DropdownCmp from '../DropdownCmp';
 import SearchInput from '../SearchInput';
 import TextfieldCmp from '../TextfieldCmp';
@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaPlus, FaCcMastercard, FaTrash, FaEdit} from 'react-icons/fa';
 import * as XLSX from 'xlsx'; // Library for Excel
 import { saveAs } from 'file-saver'; // Library for saving files
+import { getToken } from "../../Features/AuthSlice";
+import axios from "axios";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const ReviewerInternal = () => {
   const navigate = useNavigate();
@@ -15,7 +18,16 @@ const ReviewerInternal = () => {
   const [tapel, setTapel] = useState('');
   const [Tahapan, setTahapan] = useState('');
   const [nidn, setNidn] = useState('');
+  const [reviewers, setReviewers] = useState([]);
   
+  const fetchUsers = async() => {
+    const response = await axios.get(`${apiUrl}/api/users/roles/2`, getToken());
+    setReviewers(response.data);
+    console.log(response.data);
+  }
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);

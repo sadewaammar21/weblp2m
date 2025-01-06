@@ -8,7 +8,7 @@ Modal.setAppElement('#root');
 
 const PopUpDosen = ({ isOpen, onRequestClose, index, onSave }) => {
   const [nidn, setNidn] = useState('');
-  const [memberData, setMemberData] = useState({id: 0, task: '', research_role: '', status: ''});
+  const [memberData, setMemberData] = useState({id: 0, pivot: {research_roles: '', task: '', status: ''}});
   const [UTDP,setUTDP] = useState('');
 
   const handleSearch = () => {
@@ -17,13 +17,25 @@ const PopUpDosen = ({ isOpen, onRequestClose, index, onSave }) => {
   };
 
   const handleInputChange = (e) => {
-    const inputName = e.target.name;
-    const inputValue = e.target.value;
+    const { name, value } = e.target;
 
-    setMemberData((prevData) => ({
-      ...prevData,
-      [inputName]: inputValue,
-    }));
+    if (name.startsWith('pivot.')) {
+      // Handle changes for nested pivot properties
+      const field = name.split('.')[1];
+      setMemberData((prevState) => ({
+        ...prevState,
+        pivot: {
+          ...prevState.pivot,
+          [field]: value,
+        },
+      }));
+    } else {
+      // Handle changes for top-level properties
+      setMemberData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSave = () => {
@@ -80,22 +92,22 @@ const PopUpDosen = ({ isOpen, onRequestClose, index, onSave }) => {
         />
         <TextfieldCmp
           label="Peran"
-          value={memberData.research_role}
-          name='research_role'
+          value={memberData.research_roles}
+          name='pivot.research_roles'
           onChange={handleInputChange}
           placeholder="Anggota Pengusul"
         />
         <TextfieldCmp
           label="tugas"
           value={memberData.task}
-          name='task'
+          name='pivot.task'
           onChange={handleInputChange}
           placeholder="Anggota Pengusul"
         />
         <TextfieldCmp
           label="Status"
           value={memberData.status}
-          name='status'
+          name='pivot.status'
           onChange={handleInputChange}
           placeholder="Anggota Pengusul"
         />

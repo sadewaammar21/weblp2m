@@ -108,7 +108,7 @@ const PenelitianProposal = () => {
     }
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     try {
       const response = await axios.post(`${apiUrl}/api/research-reviews`, reviewData, getToken());
       console.log(response.data);
