@@ -9,6 +9,11 @@ Modal.setAppElement("#root");
 const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave }) => {
 
   const [outputData, setOutputData] = useState({});
+  useEffect(()=>{
+    if(data){
+      setOutputData(data[index])
+    }
+  },[data, index])
 
   const statusArticle = [
     {value: 'submitted', label: 'Submitted'},
@@ -83,8 +88,8 @@ const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave 
           <label className="block text-gray-700 mb-2">Status Penulis</label>
           <DropdownCmp 
             options={statusAuthor} 
-            value={statusAuthor.find((option) => option.value === outputData.status_author)}
-            onChange={(option) => handleDropdownChange(option, 'status_author')} />
+            value={statusAuthor.find((option) => option.value === outputData.status_writer)}
+            onChange={(option) => handleDropdownChange(option, 'status_writer')} />
         </div>
 
         {/* Nama Jurnal */}

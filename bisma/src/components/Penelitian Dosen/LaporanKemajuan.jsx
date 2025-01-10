@@ -10,8 +10,13 @@ const LaporanKemajuan = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const handleView = (researchId) => {
-    navigate("/penelitian/laporan-kemajuan/baru", { state: { id: researchId } }); // Arahkan ke halaman 'usulan-baru-penelitian'
+  const handleView = (researchId, report) => {
+    console.log(report)
+    if(report != null){
+      navigate("/penelitian/laporan-kemajuan/edit", { state: { id: researchId, reportId: report } })
+    }else{
+      navigate("/penelitian/laporan-kemajuan/baru", { state: { id: researchId, reportId: null } }); // Arahkan ke halaman 'usulan-baru-penelitian'
+    }
   };
 
   const handleClick = () => {
@@ -25,7 +30,7 @@ const LaporanKemajuan = () => {
         pageSize: 5,
         currentPage: 1,
         // status: 1,
-        year: 2025,
+        // year: 2025,
         userId: user.id,
       });
       setData(result.data);
@@ -117,7 +122,7 @@ const LaporanKemajuan = () => {
           </td>
           <td className="border border-black px-4 py-2 align-middle">
             <button
-              onClick={() => handleView(item.id)}
+              onClick={() => handleView(item.id, item.progressReport[0] ? item.progressReport[0].id : null )}
               className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
             >
               <img

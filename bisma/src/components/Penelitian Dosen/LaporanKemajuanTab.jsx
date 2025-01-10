@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import LaporanKemajuanTab1 from "./LaporanKemajuanTab1";
 import LaporanKemajuanTab2 from "./LaporanKemajuanTab2";
 import LaporanKemajuan from "./LaporanKemajuan";
-import { addResearchProgressReport, getResearch, getResearchDetail } from "../../Features/ResearchSlice";
+import { addResearchProgressReport, getResearch, getResearchDetail, getResearchProgressReport } from "../../Features/ResearchSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const steps = [
@@ -52,18 +52,30 @@ const LaporanKemajuanTab = () => {
 
   //data laporan kemajuan
   const location = useLocation();
-  const { id } = location.state || {};
-  const [report, setReport] = useState({summary: '', keyword: '', output_result:[]});
+  const { id, reportId } = location.state || {};
+  const [report, setReport] = useState({});
 
   const fetchResearch = async() => {
     const response = await getResearchDetail(id);
     setResearch(response.data);
     console.log(research)
   }
+  const fetchReport = async() => {
+    if(reportId){
+      const response = await getResearchProgressReport(reportId);
+      setReport(response);
+      console.log(report);
+    }else{
+      setReport({summary: '', keyword: '', outputs:[]});
+    }
+  }
 
   useEffect(() => {
     fetchResearch()
-  }, [])
+    if(reportId){
+      fetchReport()
+    }
+  }, [reportId])
 
   //handle next step
   const handleNextStep = () => {
@@ -94,10 +106,19 @@ const LaporanKemajuanTab = () => {
   }
 
   const handleSubmit = async (status) => {
-    setReport({...report, status: status})
-    const response = await addResearchProgressReport({researchId: research.id, data: report, isEdit: false});
-    console.log(response);
-    navigate(-1);
+    if(reportId){
+      setReport({...report, status: status})
+      // console.log(report)
+      const response = await addResearchProgressReport({researchId: research.id, data: report, isEdit: true, reportId: report.id});
+      console.log(response);
+      navigate(-1);
+    }else{
+      setReport({...report, status: status})
+      // console.log(report)
+      const response = await addResearchProgressReport({researchId: research.id, data: report, isEdit: false});
+      console.log(response);
+      navigate(-1);
+    }
   }
 
   return (

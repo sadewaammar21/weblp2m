@@ -391,16 +391,16 @@ export const addResearchProgressReport = async ({
     formData.append("realization_5", data.realization_5);
     formData.append("description_6", data.description_6);
     formData.append("realization_6", data.realization_6);
-    formData.append("status", data.status);
+    formData.append("status", "draft");
 
-    data.output_result.forEach((item, index) => {
+    data.outputs.forEach((item, index) => {
       formData.append(
         `output_result[${index}][status_article]`,
         item.status_article
       );
       formData.append(
         `output_result[${index}][status_writer]`,
-        item.status_author
+        item.status_writer
       );
       formData.append(
         `output_result[${index}][journal_name]`,
@@ -443,8 +443,23 @@ export const addResearchProgressReport = async ({
         formData,
         getToken()
       );
+      console.log(response);
       return response.data;
     }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getResearchProgressReport = async (reportId) => {
+  try {
+    const response = await axios.get(
+      `${apiUrl}/api/progress-report/${reportId}`,
+      getToken()
+    );
+    console.log(response);
+    return response.data[0];
   } catch (error) {
     throw error;
   }

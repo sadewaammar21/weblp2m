@@ -86,6 +86,10 @@ function App() {
           path="/penelitian/laporan-kemajuan/baru"
           element={<LaporanKemajuanPnltnPage />}
         />
+        <Route
+          path="/penelitian/laporan-kemajuan/edit"
+          element={<LaporanKemajuanPnltnPage />}
+        />
         <Route path="/penelitian/laporan-akhir" element={<LaporanAkhirPage />} />
         <Route
           path="/penelitian/laporan-akhir/baru"

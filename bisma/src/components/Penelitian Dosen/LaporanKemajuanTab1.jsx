@@ -43,9 +43,9 @@ const LaporanKemajuanTab1 = ({ research, data, setData }) => {
 
   const [outputIndex, setOutputIndex] = useState(0);
   const handleOutputData = (index, outputData) => {
-    const updatedOutput = [...data.output_result];
+    const updatedOutput = [...data.outputs];
     updatedOutput[index] = outputData;
-    setData({...data, output_result: updatedOutput});
+    setData({...data, outputs: updatedOutput});
     console.log(data);
   }
 
@@ -91,7 +91,7 @@ const LaporanKemajuanTab1 = ({ research, data, setData }) => {
         </div>
       </div>
       <div>
-        <ModalEditLapKemajuanTab1 data={data.output_result} isOpen={isOpen} onRequestClose={closeModal} index={outputIndex} onSave={handleOutputData}/>
+        <ModalEditLapKemajuanTab1 data={data.outputs} isOpen={isOpen} onRequestClose={closeModal} index={outputIndex} onSave={handleOutputData}/>
         <label className="text-lg font-bold font-sans text-gray-800">
           Ringkasan
         </label>

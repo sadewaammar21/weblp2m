@@ -88,7 +88,7 @@ const LaporanKemajuanTab2 = ({ research, data, setData }) => {
           </div>
         </div>
       </div>
-      <ModalEditLapKemajuanTab2 research={research} isOpen={isOpen} onRequestClose={closeModal} onSave={handelSptbData}/>
+      <ModalEditLapKemajuanTab2 research={research} data={data} isOpen={isOpen} onRequestClose={closeModal} onSave={handelSptbData}/>
       <div className="my-5">
         {/* Label dan Link untuk Unduh Template */}
         <label className="text-lg font-bold font-sans text-gray-800 ">

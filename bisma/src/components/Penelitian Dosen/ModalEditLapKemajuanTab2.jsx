@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import TextfieldCmp from "../TextfieldCmp"; // Komponen TextField yang Anda buat
 
 Modal.setAppElement("#root");
 
-const ModalEditLapKemajuanTab2 = ({ research, isOpen, onRequestClose, onSave }) => {
+const ModalEditLapKemajuanTab2 = ({ research, data, isOpen, onRequestClose, onSave }) => {
   const [items, setItems] = useState({});
+  useEffect(()=>{
+    setItems({
+      no_sk: data.no_sk,
+      no_contract: data.no_contract,
+      place_date: data.place_date,
+      nip: data.nip,
+      description_1: data.description_1,
+      description_2: data.description_2,
+      description_3: data.description_3,
+      description_4: data.description_4,
+      description_5: data.description_5,
+      description_6: data.description_6,
+      realization_1: data.realization_1,
+      realization_2: data.realization_2,
+      realization_3: data.realization_3,
+      realization_4: data.realization_4,
+      realization_5: data.realization_5,
+      realization_6: data.realization_6,
+    })
+  },[])
 
   const handleSave = () => {
     onSave(items);
