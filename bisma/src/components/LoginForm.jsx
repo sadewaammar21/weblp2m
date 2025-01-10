@@ -4,22 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginAuth, reset } from "../Features/AuthSlice";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  
+
   const dispatch = useDispatch();
-  const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth);
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
+  );
 
   useEffect(() => {
     if (user || isSuccess) {
       const userRoles = user?.roles || [];
-  
+
       // Cek role dan navigasi
       switch (true) {
         case userRoles.includes("Dosen"):
@@ -31,20 +33,21 @@ const LoginForm = () => {
         case userRoles.includes("Reviewer"):
           navigate("/dashboard-reviewer");
           break;
+        case userRoles.includes("Kepala LPPM"):
+          navigate("/dashboard-kepala-lppm");
+          break;
         default:
           navigate("/dashboard");
           break;
       }
     }
-  
+
     if (isError) {
       toast.error(message);
     }
-  
+
     dispatch(reset());
   }, [user, isSuccess, isError, message, dispatch, navigate]);
-  
-  
 
   const Auth = (e) => {
     e.preventDefault();
@@ -64,104 +67,119 @@ const LoginForm = () => {
     const validationErrors = {};
 
     if (!email.trim()) {
-      validationErrors.email = 'Email tidak boleh kosong';
+      validationErrors.email = "ERROR ON EMAIL | user status is inactive";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      validationErrors.email = 'Email tidak valid';
+      validationErrors.email = "Email tidak valid";
     }
 
     if (!password) {
-      validationErrors.password = 'Password tidak boleh kosong';
+      validationErrors.password = "ERROR ON PASSWORD | user status is inactive";
     } else if (password.length < 6) {
-      validationErrors.password = 'Password harus minimal 6 karakter';
+      validationErrors.password = "Password harus minimal 6 karakter";
     }
 
     return validationErrors;
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-sm bg-white border-2 border-gray-200 rounded-xl shadow-lg">
-        <div className="w-full bg-bluef-100 rounded-t-xl py-5 px-8">
-          <h3 className="text-sm text-bluef-600">
-            Selamat Datang Di Aplikasi BISMA
-          </h3>
-          <h3 className="text-sm text-bluef-600">
-            Basis informasi penelitian dan pengabdian kepada masyarakat
-          </h3>
-        </div>
-        <div className="p-8">
-          <form onSubmit={Auth} className="w-full">
-            {isError && (
-              <div className="w-full mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                {message}
-              </div>
-            )}
-            <div className="mb-4">
-              <label className="inter-semiBold text-sm pb-2 block">
-                Email
-              </label>
-              <input
-                type="text"
-                className={`text-sm p-2 w-full border rounded shadow focus:outline-none focus:shadow-outline ${errors.email ? 'border-red-500' : ''}`}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Masukkan Email"
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Konten Utama */}
+      <div className="flex-grow flex items-center justify-center">
+        <div className="w-full max-w-sm bg-white border-2 border-gray-200 rounded-xl shadow-lg">
+          <div className="w-full bg-bluef-100 rounded-t-xl py-5 px-8">
+            <h3 className="text-sm text-violet-800 mb-5">
+              Selamat Datang Di Aplikasi BISMA
+            </h3>
+            <h3 className="text-sm text-violet-800 mb-10">
+              Basis informasi penelitian dan pengabdian kepada masyarakat
+            </h3>
+          </div>
+          <div className="relative">
+            <div className="flex justify-start pl-6">
+              <img
+                src={process.env.PUBLIC_URL + "/logo1.svg"}
+                alt="Logo"
+                className="absolute -top-10 w-20 h-20 rounded-full border-4 border-white shadow-md"
               />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
-            <div className="mb-4">
-              <label className="inter-semiBold text-sm pb-2 block">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  className={`text-sm p-2 w-full border rounded shadow pr-10 focus:outline-none focus:shadow-outline ${errors.password ? 'border-red-500' : ''}`}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Masukkan Password"
-                />
-                <div
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? (
-                    <FaEye className="h-5 w-5 text-gray-600" />
-                  ) : (
-                    <FaEyeSlash className="h-5 w-5 text-gray-600" />
-                  )}
+          </div>
+          <div className="p-8">
+            <form onSubmit={Auth} className="w-full">
+              {isError && (
+                <div className="w-full mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                  {message}
                 </div>
+              )}
+              <div className="mb-4">
+                <label className="inter-semiBold text-sm pb-2 block mt-5">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  className={`text-sm p-2 w-full border rounded shadow focus:outline-none focus:shadow-outline ${
+                    errors.email ? "border-red-500" : ""
+                  }`}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Masukkan Email"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                )}
               </div>
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-            </div>
-            <div className="flex items-center mb-4">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                className="mr-2"
-              />
-              <label
-                htmlFor="rememberMe"
-                className="text-sm inter-semiBold"
+              <div className="mb-4">
+                <label className="inter-semiBold text-sm pb-2 block">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className={`text-sm p-2 w-full border rounded shadow pr-10 focus:outline-none focus:shadow-outline ${
+                      errors.password ? "border-red-500" : ""
+                    }`}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Masukkan Password"
+                  />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <FaEye className="h-5 w-5 text-gray-600" />
+                    ) : (
+                      <FaEyeSlash className="h-5 w-5 text-gray-600" />
+                    )}
+                  </div>
+                </div>
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                )}
+              </div>
+              <div className="flex items-center mb-4">
+                <input type="radio" id="rememberMe" className="mr-2" />
+                <label htmlFor="rememberMe" className="text-sm inter-semiBold">
+                  Remember me
+                </label>
+              </div>
+              <button
+                type="submit"
+                className="inter-semiBold text-lg text-center text-white bg-bluef-500 py-2 w-full rounded-xl shadow-lg hover:bg-bluef-200"
+                disabled={isLoading}
               >
-                Remember me
-              </label>
-            </div>
-            <button
-              type="submit"
-              className="inter-semiBold text-lg text-center text-white bg-bluef-500 py-2 w-full rounded-xl shadow-lg hover:bg-bluef-200"
-              disabled={isLoading}
-            >
-              {isLoading ? "Loading..." : "Login"}
-            </button>
-          </form>
+                {isLoading ? "Loading..." : "Login"}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-      <div className="mt-4">
-        <p className="text-xs text-neutral-900">
-          © 2024 LPPM SINUS
-        </p>
-      </div>
+
+      {/* Footer */}
+      <p className="text-xs text-neutral-900 text-center mt-4">
+        © 2024 LPPM SINUS
+      </p>
+
+      {/* Toast Container */}
       <ToastContainer
         position="top-right"
         autoClose={5000}

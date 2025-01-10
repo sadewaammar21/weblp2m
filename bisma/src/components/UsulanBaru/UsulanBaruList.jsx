@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
-import {getResearch} from "../../Features/ResearchSlice"
+import { getResearch } from "../../Features/ResearchSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -101,7 +101,16 @@ const UsulanBaruList = () => {
                   <td>{item.roles}</td>
                   <td>{item.status}</td>
                   <td>
-                    <button onClick={() => navigate(`/usulan-penelitian-edit/${item.id}`)}>
+                    <button
+                      onClick={() =>
+                        navigate(`/usulan-penelitian-edit/${item.id}`)
+                      }
+                    >
+                      action here
+                    </button>
+                  </td>
+                  <td>
+                    <button onClick={() => navigate(`/detail-penelitian`)}>
                       action here
                     </button>
                   </td>

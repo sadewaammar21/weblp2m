@@ -101,8 +101,8 @@ const ProgressBarUsulan = () => {
     const accessToken = localStorage.getItem("accessToken");
     const formData = new FormData();
 
-    if(isEdit) {
-        formData.append("_method", "PUT");
+    if (isEdit) {
+      formData.append("_method", "PUT");
     }
 
     formData.append("title", data.title);
@@ -220,12 +220,16 @@ const ProgressBarUsulan = () => {
 
     try {
       if (isEdit) {
-        const response = await axios.post(`${apiUrl}/api/research/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await axios.post(
+          `${apiUrl}/api/research/${id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
         console.log(response.data);
       } else {
         const response = await axios.post(`${apiUrl}/api/research`, formData, {

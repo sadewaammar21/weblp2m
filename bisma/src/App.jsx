@@ -21,6 +21,9 @@ import { getMe } from "./Features/AuthSlice";
 import UsulanBelumDitinjauOPTPage from "./pages/UsulanBelumDitinjauOPTPage";
 import UsulanRegulerPage from "./pages/UsulanRegulerPage";
 import PerbaikanUsulanOPTPage from "./pages/PerbaikanUsulanOPTPage";
+//pengabdian
+import UsulanBaruPengabdianPage from "./pages/ListUsulanBaruPengabdianPage";
+// operator
 import MonitoringUsulanPenelitianPage from "./pages/MonitoringUsulanPenelitianPage";
 import MonitoringUsulanPengabdianPage from "./pages/MonitoringUsulanPengabdianPage";
 import DataPendukungPage from "./pages/DataPendukungPage";
@@ -38,6 +41,20 @@ import ViewCatatanHarianPage from "./pages/ViewCatatanHarianPage";
 import LaporanKemajuanPnltnPage from "./pages/LaporanKemajuanPnltnPage";
 import LaporanAkhirPage from "./pages/LaporanAkhirPage";
 import LaporanAkhirPnltPage from "./pages/LaporanAkhirPnltPage";
+import ListUsulanBaruPengabdianPage from "./pages/ListUsulanBaruPengabdianPage";
+import ProgressUSBPengadianPage from "./pages/ProgressUSBPengadianPage";
+import DetailPenelitianPage from "./pages/DetailPenelitianPage";
+import PerbaikanUsulanListPage from "./pages/PerbaikanUsulanListPage";
+import ProgresPerUsPegabdianPage from "./pages/ProgresPerUsPegabdianPage";
+import DetailPengabdianPage from "./pages/DetailPengabdianPage";
+import ListLaporanKemajuanInternalPage from "./pages/ListLaporanKemajuanInternalPage";
+import LaporanKemajuanPengabdianPage from "./pages/LaporanKemajuanPengabdianPage";
+import DashboardKepalaLPPMPage from "./pages/DashboardKepalaLPPMPage";
+import UsulanBelumDitinjauKepalaLPPMPage from "./pages/UsulanBelumDitinjauKepalaLPPMPage";
+import UsulanDisetujuiKepalaLPPMPage from "./pages/UsulanDisetujuiKepalaLPPMPage";
+import UsulanDitolakKepalaLPPMPage from "./pages/UsulanDitolakKepalaLPPMPage";
+import ListMonevPenelitianPage from "./pages/ListMonevPenelitianPage";
+import ReviewMonevPenelitianPage from "./pages/ReviewMonevPenelitianPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -52,13 +69,18 @@ function App() {
         <Route path="/" element={<Login />} />
         {/* Dashboard */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/detail-penelitian" element={<DetailPenelitianPage />} />
         <Route path="/dashboard-operator" element={<DashboardOperator />} />
         <Route path="/dashboard-reviewer" element={<DashboardReviewer />} />
         <Route
           path="/dashboard-kaprodi-dan-kepala"
           element={<DashboardKaprKepl />}
         />
-        {/* Dosen Penelitian*/}
+        <Route
+          path="/dashboard-kepala-lppm"
+          element={<DashboardKepalaLPPMPage />}
+        />
+        {/* Dosen */}
         <Route path="/usulanbaru" element={<UsulanBaru />} />
         <Route path="/perbaikanusulan" element={<PerbaikanUsulan />} />
         <Route path="/laporankemajuan" element={<LaporanKemajuanPage />} />
@@ -95,7 +117,33 @@ function App() {
           element={<LaporanAkhirPnltPage />}
         />
 
-        {/* Dosen Pengabdian*/}
+        <Route
+          path="/list-usulan-baru-pengabdian"
+          element={<ListUsulanBaruPengabdianPage />}
+        />
+        <Route path="/detail-pengabdian" element={<DetailPengabdianPage />} />
+        <Route
+          path="/tambah-usulan-baru-pengabdian"
+          element={<ProgressUSBPengadianPage />}
+        />
+
+        <Route
+          path="/list-perbaikan-usulan-pengabdian"
+          element={<PerbaikanUsulanListPage />}
+        />
+        <Route
+          path="/perbaikan-usulan-pengabdian"
+          element={<ProgresPerUsPegabdianPage />}
+        />
+        <Route
+          path="/list-laporan-kemajuan-pengabdian"
+          element={<ListLaporanKemajuanInternalPage />}
+        />
+        <Route
+          path="/laporan-kemajuan-pengabdian"
+          element={<LaporanKemajuanPengabdianPage />}
+        />
+        {/* Dosen */}
 
         {/* Operator */}
         <Route
@@ -174,6 +222,27 @@ function App() {
         <Route
           path="/review-usulan-sudah-dinilai-penelitian"
           element={<UsulanSudahDinilaiRvwPage />}
+        />
+        {/* kepla LPPM */}
+        <Route
+          path="/kepala-lppm-usulan-belum-ditinjau"
+          element={<UsulanBelumDitinjauKepalaLPPMPage />}
+        />
+        <Route
+          path="/kepala-lppm-usulan-disetujui"
+          element={<UsulanDisetujuiKepalaLPPMPage />}
+        />
+        <Route
+          path="/kepala-lppm-usulan-ditolak"
+          element={<UsulanDitolakKepalaLPPMPage />}
+        />
+        <Route
+          path="/list-monev-penelitian"
+          element={<ListMonevPenelitianPage />}
+        />
+        <Route
+          path="/review-monev-penelitian"
+          element={<ReviewMonevPenelitianPage />}
         />
       </Routes>
     </BrowserRouter>

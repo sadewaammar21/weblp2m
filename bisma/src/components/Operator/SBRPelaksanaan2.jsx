@@ -8,6 +8,7 @@ import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import { getToken } from "../../Features/AuthSlice";
 import axios from "axios";
+import ModalReviewerInternal from "./ModalReviewerInternal";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const SBRPelaksanaan2 = () => {
@@ -23,6 +24,24 @@ const SBRPelaksanaan2 = () => {
   const [tapel, setTapel] = useState("");
   const [Tahapan, setTahapan] = useState("");
   const [nidn, setNidn] = useState("");
+  const [isOpenInt, setIsOpenInt] = useState(false);
+  const [isOpenEks, setIsOpenEks] = useState(false);
+
+  const openModalInt = () => {
+    setIsOpenInt(true);
+  };
+
+  const closeModalInt = () => {
+    setIsOpenInt(false);
+  };
+
+  const openModalEks = () => {
+    setIsOpenEks(true);
+  };
+
+  const closeModalEks = () => {
+    setIsOpenEks(false);
+  };
 
   //get research data
   useEffect(() => {
@@ -156,7 +175,7 @@ const SBRPelaksanaan2 = () => {
           <div className="flex mx-5 ">
             <div className="mx-2 my-2">
               <button
-                onClick={handleReviewerInt}
+                onClick={openModalInt}
                 className="flex items-center px-2 py-1 bg-orange-500 text-white rounded-md hover:bg-orange-600"
               >
                 <FaPlus />
@@ -173,6 +192,10 @@ const SBRPelaksanaan2 = () => {
               </button>
             </div>
           </div>
+          <ModalReviewerInternal
+            isOpen={isOpenInt}
+            onRequestClose={closeModalInt}
+          />
           <div className="grid grid-cols-2 gap-4 mx-10">
             <div>
               <SearchInput
@@ -237,30 +260,31 @@ const SBRPelaksanaan2 = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.reviewers && data.reviewers.map((reviewer) => (
-                  <tr key={reviewer.id}>
-                    <td className="border px-4 py-2 text-center">
-                      {reviewer.id}
-                    </td>
-                    <td className="border px-4 py-2">
-                      {reviewer.name}
-                      <br />
-                      STMIK Sinar Nusantara Surakarta
-                    </td>
-                    <td className="border px-4 py-2 text-center">
-                      Bidang Ilmu Komputer
-                    </td>
-                    <td className="border px-4 py-2 text-center">
-                      <button
-                        onClick={handleExportExcel}
-                        className="flex items-center px-2 py-1 bg-red-500 text-white rounded-md hover:bg-cyan-600"
-                      >
-                        <FaTrash />
-                        Hapus
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {data.reviewers &&
+                  data.reviewers.map((reviewer) => (
+                    <tr key={reviewer.id}>
+                      <td className="border px-4 py-2 text-center">
+                        {reviewer.id}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {reviewer.name}
+                        <br />
+                        STMIK Sinar Nusantara Surakarta
+                      </td>
+                      <td className="border px-4 py-2 text-center">
+                        Bidang Ilmu Komputer
+                      </td>
+                      <td className="border px-4 py-2 text-center">
+                        <button
+                          onClick={handleExportExcel}
+                          className="flex items-center px-2 py-1 bg-red-500 text-white rounded-md hover:bg-cyan-600"
+                        >
+                          <FaTrash />
+                          Hapus
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
             <button onClick={() => handleAddReviewer(location.state.id)}>

@@ -79,7 +79,7 @@ const PenilaianProposal = () => {
   };
 
   const handleAction = (researchId) => {
-    navigate("/review-penelitian-proposal", {state:{id:researchId}});
+    navigate("/review-penelitian-proposal", { state: { id: researchId } });
   };
 
   const options = [

@@ -1,9 +1,21 @@
-import React from 'react';
+import React from "react";
 
-const TextAreaCmp = ({ label, name, value, onChange, placeholder, rows = 4, width='w-full' }) => {
+const TextAreaCmp = ({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  rows = 4,
+  width = "w-full",
+}) => {
   return (
     <div className="mb-4">
-      {label && <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>}
+      {label && (
+        <label className="block text-gray-700 text-sm font-medium mb-2">
+          {label}
+        </label>
+      )}
       <textarea
         name={name}
         value={value}

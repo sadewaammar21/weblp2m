@@ -88,7 +88,7 @@ const PengelolaReview = () => {
   };
 
   const handleReview = (itemId) => {
-    navigate("/monitoring-pengelola-review-sbr2",{state:{ id:itemId }});
+    navigate("/monitoring-pengelola-review-sbr2", { state: { id: itemId } });
   };
 
   const options = [
@@ -222,7 +222,7 @@ const PengelolaReview = () => {
                         </td>
                         <td className="border border-gray-300 p-2 text-center">
                           <button
-                            onClick={()=> handleReview(item.id)}
+                            onClick={() => handleReview(item.id)}
                             className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
                           >
                             2
