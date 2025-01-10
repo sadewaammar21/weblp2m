@@ -1,10 +1,13 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import LaporanKemajuanTab1 from "./LaporanKemajuanTab1";
 import LaporanKemajuanTab2 from "./LaporanKemajuanTab2";
 import LaporanKemajuan from "./LaporanKemajuan";
+import { addResearchProgressReport, getResearch, getResearchDetail, getResearchProgressReport } from "../../Features/ResearchSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const steps = [
-  { id: 1, label: "Laporran Kemajuan" },
+  { id: 1, label: "Laporan Kemajuan" },
   { id: 2, label: "SPTB" },
 ];
 
@@ -40,9 +43,41 @@ const ProgressBar = ({ currentStep }) => {
 };
 
 const LaporanKemajuanTab = () => {
-  const [currentStep, setCurrentStep] = React.useState(1);
-  const [isLaporanKemajuan, setIsLaporanKemajuan] = React.useState(false);
+  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isLaporanKemajuan, setIsLaporanKemajuan] = useState(false);
 
+  //data penelitian
+  const [research, setResearch] = useState({});
+
+  //data laporan kemajuan
+  const location = useLocation();
+  const { id, reportId } = location.state || {};
+  const [report, setReport] = useState({});
+
+  const fetchResearch = async() => {
+    const response = await getResearchDetail(id);
+    setResearch(response.data);
+    console.log(research)
+  }
+  const fetchReport = async() => {
+    if(reportId){
+      const response = await getResearchProgressReport(reportId);
+      setReport(response);
+      console.log(report);
+    }else{
+      setReport({summary: '', keyword: '', outputs:[]});
+    }
+  }
+
+  useEffect(() => {
+    fetchResearch()
+    if(reportId){
+      fetchReport()
+    }
+  }, [reportId])
+
+  //handle next step
   const handleNextStep = () => {
     if (currentStep < steps.length) {
       setCurrentStep((prev) => prev + 1);
@@ -58,9 +93,9 @@ const LaporanKemajuanTab = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <LaporanKemajuanTab1 />;
+        return <LaporanKemajuanTab1 research={research} data={report} setData={setReport}/>;
       case 2:
-        return <LaporanKemajuanTab2 />;
+        return <LaporanKemajuanTab2 research={research} data={report} setData={setReport}/>;
       default:
         return null;
     }
@@ -68,6 +103,22 @@ const LaporanKemajuanTab = () => {
 
   if (isLaporanKemajuan) {
     return <LaporanKemajuan />;
+  }
+
+  const handleSubmit = async (status) => {
+    if(reportId){
+      setReport({...report, status: status})
+      // console.log(report)
+      const response = await addResearchProgressReport({researchId: research.id, data: report, isEdit: true, reportId: report.id});
+      console.log(response);
+      navigate(-1);
+    }else{
+      setReport({...report, status: status})
+      // console.log(report)
+      const response = await addResearchProgressReport({researchId: research.id, data: report, isEdit: false});
+      console.log(response);
+      navigate(-1);
+    }
   }
 
   return (
@@ -81,7 +132,7 @@ const LaporanKemajuanTab = () => {
             <ProgressBar currentStep={currentStep} />
             <div className="mt-6">
               {/* Kontainer dengan overflow scroll */}
-              <div className="max-h-96 overflow-y-auto p-4 border rounded">
+              <div className=" p-4 border rounded">
                 {renderStepContent(currentStep)}
               </div>
             </div>
@@ -94,12 +145,26 @@ const LaporanKemajuanTab = () => {
               >
                 Previous
               </button>
-              <button
-                onClick={handleNextStep}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
-              >
-                Next
-              </button>
+              <div>
+                <button
+                  onClick={handleNextStep}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? 'hidden' : ''}`}
+                >
+                  Next
+                </button>
+                <button
+                  onClick={()=>handleSubmit('draft')}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? '' : 'hidden'}`}
+                >
+                  Simpan
+                </button>
+                <button
+                  onClick={()=>handleSubmit('submitted')}
+                  className={`px-4 py-2 bg-green-600 text-white rounded ${currentStep === 2 ? '' : 'hidden'}`}
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
         </div>

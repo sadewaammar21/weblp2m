@@ -23,9 +23,9 @@ const PengelolaReview = () => {
         const result = await getResearch({
           pageSize: 10,
           currentPage: 1,
-          status: 1,
-          year: 2024,
-          userId: 2,
+          // status: 1,
+          year: 2025,
+          // userId: 2,
         });
         setData(result.data);
         console.log(data);

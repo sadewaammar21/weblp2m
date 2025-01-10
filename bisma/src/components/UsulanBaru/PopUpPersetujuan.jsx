@@ -13,7 +13,7 @@ const PopUpPersetujuan = ({
   const [note, setNote] = useState("");
 
   const handleSubmit = async () => {
-    const newStatus = isAccepted ? 3 : 1;//here
+    const newStatus = isAccepted ? 3 : 8;//here
         try {
             const response = await updateStatus({ researchId, newStatus, note });
             console.log('Response:', response);

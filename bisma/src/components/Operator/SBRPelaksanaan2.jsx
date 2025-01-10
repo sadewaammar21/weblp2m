@@ -9,6 +9,7 @@ import { saveAs } from "file-saver"; // Library for saving files
 import { getToken } from "../../Features/AuthSlice";
 import axios from "axios";
 import ModalReviewerInternal from "./ModalReviewerInternal";
+import { updateStatus } from "../../Features/ResearchSlice";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const SBRPelaksanaan2 = () => {
@@ -17,6 +18,7 @@ const SBRPelaksanaan2 = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [reviewer, setReviewer] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -43,28 +45,57 @@ const SBRPelaksanaan2 = () => {
     setIsOpenEks(false);
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    console.log(reviewer);
+  };
+
   //get research data
+  const fetchData = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/research/${location.state.id}`,
+      getToken()
+    );
+    console.log(response.data);
+    setData({
+      ...data,
+      ...response.data,
+    });
+    setReviewer(response.data.reviewers);
+  };
+  const fetchUsers = async () => {
+    const response = await axios.get(`${apiUrl}/api/users/roles/2`, getToken());
+    setUsers(response.data);
+    console.log(response.data);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        `${apiUrl}/api/research/${location.state.id}`,
-        getToken()
-      );
-      console.log(response.data);
-      setData({
-        ...data,
-        ...response.data,
-      });
-      // setReviewer(response.data.reviewers);
-      console.log(data.reviewers);
-    };
     fetchData();
+    fetchUsers();
     console.log(data);
   }, [location]);
 
+  const filteredUsers = users.filter((item) =>
+    reviewer.some((selected) => selected.id === item.id)
+  );
+
+  const handleAddItemRev = (userId) => {
+    setReviewer((reviewer) => [...reviewer, { id: userId }]);
+  };
+
+  const handleDeleteItem = (idToDelete) => {
+    setReviewer((prevReviewer) =>
+      prevReviewer.filter((item) => item.id !== idToDelete)
+    );
+  };
+
   const handleAddReviewer = async (id) => {
     try {
-      const reviewers = data.reviewers.map((reviewer) => reviewer.id);
+      const reviewers = reviewer.map((reviewer) => reviewer.id);
       const response = await axios.post(
         `${apiUrl}/api/research/${id}/reviewers`,
         {
@@ -73,14 +104,15 @@ const SBRPelaksanaan2 = () => {
         getToken()
       );
       console.log(response);
+      updateStatus({
+        researchId: id,
+        newStatus: 4,
+        note: "reviewer ditugaskan",
+      });
       handleBack();
     } catch (error) {
       throw error;
     }
-  };
-
-  const handleDropdownChange = (option) => {
-    setSelectedOption(option);
   };
 
   const handleSearch = () => {
@@ -175,14 +207,14 @@ const SBRPelaksanaan2 = () => {
           <div className="flex mx-5 ">
             <div className="mx-2 my-2">
               <button
-                onClick={openModalInt}
+                onClick={openModal}
                 className="flex items-center px-2 py-1 bg-orange-500 text-white rounded-md hover:bg-orange-600"
               >
                 <FaPlus />
                 Reviewer Internal
               </button>
             </div>
-            <div className="mx-2 my-2">
+            {/* <div className="mx-2 my-2">
               <button
                 onClick={handleReviewEks}
                 className="flex items-center px-2 py-1 bg-cyan-500 text-white rounded-md hover:bg-cyan-600"
@@ -190,7 +222,7 @@ const SBRPelaksanaan2 = () => {
                 <FaPlus size={15} />
                 Reviewer Eksternal
               </button>
-            </div>
+            </div> */}
           </div>
           <ModalReviewerInternal
             isOpen={isOpenInt}
@@ -260,11 +292,11 @@ const SBRPelaksanaan2 = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.reviewers &&
-                  data.reviewers.map((reviewer) => (
-                    <tr key={reviewer.id}>
+                {filteredUsers &&
+                  filteredUsers.map((reviewer, index) => (
+                    <tr key={index}>
                       <td className="border px-4 py-2 text-center">
-                        {reviewer.id}
+                        {index + 1}
                       </td>
                       <td className="border px-4 py-2">
                         {reviewer.name}
@@ -276,7 +308,7 @@ const SBRPelaksanaan2 = () => {
                       </td>
                       <td className="border px-4 py-2 text-center">
                         <button
-                          onClick={handleExportExcel}
+                          onClick={() => handleDeleteItem(reviewer.id)}
                           className="flex items-center px-2 py-1 bg-red-500 text-white rounded-md hover:bg-cyan-600"
                         >
                           <FaTrash />
@@ -292,6 +324,11 @@ const SBRPelaksanaan2 = () => {
             </button>
           </div>
         </div>
+        <ModalReviewerInternal
+          isOpen={isOpen}
+          onRequestClose={closeModal}
+          setData={handleAddItemRev}
+        />
       </div>
     </div>
   );

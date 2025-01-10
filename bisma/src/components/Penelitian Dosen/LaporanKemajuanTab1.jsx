@@ -3,8 +3,8 @@ import TextAreaCmp from "../TextAreaCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { FaDownload } from "react-icons/fa";
 import ModalEditLapKemajuanTab1 from "./ModalEditLapKemajuanTab1";
-
-const LaporanKemajuanTab1 = (setData) => {
+ 
+const LaporanKemajuanTab1 = ({ research, data, setData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
@@ -13,20 +13,42 @@ const LaporanKemajuanTab1 = (setData) => {
     setSelectedOption(option);
   };
 
-  const openModal = () => {
+  const openModal = (index) => {
     setIsOpen(true);
+    setOutputIndex(index);
   };
 
   const closeModal = () => {
     setIsOpen(false);
   };
 
-  const handleFileChange = (event) => {
+  const handleInputChange = () => (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
     setData((prevData) => ({
       ...prevData,
-      substance: event.target.files[0],
+      [inputName]: inputValue,
     }));
   };
+
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: files[0],
+    }));
+    console.log(data)
+  };
+
+  const [outputIndex, setOutputIndex] = useState(0);
+  const handleOutputData = (index, outputData) => {
+    const updatedOutput = [...data.outputs];
+    updatedOutput[index] = outputData;
+    setData({...data, outputs: updatedOutput});
+    console.log(data);
+  }
+
   return (
     <div>
       <div>
@@ -54,9 +76,7 @@ const LaporanKemajuanTab1 = (setData) => {
               Penelitian | Tahun Pelaksanaan 2024
             </p>
             <h2 className="text-lg font-bold text-gray-800">
-              Membangun Kemandirian Ekonomi Desa melalui Implementasi Sistem
-              Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa Sinergi
-              Sidowayah
+              {research.title}
             </h2>
 
             <div className="flex mx-1 my-2">
@@ -71,7 +91,7 @@ const LaporanKemajuanTab1 = (setData) => {
         </div>
       </div>
       <div>
-        <ModalEditLapKemajuanTab1 isOpen={isOpen} onRequestClose={closeModal} />
+        <ModalEditLapKemajuanTab1 data={data.outputs} isOpen={isOpen} onRequestClose={closeModal} index={outputIndex} onSave={handleOutputData}/>
         <label className="text-lg font-bold font-sans text-gray-800">
           Ringkasan
         </label>
@@ -80,7 +100,13 @@ const LaporanKemajuanTab1 = (setData) => {
           metode, luaran yang ditargetkan, dan hasil yang diperoleh sesuai
           dengan tahun pelaksanaan
         </h2>
-        <TextAreaCmp placeholder={`Ringksan Penelitian`} rows={4} />
+        <TextAreaCmp 
+          value={data.summary}
+          name='summary'
+          onChange={handleInputChange()}
+          placeholder={`Ringksan Penelitian`} 
+          rows={4} 
+        />
       </div>
       <div>
         <label className="text-lg font-bold font-sans text-gray-800">
@@ -91,6 +117,9 @@ const LaporanKemajuanTab1 = (setData) => {
           perintah
         </h2>
         <TextfieldCmp
+          value={data.keyword}
+          name="keyword"
+          onChange={handleInputChange()}
           placeholder={`Keyword1;keyword2;keyword3`}
           height="h-10"
         />
@@ -110,7 +139,8 @@ const LaporanKemajuanTab1 = (setData) => {
             {/* Input file */}
             <input
               type="file"
-              onChange={handleFileChange}
+              name='substance'
+              onChange={(e) => handleFileChange(e)}
               className="border border-gray-300 rounded-lg p-2 w-1/2"
               id="file-upload"
             />
@@ -140,7 +170,8 @@ const LaporanKemajuanTab1 = (setData) => {
             {/* Input file */}
             <input
               type="file"
-              onChange={handleFileChange}
+              name="partner_contribution"
+              onChange={(e) => handleFileChange(e)}
               className="border border-gray-300 rounded-lg p-2 w-1/2"
               id="file-upload"
             />
@@ -172,24 +203,26 @@ const LaporanKemajuanTab1 = (setData) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-black px-4 py-2 align-middle">1</td>
-              <td className="border border-black px-4 py-2 break-words text-right">
-                Artikel di Jurnal Bereputasi-Buplikasi_Jurnal
-              </td>
-              <td className="border border-black px-4 py-2 align-middle flex justify-center items-center">
-                <button
-                  onClick={openModal}
-                  className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-                    alt="penelitian"
-                    className="w-7 h-7 mr-2"
-                  />
-                </button>
-              </td>
-            </tr>
+            {(research?.output || []).map((item, index) => (
+              <tr key={index}>
+                <td className="border border-black px-4 py-2 align-middle">{index+1}</td>
+                <td className="border border-black px-4 py-2 break-words text-right">
+                  {item.description}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle flex justify-center items-center">
+                  <button
+                    onClick={() => openModal(index)}
+                    className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="penelitian"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

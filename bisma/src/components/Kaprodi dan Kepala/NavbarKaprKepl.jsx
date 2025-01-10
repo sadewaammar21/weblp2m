@@ -177,16 +177,16 @@ const NavbarKaprKepl = ({children}) => {
                         {subDropdown && (
                           <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/usulanbaru">Usulan Baru</Link>
+                              <Link to="/penelitian/usulan">Usulan Baru</Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/perbaikanusulan">Perbaikan Usulan</Link>
+                              <Link to="/penelitian/perbaikan">Perbaikan Usulan</Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/laporankemajuan">Laporan Kemajuan</Link>
+                              <Link to="/penelitian/laporan-kemajuan">Laporan Kemajuan</Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/laporanakhir">Laporan Akhir</Link>
+                              <Link to="/penelitian/laporan-akhir">Laporan Akhir</Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                               <Link to="/catatanakhir">Catatan Akhir</Link>

@@ -76,74 +76,51 @@ function App() {
           path="/dashboard-kaprodi-dan-kepala"
           element={<DashboardKaprKepl />}
         />
+        {/* Dosen Penelitian*/}
+        <Route path="/penelitian/usulan" element={<UsulanBaru />} />
         <Route
-          path="/dashboard-kepala-lppm"
-          element={<DashboardKepalaLPPMPage />}
-        />
-        {/* Dosen */}
-        <Route path="/usulanbaru" element={<UsulanBaru />} />
-        <Route path="/perbaikanusulan" element={<PerbaikanUsulan />} />
-        <Route path="/laporankemajuan" element={<LaporanKemajuanPage />} />
-        <Route path="/laporanakhir" element={<LaporanAkhirPage />} />
-        <Route path="/catatanakhir" element={<CatatanAkhir />} />
-        <Route path="/luaran" element={<Luaran />} />
-        <Route
-          path="/usulan-baru-penelitian"
+          path="/penelitian/usulan/baru"
           element={<UsulanBaruPenelitian />}
         />
         <Route
-          path="/usulan-penelitian-edit/:id"
+          path="/penelitian/usulan/edit/:id"
           element={<UsulanBaruPenelitian />}
         />
+        <Route path="/penelitian/perbaikan" element={<PerbaikanUsulan />} />
         <Route
-          path="/perbaikan-usulan-penelitian"
+          path="/penelitian/perbaikan/:id"
           element={<PerbaikanUsulanPeneitian />}
         />
         <Route
-          path="/catatan-harian"
+          path="/penelitian/catatan-harian"
           element={<CatatanHarianPenelitianPage />}
         />
         <Route
-          path="/catatan-harian-view"
+          path="/penelitian/catatan-harian/:id"
           element={<ViewCatatanHarianPage />}
         />
         <Route
-          path="/laporan-kemajuan-progres"
+          path="/penelitian/laporan-kemajuan"
+          element={<LaporanKemajuanPage />}
+        />
+        <Route
+          path="/penelitian/laporan-kemajuan/baru"
           element={<LaporanKemajuanPnltnPage />}
         />
-
         <Route
-          path="/laporan-akhir-progres"
+          path="/penelitian/laporan-kemajuan/edit"
+          element={<LaporanKemajuanPnltnPage />}
+        />
+        <Route
+          path="/penelitian/laporan-akhir"
+          element={<LaporanAkhirPage />}
+        />
+        <Route
+          path="/penelitian/laporan-akhir/baru"
           element={<LaporanAkhirPnltPage />}
         />
 
-        <Route
-          path="/list-usulan-baru-pengabdian"
-          element={<ListUsulanBaruPengabdianPage />}
-        />
-        <Route path="/detail-pengabdian" element={<DetailPengabdianPage />} />
-        <Route
-          path="/tambah-usulan-baru-pengabdian"
-          element={<ProgressUSBPengadianPage />}
-        />
-
-        <Route
-          path="/list-perbaikan-usulan-pengabdian"
-          element={<PerbaikanUsulanListPage />}
-        />
-        <Route
-          path="/perbaikan-usulan-pengabdian"
-          element={<ProgresPerUsPegabdianPage />}
-        />
-        <Route
-          path="/list-laporan-kemajuan-pengabdian"
-          element={<ListLaporanKemajuanInternalPage />}
-        />
-        <Route
-          path="/laporan-kemajuan-pengabdian"
-          element={<LaporanKemajuanPengabdianPage />}
-        />
-        {/* Dosen */}
+        {/* Dosen Pengabdian*/}
 
         {/* Operator */}
         <Route
@@ -190,6 +167,8 @@ function App() {
           path="/monitoring-data-pendukung"
           element={<DataPendukungPage />}
         />
+
+        {/* penugasan reviewer */}
         <Route
           path="/monitoring-pengelola-review"
           element={<PengelolaReviewPage />}

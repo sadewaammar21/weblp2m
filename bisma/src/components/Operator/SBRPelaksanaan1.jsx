@@ -30,6 +30,9 @@ const SBRPelaksanaan1 = () => {
     // Add search logic here
   };
 
+  const handlePlus = () => {
+    navigate("/monitoring-pengelola-review-internal");
+  };
   // Fungsi untuk ekspor data ke Excel
   const handleExportExcel = () => {
     const tableData = [
@@ -64,10 +67,6 @@ const SBRPelaksanaan1 = () => {
   // Fungsi untuk kembali ke halaman sebelumnya
   const handleBack = () => {
     navigate("/monitoring-usulan-reguler");
-  };
-
-  const handlePlus = () => {
-    navigate("/monitoring-pengelola-review-sbr2");
   };
 
   const options = [
@@ -106,17 +105,49 @@ const SBRPelaksanaan1 = () => {
           </button>
         </div>
 
-        <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
+        <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md ">
           <div className="grid grid-cols-2 gap-4 mx-10">
             <div>
               <SearchInput
                 label="NIDN"
-                placeholder="Masukkan NIDN"
+                placeholder="select NIDN"
                 value={nidn}
                 onChange={(e) => setNidn(e.target.value)}
                 onSearch={handleSearch}
-                color="bg-blue-500"
+                color={`bg-bluef-500`}
               />
+            </div>
+            <DropdownCmp
+              label="Tahun Usulan"
+              options={options}
+              selectedOption={tasul}
+              onChange={(value) => setTasul(value)}
+              name="skema"
+              placeholder="Pilih Tahun"
+            />
+          </div>
+          <div className="flex mx-5 ">
+            <div className="mx-2 my-2">
+              <button
+                onClick={handleExportExcel}
+                className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
+              >
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
+                  alt="penelitian"
+                  className="w-5 h-5 mr-2"
+                />
+                Excel
+              </button>
+            </div>
+            <div className="mx-2 my-2">
+              <button
+                onClick={handlePlus}
+                className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
+              >
+                <FaPlus size={15} />
+                Beban Reviewer
+              </button>
             </div>
             <DropdownCmp
               label="Tahun Usulan"

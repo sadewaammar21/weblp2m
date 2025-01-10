@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaPen, FaPlus } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PopUpTambahCatatanHarian from "./PopUpTambahCatatanHarian";
 import PopUpEditCatatanHarian from "./PopUpEditCatataHarian";
+import { deleteLogbook, getLogbooks, getResearchDetail } from "../../Features/ResearchSlice";
 
 const ViewCatatanHarianpnt = () => {
+  const { id } = useParams();
+  const [research, setResearch] = useState({});
+  const [logbook, setLogbook] = useState([]);
   const [isOpenTambah, setIsOpenTambah] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [logbookId, setLogbookId] = useState(0);
 
   const openModalTambah = () => {
     setIsOpenTambah(true);
@@ -14,10 +19,12 @@ const ViewCatatanHarianpnt = () => {
 
   const closeModalTambah = () => {
     setIsOpenTambah(false);
+    fetchLogbooks();
   };
 
-  const openModalEdit = () => {
+  const openModalEdit = (id) => {
     setIsOpenEdit(true);
+    setLogbookId(id);
   };
 
   const closeModalEdit = () => {
@@ -29,6 +36,35 @@ const ViewCatatanHarianpnt = () => {
   const handleBack = () => {
     navigate("/catatan-harian");
   };
+
+  const fetchResearch = async() => {
+    try {
+      const response = await getResearchDetail(id);
+      setResearch(response.data);
+      console.log(research);
+    } catch (error) {
+      throw error;
+    }
+  }
+  const user = JSON.parse(localStorage.getItem('user'));
+  const fetchLogbooks = async () => {
+    try {
+      const response = await getLogbooks({user_id: user.id, id: id, pageSize: 10, currentPage: 1});
+      setLogbook(response.data);
+    } catch (error) {
+      throw error
+    }
+  }
+  useEffect(() => {
+    fetchResearch();
+    fetchLogbooks();
+  }, [id])
+
+  const handleDelete = (id) => {
+    deleteLogbook(id);
+    fetchLogbooks();
+  }
+
   return (
     <div className="mx-10 my-10">
       <div className="bg-blue-50 my-5 p-4 rounded-md shadow-sm flex items-center space-x-4">
@@ -37,9 +73,7 @@ const ViewCatatanHarianpnt = () => {
         {/* Content */}
         <div>
           <h2 className="text-lg font-bold text-gray-800">
-            Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris
-            Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa
-            Sekolah Dasar
+            {research.title}
           </h2>
           <p className="text-sm text-gray-600 mt-1">
             Penelitian Fundamental - Reguler Penelitian Kompetitif Nasional -
@@ -122,54 +156,62 @@ const ViewCatatanHarianpnt = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="border border-black px-4 py-2 align-middle">
-                      1
-                    </td>
-                    <td className="border border-black px-4 py-2 align-middle">
-                      Penelitian Fundamental - Reguler Penelitian Kompetitif
-                      Nasional
-                    </td>
-                    <td className="border border-black px-4 py-2 align-middle"></td>
-                    <td className="border border-black px-4 py-2 align-middle"></td>
-                    <td className="border border-black px-4 py-2 align-middle"></td>
-                    <td className="border border-black px-4 py-2 align-middle">
-                      <div className="flex justify-center items-center space-x">
-                        <button
-                          onClick={openModalEdit}
-                          className="flex items-center px-2 py-1 rounded-md"
-                        >
-                          <img
-                            src={
-                              process.env.PUBLIC_URL + "/assets/act_edit.svg"
-                            }
-                            alt="edit"
-                            className="w-7 h-7"
-                          />
-                        </button>
-                        <button className="flex items-center px-2 py-1 rounded-md">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL + "/assets/act_remove.svg"
-                            }
-                            alt="remove"
-                            className="w-7 h-7"
-                          />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                  {logbook.map((item, index) => (
+                    <tr key={index}>
+                      <td className="border border-black px-4 py-2 align-middle">
+                        {index+1}
+                      </td>
+                      <td className="border border-black px-4 py-2 align-middle">
+                        {item.date_activity}
+                      </td>
+                      <td className="border border-black px-4 py-2 align-middle">
+                        {item.activity_description}
+                      </td>
+                      <td className="border border-black px-4 py-2 align-middle">
+                        {item.percentage}
+                      </td>
+                      <td className="border border-black px-4 py-2 align-middle"></td>
+                      <td className="border border-black px-4 py-2 align-middle">
+                        <div className="flex justify-center items-center space-x">
+                          <button
+                            onClick={() => openModalEdit(item.id)}
+                            className="flex items-center px-2 py-1 rounded-md"
+                          >
+                            <img
+                              src={
+                                process.env.PUBLIC_URL + "/assets/act_edit.svg"
+                              }
+                              alt="edit"
+                              className="w-7 h-7"
+                            />
+                          </button>
+                          <button className="flex items-center px-2 py-1 rounded-md" onClick={() => handleDelete(item.id)}>
+                            <img
+                              src={
+                                process.env.PUBLIC_URL + "/assets/act_remove.svg"
+                              }
+                              alt="remove"
+                              className="w-7 h-7"
+                            />
+                          </button>
+                          
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
             <PopUpTambahCatatanHarian
               isOpen={isOpenTambah}
               onRequestClose={closeModalTambah}
+              id={id}
             />
             <PopUpEditCatatanHarian
-              isOpen={isOpenEdit}
-              onRequestClose={closeModalEdit}
-            />
+                            isOpen={isOpenEdit}
+                            onRequestClose={closeModalEdit}
+                            logbookId={logbookId}
+                          />
           </div>
         </div>
       </div>

@@ -1,25 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
 import TextAreaCmp from "../TextAreaCmp";
 import { FaPlus } from "react-icons/fa";
+import axios from "axios";
+import { getToken } from "../../Features/AuthSlice";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const SubtansiUsulan = ({ navigate, data, setData }) => {
   const [selectedOption, setSelectedOption] = useState("");
-  const [UTDP, setUTDP] = useState("");
+  const [target, setTarget] = useState(0);
 
   const handleDropdownChange = (option, fieldName) => {
     setData((prevData) => ({
       ...prevData,
-      [fieldName]: option,
+      [fieldName]: option.value,
     }));
     console.log("clicked" + option);
   };
 
-  const options = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
-  ];
+  //data
+  const [substance, setSubstance] = useState([]);
+  const [outputCategory, setOutputCategory] = useState([]);
+  const [outputType, setOutputType] = useState([]);
+
+  const fetchSubstance = async() =>{
+    const response = await axios.get(`${apiUrl}/api/substance`, getToken());
+    setSubstance(response.data);
+  }
+  const fetchOutputCategory = async(target) =>{
+    const response = await axios.get(`${apiUrl}/api/output-category/${target}`, getToken());
+    setOutputCategory(response.data);
+  }
+  const fetchOutputType = async() =>{
+    const response = await axios.get(`${apiUrl}/api/output-type`, getToken());
+    setOutputType(response.data);
+  }
+  useEffect(()=>{
+    fetchSubstance();
+    fetchOutputCategory(data.tkt_final);
+    fetchOutputType()
+  }, [data.tkt_final, data.output.id_category_output]);
+
+  const year= [
+      {id: 1, value: 1},
+      {id: 2, value: 2},
+      {id: 3, value: 3},
+      {id: 4, value: 4},
+      {id: 5, value: 5},
+    ];
+
+  const status = [
+    {value: 'submitted', label:'Submitted'},
+    {value: 'draft', label:'Draft'}
+  ]
+
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey]
+    }))
+  }
+
+  //file
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -69,14 +112,13 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
       <div className="grid grid-cols-2 gap-x-10  ">
         <DropdownCmp
           label="Kelompok Makro Riset *"
-          options={options}
-          value={data.substance_id}
+          options={mapToDropdown(substance, 'name', 'id')}
+          value={mapToDropdown(substance, 'name', 'id').find((option) => option.value === data.substance_id)}
           onChange={(option) =>
-            handleDropdownChange(option.value, "substance_id")
+            handleDropdownChange(option, "substance_id")
           }
           placeholder="Kelompok Riset teknologi tinggi"
         />
-
         <div>
           {/* Label dan Link untuk Unduh Template */}
           <div className="flex justify-between items-center mb-2">
@@ -139,31 +181,31 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
         <div className="grid grid-cols-4 gap-x-10">
           <DropdownCmp
             label="Tahun Ke*"
-            options={options}
-            value={output.year}
+            options={mapToDropdown(year, 'value', 'id')}
+            value={mapToDropdown(year, 'value', 'id').find((option) => option.value === output.year)}
             onChange={(option) => handleOutputChange(index, 'year', option.value)}
             placeholder="Tahun"
           />
           <DropdownCmp
             label="Kategori Luaran *"
-            options={options}
-            value={output.id_category_output}
+            options={mapToDropdown(outputCategory, 'name', 'id')}
+            value={mapToDropdown(outputCategory, 'name', 'id').find((option) => option.value === output.id_category_output)}
             onChange={(option) => handleOutputChange(index, 'id_category_output', option.value)}
             placeholder="Pilih Kategori Luaran"
           />
           <DropdownCmp
-            label="Kelompok Makro Riset *"
-            options={options}
-            value={output.id_type_output}
+            label="Tipe Luaran *"
+            options={mapToDropdown(outputType, 'name', 'id')}
+            value={mapToDropdown(outputType, 'name', 'id').find((option) => option.value === output.id_type_output)}
             onChange={(option) => handleOutputChange(index, 'id_type_output', option.value)}
-            placeholder="Pilih Luaran"
+            placeholder="txt"
           />
           <DropdownCmp
             label="Status *"
-            options={options}
-            value={output.status}
+            options={status}
+            value={status.find((option) => option.value === output.status)}
             onChange={(option) => handleOutputChange(index, 'status', option.value)}
-            placeholder="txt"
+            placeholder="Pilih Luaran"
           />
           <TextAreaCmp
             label="Keterangan (optional)"

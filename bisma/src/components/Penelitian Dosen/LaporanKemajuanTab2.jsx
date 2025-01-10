@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import ModalEditLapKemajuanTab2 from "./ModalEditLapKemajuanTab2";
 
-const LaporanKemajuanTab2 = (setData) => {
+const LaporanKemajuanTab2 = ({ research, data, setData }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   const handleFileChange = (event) => {
+    const { name, files } = event.target;
     setData((prevData) => ({
       ...prevData,
-      substance: event.target.files[0],
+      [name]: files[0],
     }));
+    console.log(data)
   };
+
+  const handelSptbData = (sptbItems) => {
+    setData({...data, ...sptbItems});
+    console.log(data);
+  }
 
   const openModal = () => {
     setIsOpen(true);
@@ -44,9 +52,7 @@ const LaporanKemajuanTab2 = (setData) => {
               Penelitian | Tahun Pelaksanaan 2024
             </p>
             <h2 className="text-lg font-bold text-gray-800">
-              Membangun Kemandirian Ekonomi Desa melalui Implementasi Sistem
-              Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa Sinergi
-              Sidowayah
+              {research.title}
             </h2>
 
             <div className="flex mx-1 my-2">
@@ -82,7 +88,7 @@ const LaporanKemajuanTab2 = (setData) => {
           </div>
         </div>
       </div>
-      <ModalEditLapKemajuanTab2 isOpen={isOpen} onRequestClose={closeModal} />
+      <ModalEditLapKemajuanTab2 research={research} data={data} isOpen={isOpen} onRequestClose={closeModal} onSave={handelSptbData}/>
       <div className="my-5">
         {/* Label dan Link untuk Unduh Template */}
         <label className="text-lg font-bold font-sans text-gray-800 ">
@@ -92,7 +98,8 @@ const LaporanKemajuanTab2 = (setData) => {
           {/* Input file */}
           <input
             type="file"
-            onChange={handleFileChange}
+            name="sptb"
+            onChange={(e) => handleFileChange(e)}
             className="border border-gray-300 rounded-lg p-2 w-1/2 my-5"
             id="file-upload"
           />

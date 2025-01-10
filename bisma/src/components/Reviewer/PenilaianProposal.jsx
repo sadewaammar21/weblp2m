@@ -6,6 +6,7 @@ import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import axios from "axios";
+import { getToken } from "../../Features/AuthSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -24,7 +25,8 @@ const PenilaianProposal = () => {
     const fetchData = async () => {
       try {
         const result = await axios.get(
-          `${apiUrl}/api/reviewer/${userParse.id}/research`
+          // `${apiUrl}/api/reviewer/${userParse.id}/research`, getToken()
+          `${apiUrl}/api/reviewer/3/research`, getToken()
         );
         setData(result.data);
         console.log(data);

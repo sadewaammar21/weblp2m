@@ -51,11 +51,13 @@ const NavBar = ({ children }) => {
     };
   }, [dropdownRef]);
 
+  const user = localStorage.getItem("user");
+  const parseUser = JSON.parse(user);
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    const parseUser = JSON.parse(user);
+    console.log(parseUser);
     setUsername(parseUser.name);
     setRoles(parseUser.roles);
+    console.log(roles);
     setCurrentRoles(localStorage.getItem("currentRole"));
   }, []);
 
@@ -78,6 +80,7 @@ const NavBar = ({ children }) => {
   const handleRoleChange = (id) => {
     localStorage.setItem("currentRole", id);
     window.location.reload();
+    navigate("/dashboard");
   };
 
   const showLogoutConfirmation = () => {
@@ -155,6 +158,7 @@ const NavBar = ({ children }) => {
                 <li
                   className="text-white hover:text-gray-300 cursor-pointer flex items-center"
                   onMouseEnter={() => handleDropdownEnter(1)}
+                  onClick={() => navigate("/dashboard")}
                 >
                   <img
                     src={process.env.PUBLIC_URL + "/assets/dashboard.svg"}
@@ -167,7 +171,7 @@ const NavBar = ({ children }) => {
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
-                      {roles.map((item, index) => (
+                      {parseUser.roles.map((item, index) => (
                         <li
                           key={index}
                           className="px-4 py-2  hover:bg-violet-800 relative"
@@ -211,23 +215,27 @@ const NavBar = ({ children }) => {
                         {subDropdown && (
                           <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/usulanbaru">Usulan Baru</Link>
+                              <Link to="/penelitian/usulan">Usulan Baru</Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/perbaikanusulan">
+                              <Link to="/penelitian/perbaikan">
                                 Perbaikan Usulan
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/laporankemajuan">
+                              <Link to="/penelitian/laporan-kemajuan">
                                 Laporan Kemajuan
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/laporanakhir">Laporan Akhir</Link>
+                              <Link to="/penelitian/laporan-akhir">
+                                Laporan Akhir
+                              </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/catatan-harian">Catatan Harian</Link>
+                              <Link to="/penelitian/catatan-harian">
+                                Catatan Harian
+                              </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                               <Link to="/luaran">Luaran</Link>
@@ -273,22 +281,22 @@ const NavBar = ({ children }) => {
                         {subDropdown && (
                           <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/list-usulan-baru-pengabdian">
-                                Usulan Baru
-                              </Link>
+                              <Link to="/penelitian/usulan">Usulan Baru</Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/list-perbaikan-usulan-pengabdian">
+                              <Link to="/penelitian/perbaikan">
                                 Perbaikan Usulan
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/list-laporan-kemajuan-pengabdian">
+                              <Link to="/penelitian/laporan-kemajuan">
                                 Laporan Kemajuan
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/laporanakhir">Laporan Akhir</Link>
+                              <Link to="/penelitian/laporan-akhir">
+                                Laporan Akhir
+                              </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
                               <Link to="/catatanakhir">Catatan Akhir</Link>

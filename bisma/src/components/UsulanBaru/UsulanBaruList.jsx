@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
-import { getResearch } from "../../Features/ResearchSlice";
+import { deleteResearch, getResearch } from "../../Features/ResearchSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -11,29 +11,36 @@ const UsulanBaruList = () => {
   const [error, setError] = useState(null);
 
   const handleClick = () => {
-    navigate("/usulan-baru-penelitian"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/penelitian/usulan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  };
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const fetchData = async () => {
+    try {
+      const result = await getResearch({
+        pageSize: 5,
+        currentPage: 1,
+        // status: 1,
+        // year: 2024,
+        userId: user.id,
+      });
+      setData(result.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getResearch({
-          pageSize: 5,
-          currentPage: 1,
-          status: 1,
-          year: 2024,
-          userId: 1,
-        });
-        setData(result.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const handleDelete = async (id) => {
+    const response = await deleteResearch(id);
+    console.log(response);
+    fetchData();
+  };
 
   return (
     <div className="mx-5">
@@ -103,15 +110,25 @@ const UsulanBaruList = () => {
                   <td>
                     <button
                       onClick={() =>
-                        navigate(`/usulan-penelitian-edit/${item.id}`)
+                        navigate(`/penelitian/usulan/edit/${item.id}`)
                       }
+                      className="bg-blue-500 px-2 py-1 rounded-md text-white"
                     >
-                      action here
+                      edit
                     </button>
-                  </td>
-                  <td>
-                    <button onClick={() => navigate(`/detail-penelitian`)}>
-                      action here
+                    <button
+                      onClick={() =>
+                        navigate(`/penelitian/usulan/edit/${item.id}`)
+                      }
+                      className="bg-blue-500 px-2 py-1 rounded-md text-white"
+                    >
+                      detail
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className={`bg-red-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+                    >
+                      delete
                     </button>
                   </td>
                 </tr>

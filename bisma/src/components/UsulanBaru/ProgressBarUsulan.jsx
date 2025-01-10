@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getToken } from "../../Features/AuthSlice";
+import { addResearch, updateStatus } from "../../Features/ResearchSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -67,12 +68,12 @@ const ProgressBarUsulan = () => {
   //data management
   const [data, setData] = useState({
     title: "",
-    tkt_current: "",
-    tkt_final: "",
+    tkt_current: 0,
+    tkt_final: 0,
     members: [],
     students: [],
     output: [],
-    budgetPlan: [],
+    budget_plan: [],
     supportingDocument: [],
   });
 
@@ -92,158 +93,176 @@ const ProgressBarUsulan = () => {
     console.log(data);
   }, [id]);
 
-  useEffect(() => {
-    console.log(data);
-  });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const accessToken = localStorage.getItem("accessToken");
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    if (isEdit) {
-      formData.append("_method", "PUT");
-    }
+    // if(isEdit) {
+    //     formData.append("_method", "PUT");
+    // }
 
-    formData.append("title", data.title);
-    formData.append("tkt_current", data.tkt_current);
-    formData.append("tkt_final", data.tkt_final);
-    formData.append("scheme_id", data.scheme_id);
-    formData.append("scope_id", data.scope_id);
-    formData.append("category_id", data.category_id);
-    formData.append("focus_id", data.focus_id);
-    formData.append("theme_id", data.theme_id);
-    formData.append("topic_id", data.topic_id);
-    formData.append("cluster_lv1", data.cluster_lv1);
-    formData.append("cluster_lv2", data.cluster_lv2);
-    formData.append("cluster_lv3", data.cluster_lv3);
-    formData.append("priority_id", data.priority_id);
-    formData.append("year", data.year);
-    formData.append("duration", data.duration);
-    formData.append("leader_name", data.leader_name);
-    formData.append("leader_task", data.leader_task);
-    formData.append("substance_id", data.substance_id);
-    formData.append("status", 1);
+    // formData.append("title", data.title);
+    // formData.append("tkt_current", data.tkt_current);
+    // formData.append("tkt_final", data.tkt_final);
+    // formData.append("scheme_id", data.scheme_id);
+    // formData.append("scope_id", data.scope_id);
+    // formData.append("category_id", data.category_id);
+    // formData.append("focus_id", data.focus_id);
+    // formData.append("theme_id", data.theme_id);
+    // formData.append("topic_id", data.topic_id);
+    // formData.append("cluster_lv1", data.cluster_lv1);
+    // formData.append("cluster_lv2", data.cluster_lv2);
+    // formData.append("cluster_lv3", data.cluster_lv3);
+    // formData.append("priority_id", data.priority_id);
+    // formData.append("year", data.year);
+    // formData.append("duration", data.duration);
+    // formData.append("leader_name", data.leader_name);
+    // formData.append("leader_task", data.leader_task);
+    // formData.append("substance_id", data.substance_id);
+    // if(isEdit){
+    //   formData.append("status", data.status);
+    // }else{
+    //   formData.append("status", 1);
+    // }
 
-    if (data.substance) {
-      formData.append("substance", data.substance);
-    }
+    // if (data.substance) {
+    //   formData.append("substance", data.substance);
+    // }
 
-    data.members.forEach((member, index) => {
-      formData.append(`members[${index}][id]`, member.id);
-      formData.append(`members[${index}][research_role]`, member.research_role);
-      formData.append(`members[${index}][task]`, member.task);
-      formData.append(`members[${index}][status]`, member.status);
-    });
+    // data.members.forEach((member, index) => {
+    //   formData.append(`members[${index}][id]`, member.id);
+    //   formData.append(`members[${index}][research_role]`, member.pivot.research_roles);
+    //   formData.append(`members[${index}][task]`, member.pivot.task);
+    //   formData.append(`members[${index}][status]`, member.pivot.status);
+    // });
 
-    data.students.forEach((student, index) => {
-      formData.append(`students[${index}][name]`, student.name);
-      formData.append(`students[${index}][nim]`, student.nim);
-      formData.append(`students[${index}][address]`, student.address);
-      formData.append(`students[${index}][email]`, student.email);
-      formData.append(`students[${index}][phone]`, student.phone);
-      formData.append(`students[${index}][prodi]`, student.prodi);
-      formData.append(`students[${index}][role]`, student.role);
-      formData.append(`students[${index}][task]`, student.task);
-    });
+    // data.students.forEach((student, index) => {
+    //   formData.append(`students[${index}][name]`, student.name);
+    //   formData.append(`students[${index}][nim]`, student.nim);
+    //   formData.append(`students[${index}][address]`, student.address);
+    //   formData.append(`students[${index}][email]`, student.email);
+    //   formData.append(`students[${index}][phone]`, student.phone);
+    //   formData.append(`students[${index}][prodi]`, student.prodi);
+    //   formData.append(`students[${index}][role]`, student.role);
+    //   formData.append(`students[${index}][task]`, student.task);
+    // });
 
-    data.output.forEach((output, index) => {
-      formData.append(`output[${index}][year]`, output.year);
-      formData.append(
-        `output[${index}][id_category_output]`,
-        output.id_category_output
-      );
-      formData.append(
-        `output[${index}][id_type_output]`,
-        output.id_type_output
-      );
-      formData.append(`output[${index}][status]`, output.status);
-      formData.append(`output[${index}][description]`, output.description);
-    });
+    // data.output.forEach((output, index) => {
+    //   formData.append(`output[${index}][year]`, output.year);
+    //   formData.append(
+    //     `output[${index}][id_category_output]`,
+    //     output.id_category_output
+    //   );
+    //   formData.append(
+    //     `output[${index}][id_type_output]`,
+    //     output.id_type_output
+    //   );
+    //   formData.append(`output[${index}][status]`, output.status);
+    //   formData.append(`output[${index}][description]`, output.description);
+    // });
 
-    data.budgetPlan.forEach((budgetPlan, index) => {
-      formData.append(`budgetPlan[${index}][year]`, budgetPlan.year);
-      formData.append(
-        `budgetPlan[${index}][id_group_budget]`,
-        budgetPlan.id_group_budget
-      );
-      formData.append(
-        `budgetPlan[${index}][id_component_budget]`,
-        budgetPlan.id_component_budget
-      );
-      formData.append(`budgetPlan[${index}][item]`, budgetPlan.item);
-      formData.append(`budgetPlan[${index}][unit]`, budgetPlan.unit);
-      formData.append(`budgetPlan[${index}][volume]`, budgetPlan.volume);
-      formData.append(
-        `budgetPlan[${index}][price_unit]`,
-        budgetPlan.price_unit
-      );
-      formData.append(`budgetPlan[${index}][total]`, budgetPlan.total);
-    });
+    // data.budget_plan.forEach((budgetPlan, index) => {
+    //   formData.append(`budgetPlan[${index}][year]`, budgetPlan.year);
+    //   formData.append(
+    //     `budgetPlan[${index}][id_group_budget]`,
+    //     budgetPlan.id_group_budget
+    //   );
+    //   formData.append(
+    //     `budgetPlan[${index}][id_component_budget]`,
+    //     budgetPlan.id_component_budget
+    //   );
+    //   formData.append(`budgetPlan[${index}][item]`, budgetPlan.item);
+    //   formData.append(`budgetPlan[${index}][unit]`, budgetPlan.unit);
+    //   formData.append(`budgetPlan[${index}][volume]`, budgetPlan.volume);
+    //   formData.append(
+    //     `budgetPlan[${index}][price_unit]`,
+    //     budgetPlan.price_unit
+    //   );
+    //   formData.append(`budgetPlan[${index}][total]`, budgetPlan.total);
+    // });
 
-    data.supportingDocument.forEach((supportingDocument, index) => {
-      formData.append(
-        `supportingDocument[${index}][partner_name]`,
-        supportingDocument.partner_name
-      );
-      formData.append(
-        `supportingDocument[${index}][email]`,
-        supportingDocument.email
-      );
-      formData.append(
-        `supportingDocument[${index}][institution]`,
-        supportingDocument.institution
-      );
-      formData.append(
-        `supportingDocument[${index}][country_code]`,
-        supportingDocument.country_code
-      );
-      formData.append(
-        `supportingDocument[${index}][institution_address]`,
-        supportingDocument.institution_address
-      );
-      formData.append(
-        `supportingDocument[${index}][funding_contribution1]`,
-        supportingDocument.funding_contribution1
-      );
-      formData.append(
-        `supportingDocument[${index}][funding_contribution2]`,
-        supportingDocument.funding_contribution2
-      );
-      if (supportingDocument.document) {
-        formData.append(
-          `supportingDocument[${index}][document]`,
-          supportingDocument.document
-        );
-      }
-    });
+    // data.supportingDocument.forEach((supportingDocument, index) => {
+    //   formData.append(
+    //     `supportingDocument[${index}][partner_name]`,
+    //     supportingDocument.partner_name
+    //   );
+    //   formData.append(
+    //     `supportingDocument[${index}][email]`,
+    //     supportingDocument.email
+    //   );
+    //   formData.append(
+    //     `supportingDocument[${index}][institution]`,
+    //     supportingDocument.institution
+    //   );
+    //   formData.append(
+    //     `supportingDocument[${index}][country_code]`,
+    //     supportingDocument.country_code
+    //   );
+    //   formData.append(
+    //     `supportingDocument[${index}][institution_address]`,
+    //     supportingDocument.institution_address
+    //   );
+    //   formData.append(
+    //     `supportingDocument[${index}][funding_contribution1]`,
+    //     supportingDocument.funding_contribution1
+    //   );
+    //   formData.append(
+    //     `supportingDocument[${index}][funding_contribution2]`,
+    //     supportingDocument.funding_contribution2
+    //   );
+    //   if (supportingDocument.document) {
+    //     formData.append(
+    //       `supportingDocument[${index}][document]`,
+    //       supportingDocument.document
+    //     );
+    //   }
+    // });
 
-    try {
-      if (isEdit) {
-        const response = await axios.post(
-          `${apiUrl}/api/research/${id}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        console.log(response.data);
-      } else {
-        const response = await axios.post(`${apiUrl}/api/research`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        console.log(response.data);
-      }
-      navigate("/usulanbaru");
-    } catch (error) {
-      console.log(error);
-      throw error;
+    // try {
+    //   if (isEdit) {
+    //     const response = await axios.post(`${apiUrl}/api/research/${id}`, formData, getToken());
+    //     if(e.target.name === 'ajukan'){
+    //       if(response.data.data.members.every(member => member.pivot.status === '2' || member.pivot.status === 'accepted')){
+    //         const responseStatus = await updateStatus({ researchId: response.data.data.id, newStatus: 2, note: 'diajukan' });
+    //         console.log('Response:', responseStatus);
+    //       }
+    //     }
+    //     console.log(response.data);
+    //   } else {
+    //     const response = await axios.post(`${apiUrl}/api/research`, formData, getToken());
+    //     if(e.target.name === 'ajukan'){
+    //       if(response.data.data.members.every(member => member.pivot.status === '2' || member.pivot.status === 'accepted')){
+    //         const responseStatus = await updateStatus({ researchId: response.data.data.id, newStatus: 2, note: 'diajukan' });
+    //         console.log('Response:', responseStatus);
+    //       }
+    //     }
+    //     console.log(response.data);
+    //   }
+    //   navigate("/penelitian/usulan");
+    // } catch (error) {
+    //   console.log(error);
+    //   throw error;
+    // }
+    if (e.target.name === "ajukan") {
+      const response = await addResearch({
+        data: data,
+        isEdit: isEdit,
+        researchId: data.id,
+        isSubmit: true,
+        newStatus: 2,
+      });
+      console.log(response);
+      navigate("/penelitian/usulan");
+    } else {
+      const response = await addResearch({
+        data: data,
+        isEdit: isEdit,
+        researchId: data.id,
+        isSubmit: true,
+        newStatus: 2,
+      });
+      console.log(response);
+      navigate("/penelitian/usulan");
     }
   };
 
@@ -291,13 +310,25 @@ const ProgressBarUsulan = () => {
               >
                 Next
               </button>
-              <button
-                onClick={handleSubmit}
-                disabled={currentStep < steps.length}
-                className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === steps.length ? "" : "hidden"}`}
+              <div
+                className={`${currentStep === steps.length ? "" : "hidden"}`}
               >
-                Submit
-              </button>
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  disabled={currentStep < steps.length}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded mx-5 ${currentStep === steps.length ? "" : "hidden"}`}
+                >
+                  Submit
+                </button>
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  name="ajukan"
+                  disabled={currentStep < steps.length}
+                  className={`px-4 py-2 bg-green-600 text-white rounded ${data.members.every((member) => member.pivot.status === "2" || member.pivot.status === "accepted") ? "" : "hidden"}`}
+                >
+                  Ajukan
+                </button>
+              </div>
             </div>
           </div>
         </div>

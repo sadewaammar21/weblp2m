@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
-import {getResearch} from "../../Features/ResearchSlice"
+import { getResearch } from "../../Features/ResearchSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -10,32 +10,32 @@ const UsulanBaruList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const handleView = () => {
-    navigate("/catatan-harian-view"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  const handleView = (id) => {
+    navigate(`/penelitian/catatan-harian/${id}`); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
-    
+  const user = JSON.parse(localStorage.getItem("user"));
+  const fetchData = async () => {
+    try {
+      const result = await getResearch({
+        pageSize: 5,
+        currentPage: 1,
+        // status: 1,
+        // year: 2024,
+        userId: user.id,
+      });
+      setData(result.data);
+      // console.log(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const result = await getResearch({
-//           pageSize: 5,
-//           currentPage: 1,
-//           status: 1,
-//           year: 2024,
-//           userId: 1,
-//         });
-//         setData(result.data);
-//       } catch (err) {
-//         setError(err.message);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="mx-5">
@@ -49,7 +49,6 @@ const UsulanBaruList = () => {
       {/* Card untuk bagian Tambah Usulan dan Tabel */}
       <div className="bg-gray-50 shadow-sm  rounded-sm  p-5 ">
         <div className="flex justify-end items-center w-full">
-          
           <div>
             <h1>Tahun Pelaksana</h1>
             <div className="flex">
@@ -69,47 +68,65 @@ const UsulanBaruList = () => {
 
         {/* Tabel */}
         <div className="relative overflow-x-auto my-10">
-  <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
-    <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
-      <tr>
-        <th className="border border-black px-4 py-2 align-middle">No</th>
-        <th className="border border-black px-4 py-2 align-middle">Skema</th>
-        <th className="border border-black px-4 py-2 align-middle">Tahun</th>
-        <th className="border border-black px-4 py-2 align-middle">Judul</th>
-        <th className="border border-black px-4 py-2 align-middle">Keterangan</th>
-        <th className="border border-black px-4 py-2 align-middle">Aksi</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td className="border border-black px-4 py-2 align-middle">1</td>
-        <td className="border border-black px-4 py-2 align-middle break-words">
-          Penelitian Fundamental - Reguler Penelitian Kompetitif Nasional
-        </td>
-        <td className="border border-black px-4 py-2 align-middle">2024</td>
-        <td className="border border-black px-4 py-2 align-middle break-words">
-          Pengembangan Aplikasi untuk Optimalisasi Pembelajaran
-        </td>
-        <td className="border border-black px-4 py-2 align-middle break-words">
-          Informasi terkait penelitian ini disediakan pada kolom berikut.
-        </td>
-        <td className="border border-black px-4 py-2 align-middle">
-          <button
-            onClick={handleView}
-            className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
-          >
-            <img
-              src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-              alt="penelitian"
-              className="w-7 h-7 mr-2"
-            />
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
+          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th className="border border-black px-4 py-2 align-middle">
+                  No
+                </th>
+                <th className="border border-black px-4 py-2 align-middle">
+                  Skema
+                </th>
+                <th className="border border-black px-4 py-2 align-middle">
+                  Tahun
+                </th>
+                <th className="border border-black px-4 py-2 align-middle">
+                  Judul
+                </th>
+                <th className="border border-black px-4 py-2 align-middle">
+                  Keterangan
+                </th>
+                <th className="border border-black px-4 py-2 align-middle">
+                  Aksi
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr key={index}>
+                  <td className="border border-black px-4 py-2 align-middle">
+                    {index+1}
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle break-words">
+                    {item.scheme.name}
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle">
+                    {item.year}
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle break-words">
+                    {item.title}
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle break-words">
+                    Informasi terkait penelitian ini disediakan pada kolom
+                    berikut.
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle">
+                    <button
+                      onClick={() => handleView(item.id)}
+                      className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                    >
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                        alt="penelitian"
+                        className="w-7 h-7 mr-2"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

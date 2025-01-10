@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
+import axios from "axios";
+import { getToken } from "../../Features/AuthSlice";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const RencanaAnggranBi = ({ navigate, data, setData }) => {
   const [selectedOption, setSelectedOption] = useState("");
@@ -13,36 +17,51 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
   const [hargaSatuan, setHargaSatuan] = useState("");
   const [total, setTotal] = useState("");
 
-  const handleDropdownChange = (option) => {
-    setSelectedOption(option);
-  };
+  //data
+  const [budgetComponent, setBudgetComponent] = useState([]);
+  const [budgetGroup, setBudgetGroup] = useState([]);
+  
+  const fetchBudgetComponent = async() =>{
+    const response = await axios.get(`${apiUrl}/api/budget-component`, getToken());
+    setBudgetComponent(response.data);
+  }
+  const fetchBudgetGroup = async() =>{
+    const response = await axios.get(`${apiUrl}/api/budget-group`, getToken());
+    setBudgetGroup(response.data);
+  }
+  useEffect(()=>{
+    fetchBudgetComponent();
+    fetchBudgetGroup()
+  }, []);
 
-  const options = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
-  ];
-  const kelompokOptions = ["Kelompok 1", "Kelompok 2", "Kelompok 3"];
-  const komponenOptions = ["Komponen 1", "Komponen 2", "Komponen 3"];
-  // const satuanOptions = ["Satuan 1", "Satuan 2", "Satuan 3"];
+  const year = [
+      {id: 1, value: 1},
+      {id: 2, value: 2},
+      {id: 3, value: 3},
+      {id: 4, value: 4},
+      {id: 5, value: 5},
+    ];
 
-  const handleClick = () => {
-    navigate("#"); // Arahkan ke halaman 'usulan-baru-penelitian'
-  };
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey]
+    }))
+  }
 
   //tambah rab
   const handleBudgetChange = (index, name, value) => {
-    const updatedBudget = [...data.budgetPlan];
+    const updatedBudget = [...data.budget_plan];
     updatedBudget[index][name] = value;
-    setData({ ...data, budgetPlan: updatedBudget });
-    console.log(data.budgetPlan);
+    setData({ ...data, budget_plan: updatedBudget });
+    console.log(data.budget_plan);
   };
 
   const addBudgetField = () => {
     setData({
       ...data,
-      budgetPlan: [
-        ...data.budgetPlan,
+      budget_plan: [
+        ...data.budget_plan,
         {
           year: 0,
           id_group_budget: 0,
@@ -96,12 +115,12 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
         </div>
         <div></div>
       </div>
-      {data.budgetPlan.map((item, index) => (
+      {data.budget_plan.map((item, index) => (
         <div className="grid grid-cols-8 gap-x-4">
           <DropdownCmp
             label="Tahun Ke"
-            options={options}
-            value={item.year}
+            options={mapToDropdown(year, 'value', 'id')}
+            value={mapToDropdown(year, 'value', 'id').find((option) => option.value === item.year)}
             onChange={(option) =>
               handleBudgetChange(index, "year", option.value)
             }
@@ -109,8 +128,8 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
           />
           <DropdownCmp
             label="Kelompok RAB"
-            options={options}
-            value={item.id_group_budget}
+            options={mapToDropdown(budgetGroup, 'name', 'id')}
+            value={mapToDropdown(budgetGroup, 'name', 'id').find((option) => option.value === item.id_group_budget)}
             onChange={(option) =>
               handleBudgetChange(index, "id_group_budget", option.value)
             }
@@ -118,8 +137,8 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
           />
           <DropdownCmp
             label="Komponen"
-            options={options}
-            value={item.id_component_budget}
+            options={mapToDropdown(budgetComponent, 'name', 'id')}
+            value={mapToDropdown(budgetComponent, 'name', 'id').find((option) => option.value === item.id_component_budget)}
             onChange={(option) =>
               handleBudgetChange(index, "id_component_budget", option.value)
             }
