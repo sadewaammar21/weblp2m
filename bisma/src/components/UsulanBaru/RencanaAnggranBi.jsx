@@ -3,6 +3,7 @@ import { FaPlus } from "react-icons/fa";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import axios from "axios";
+import { getToken } from "../../Features/AuthSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -21,11 +22,11 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
   const [budgetGroup, setBudgetGroup] = useState([]);
   
   const fetchBudgetComponent = async() =>{
-    const response = await axios.get(`${apiUrl}/api/budget-component`);
+    const response = await axios.get(`${apiUrl}/api/budget-component`, getToken());
     setBudgetComponent(response.data);
   }
   const fetchBudgetGroup = async() =>{
-    const response = await axios.get(`${apiUrl}/api/budget-group`);
+    const response = await axios.get(`${apiUrl}/api/budget-group`, getToken());
     setBudgetGroup(response.data);
   }
   useEffect(()=>{

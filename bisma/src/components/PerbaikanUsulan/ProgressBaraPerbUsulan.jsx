@@ -1,9 +1,12 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import SubstansiPerbUsulan from './SubstansiPerbUsulan';
 import RABPerbUsulan from './RABPerbUsulan';
 import SuratKesanggupan from './SuratKesanggupan';
 import KonfirmasiPerbUsulan from './KonfirmasiPerbUsulan';
 import PerbaikanUsulanList from './PerbaikanUsulanList';
+import { getResearchDetail, addResearch } from '../../Features/ResearchSlice';
 
 const steps = [
     { id: 1, label: "Substansi" },
@@ -38,7 +41,32 @@ const steps = [
   };
 
 const ProgressBarPerbUsulan = () => {
-    const [currentStep, setCurrentStep] = React.useState(1);
+  const navigate = useNavigate()
+  const {id} = useParams();
+  const [research, setResearch] = useState({});
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const fetchResearchDetail = async() => {
+    const response = await getResearchDetail(id);
+    setResearch(response.data);
+    console.log(research);
+  }
+  useEffect(()=>{
+    fetchResearchDetail()
+  }, [])
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    if(e.target.name === 'ajukan'){
+          const response = await addResearch({data: research, isEdit: true, researchId: research.id, isSubmit: true, newStatus: 7});
+          console.log(response);
+          navigate(-1);
+        }else{
+          const response = await addResearch({data: research, isEdit: true, researchId: research.id, isSubmit: false, newStatus: 7})
+          console.log(response);
+          navigate(-1);
+        }
+  }
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
@@ -52,11 +80,11 @@ const ProgressBarPerbUsulan = () => {
 
         switch (step) {
             case 1:
-                return <SubstansiPerbUsulan/>;
+                return <SubstansiPerbUsulan research={research} setResearch={setResearch}/>;
             case 2:
-                return <RABPerbUsulan/>;
+                return <RABPerbUsulan research={research} setResearch={setResearch}/>;
             case 3:
-                return <SuratKesanggupan/>;
+                return <SuratKesanggupan research={research} setResearch={setResearch}/>;
             case 4:
                 return <KonfirmasiPerbUsulan/>;
             default:
@@ -84,8 +112,7 @@ const ProgressBarPerbUsulan = () => {
       {/* Content */}
       <div>
         <h2 className="text-lg font-bold text-gray-800">
-          Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris Berbasis
-          Digital Visual Literacy dan Keterampilan 5C untuk Siswa Sekolah Dasar
+          {research.title}
         </h2>
         <p className="text-sm text-gray-600 mt-1">
           Penelitian Fundamental - Reguler Penelitian Kompetitif Nasional -
@@ -102,9 +129,26 @@ const ProgressBarPerbUsulan = () => {
         <button onClick={handlePrevStep} disabled={currentStep === 1} className="px-4 py-2 bg-gray-500 text-white rounded">
           Previous
         </button>
-        <button onClick={handleNextStep} disabled={currentStep === steps.length} className="px-4 py-2 bg-blue-600 text-white rounded">
+        <button onClick={handleNextStep} disabled={currentStep === steps.length} className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === steps.length ? "hidden" : ""}`}>
           Next
         </button>
+        <div className={`${currentStep === steps.length ? "" : "hidden"}`}>
+                <button
+                  onClick={(e) =>handleSubmit(e)}
+                  disabled={currentStep < steps.length}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded mx-5 ${currentStep === steps.length ? "" : "hidden"}`}
+                >
+                  Submit
+                </button>
+                <button
+                  onClick={(e) =>handleSubmit(e)}
+                  name="ajukan"
+                  disabled={currentStep < steps.length}
+                  className={`px-4 py-2 bg-green-600 text-white rounded  ${currentStep === steps.length ? "" : "hidden"}`}
+                >
+                  Ajukan
+                </button>
+              </div>
       </div>
     </div>
     </div>

@@ -9,6 +9,7 @@ import PopUpDosen from "./PopUpDosen";
 import PopUpMhs from "./PopUpMhs";
 import axios from "axios";
 import { id } from "date-fns/locale";
+import { getToken } from "../../Features/AuthSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -105,43 +106,43 @@ const IdentitasUsulan = ({ data, setData }) => {
   ]);
 
   const fetchScheme = async(target) =>{
-    const response = await axios.get(`${apiUrl}/api/research-scheme/${target}`);
+    const response = await axios.get(`${apiUrl}/api/research-scheme/${target}`, getToken());
     setScheme(response.data);
   }
   const fetchScope = async() =>{
-    const response = await axios.get(`${apiUrl}/api/scope`);
+    const response = await axios.get(`${apiUrl}/api/scope`, getToken());
     setScope(response.data);
   }
   const fetchCategory = async() =>{
-    const response = await axios.get(`${apiUrl}/api/category`);
+    const response = await axios.get(`${apiUrl}/api/category`, getToken());
     setCategory(response.data);
   }
   const fetchFocus = async() =>{
-    const response = await axios.get(`${apiUrl}/api/research-focus`);
+    const response = await axios.get(`${apiUrl}/api/research-focus`, getToken());
     setFocus(response.data);
   }
   const fetchTheme = async(focus) =>{
-    const response = await axios.get(`${apiUrl}/api/research-theme/${focus}`);
+    const response = await axios.get(`${apiUrl}/api/research-theme/${focus}`, getToken());
     setTheme(response.data);
   }
   const fetchTopic = async(theme) =>{
-    const response = await axios.get(`${apiUrl}/api/research-topic/${theme}`);
+    const response = await axios.get(`${apiUrl}/api/research-topic/${theme}`, getToken());
     setTopic(response.data);
   }
   const fetchCluster1 = async() =>{
-    const response = await axios.get(`${apiUrl}/api/cluster1`);
+    const response = await axios.get(`${apiUrl}/api/cluster1`, getToken());
     setCluster1(response.data);
   }
   const fetchCluster2 = async() =>{
-    const response = await axios.get(`${apiUrl}/api/cluster2`);
+    const response = await axios.get(`${apiUrl}/api/cluster2`, getToken());
     setCluster2(response.data);
   }
   const fetchCluster3 = async() =>{
-    const response = await axios.get(`${apiUrl}/api/cluster3`);
+    const response = await axios.get(`${apiUrl}/api/cluster3`, getToken());
     setCluster3(response.data);
   }
   const fetchPriority = async() =>{
-    const response = await axios.get(`${apiUrl}/api/research-priority`);
+    const response = await axios.get(`${apiUrl}/api/research-priority`, getToken());
     setPriority(response.data);
   }
 

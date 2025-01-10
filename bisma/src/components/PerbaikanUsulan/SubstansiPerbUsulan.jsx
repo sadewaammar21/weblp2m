@@ -1,20 +1,55 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import DropdownCmp from '../DropdownCmp'
 import TextAreaCmp from '../TextAreaCmp'
 import TextfieldCmp from '../TextfieldCmp'
+import { getReviewByResearch } from '../../Features/ResearchSlice'
+import axios from 'axios'
+import { getToken } from '../../Features/AuthSlice'
 
-const SubstansiPerbUsulan = ({navigate}) => {
+const apiUrl = process.env.REACT_APP_API_URL;
+
+const SubstansiPerbUsulan = ({research, setResearch}) => {
     const [selectedOption, setSelectedOption] = useState('');
-  const [UTDP,setUTDP] = useState('');
+  const [review,setReview] = useState([]);
+  const [substance, setSubstance] = useState([]);
 
-  const handleDropdownChange = (option) => {
-    setSelectedOption(option);
+  const fetchReview = async(id) => {
+    const response = await getReviewByResearch(id);
+    setReview(response.data);
+  } 
+  const fetchSubstance = async() =>{
+    const response = await axios.get(`${apiUrl}/api/substance`, getToken());
+    setSubstance(response.data);
+  }
+  useEffect(()=> {
+    setSelectedFile(research.substance)
+    fetchReview(research.id)
+    fetchSubstance()
+  },[research.id])
+
+  const handleDropdownChange = (option, fieldName) => {
+    setResearch((prevData) => ({
+      ...prevData,
+      [fieldName]: option.value,
+    }));
+    console.log("clicked" + option);
   };
   
-  const [selectedFile, setSelectedFile] = useState(null);
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey]
+    }))
+  }
 
+  //file
+  const [selectedFile, setSelectedFile] = useState(null);
+  
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setResearch((prevData) => ({
+      ...prevData,
+      substance: event.target.files[0],
+    }));
   };
 
   const options = [
@@ -24,7 +59,7 @@ const SubstansiPerbUsulan = ({navigate}) => {
   ];
 
   const handleClick = () => {
-    navigate('#'); // Arahkan ke halaman 'usulan-baru-penelitian'
+    // navigate('#'); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   const handleInputChange = (setter) =>(e)=>{
@@ -36,12 +71,13 @@ const SubstansiPerbUsulan = ({navigate}) => {
         <div className='grid grid-cols-2 gap-x-10  '>
         <DropdownCmp
           label="Kelompok Makro Riset *"
-            options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}// Corrected here
-            placeholder="Kelompok Riset teknologi tinggi"
+          options={mapToDropdown(substance, 'name', 'id')}
+          value={mapToDropdown(substance, 'name', 'id').find((option) => option.value === research.substance_id)}
+          onChange={(option) =>
+            handleDropdownChange(option, "substance_id")
+          }
+          placeholder="Kelompok Riset teknologi tinggi"
         />
-    
         <div>
         {/* Label dan Link untuk Unduh Template */}
         <div className="flex justify-between items-center mb-2">
@@ -61,21 +97,20 @@ const SubstansiPerbUsulan = ({navigate}) => {
         </a>
         </div>
 
-        {/* Label untuk Download Isian Substansi */}
-        <div className="flex justify-between items-center">
-        <label className="font-medium text-gray-700">
-            Download Isian Substansi Revisi Proposal Penelitian
-        </label>
-        {/* Tombol Unggah Ulang */}
-        </div>
-        <div className=''>
-        <button
-        onClick={handleFileChange}
-        className="bg-oranges-600 text-white px-4 py-2 rounded-md hover:bg-orange-700"
-        >
-        Unggah Ulang
-        </button>
-        </div>
+        {/* Input untuk upload file */}
+          <input
+            type="file"
+            onChange={handleFileChange}
+            className="border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
+            id="file-upload"
+          />
+
+          {/* Menampilkan nama file yang dipilih */}
+          {selectedFile && (
+            <p className="mt-2 text-gray-600">
+              File yang dipilih: {selectedFile.name}
+            </p>
+          )}
 
         {/* Menampilkan nama file yang dipilih */}
         {selectedFile && (
@@ -88,13 +123,24 @@ const SubstansiPerbUsulan = ({navigate}) => {
         <div>
         <h1 className='text-xl font-bold text-violet-800 mx-5 my-5'> Catatan Reviewer</h1>
         <div>
-        <TextAreaCmp
-                name="description"
-                value={UTDP}
-                onChange={handleInputChange(setUTDP)}
-                placeholder="Enter your description here..."
-                rows={10} 
-              />
+        <table className="w-full text-sm text-center text-gray-500 border border-gray-300">
+              <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
+                <tr>
+                  <th className="border px-4 py-2">No</th>
+                  <th className="border px-4 py-2">Reviewer</th>
+                  <th className="border px-4 py-2">Catatan</th>
+                </tr>
+              </thead>
+              <tbody>
+                {review.map((item, index) => (
+                  <tr key={index}>
+                      <td>{index+1}</td>
+                      <td>{item.reviewer.name}</td>
+                      <td>{item.notes}</td>
+                  </tr>
+                ))}
+            </tbody>
+            </table>
         </div>
         </div>
     </div>

@@ -1,11 +1,18 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
-const SuratKesanggupan = () => {
+const SuratKesanggupan = ({ research, setResearch }) => {
     const [selectedFile, setSelectedFile] = useState(null);
+    useEffect(()=> {
+      setSelectedFile(research.letter_of_intent)
+    })
 
     const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
-      };
+    setResearch((prevData) => ({
+      ...prevData,
+      letter_of_intent: event.target.files[0],
+    }));
+  };
+
   return (
     <div>
         <h1 className='text-xl font-bold text-violet-800 mx-5 my-5'>Surat Kesanggupan </h1>
@@ -51,14 +58,20 @@ const SuratKesanggupan = () => {
         </label>
         {/* Tombol Unggah Ulang */}
         </div>
-        <div className=''>
-        <button
-        onClick={handleFileChange}
-        className="bg-oranges-600 text-white px-4 py-2 rounded-md hover:bg-orange-700"
-        >
-        Unggah Ulang
-        </button>
-        </div>
+
+        <input
+            type="file"
+            onChange={handleFileChange}
+            className="border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
+            id="file-upload"
+          />
+
+          {/* Menampilkan nama file yang dipilih */}
+          {selectedFile && (
+            <p className="mt-2 text-gray-600">
+              File yang dipilih: {selectedFile.name}
+            </p>
+          )}
 
         {/* Menampilkan nama file yang dipilih */}
         {selectedFile && (

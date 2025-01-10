@@ -4,15 +4,31 @@ import React, {useState,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getToken } from '../../Features/AuthSlice';
 import { Link } from 'react-router-dom';
+import { getResearch } from '../../Features/ResearchSlice';
 // import { getResearch } from '../../Features/ResearchSlice';
 
 const PerbaikanUsulanList = () => {
+  const [research, setResearch] = useState([]);
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate('/perbaikan-usulan-penelitian'); // Arahkan ke halaman 'usulan-baru-penelitian'
+  const handleClick = (id) => {
+    navigate(`/penelitian/perbaikan/${id}`); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
+  const user = JSON.parse(localStorage.getItem('user'));
+  const fetchResearch = async() => {
+    const response = await getResearch({
+      pageSize: 10, 
+      currentPage: 1, 
+      // status: , 
+      // year: , 
+      userId: user.id
+    });
+    setResearch(response.data);
+  }
+  useEffect(()=> {
+    fetchResearch()
+  }, []);
 
     return (
         <div className='mx-5'>
@@ -42,24 +58,26 @@ const PerbaikanUsulanList = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Coba</td>
-                    <td>Penelitian dan Pengabdian</td>
-                    <td>2024</td>
-                    <td>-</td>
-                    <td>2024</td>
-                    <td>Perbaikan</td>
-                    <td>
-                            <button onClick={handleClick}>
-                                <img 
-                                    src="/assets/edit_perusl.svg"
-                                    alt="Action Icon"
-                                    className="py-2 w-10 h-auto z-10"
-                                />
-                            </button>
-                    </td>
-                </tr>
+                {research.map((item, index) => (
+                  <tr key={index}>
+                      <td>{index+1}</td>
+                      <td>{item.scheme.name}</td>
+                      <td>{item.title}</td>
+                      <td>{item.year}</td>
+                      <td>-</td>
+                      <td>2024</td>
+                      <td>{item.status}</td>
+                      <td>
+                              <button onClick={() => handleClick(item.id)}>
+                                  <img 
+                                      src="/assets/edit_perusl.svg"
+                                      alt="Action Icon"
+                                      className="py-2 w-10 h-auto z-10"
+                                  />
+                              </button>
+                      </td>
+                  </tr>
+                ))}
             </tbody>
             </table>
         </div>

@@ -19,6 +19,7 @@ const ViewCatatanHarianpnt = () => {
 
   const closeModalTambah = () => {
     setIsOpenTambah(false);
+    fetchLogbooks();
   };
 
   const openModalEdit = (id) => {
@@ -56,7 +57,7 @@ const ViewCatatanHarianpnt = () => {
   }
   useEffect(() => {
     fetchResearch();
-    fetchLogbooks()
+    fetchLogbooks();
   }, [id])
 
   const handleDelete = (id) => {

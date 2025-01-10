@@ -4,26 +4,23 @@ import TextfieldCmp from "../TextfieldCmp"; // Komponen TextField yang Anda buat
 
 Modal.setAppElement("#root");
 
-const ModalEditLapKemajuanTab2 = ({ isOpen, onRequestClose }) => {
+const ModalEditLapKemajuanTab2 = ({ research, isOpen, onRequestClose, onSave }) => {
+  const [items, setItems] = useState({});
+
   const handleSave = () => {
-    console.log("Data berhasil disimpan");
-    onRequestClose(); // Tutup modal setelah menyimpan
+    onSave(items);
+    setItems({});
+    onRequestClose();
   };
 
-  const [inputs, setInputs] = useState({
-    bahan: "",
-    pengumpulanData: "",
-    analisisData: "",
-    sewaPeralatan: "",
-    pelaporanLuaran: "",
-    lainLain: "",
-  });
+  const handleInputChange = (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
 
-  const handleInputChange = (key, value) => {
-    setInputs({
-      ...inputs,
-      [key]: value,
-    });
+    setItems((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
   };
 
   return (
@@ -55,21 +52,37 @@ const ModalEditLapKemajuanTab2 = ({ isOpen, onRequestClose }) => {
             <label className="block text-gray-700 mb-2">
               Nomor Surat Keputusan
             </label>
-            <TextfieldCmp className="w-full" placeholder="ISSN/EISSN" />
+            <TextfieldCmp 
+              value={items.no_sk}
+              name={'no_sk'}
+              onChange={(e) => handleInputChange(e)}
+              placeholder='No Surat Keputusan' />
           </div>
           <div>
             <label className="block text-gray-700 mb-2">
               Nomor Perjanjian Kontrak
             </label>
-            <TextfieldCmp className="w-full" placeholder="Lembaga Pengindeks" />
+            <TextfieldCmp 
+              value={items.no_contract}
+              name={'no_contract'}
+              onChange={(e) => handleInputChange(e)}
+              placeholder='No Perjanjian Kontrak' />
           </div>
           <div>
             <label className="block text-gray-700 mb-2">Tempat / Tanggal</label>
-            <TextfieldCmp className="w-full" placeholder="Tempat / Tanggal" />
+            <TextfieldCmp 
+              value={items.place_date}
+              name={'place_date'}
+              onChange={(e) => handleInputChange(e)}
+              placeholder='Tempat / Tanggal' />
           </div>
           <div>
             <label className="block text-gray-700 mb-2">NIP / NIPK</label>
-            <TextfieldCmp className="w-full" placeholder="NIP / NIPK" />
+            <TextfieldCmp 
+              value={items.nip}
+              name={'nip'}
+              onChange={(e) => handleInputChange(e)}
+              placeholder='NIP / NIPK' />
           </div>
         </div>
 
@@ -85,16 +98,12 @@ const ModalEditLapKemajuanTab2 = ({ isOpen, onRequestClose }) => {
             </thead>
             <tbody>
               {[
-                { no: 1, key: "bahan", uraian: "Bahan" },
-                { no: 2, key: "pengumpulanData", uraian: "Pengumpulan Data" },
-                { no: 3, key: "analisisData", uraian: "Analisis Data" },
-                { no: 4, key: "sewaPeralatan", uraian: "Sewa Peralatan" },
-                {
-                  no: 5,
-                  key: "pelaporanLuaran",
-                  uraian: "Pelaporan Luaran Wajib",
-                },
-                { no: 6, key: "lainLain", uraian: "Lain-lain" },
+                { no: 1, descriptionName: "description_1", descriptionValue: items.description_1, uraian: "Bahan", realizationName: "realization_1", realizationValue: items.realization_1 },
+                { no: 2, descriptionName: "description_2", descriptionValue: items.description_2, uraian: "Pengumpulan Data", realizationName: "realization_2", realizationValue: items.realization_2 },
+                { no: 3, descriptionName: "description_3", descriptionValue: items.description_3, uraian: "Analisis Data", realizationName: "realization_3", realizationValue: items.realization_3 },
+                { no: 4, descriptionName: "description_4", descriptionValue: items.description_4, uraian: "Sewa Peralatan", realizationName: "realization_4", realizationValue: items.realization_4 },
+                { no: 5, descriptionName: "description_5", descriptionValue: items.description_5, uraian: "Pelaporan Luaran Wajib", realizationName: "realization_5", realizationValue: items.realization_5 },
+                { no: 6, descriptionName: "description_6", descriptionValue: items.description_6, uraian: "Lain-lain", realizationName: "realization_6", realizationValue: items.realization_6 },
               ].map((item) => (
                 <tr key={item.no}>
                   <td className="border border-black px-4 py-2 text-center">
@@ -103,19 +112,21 @@ const ModalEditLapKemajuanTab2 = ({ isOpen, onRequestClose }) => {
                   <td className="border border-black px-4 py-2">
                     <div>{item.uraian}</div>
                     <div>
-                      <input
-                        type="text"
-                        className="mt-2 border border-black rounded-md p-2 w-full"
-                        placeholder={`Input ${item.uraian}`}
-                        value={inputs[item.key]}
-                        onChange={(e) =>
-                          handleInputChange(item.key, e.target.value)
-                        }
-                      />
+                      <TextfieldCmp 
+                        value={item.descriptionValue}
+                        name={item.descriptionName}
+                        onChange={(e) => handleInputChange(e)}
+                        placeholder={item.uraian} />
                     </div>
                   </td>
                   <td className="border border-black px-4 py-2"></td>
-                  <td className="border border-black px-4 py-2"></td>
+                  <td className="border border-black px-4 py-2">
+                    <TextfieldCmp 
+                        value={item.realizationValue}
+                        name={item.realizationName}
+                        onChange={(e) => handleInputChange(e)}
+                        placeholder='0' />
+                  </td>
                 </tr>
               ))}
             </tbody>

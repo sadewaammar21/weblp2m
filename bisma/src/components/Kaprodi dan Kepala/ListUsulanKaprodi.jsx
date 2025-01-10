@@ -148,18 +148,18 @@ const ListUsulanKaprodi = () => {
                       </td>
                       <td className="border border-gray-300 p-2 text-center">
                         <button
-                          className={`bg-blue-600 text-white px-4 py-1 rounded-md mr-2 ${status === 2 ? '' : 'hidden'}`}
+                          className={`bg-blue-600 text-white px-4 py-1 rounded-md mr-2`}
                           onClick={() => handleModal(true, 3)}
                         >
                           Setujui
                         </button>
                         <button
-                          className={`bg-red-600 text-white px-4 py-1 rounded-md ${status === 2 ? '' : 'hidden'}`}
+                          className={`bg-red-600 text-white px-4 py-1 rounded-md`}
                           onClick={() => handleModal(false, 8)}
                         >
                           Ditolak
                         </button>
-                        <p className={`text-white px-4 py-1 rounded-md ${status === 2 ? 'hidden' : (status === 8 ? 'bg-red-600' : 'bg-green-500')}`}>{status === 8 ? 'Ditolak' : 'Disetujui'}</p>
+                        {/* <p className={`text-white px-4 py-1 rounded-md ${status === 2 ? 'hidden' : (status === 8 ? 'bg-red-600' : 'bg-green-500')}`}>{status === 8 ? 'Ditolak' : 'Disetujui'}</p> */}
                         <PopUpPersetujuan
                           isOpen={isOpen}
                           onRequestClose={closeModal}

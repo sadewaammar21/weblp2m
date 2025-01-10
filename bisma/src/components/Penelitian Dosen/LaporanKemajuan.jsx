@@ -10,36 +10,35 @@ const LaporanKemajuan = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const handleView = () => {
-    navigate("/penelitian/catatan-harian/:id"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  const handleView = (researchId) => {
+    navigate("/penelitian/laporan-kemajuan/baru", { state: { id: researchId } }); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   const handleClick = () => {
     navigate("/penelitian/laporan-kemajuan"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
-    
+  const user = JSON.parse(localStorage.getItem('user'));
+  const fetchData = async () => {
+    try {
+      const result = await getResearch({
+        pageSize: 5,
+        currentPage: 1,
+        // status: 1,
+        year: 2025,
+        userId: user.id,
+      });
+      setData(result.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const result = await getResearch({
-//           pageSize: 5,
-//           currentPage: 1,
-//           status: 1,
-//           year: 2024,
-//           userId: 1,
-//         });
-//         setData(result.data);
-//       } catch (err) {
-//         setError(err.message);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
+    fetchData();
+  }, []);
 
   return (
     <div className="mx-5">
@@ -92,42 +91,44 @@ const LaporanKemajuan = () => {
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td className="border border-black px-4 py-2 align-middle">1</td>
-        <td className="border border-black px-4 py-2 align-middle break-words">
-          Penelitian Fundamental - Reguler Penelitian Kompetitif Nasional
-        </td>
-        <td className="border border-black px-4 py-2 align-middle break-words">
-          Pengembangan Aplikasi untuk Optimalisasi Pembelajaran
-        </td>
-        <td className="flex items-center border border-black px-4 py-2 align-middle  break-words">
-        <a
-              href={
-                process.env.PUBLIC_URL +
-                "/assets/template_laporan_kemajuan 2024.docx"
-              }
-              className="text-blue-600 hover:underline flex items-center"
+      {data.map((item, index) => (
+        <tr key={index}>
+          <td className="border border-black px-4 py-2 align-middle">{index+1}</td>
+          <td className="border border-black px-4 py-2 align-middle break-words">
+            Penelitian Fundamental - Reguler Penelitian Kompetitif Nasional
+          </td>
+          <td className="border border-black px-4 py-2 align-middle break-words">
+            {item.title}
+          </td>
+          <td className="flex items-center border border-black px-4 py-2 align-middle  break-words">
+          <a
+                href={
+                  process.env.PUBLIC_URL +
+                  "/assets/template_laporan_kemajuan 2024.docx"
+                }
+                className="text-blue-600 hover:underline flex items-center"
+              >
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/berkas.svg"}
+                  alt="logo"
+                  className="w-5 h-5 mr-2"
+                />
+              </a>
+          </td>
+          <td className="border border-black px-4 py-2 align-middle">
+            <button
+              onClick={() => handleView(item.id)}
+              className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
             >
               <img
-                src={process.env.PUBLIC_URL + "/assets/berkas.svg"}
-                alt="logo"
-                className="w-5 h-5 mr-2"
+                src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                alt="penelitian"
+                className="w-7 h-7 mr-2"
               />
-            </a>
-        </td>
-        <td className="border border-black px-4 py-2 align-middle">
-          <button
-            onClick={handleView}
-            className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
-          >
-            <img
-              src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-              alt="penelitian"
-              className="w-7 h-7 mr-2"
-            />
-          </button>
-        </td>
-      </tr>
+            </button>
+          </td>
+        </tr>
+      ))}
     </tbody>
   </table>
 </div>

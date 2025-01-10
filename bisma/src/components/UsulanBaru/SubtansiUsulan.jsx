@@ -3,6 +3,7 @@ import DropdownCmp from "../DropdownCmp";
 import TextAreaCmp from "../TextAreaCmp";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";
+import { getToken } from "../../Features/AuthSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -24,15 +25,15 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   const [outputType, setOutputType] = useState([]);
 
   const fetchSubstance = async() =>{
-    const response = await axios.get(`${apiUrl}/api/substance`);
+    const response = await axios.get(`${apiUrl}/api/substance`, getToken());
     setSubstance(response.data);
   }
   const fetchOutputCategory = async(target) =>{
-    const response = await axios.get(`${apiUrl}/api/output-category/${target}`);
+    const response = await axios.get(`${apiUrl}/api/output-category/${target}`, getToken());
     setOutputCategory(response.data);
   }
   const fetchOutputType = async() =>{
-    const response = await axios.get(`${apiUrl}/api/output-type`);
+    const response = await axios.get(`${apiUrl}/api/output-type`, getToken());
     setOutputType(response.data);
   }
   useEffect(()=>{
