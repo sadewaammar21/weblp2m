@@ -133,12 +133,12 @@ const IdentitasUsulan = ({ data, setData }) => {
     const response = await axios.get(`${apiUrl}/api/cluster1`, getToken());
     setCluster1(response.data);
   }
-  const fetchCluster2 = async() =>{
-    const response = await axios.get(`${apiUrl}/api/cluster2`, getToken());
+  const fetchCluster2 = async($cluster1) =>{
+    const response = await axios.get(`${apiUrl}/api/cluster2/${$cluster1}`, getToken());
     setCluster2(response.data);
   }
-  const fetchCluster3 = async() =>{
-    const response = await axios.get(`${apiUrl}/api/cluster3`, getToken());
+  const fetchCluster3 = async($cluster2) =>{
+    const response = await axios.get(`${apiUrl}/api/cluster3/${$cluster2}`, getToken());
     setCluster3(response.data);
   }
   const fetchPriority = async() =>{
@@ -154,10 +154,10 @@ const IdentitasUsulan = ({ data, setData }) => {
     fetchTheme(data.focus_id);
     fetchTopic(data.theme_id);
     fetchCluster1();
-    fetchCluster2();
-    fetchCluster3();
+    fetchCluster2(data.cluster_lv1); 
+    fetchCluster3(data.cluster_lv2);
     fetchPriority();
-  },[data.tkt_final, data.focus_id, data.theme_id])
+  },[data.tkt_final, data.focus_id, data.theme_id, data.cluster_lv1, data.cluster_lv2])
 
   const mapToDropdown = (data, labelKey, valueKey) => {
     return data.map((item) => ({
