@@ -10,7 +10,7 @@ import { getToken } from "../../Features/AuthSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const PenilaianProposal = () => {
+const PenilaianProposalPengabdian = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -81,8 +81,9 @@ const PenilaianProposal = () => {
     navigate("/dashboard-reviewer");
   };
 
-  const handleAction = (researchId) => {
-    navigate("/review-penelitian-proposal", { state: { id: researchId } });
+  const handleAction = () => {
+    console.log("Navigating to view page...");
+    navigate("/review/penilaian-proposal-pengabdian/view");
   };
 
   const options = [
@@ -94,7 +95,7 @@ const PenilaianProposal = () => {
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        PENILAIAN PROPOSAL PENELITIAN
+        PENILAIAN PROPOSAL PENGABDIAN
       </h1>
 
       <div>
@@ -191,7 +192,7 @@ const PenilaianProposal = () => {
                       </td>
                       <td className="border px-4 py-2 text-center">
                         <button
-                          onClick={() => handleAction(item.id)}
+                          onClick={handleAction}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"
                         >
                           Review
@@ -199,6 +200,16 @@ const PenilaianProposal = () => {
                       </td>
                     </tr>
                   ))}
+                <tr>
+                  <td className="border px-4 py-2 text-center">
+                    <button
+                      onClick={handleAction}
+                      className="bg-bluef-500 text-white px-4 py-2 rounded-md"
+                    >
+                      Review
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -208,4 +219,4 @@ const PenilaianProposal = () => {
   );
 };
 
-export default PenilaianProposal;
+export default PenilaianProposalPengabdian;

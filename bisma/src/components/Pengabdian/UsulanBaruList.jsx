@@ -11,7 +11,7 @@ const UsulanBaruList = () => {
   const [error, setError] = useState(null);
 
   const handleClick = () => {
-    navigate("/tambah-usulan-baru-pengabdian"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/pengabdian/usulan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
   const handleView = () => {
     navigate("/detail-pengabdian"); // Arahkan ke halaman 'usulan-baru-penelitian'

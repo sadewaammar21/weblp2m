@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const PenelitianProposalTab1 = ({ data, review, setReview }) => {
+const PengabdianProposalTab1 = ({ data, review, setReview }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   const [responses, setResponses] = useState({
@@ -56,10 +56,11 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
             <tbody>
               <tr className="boder border-black border-b-2">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-sans">
-                  data
+                  Judul Proposal
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                  {data?.title}
+                  {data?.title ||
+                    "Membangun Kemandirian Ekonomi Desa melalui Implementasi Sistem Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa Sinergi Sidowayah"}
                 </td>
               </tr>
 
@@ -68,7 +69,7 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Kelompok Skema
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data?.scheme.name}
+                  {data?.scheme?.name || "Kelompok Skema Placeholder"}
                 </td>
               </tr>
 
@@ -77,14 +78,14 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Ruang Lingkup
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data?.scope.name}
+                  {data?.scope?.name || "Ruang Lingkup Placeholder"}
                 </td>
               </tr>
 
               <tr className="bg-gray-50 boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Bidang Fokus</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  {data?.research_focus.name}
+                  {data?.research_focus?.name || "Bidang Fokus Placeholder"}
                 </td>
               </tr>
 
@@ -93,7 +94,7 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Tahun Usulan
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data?.year}
+                  {data?.year || "Tahun Placeholder"}
                 </td>
               </tr>
 
@@ -102,7 +103,7 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Tahun Pelaksanaan
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data?.year}
+                  {data?.year || "Tahun Placeholder"}
                 </td>
               </tr>
             </tbody>
@@ -117,7 +118,7 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Lama Kegiatan
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data?.duration} Tahun
+                  {data?.duration || 0} Tahun
                 </td>
               </tr>
 
@@ -126,7 +127,7 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Tema Penelitian
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                  {data?.research_theme.name}
+                  {data?.research_theme?.name || "Tema Placeholder"}
                 </td>
               </tr>
 
@@ -135,7 +136,7 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Topik Penelitian
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                  {data?.research_topic.name}
+                  {data?.research_topic?.name || "Topik Placeholder"}
                 </td>
               </tr>
 
@@ -144,14 +145,14 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Rumpun Ilmu Level 3
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data?.science_cluster3.name}
+                  {data?.science_cluster3?.name || "Rumpun Placeholder"}
                 </td>
               </tr>
 
               <tr className="bg-gray-50 boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Target TKT</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  {data?.tkt_final}
+                  {data?.tkt_final || "TKT Placeholder"}
                 </td>
               </tr>
 
@@ -160,7 +161,7 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                   Profil Sinta Ketua
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  6049857
+                  {data?.sinta_profile || "6049857"}
                 </td>
               </tr>
             </tbody>
@@ -168,10 +169,9 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
         </div>
       </div>
 
-      {/* Table Section */}
       <div className="p-8">
         <h1 className="text-2xl text-violet-800 font-bold mb-4">
-          Penilaian Administrasi Usulan Penelitian
+          Penilaian Administrasi Usulan Pengabdian
         </h1>
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
@@ -190,35 +190,70 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
               </th>
             </tr>
             <tr>
-              {/* Sub-header for the indikator columns */}
               <th className="border border-gray-300 p-2">Sesuai</th>
               <th className="border border-gray-300 p-2">Tidak Sesuai</th>
             </tr>
           </thead>
           <tbody>
             {[
-              { id: "indicator_1", text: "Kesesuaian Isi Per Bagian" },
-              { id: "indicator_2", text: "Jumlah Kata Per Bagian" },
+              {
+                id: "indicator_1",
+                text: "Penulisan Usulan proposal sesuai dengan template dan ketentuan pada panduan",
+              },
+              {
+                id: "indicator_2",
+                text: "Penulisan proosal usulan menggunakan Bahasa Indonesia",
+              },
               {
                 id: "indicator_3",
-                text: "Model Penulisan Sitasi Dan Penulisan Daftar Pustaka",
+                text: "Penulisan Jumlah kata per bagian pada proposal sesuai ketentuan",
               },
               {
                 id: "indicator_4",
-                text: "Lampiran Surat Keterangan/Surat Tugas Mahasiswa Bimbingan",
+                text: "Menggunakan sistem sitasi Vancouver",
               },
               {
                 id: "indicator_5",
-                text: "Ketua Pengusul Memiliki Hasil Penelitian Yang Relevan",
+                text: "Tim pengusul memiliki kompetensi multidisiplin sesuai dengan kepakaran rumpun ilmu level 2 yang diusulkan, minimal dua kompetensi",
               },
               {
                 id: "indicator_6",
-                text: "Memiliki Mitra Yang Dibuktikan Dengan Surat Pernyataan",
+                text: "Jenis mitra sasaran sesuai dengan ketentuan",
+              },
+              {
+                id: "indicator_7",
+                text: "Terdapat minimal dua bidang masalah",
+              },
+              {
+                id: "indicator_8",
+                text: "Terdapat peta yang menggambarkan jarak lokasi kegiatan dari PT Ketua  Pelaksana ke lokasi mitra sasaran sesuai",
+              },
+              {
+                id: "indicator_9",
+                text: "Jarak mitra sasaran maksimum 200 km dari PT Ketua Pelaksana",
+              },
+              {
+                id: "indicator_10",
+                text: "Mendukung transformasi pendidikan tinggi melalui 8 Indikator Kinerja  Utama (IKU) minimal 2 indikator",
+              },
+              {
+                id: "indicator_11",
+                text: "Surat pernyataan mitra sasaran",
+              },
+              {
+                id: "indicator_12",
+                text: "Bukti jumlah keanggotaan kelompok/karyawan",
+              },
+              {
+                id: "indicator_13",
+                text: "Surat Pernyataan orisinalitas usulan",
               },
             ].map((item, index) => (
               <tr key={item.id} className="text-center">
                 <td className="border border-gray-300 p-2">{index + 1}</td>
-                <td className="border border-gray-300 p-2">{item.text}</td>
+                <td className="border border-gray-300 p-2 text-left">
+                  {item.text}
+                </td>
                 <td className="border border-gray-300 p-2">
                   <input
                     type="checkbox"
@@ -236,7 +271,7 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
                     value={false}
                     checked={review[item.id] === false}
                     onChange={() => handleResponseChange(item.id, false)}
-                    className="w-5 h-5 text-red-600"
+                    className="w-5 h-5 text-blue-600"
                   />
                 </td>
               </tr>
@@ -248,4 +283,4 @@ const PenelitianProposalTab1 = ({ data, review, setReview }) => {
   );
 };
 
-export default PenelitianProposalTab1;
+export default PengabdianProposalTab1;
