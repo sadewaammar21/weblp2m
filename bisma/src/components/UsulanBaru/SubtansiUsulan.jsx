@@ -28,8 +28,8 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     const response = await axios.get(`${apiUrl}/api/substance`, getToken());
     setSubstance(response.data);
   }
-  const fetchOutputCategory = async(target) =>{
-    const response = await axios.get(`${apiUrl}/api/output-category/${target}`, getToken());
+  const fetchOutputCategory = async(scheme) =>{
+    const response = await axios.get(`${apiUrl}/api/output-category/${scheme}`, getToken());
     setOutputCategory(response.data);
   }
   const fetchOutputType = async() =>{
@@ -38,9 +38,9 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   }
   useEffect(()=>{
     fetchSubstance();
-    fetchOutputCategory(data.tkt_final);
+    fetchOutputCategory(data.scheme_id);
     fetchOutputType()
-  }, [data.tkt_final, data.output.id_category_output]);
+  }, [data.scheme_id, data.output.id_category_output]);
 
   const year= [
       {id: 1, value: 1},
