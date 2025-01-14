@@ -5,9 +5,9 @@ import NavBar from "../components/NavBar";
 
 const DashboardOperator = () => {
   return (
-    <NavBar>
+    <NavbarOperator>
       <DashboardOperatorCmp />
-    </NavBar>
+    </NavbarOperator>
   );
 };
 
