@@ -50,7 +50,7 @@ const DashboardKepalaLPPM = () => {
     <div className="mx-10 my-10">
       <div>
         <h2 className="text-violet-800 font-bold text-lg mb-4">
-          PENILAIAN PROPOSAL REVIEWER
+          DASHBOARD LPPM
         </h2>
       </div>
       <div className="flex justify-end items-start space-x-5">

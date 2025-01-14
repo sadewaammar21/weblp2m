@@ -1,8 +1,9 @@
 import React from "react";
-import NavBar from "../components/NavBar";
+import ProgresPerUsPegabdianPage from "./ProgresPerUsPegabdianPage";
 import ProgressUsulanBaruPengabdian from "../components/Pengabdian/ProgressUsulanBaruPengabdian";
+import NavBar from "../components/NavBar";
 
-const UsulanBaruPengabdianPage = () => {
+const ProgressUsulanBaruPengabdianPage = () => {
   return (
     <NavBar>
       <ProgressUsulanBaruPengabdian />
@@ -10,4 +11,4 @@ const UsulanBaruPengabdianPage = () => {
   );
 };
 
-export default UsulanBaruPengabdianPage;
+export default ProgressUsulanBaruPengabdianPage;

@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 // import { getToken } from "../../Features/AuthSlice";
 // import { Link } from "react-router-dom";
 // import { getResearch } from '../../Features/ResearchSlice';
-import { FaEye } from "react-icons/fa";
 
 const ListPerUsPengabdian = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/perbaikan-usulan-pengabdian"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/pengabdian/perbaikan/:id"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   return (
@@ -19,7 +18,7 @@ const ListPerUsPengabdian = () => {
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENELITIAN
+          USULAN PENGABDIAN
         </h1>
       </div>
 
@@ -56,20 +55,6 @@ const ListPerUsPengabdian = () => {
                       alt="Action Icon"
                       className="py-2 w-10 h-auto z-10"
                     />
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Coba</td>
-                <td>Penelitian dan Pengabdian</td>
-                <td>2024</td>
-                <td>-</td>
-                <td>2024</td>
-                <td>Perbaikan</td>
-                <td>
-                  <button onClick={handleClick}>
-                    <FaEye className="py-2 w-10 h-auto z-10" />
                   </button>
                 </td>
               </tr>

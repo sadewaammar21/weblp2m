@@ -17,7 +17,7 @@ const DetailPengabdian = (data) => {
             <div className="my-2 flex">
               <h2 className="text-sm font-sans text-violet-800 mr-1">
                 {" "}
-                Usulan penelitian anda telah disetujui
+                Usulan pengabdian anda telah disetujui
               </h2>
             </div>
           </div>

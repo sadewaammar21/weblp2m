@@ -53,6 +53,36 @@ const UsulanBaruList = () => {
 
       {/* Card untuk bagian Tambah Usulan dan Tabel */}
       <div className="bg-gray-50 shadow-sm  rounded-sm  p-5 ">
+        <div className="my-5">
+          <div className="p-4 bg-violet-100 w-full rounded-md ">
+            <div className="flex">
+              <img
+                src={process.env.PUBLIC_URL + "/assets/information.svg"}
+                alt="logo"
+                className="w-6 h-6 mr-4 "
+              />
+              <h2 className="text-xl font-bold text-violet-800"> Informasi</h2>
+            </div>
+            <h2 className="text-md font-medium text-violet-800 mr-1">
+              {" "}
+              Apakah anda menerima menjadi anggota penelitian?
+            </h2>
+            <div className="flex justify-start space-x-4 my-5">
+              <button
+                className="border border-reds-500 text-reds-500 px-2 py-1 text-sm rounded hover:bg-reds-100"
+                onClick={() => alert("Diterima")} // Ganti dengan aksi yang sesuai
+              >
+                Diterima
+              </button>
+              <button
+                className="border border-bluef-500 text-bluef-500 px-2 py-1 text-sm rounded hover:bg-bluef-100"
+                onClick={() => alert("Ditolak")} // Ganti dengan aksi yang sesuai
+              >
+                Ditolak
+              </button>
+            </div>
+          </div>
+        </div>
         <div className="flex justify-between items-center w-full">
           <div>
             <button
@@ -107,7 +137,7 @@ const UsulanBaruList = () => {
                   <td>{item.year}</td>
                   <td>{item.roles}</td>
                   <td>{item.status}</td>
-                  <td>
+                  <td className="flex space-x-2 justify-center">
                     <button
                       onClick={() =>
                         navigate(`/penelitian/usulan/edit/${item.id}`)

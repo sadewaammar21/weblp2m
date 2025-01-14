@@ -1,11 +1,13 @@
 import React from "react";
-import ListLaporanKemajuanInternal from "./ListLaporanKemajuanInternal";
-import LaporanKemajuanTab1 from "./LaporanKemajuanTab1";
-import LaporanKemajuanTab2 from "./LaporanKemajuanTab2";
+import LaporanAkhirTab1 from "./LaporanAkhirTab1";
+import LaporanAkhirTab2 from "./LaporanAkhirTab2";
+import LaporanAkhirTab3 from "./LaporanAkhirTab3";
+import ListLaporanAkhir from "./ListLaporanAkhir";
 
 const steps = [
-  { id: 1, label: "Laporran Kemajuan" },
-  { id: 2, label: "Pengunaan Anggaran" },
+  { id: 1, label: "Laporan Akhir" },
+  { id: 2, label: "Mitra" },
+  { id: 3, label: "Pengunaan Anggaran" },
 ];
 
 const ProgressBar = ({ currentStep }) => {
@@ -39,7 +41,7 @@ const ProgressBar = ({ currentStep }) => {
   );
 };
 
-const ProgressLaporanKemajuan = () => {
+const ProgressLaporanAkhir = () => {
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLaporanKemajuan, setIsLaporanKemajuan] = React.useState(false);
 
@@ -58,16 +60,18 @@ const ProgressLaporanKemajuan = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <LaporanKemajuanTab1 />;
+        return <LaporanAkhirTab1 />;
       case 2:
-        return <LaporanKemajuanTab2 />;
+        return <LaporanAkhirTab2 />;
+      case 3:
+        return <LaporanAkhirTab3 />;
       default:
         return null;
     }
   };
 
   if (isLaporanKemajuan) {
-    return <ListLaporanKemajuanInternal />;
+    return <ListLaporanAkhir />;
   }
 
   return (
@@ -149,4 +153,4 @@ const ProgressLaporanKemajuan = () => {
   );
 };
 
-export default ProgressLaporanKemajuan;
+export default ProgressLaporanAkhir;

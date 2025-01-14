@@ -13,6 +13,8 @@ const NavbarReviewer = ({ children }) => {
   const navigate = useNavigate();
 
   const [dropdown, setDropdown] = useState(false);
+  const [dropdown2, setDropdown2] = useState(false);
+  const dropdownRef2 = useRef(null);
   const dropdownRef = useRef(null);
   const [username, setUsername] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -20,6 +22,9 @@ const NavbarReviewer = ({ children }) => {
   // Fungsi untuk toggle dropdown
   const toggleDropdown = () => {
     setDropdown(!dropdown);
+  };
+  const toggleDropdown2 = () => {
+    setDropdown2(!dropdown2);
   };
 
   // Menangani klik di luar dropdown untuk menutup dropdown
@@ -139,7 +144,7 @@ const NavbarReviewer = ({ children }) => {
                 </li>
 
                 {/* Dropdown di Penelitian */}
-                <li className="text-white hover:text-gray-300 cursor-pointer relative flex items-center">
+                {/* <li className="text-white hover:text-gray-300 cursor-pointer relative flex items-center">
                   <Link to="/review-penilaian-proposal">
                     <div className="flex items-center">
                       <img
@@ -154,6 +159,39 @@ const NavbarReviewer = ({ children }) => {
                       </Link>
                     </div>
                   </Link>
+                </li> */}
+                <li
+                  className="text-white hover:text-gray-300 cursor-pointer flex items-center relative"
+                  onClick={toggleDropdown2}
+                >
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/penelitian.svg"}
+                    alt="penelitian"
+                    className="w-5 h-5 mr-2"
+                  />
+                  <span className="flex items-center">
+                    Penilaian Proposal
+                    {dropdown2 ? (
+                      <FaChevronUp className="ml-2" />
+                    ) : (
+                      <FaChevronDown className="ml-2" />
+                    )}
+                  </span>
+                  {dropdown2 && (
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef2}
+                    >
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/review-penilaian-proposal">Penelitian</Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/review/penilaian-proposal-pengabdian">
+                          Pengabdian
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
 
                 <li
@@ -166,7 +204,7 @@ const NavbarReviewer = ({ children }) => {
                     className="w-5 h-5 mr-2"
                   />
                   <span className="flex items-center">
-                    Monitoring
+                    Monev
                     {dropdown ? (
                       <FaChevronUp className="ml-2" />
                     ) : (
@@ -182,7 +220,7 @@ const NavbarReviewer = ({ children }) => {
                         <Link to="/list-monev-penelitian">Penelitian</Link>
                       </li>
                       <li className="px-4 py-2 hover:bg-violet-800">
-                        <Link to="/list-monev-pengabdian">Pengabdian</Link>
+                        <Link to="/pengabdian/monev">Pengabdian</Link>
                       </li>
                     </ul>
                   )}

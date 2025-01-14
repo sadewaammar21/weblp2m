@@ -55,6 +55,15 @@ import UsulanDisetujuiKepalaLPPMPage from "./pages/UsulanDisetujuiKepalaLPPMPage
 import UsulanDitolakKepalaLPPMPage from "./pages/UsulanDitolakKepalaLPPMPage";
 import ListMonevPenelitianPage from "./pages/ListMonevPenelitianPage";
 import ReviewMonevPenelitianPage from "./pages/ReviewMonevPenelitianPage";
+import ProgressUsulanBaruPengabdianPage from "./pages/ProgressUsulanBaruPengabdianPage";
+import ListLaporanAkhirPengabdianPage from "./pages/ListLaporanAkhirPengabdianPage";
+import ProgresLaporanAkhirIntPage from "./pages/ProgresLaporanAkhirIntPage";
+import ListCatatanHarianPage from "./pages/ListCatatanHarianPage";
+import ViewCatatanHarianPengabdianPage from "./pages/ViewCatatanHarianPengabdianPage";
+import MonevPengabdianListPage from "./pages/MonevPengabdianListPage";
+import MonevPengabdianReviewerPage from "./pages/MonevPengabdianReviewerPage";
+import PenilaianProposalPengabdianPage from "./pages/PenilaianProposalPengabdianPage";
+import ProposalPengabdianPage from "./pages/ProposalPengabdianPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -72,6 +81,10 @@ function App() {
         <Route path="/detail-penelitian" element={<DetailPenelitianPage />} />
         <Route path="/dashboard-operator" element={<DashboardOperator />} />
         <Route path="/dashboard-reviewer" element={<DashboardReviewer />} />
+        <Route
+          path="/dashboard-kepala-lppm"
+          element={<DashboardKepalaLPPMPage />}
+        />
         <Route
           path="/dashboard-kaprodi-dan-kepala"
           element={<DashboardKaprKepl />}
@@ -121,7 +134,47 @@ function App() {
         />
 
         {/* Dosen Pengabdian*/}
-
+        <Route
+          path="/pengabdian/usulan"
+          element={<ListUsulanBaruPengabdianPage />}
+        />
+        <Route
+          path="/pengabdian/usulan/baru"
+          element={<ProgressUsulanBaruPengabdianPage />}
+        />
+        <Route path="/detail-pengabdian" element={<DetailPengabdianPage />} />
+        <Route
+          path="/pengabdian/perbaikan"
+          element={<PerbaikanUsulanListPage />}
+        />
+        <Route
+          path="/pengabdian/perbaikan/:id"
+          element={<ProgresPerUsPegabdianPage />}
+        />
+        <Route
+          path="/pengabdian/laporan-kemajuan"
+          element={<ListLaporanKemajuanInternalPage />}
+        />
+        <Route
+          path="/pengabdian/laporan-kemajuan/baru"
+          element={<LaporanKemajuanPengabdianPage />}
+        />
+        <Route
+          path="/pengabdian/laporan-akhir"
+          element={<ListLaporanAkhirPengabdianPage />}
+        />
+        <Route
+          path="/pengabdian/laporan-akhir/baru"
+          element={<ProgresLaporanAkhirIntPage />}
+        />
+        <Route
+          path="/pengabdian/catatan-harian"
+          element={<ListCatatanHarianPage />}
+        />
+        <Route
+          path="/pengabdian/catatan-harian/:id"
+          element={<ViewCatatanHarianPengabdianPage />}
+        />
         {/* Operator */}
         <Route
           path="/monitoring-usulan-reguler"
@@ -202,6 +255,14 @@ function App() {
           path="/review-usulan-sudah-dinilai-penelitian"
           element={<UsulanSudahDinilaiRvwPage />}
         />
+        <Route
+          path="/review/penilaian-proposal-pengabdian"
+          element={<PenilaianProposalPengabdianPage />}
+        />
+        <Route
+          path="/review/penilaian-proposal-pengabdian/view"
+          element={<ProposalPengabdianPage />}
+        />
         {/* kepla LPPM */}
         <Route
           path="/kepala-lppm-usulan-belum-ditinjau"
@@ -222,6 +283,11 @@ function App() {
         <Route
           path="/review-monev-penelitian"
           element={<ReviewMonevPenelitianPage />}
+        />
+        <Route path="/pengabdian/monev" element={<MonevPengabdianListPage />} />
+        <Route
+          path="/pengabdian/monev/reviewer"
+          element={<MonevPengabdianReviewerPage />}
         />
       </Routes>
     </BrowserRouter>

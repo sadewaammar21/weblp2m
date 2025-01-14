@@ -15,7 +15,7 @@ const ListLaporanKemajuanInternal = () => {
   };
 
   const handleClick = () => {
-    navigate("/laporan-kemajuan-pengabdian"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/pengabdian/laporan-kemajuan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   //   useEffect(() => {
@@ -43,7 +43,7 @@ const ListLaporanKemajuanInternal = () => {
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENELITIAN
+          USULAN PENGABDIAN
         </h1>
       </div>
 
@@ -108,7 +108,9 @@ const ListLaporanKemajuanInternal = () => {
                   Nasional
                 </td>
                 <td className="border border-black px-4 py-2 align-middle break-words">
-                  Pengembangan Aplikasi untuk Optimalisasi Pembelajaran
+                  Membangun Kemandirian Ekonomi Desa melalui Implementasi Sistem
+                  Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa Sinergi
+                  Sidowayah
                 </td>
                 <td className="border border-black px-4 py-2 align-middle text-center">
                   <a

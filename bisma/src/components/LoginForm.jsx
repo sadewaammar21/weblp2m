@@ -18,32 +18,57 @@ const LoginForm = () => {
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (user || isSuccess) {
-      const userRoles = user?.roles || [];
+  // Fungsi untuk menangani navigasi berdasarkan role
+  const handleNavigation = (roles) => {
+    const roleRoutes = {
+      Dosen: "/dashboard",
+      Operator: "/dashboard-operator",
+      Reviewer: "/dashboard-reviewer",
+      "Kepala LPPM": "/dashboard-kepala-lppm",
+    };
 
-      // Cek role dan navigasi
-      switch (true) {
-        case userRoles.includes("Dosen"):
-          navigate("/dashboard");
-          break;
-        case userRoles.includes("Operator"):
-          navigate("/dashboard-operator");
-          break;
-        case userRoles.includes("Reviewer"):
-          navigate("/dashboard-reviewer");
-          break;
-        case userRoles.includes("Kepala LPPM"):
-          navigate("/dashboard-kepala-lppm");
-          break;
-        default:
-          navigate("/dashboard");
-          break;
+    for (const role of roles) {
+      if (roleRoutes[role]) {
+        navigate(roleRoutes[role]);
+        return;
       }
     }
 
+    // Jika tidak ada role yang cocok
+    navigate("/dashboard");
+  };
+
+  // useEffect(() => {
+  //   if (user && isSuccess) {
+  //     const userRoles = user?.roles || [];
+
+  //     if (userRoles.length > 0) {
+  //       handleNavigation(userRoles);
+  //     } else {
+  //       toast.error("Role pengguna tidak ditemukan. Hubungi admin.");
+  //       navigate("/error"); // Arahkan ke halaman error jika role kosong
+  //     }
+  //   }
+
+  //   if (isError) {
+  //     toast.error(message);
+  //   }
+
+  //   dispatch(reset());
+  // }, [user, isSuccess, isError, message, dispatch, navigate]);
+  useEffect(() => {
     if (isError) {
-      toast.error(message);
+      toast.error(message); // Menampilkan pesan error dari Redux state
+    }
+
+    if (isSuccess && user) {
+      const userRoles = user?.roles || [];
+      if (userRoles.length > 0) {
+        handleNavigation(userRoles);
+      } else {
+        toast.error("Role pengguna tidak ditemukan. Hubungi admin.");
+        navigate("/error");
+      }
     }
 
     dispatch(reset());
@@ -67,13 +92,13 @@ const LoginForm = () => {
     const validationErrors = {};
 
     if (!email.trim()) {
-      validationErrors.email = "ERROR ON EMAIL | user status is inactive";
+      validationErrors.email = "Email tidak boleh kosong";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       validationErrors.email = "Email tidak valid";
     }
 
     if (!password) {
-      validationErrors.password = "ERROR ON PASSWORD | user status is inactive";
+      validationErrors.password = "Password tidak boleh kosong";
     } else if (password.length < 6) {
       validationErrors.password = "Password harus minimal 6 karakter";
     }
@@ -85,13 +110,13 @@ const LoginForm = () => {
     <div className="flex flex-col min-h-screen bg-gray-100">
       {/* Konten Utama */}
       <div className="flex-grow flex items-center justify-center">
-        <div className="w-full max-w-sm bg-white border-2 border-gray-200 rounded-xl shadow-lg">
+        <div className="w-[463px] h-[456px] bg-white border-2 border-gray-200 rounded-xl shadow-lg">
           <div className="w-full bg-bluef-100 rounded-t-xl py-5 px-8">
             <h3 className="text-sm text-violet-800 mb-5">
-              Selamat Datang Di Aplikasi BISMA
+              Selamat Datang Di Aplikasi SENA
             </h3>
             <h3 className="text-sm text-violet-800 mb-10">
-              Basis informasi penelitian dan pengabdian kepada masyarakat
+              Sistem manajemen penelitian dan pengabdian kepada masyarakat
             </h3>
           </div>
           <div className="relative">
@@ -103,7 +128,7 @@ const LoginForm = () => {
               />
             </div>
           </div>
-          <div className="p-8">
+          <div className="p-5">
             <form onSubmit={Auth} className="w-full">
               {isError && (
                 <div className="w-full mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
