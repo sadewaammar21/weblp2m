@@ -39,29 +39,11 @@ export const LoginAuth = createAsyncThunk(
       console.log(userData);
 
       return response.data;
-      //     } catch (error) {
-      //       if (error.response) {
-      //         const message = error.response.data.error;
-      //         return thunkAPI.rejectWithValue(message);
-      //       }
-      //     }
-      //   }
-      // );
     } catch (error) {
-      if (error.response && error.response.data) {
-        const errorData = error.response.data;
-
-        // Menangani array error untuk "email"
-        if (errorData.email && Array.isArray(errorData.email)) {
-          const message = errorData.email.join(" ");
-          return thunkAPI.rejectWithValue(message);
-        }
-
-        // Menangani pesan error "message"
-        const message = errorData.message || "Login failed";
+      if (error.response) {
+        const message = error.response.data.error;
         return thunkAPI.rejectWithValue(message);
       }
-      return thunkAPI.rejectWithValue("Something went wrong");
     }
   }
 );

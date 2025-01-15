@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import DropdownCmp from "../DropdownCmp";
-import TextfieldCmp from "../TextfieldCmp";
+import DropdownCmp from "../../DropdownCmp";
+import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
-import { saveAs } from "file-saver"; // Library for saving files
+import { saveAs } from "file-saver";
 
-const HasilReviewOPT = () => {
+const UsulanDisetujiOPT = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -60,10 +60,11 @@ const HasilReviewOPT = () => {
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
   ];
-
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
-      <h1 className="text-xl font-bold text-violet-800 mb-4">HASIL REVIEW</h1>
+      <h1 className="text-xl font-bold text-violet-800 mb-4">
+        LIST USULAN DRAFT MONITORING
+      </h1>
 
       <div>
         <div className="flex justify-end border-b max-w-6xl">
@@ -123,9 +124,9 @@ const HasilReviewOPT = () => {
                 <tr>
                   <th className="border px-4 py-2">No</th>
                   <th className="border px-4 py-2">Pengusul</th>
-                  <th className="border px-4 py-2">Usulan Penelitian</th>
-                  <th className="border px-4 py-2">Seleksi Admintrasi</th>
-                  <th className="border px-4 py-2">Seleksi Substansi</th>
+                  <th className="border px-4 py-2">Skema</th>
+                  <th className="border px-4 py-2">Judul</th>
+                  <th className="border px-4 py-2">Berkas</th>
                 </tr>
               </thead>
               <tbody>
@@ -142,18 +143,21 @@ const HasilReviewOPT = () => {
                     <br />
                     Bidang Fokus: Teknologi Informasi dan Komunikasi
                   </td>
-                  <td className="border px-4 py-2 text-bluef-500">
+                  <td className="border px-4 py-2">
                     Penelitian Dasar - Penelitian Dosen Pemula
-                    <br />
                   </td>
                   <td className="border px-4 py-2">
-                    <button className="bg-bluef-500 text-white px-4 py-2 rounded-md">
-                      Detail
-                    </button>
+                    Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris
+                    Berbasis Digital Visual Literacy dan Keterampilan 5C untuk
+                    Siswa Sekolah Dasar
                   </td>
                   <td className="border px-4 py-2 text-center">
-                    <button className="bg-bluef-500 text-white px-4 py-2 rounded-md">
-                      Detail
+                    <button>
+                      <img
+                        src="/assets/icon_pdf_brks.svg"
+                        alt="Action Icon"
+                        className="py-2 w-7 h-auto z-10"
+                      />
                     </button>
                   </td>
                 </tr>
@@ -166,4 +170,4 @@ const HasilReviewOPT = () => {
   );
 };
 
-export default HasilReviewOPT;
+export default UsulanDisetujiOPT;

@@ -64,6 +64,23 @@ import MonevPengabdianListPage from "./pages/MonevPengabdianListPage";
 import MonevPengabdianReviewerPage from "./pages/MonevPengabdianReviewerPage";
 import PenilaianProposalPengabdianPage from "./pages/PenilaianProposalPengabdianPage";
 import ProposalPengabdianPage from "./pages/ProposalPengabdianPage";
+import UsulanRegulerPengabdianPage from "./pages/UsulanRegulerPengabdianPage";
+import UsulanDraftPengabdianOPTPage from "./pages/UsulanDraftPengabdianOPTPage";
+import UsulanDikirimPengabdianOPTPage from "./pages/UsulanDikirimPengabdianOPTPage";
+import UsulanDisetujuiPengabdianOptPage from "./pages/UsulanDisetujuiPengabdianOptPage";
+import UsulanDitolakOPTPage from "./pages/UsulanDitolakOPTPage";
+import UsulanDitolakPengabdianOptPage from "./pages/UsulanDitolakPengabdianOptPage";
+import HasilReviewPengabdianOptPage from "./pages/HasilReviewPengabdianOptPage";
+import UsulanBelumDitinjauOptPengabdianPage from "./pages/UsulanBelumDitinjauOptPengabdianPage";
+import PerbaikanUsulanPengabdianOptPage from "./pages/PerbaikanUsulanPengabdianOptPage";
+import PeriodeKegiatanListPengabdianOptPage from "./pages/PeriodeKegiatanListPengabdianOptPage";
+import PeriodeKegiatanPengabdianOptPage from "./pages/PeriodeKegiatanPengabdianOptPage";
+import PerKegLaporanKemajuanPengabdianOptPage from "./pages/PerKegLaporanKemajuanPengabdianOptPage";
+import PerKegLaporanAkhirPengabdianOptPage from "./pages/PerKegLaporanAkhirPengabdianOptPage";
+import PeriodeKegiatanPenelitianPage from "./pages/PeriodeKegiatanPenelitianPage";
+import PeriodeKegiatanListPenelitianOPTPage from "./pages/PeriodeKegiatanListPenelitianOPTPage";
+import PerKegLaporanKemajuanPenelitianPage from "./pages/PerKegLaporanKemajuanPenelitianPage";
+import PerKegLaporanAkhirPenelitianPage from "./pages/PerKegLaporanAkhirPenelitianPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -193,8 +210,12 @@ function App() {
           element={<UsulanDisetujuiOPTPage />}
         />
         <Route
-          path="/monitoring-usulan-reguler-usulan-ditolak"
+          path="/monitoring-usulan-reguler-usulan-dikirim"
           element={<UsulanDikirimOPTPage />}
+        />
+        <Route
+          path="/monitoring-usulan-reguler-usulan-ditolak"
+          element={<UsulanDitolakOPTPage />}
         />
         <Route
           path="/monitoring-usulan-reguler-hasil-review"
@@ -213,14 +234,86 @@ function App() {
           element={<MonitoringUsulanPenelitianPage />}
         />
         <Route
+          path="/monitoring/pengabdian/usulan-pengabdian"
+          element={<PerbaikanUsulanPengabdianOptPage />}
+        />
+        <Route
+          path="/monitoring/penelitian/periode-kegiatan"
+          element={<PeriodeKegiatanPenelitianPage />}
+        />
+        <Route
+          path="/monitoring/penelitian/periode-kegiatan/list"
+          element={<PeriodeKegiatanListPenelitianOPTPage />}
+        />
+        <Route
+          path="/monitoring/penenelitian/periode-kegiatan/laporan-kemajuan"
+          element={<PerKegLaporanKemajuanPenelitianPage />}
+        />
+        <Route
+          path="/monitoring/penelitian/periode-kegiatan/laporan-akhir"
+          element={<PerKegLaporanAkhirPenelitianPage />}
+        />
+        {/* operator  pengabdian */}
+        <Route
+          path="/monitoring/pengabdian/usulan-reguler"
+          element={<UsulanRegulerPengabdianPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/usulan-draft"
+          element={<UsulanDraftPengabdianOPTPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/usulan-dikirm"
+          element={<UsulanDikirimPengabdianOPTPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/usulan-disetujui"
+          element={<UsulanDisetujuiPengabdianOptPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/usulan-dikirim"
+          element={<UsulanDikirimPengabdianOPTPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/usulan-ditolak"
+          element={<UsulanDitolakPengabdianOptPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/hasil-review"
+          element={<HasilReviewPengabdianOptPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/belum-ditinjau-review"
+          element={<UsulanBelumDitinjauOptPengabdianPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/perbaikan-usulan"
+          element={<PerbaikanUsulan />}
+        />
+        <Route
+          path="/monitoring-perbaikan-usulan-penelitian"
+          element={<MonitoringUsulanPenelitianPage />}
+        />
+        <Route
           path="/monitoring-perbaikan-usulan-pengabdian"
           element={<MonitoringUsulanPengabdianPage />}
         />
         <Route
-          path="/monitoring-data-pendukung"
-          element={<DataPendukungPage />}
+          path="/monitoring/pengabdian/periode-kegiatan"
+          element={<PeriodeKegiatanPengabdianOptPage />}
         />
-
+        <Route
+          path="/monitoring/pengabdian/periode-kegiatan/list"
+          element={<PeriodeKegiatanListPengabdianOptPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/periode-kegiatan/laporan-kemajuan"
+          element={<PerKegLaporanKemajuanPengabdianOptPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/periode-kegiatan/laporan-akhir"
+          element={<PerKegLaporanAkhirPengabdianOptPage />}
+        />
         {/* penugasan reviewer */}
         <Route
           path="/monitoring-pengelola-review"

@@ -1,145 +1,147 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DropdownCmp from '../DropdownCmp';
-import * as XLSX from 'xlsx'; // Library for Excel
-import { saveAs } from 'file-saver';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DropdownCmp from "../DropdownCmp";
+import * as XLSX from "xlsx"; // Library for Excel
+import { saveAs } from "file-saver";
 
 const MonitoringUsulanPengabdian = () => {
-    const navigate = useNavigate();
-    const [selectedOption, setSelectedOption] = useState('');
+  const navigate = useNavigate();
+  const [selectedOption, setSelectedOption] = useState("");
 
-    const handleExportExcel = () => {
-        const tableData = [
-          ['No', 'Pengusul', 'Skema', 'Judul', 'Berkas'],
-          [
-            '1',
-            `Ketua: SRI HARJANTO
+  const handleExportExcel = () => {
+    const tableData = [
+      ["No", "Pengusul", "Skema", "Judul", "Berkas"],
+      [
+        "1",
+        `Ketua: SRI HARJANTO
             NIDN: 0626016803
             Tahun Pelaksanaan: 2024
             Lama Kegiatan: 1 Tahun
             Bidang Fokus: Teknologi Informasi dan Komunikasi`,
-            'Penelitian Dasar - Penelitian Dosen Pemula',
-            'Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa Sekolah Dasar',
-            '-',
-          ],
-        ];
-    
-        // Membuat worksheet dan workbook
-        const worksheet = XLSX.utils.aoa_to_sheet(tableData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Data Usulan Draft');
-    
-        // Menyimpan file Excel
-        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-        const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
-        saveAs(data, 'UsulanDraftMonitoring.xlsx');
-      };
-
-  // Options untuk dropdown
-    const handleDropdownChange = (value) => {
-        setSelectedOption(value); // Update the selected option
-    if (value === "penelitian") {
-        navigate("/monitoring-perbaikan-usulan-penelitian");
-    } else if (value === "pengabdian") {
-        navigate("/monitoring-perbaikan-usulan-pengabdian");
-    }
-    };
-
-    const options = [
-    { label: "Penelitian", value: "penelitian" },
-    { label: "Pengabdian", value: "pengabdian" }
+        "Penelitian Dasar - Penelitian Dosen Pemula",
+        "Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa Sekolah Dasar",
+        "-",
+      ],
     ];
 
-    const statusOptions = [
-        { label: "Semua", value: "Semua" },
-        { label: "Submitted", value: "Submitted" },
-        { label: "Approved", value: "Approved" },
-        ];
-    
-        const jumlahBarisOptions = [
-        { label: "5", value: "5" },
-        { label: "10", value: "10" },
-        { label: "15", value: "15" },
-        ];
+    // Membuat worksheet dan workbook
+    const worksheet = XLSX.utils.aoa_to_sheet(tableData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Usulan Draft");
 
-    return (
-    <div className='mx-10 my-5'>
-        <div>
+    // Menyimpan file Excel
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "UsulanDraftMonitoring.xlsx");
+  };
+
+  // Options untuk dropdown
+  const handleDropdownChange = (value) => {
+    setSelectedOption(value); // Update the selected option
+    if (value === "penelitian") {
+      navigate("/monitoring-perbaikan-usulan-penelitian");
+    } else if (value === "pengabdian") {
+      navigate("/monitoring-perbaikan-usulan-pengabdian");
+    }
+  };
+
+  const options = [
+    { label: "Penelitian", value: "penelitian" },
+    { label: "Pengabdian", value: "pengabdian" },
+  ];
+
+  const statusOptions = [
+    { label: "Semua", value: "Semua" },
+    { label: "Submitted", value: "Submitted" },
+    { label: "Approved", value: "Approved" },
+  ];
+
+  const jumlahBarisOptions = [
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "15", value: "15" },
+  ];
+
+  return (
+    <div className="mx-10 my-5">
+      <div>
         <h2 className="text-violet-800 font-bold text-lg mb-4">
-        MONITORING USULAN PENGABDIAN
-            </h2>
-        </div>
-        <div className="flex justify-end items-start mb-4 mx-10">
-  <DropdownCmp
-    label="Jenis Kegiatan"
-    options={options}
-    selectedOption={selectedOption}
-    onChange={handleDropdownChange}
-    placeholder="Pilih Jenis Kegiatan"
-    className="w-72 border border-black" // Panjang dropdown
-    controlClassName="bg-neutral-30 text-black"
-  />
-</div>
-<div className="flex justify-end items-start mb-4">
-  <DropdownCmp
-    label="Tahun Pelaksanaan"
-    options={options}
-    selectedOption={selectedOption}
-    onChange={handleDropdownChange}
-    placeholder="Pilih Jenis Kegiatan"
-    className="w-72 border border-black" // Panjang dropdown
-    controlClassName="bg-neutral-30 text-black"
-  />
-</div>
+          PERBAIKAN USULAN PENGABDIAN
+        </h2>
+      </div>
+      <div className="flex justify-end items-start mb-4 mx-10">
+        <DropdownCmp
+          label="Jenis Kegiatan"
+          options={options}
+          selectedOption={selectedOption}
+          onChange={handleDropdownChange}
+          placeholder="Pilih Jenis Kegiatan"
+          className="w-72 border border-black" // Panjang dropdown
+          controlClassName="bg-neutral-30 text-black"
+        />
+      </div>
+      <div className="flex justify-end items-start mb-4">
+        <DropdownCmp
+          label="Tahun Pelaksanaan"
+          options={options}
+          selectedOption={selectedOption}
+          onChange={handleDropdownChange}
+          placeholder="Pilih Jenis Kegiatan"
+          className="w-72 border border-black" // Panjang dropdown
+          controlClassName="bg-neutral-30 text-black"
+        />
+      </div>
 
-<div className='flex justify-end items-start space-x-5'>
-    <DropdownCmp
-      label="Status *"
-      options={options}
-      selectedOption={selectedOption}
-      onChange={(e) => handleDropdownChange(e.target.value)}
-      placeholder="Penelitian Kompetitif Nasional"
-      className="w-72 border border-black " // Panjang dropdown
-      controlClassName="bg-neutral-30 text-black"
-    />
-    <DropdownCmp
-      label="Jumlah Baris *"
-      options={options}
-      selectedOption={selectedOption}
-      onChange={(e) => handleDropdownChange(e.target.value)}
-      placeholder="Penelitian"
-      className="w-72 border border-black" // Panjang dropdown
-      controlClassName="bg-neutral-30 text-black"
-    />
-  </div>
+      <div className="flex justify-end items-start space-x-5">
+        <DropdownCmp
+          label="Status *"
+          options={options}
+          selectedOption={selectedOption}
+          onChange={(e) => handleDropdownChange(e.target.value)}
+          placeholder="Penelitian Kompetitif Nasional"
+          className="w-72 border border-black " // Panjang dropdown
+          controlClassName="bg-neutral-30 text-black"
+        />
+        <DropdownCmp
+          label="Jumlah Baris *"
+          options={options}
+          selectedOption={selectedOption}
+          onChange={(e) => handleDropdownChange(e.target.value)}
+          placeholder="Penelitian"
+          className="w-72 border border-black" // Panjang dropdown
+          controlClassName="bg-neutral-30 text-black"
+        />
+      </div>
 
-        <div>
-        <div className='flex justify-between my-5'>
-  <div className="mx-2">
-          <button
-            onClick={handleExportExcel}
-            className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
-          >
-            <img
-              src={process.env.PUBLIC_URL + '/assets/icon_excel.svg'}
-              alt="penelitian"
-              className="w-5 h-5 mr-2"
-            />
-            Excel
-          </button>
+      <div>
+        <div className="flex justify-between my-5">
+          <div className="mx-2">
+            <button
+              onClick={handleExportExcel}
+              className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
+            >
+              <img
+                src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
+                alt="penelitian"
+                className="w-5 h-5 mr-2"
+              />
+              Excel
+            </button>
+          </div>
+          <div>
+            <h2 className="text-bluef-600">Jumlah Proposal : 0</h2>
+          </div>
         </div>
-        <div>
-            <h2 className='text-bluef-600'>Jumlah Proposal : 0</h2>
-        </div>
-
-  </div>
-        </div>
-        <div className='my-10'>
+      </div>
+      <div className="my-10">
         <h2 className="text-violet-800 font-bold text-sm mb-4">
-                Daftar Usulan
-            </h2>
-        </div>
-        <div className="overflow-x-auto">
+          Daftar Usulan
+        </h2>
+      </div>
+      <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
             <tr>
@@ -150,13 +152,15 @@ const MonitoringUsulanPengabdian = () => {
           </thead>
           <tbody>
             <tr>
-              <td className="px-4 py-2 border border-gray-300 text-center">1</td>
+              <td className="px-4 py-2 border border-gray-300 text-center">
+                1
+              </td>
               <td className="px-4 py-2 border border-gray-300">
                 <div>
                   <p className="font-semibold text-bluef-500">
-                    Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris
-                    Berbasis Digital Visual Literacy dan Keterampilan 5C untuk
-                    Siswa Sekolah Dasar
+                    Membangun Kemandirian Ekonomi Desa melalui Implementasi
+                    Sistem Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa
+                    Sinergi Sidowayah
                   </p>
                   <p className="text-sm text-gray-600">
                     <strong>Skema:</strong> Penelitian Fundamental - Reguler
@@ -201,8 +205,7 @@ const MonitoringUsulanPengabdian = () => {
         </table>
       </div>
     </div>
-    
-  )
-}
+  );
+};
 
 export default MonitoringUsulanPengabdian;
