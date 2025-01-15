@@ -52,6 +52,7 @@ const LaporanAkhirProgress = () => {
     //data laporan kemajuan
     const location = useLocation();
     const { id, reportId } = location.state || {};
+    console.log(reportId);
     const [report, setReport] = useState({});
 
     const fetchResearch = async() => {
@@ -105,14 +106,14 @@ const LaporanAkhirProgress = () => {
 
   const handleSubmit = async (status) => {
       if(reportId){
-        setReport({...report, status: status})
-        // console.log(report)
+        setReport((prevReport) => ({ ...prevReport, status: status }))
+        console.log(report)
         const response = await addResearchFinalReport({researchId: research.id, data: report, isEdit: true, reportId: report.id});
         console.log(response);
         navigate(-1);
       }else{
-        setReport({...report, status: status})
-        // console.log(report)
+        setReport((prevReport) => ({ ...prevReport, status: status }))
+        console.log(report)
         const response = await addResearchFinalReport({researchId: research.id, data: report, isEdit: false});
         console.log(response);
         navigate(-1);

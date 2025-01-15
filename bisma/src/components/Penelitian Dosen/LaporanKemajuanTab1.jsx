@@ -43,7 +43,7 @@ const LaporanKemajuanTab1 = ({ research, data, setData }) => {
 
   const [outputIndex, setOutputIndex] = useState(0);
   const handleOutputData = (index, outputData) => {
-    const updatedOutput = [...data.outputs];
+    const updatedOutput = Array.isArray(data.outputs) ? [...data.outputs] : [];
     updatedOutput[index] = outputData;
     setData({...data, outputs: updatedOutput});
     console.log(data);

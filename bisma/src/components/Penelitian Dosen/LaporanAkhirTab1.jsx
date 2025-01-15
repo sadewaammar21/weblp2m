@@ -17,8 +17,9 @@ const LaporanAkhirTab1 = ({ research, data, setData }) => {
     setSelectedOption(option);
   };
 
-  const openModalLA = () => {
+  const openModalLA = (index) => {
     setIsOpenLA(true);
+    setOutputIndex(index);
   };
 
   const closeModalLA = () => {
@@ -62,7 +63,7 @@ const LaporanAkhirTab1 = ({ research, data, setData }) => {
 
   const [outputIndex, setOutputIndex] = useState(0);
   const handleOutputData = (index, outputData) => {
-    const updatedOutput = [...data.outputs];
+    const updatedOutput = Array.isArray(data.outputs) ? [...data.outputs] : [];
     updatedOutput[index] = outputData;
     setData({ ...data, outputs: updatedOutput });
     console.log(data);
@@ -240,24 +241,26 @@ const LaporanAkhirTab1 = ({ research, data, setData }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-black px-4 py-2 align-middle">1</td>
-              <td className="border border-black px-4 py-2 break-words text-left">
-                Artikel di Jurnal Bereputasi-Buplikasi_Jurnal
-              </td>
-              <td className="border border-black px-2 py-2 align-middle flex justify-center items-center w-20">
-                <button
-                  onClick={openModalLA}
-                  className="flex items-center px-1 py-1 rounded-md hover:text-cyan-500"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-                    alt="penelitian"
-                    className="w-5 h-5"
-                  />
-                </button>
-              </td>
-            </tr>
+            {(research?.output || []).map((item, index) => (
+              <tr key={index}>
+                <td className="border border-black px-4 py-2 align-middle">{index+1}</td>
+                <td className="border border-black px-4 py-2 break-words text-right">
+                  {item.description}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle flex justify-center items-center">
+                  <button
+                    onClick={() => openModalLA(index)}
+                    className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="penelitian"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
