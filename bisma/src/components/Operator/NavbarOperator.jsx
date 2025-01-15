@@ -187,17 +187,25 @@ const NavbarOperator = ({ children }) => {
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring-perbaikan-usulan">
+                              <Link to="/monitoring-perbaikan-usulan-penelitian">
                                 <div className="flex items-center justify-between">
                                   Perbaikan Usulan
                                 </div>
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800">
-                              Hasil Review
+                              <Link to="/monitoring-usulan-reguler-hasil-review">
+                                <div className="flex items-center justify-between">
+                                  Hasil Review
+                                </div>
+                              </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800">
-                              Periode Kegiatan
+                              <Link to="/monitoring/pengabdian/periode-kegiatan">
+                                <div className="flex items-center justify-between">
+                                  Periode Kegiatan
+                                </div>
+                              </Link>
                             </li>
                           </ul>
                         )}
@@ -215,24 +223,32 @@ const NavbarOperator = ({ children }) => {
                         {subDropdown === 2 && (
                           <ul className="absolute top-0 left-full ml-1 w-48 bg-gray-50">
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/monitoring-usulan-reguler">
+                              <Link to="/monitoring/pengabdian/usulan-reguler">
                                 <div className="flex items-center justify-between">
                                   Monitoring Usulan
                                 </div>
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring-perbaikan-usulan">
+                              <Link to="/monitoring-perbaikan-usulan-pengabdian">
                                 <div className="flex items-center justify-between">
                                   Perbaikan Usulan
                                 </div>
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800">
-                              Hasil Review
+                              <Link to="/monitoring/pengabdian/hasil-review">
+                                <div className="flex items-center justify-between">
+                                  Hasil Review
+                                </div>
+                              </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800">
-                              Periode Kegiatan
+                              <Link to="/monitoring/pengabdian/periode-kegiatan">
+                                <div className="flex items-center justify-between">
+                                  Periode Kegiatan
+                                </div>
+                              </Link>
                             </li>
                           </ul>
                         )}

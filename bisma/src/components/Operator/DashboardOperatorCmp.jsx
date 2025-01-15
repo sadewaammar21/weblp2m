@@ -1,13 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UsulanBaruOPT from "./UsulanBaruOPT";
 import OperatorDashbordPenelitian from "./OperatorDashbordPenelitian";
 import OperatorDashboardPengabdian from "./OperatorDashboardPengabdian";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const DashboardOperatorCmp = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+
+  const [dropdown, setDropdown] = useState(null);
+  const [subDropdown, setSubDropdown] = useState(false);
   const [activeTab, setActiveTab] = useState("penelitian");
+
+  const handleDropdownEnter = (dropdownId) => {
+    setDropdown(dropdownId);
+  };
+
+  // Fungsi untuk sub-dropdown
+  const handleSubDropdownEnter = () => {
+    setSubDropdown(true);
+  };
+
+  const handleSubDropdownLeave = () => {
+    setSubDropdown(false);
+  };
+
+  // Menangani klik di luar dropdown untuk menutup dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdown();
+        setSubDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
   return (
     <div className=" min-h-screen p-5">
-      <h1 className="text-lg text-violet-800 font-semibold my-5">
+      <h1 className="text-lg text-neutral-500 font-semibold my-5">
+        063040 - UNIVERSITAS TIGA SERANGKAI
+        <br />
+        KELOMPOK PT MADYA
+      </h1>
+      <h1 className="text-lg text-neutral-500 font-semibold my-5">
         PROFIL LEMABAGA PENELITIAN/PENGABDIAN KEPADA MASYARAKAT
       </h1>
       <div>

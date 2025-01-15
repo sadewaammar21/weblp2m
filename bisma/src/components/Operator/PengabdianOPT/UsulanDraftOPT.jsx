@@ -1,15 +1,44 @@
-import React, { useState } from "react";
-import DropdownCmp from "../DropdownCmp";
-import TextfieldCmp from "../TextfieldCmp";
+import React, { useState, useEffect } from "react";
+import DropdownCmp from "../../DropdownCmp";
+import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
+// import { downloadDocument, getResearch } from";
+import { downloadDocument, getResearch } from "../../../Features/ResearchSlice";
 
-const HasilReviewOPT = () => {
+const UsulanDraftOPT = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  const [data, setData] = useState([]);
+
+  //get data from db
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getResearch({
+          pageSize: 10,
+          currentPage: 1,
+          // status: 1,
+          year: 2025,
+        });
+        setData(result.data);
+        console.log(data);
+      } catch (err) {
+        // setError(err.message);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
@@ -20,7 +49,7 @@ const HasilReviewOPT = () => {
   //   };
 
   // Fungsi untuk ekspor data ke Excel
-  const handleExportExcel = () => {
+  const handleExportExcel = (dataExport) => {
     const tableData = [
       ["No", "Pengusul", "Skema", "Judul", "Berkas"],
       [
@@ -37,7 +66,7 @@ const HasilReviewOPT = () => {
     ];
 
     // Membuat worksheet dan workbook
-    const worksheet = XLSX.utils.aoa_to_sheet(tableData);
+    const worksheet = XLSX.utils.json_to_sheet(dataExport);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Data Usulan Draft");
 
@@ -63,7 +92,9 @@ const HasilReviewOPT = () => {
 
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
-      <h1 className="text-xl font-bold text-violet-800 mb-4">HASIL REVIEW</h1>
+      <h1 className="text-xl font-bold text-violet-800 mb-4">
+        LIST USULAN DRAFT MONITORING
+      </h1>
 
       <div>
         <div className="flex justify-end border-b max-w-6xl">
@@ -86,7 +117,7 @@ const HasilReviewOPT = () => {
           <div className="flex justify-between mx-5 ">
             <div className="mx-2 my-2">
               <button
-                onClick={handleExportExcel}
+                onClick={() => handleExportExcel(data)}
                 className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 <img
@@ -123,40 +154,56 @@ const HasilReviewOPT = () => {
                 <tr>
                   <th className="border px-4 py-2">No</th>
                   <th className="border px-4 py-2">Pengusul</th>
-                  <th className="border px-4 py-2">Usulan Penelitian</th>
-                  <th className="border px-4 py-2">Seleksi Admintrasi</th>
-                  <th className="border px-4 py-2">Seleksi Substansi</th>
+                  <th className="border px-4 py-2">Skema</th>
+                  <th className="border px-4 py-2">Judul</th>
+                  <th className="border px-4 py-2">Berkas</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="border px-4 py-2 text-center">1</td>
-                  <td className="border px-4 py-2">
-                    Ketua: SRI HARJANTO
-                    <br />
-                    NIDN: 0626016803
-                    <br />
-                    Tahun Pelaksanaan: 2024
-                    <br />
-                    Lama Kegiatan: 1 Tahun
-                    <br />
-                    Bidang Fokus: Teknologi Informasi dan Komunikasi
-                  </td>
-                  <td className="border px-4 py-2 text-bluef-500">
-                    Penelitian Dasar - Penelitian Dosen Pemula
-                    <br />
-                  </td>
-                  <td className="border px-4 py-2">
-                    <button className="bg-bluef-500 text-white px-4 py-2 rounded-md">
-                      Detail
-                    </button>
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    <button className="bg-bluef-500 text-white px-4 py-2 rounded-md">
-                      Detail
-                    </button>
-                  </td>
-                </tr>
+                {data
+                  .filter((item) => item.status > 1)
+                  .map(
+                    (
+                      item,
+                      index //here
+                    ) => (
+                      <tr key={index}>
+                        <td className="border border-gray-300 p-2 text-center">
+                          {index + 1}
+                        </td>
+                        <td className="border border-gray-300 p-2">
+                          <p>Ketua: {item.user?.name}</p>
+                          <p>NIDN: {item.user?.nidn}</p>
+                          <p>Tahun Pelaksanaan: {item.year}</p>
+                          <p>Lama Kegiatan: {item.duration}</p>
+                          <p>Bidang Fokus: {item.focus.name}</p>
+                        </td>
+                        <td className="border border-gray-300 p-2">
+                          <p className="text-blue-600 font-bold">
+                            {item.scheme.name}
+                          </p>
+                        </td>
+                        <td className="border border-gray-300 p-2">
+                          <p className="text-blue-600 font-bold">
+                            {item.title}
+                          </p>
+                        </td>
+                        <td className="border border-gray-300 p-2 text-center">
+                          <button
+                            onClick={() => downloadDocument(item.id)}
+                            className="text-red-600 text-2xl"
+                          >
+                            <a
+                              href={`http://localhost:8000/api/research/download/${item.id}`}
+                              target="_blank"
+                            >
+                              📄
+                            </a>
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  )}
               </tbody>
             </table>
           </div>
@@ -166,4 +213,4 @@ const HasilReviewOPT = () => {
   );
 };
 
-export default HasilReviewOPT;
+export default UsulanDraftOPT;
