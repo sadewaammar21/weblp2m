@@ -6,7 +6,7 @@ import ModalLuaranWjbLaporanAkhir from "./ModalLuaranWjbLaporanAkhir";
 import ModalPosterLaporanAkhir from "./ModalPosterLaporanAkhir";
 import ModalVideoLaporanAkhir from "./ModalVideoLaporanAkhir";
 
-const LaporanAkhirTab1 = (setData) => {
+const LaporanAkhirTab1 = ({ research, data, setData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isOpenLA, setIsOpenLA] = useState(false);
   const [isOpenPoster, setIsOpenPoster] = useState(false);
@@ -41,12 +41,33 @@ const LaporanAkhirTab1 = (setData) => {
     setIsOpenVideo(false);
   };
 
-  const handleFileChange = (event) => {
+  const handleInputChange = () => (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
     setData((prevData) => ({
       ...prevData,
-      substance: event.target.files[0],
+      [inputName]: inputValue,
     }));
   };
+
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: files[0],
+    }));
+    console.log(data);
+  };
+
+  const [outputIndex, setOutputIndex] = useState(0);
+  const handleOutputData = (index, outputData) => {
+    const updatedOutput = [...data.outputs];
+    updatedOutput[index] = outputData;
+    setData({ ...data, outputs: updatedOutput });
+    console.log(data);
+  };
+
   return (
     <div>
       <div>
@@ -74,9 +95,7 @@ const LaporanAkhirTab1 = (setData) => {
               Penelitian | Tahun Pelaksanaan 2024
             </p>
             <h2 className="text-lg font-bold text-gray-800">
-              Membangun Kemandirian Ekonomi Desa melalui Implementasi Sistem
-              Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa Sinergi
-              Sidowayah
+              {research.title}
             </h2>
 
             <div className="flex mx-1 my-2">
@@ -92,14 +111,21 @@ const LaporanAkhirTab1 = (setData) => {
       </div>
       <div>
         <ModalLuaranWjbLaporanAkhir
+          data={data.outputs}
           isOpen={isOpenLA}
           onRequestClose={closeModalLA}
+          index={outputIndex}
+          onSave={handleOutputData}
         />
         <ModalPosterLaporanAkhir
+          data={data}
+          setData={setData}
           isOpen={isOpenPoster}
           onRequestClose={closeModalPoster}
         />
         <ModalVideoLaporanAkhir
+          data={data}
+          setData={setData}
           isOpen={isOpenVideo}
           onRequestClose={closeModalVideo}
         />
@@ -111,7 +137,13 @@ const LaporanAkhirTab1 = (setData) => {
           metode, luaran yang ditargetkan, dan hasil yang diperoleh sesuai
           dengan tahun pelaksanaan
         </h2>
-        <TextAreaCmp placeholder={`Ringksan Penelitian`} rows={4} />
+        <TextAreaCmp
+          value={data.summary}
+          name="summary"
+          onChange={handleInputChange()}
+          placeholder={`Ringksan Penelitian`}
+          rows={4}
+        />
       </div>
       <div>
         <label className="text-lg font-bold font-sans text-gray-800">
@@ -122,6 +154,9 @@ const LaporanAkhirTab1 = (setData) => {
           perintah
         </h2>
         <TextfieldCmp
+          value={data.keyword}
+          name="keyword"
+          onChange={handleInputChange()}
           placeholder={`Keyword1;keyword2;keyword3`}
           height="h-10"
         />
@@ -141,7 +176,8 @@ const LaporanAkhirTab1 = (setData) => {
             {/* Input file */}
             <input
               type="file"
-              onChange={handleFileChange}
+              name="substance"
+              onChange={(e) => handleFileChange(e)}
               className="border border-gray-300 rounded-lg p-2 w-1/2"
               id="file-upload"
             />
@@ -171,7 +207,8 @@ const LaporanAkhirTab1 = (setData) => {
             {/* Input file */}
             <input
               type="file"
-              onChange={handleFileChange}
+              name="partner_contribution"
+              onChange={(e) => handleFileChange(e)}
               className="border border-gray-300 rounded-lg p-2 w-1/2"
               id="file-upload"
             />

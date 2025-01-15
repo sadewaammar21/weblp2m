@@ -264,6 +264,69 @@ export const downloadDocument = async (researchId) => {
   }
 };
 
+export const addResearchReviewer = async ({ researchId, data }) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/api/research/${researchId}/reviewers`,
+      data,
+      getToken()
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getResearchByReviewer = async (reviewerId) => {
+  try {
+    const response = await axios.get(
+      `${apiUrl}/api/reviewer/${reviewerId}/research`,
+      getToken()
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const setResearchReportDeadline = async ({ researchId, data }) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/api/research/set-deadline/${researchId}`,
+      {
+        progress_report_deadline: data.progress_report_deadline,
+        final_report_deadline: data.final_report_deadline,
+      },
+      getToken()
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const setResearchApprovalFunds = async ({
+  researchId,
+  approval_funds,
+}) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/api/research/set-approval-funds/${researchId}`,
+      {
+        approval_funds: approval_funds,
+      },
+      getToken()
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 //logbook
 export const getLogbooks = async ({ user_id, id, pageSize, currentPage }) => {
   try {
@@ -324,6 +387,7 @@ export const addLogbook = async ({
         getToken()
       );
       console.log(response);
+      return response.data;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/logbook`,
@@ -331,9 +395,10 @@ export const addLogbook = async ({
         getToken()
       );
       console.log(response);
+      return response.data;
     }
   } catch (error) {
-    throw error;
+    return error.message;
   }
 };
 
@@ -391,7 +456,7 @@ export const addResearchProgressReport = async ({
     formData.append("realization_5", data.realization_5);
     formData.append("description_6", data.description_6);
     formData.append("realization_6", data.realization_6);
-    formData.append("status", "draft");
+    formData.append("status", data.status);
 
     data.outputs.forEach((item, index) => {
       formData.append(
@@ -476,5 +541,157 @@ export const getReviewByResearch = async (researchId) => {
     return response;
   } catch (error) {
     console.log(error);
+  }
+};
+
+//research monev review
+export const getResearchMonevReview = async (researchId) => {
+  try {
+    const response = await axios.get(
+      `${apiUrl}/api/monev-research/${researchId}/research`,
+      getToken()
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.message;
+  }
+};
+
+export const addMonevResearch = async (monevData) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/api/monev-research`,
+      monevData,
+      getToken()
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+    return error.message;
+  }
+};
+
+//final report
+export const addResearchFinalReport = async ({
+  researchId,
+  data,
+  isEdit,
+  reportId,
+}) => {
+  try {
+    const formData = new FormData();
+
+    if (isEdit) {
+      formData.append("_method", "PUT");
+    }
+
+    formData.append("research_id", researchId);
+    formData.append("summary", data.summary);
+    formData.append("keyword", data.keyword);
+    if (data.substance) {
+      formData.append("substance", data.substance);
+    }
+    if (data.partner_contribution) {
+      formData.append("partner_contribution", data.partner_contribution);
+    }
+    if (data.poster) {
+      formData.append("poster", data.poster);
+    }
+    if (data.video_profile) {
+      formData.append("video_profile", data.video_profile);
+    }
+    if (data.sptb) {
+      formData.append("sptb", data.sptb);
+    }
+    formData.append("no_sk", data.no_sk);
+    formData.append("no_contract", data.no_contract);
+    formData.append("place_date", data.place_date);
+    formData.append("nip", data.nip);
+    formData.append("description_1", data.description_1);
+    formData.append("realization_1", data.realization_1);
+    formData.append("description_2", data.description_2);
+    formData.append("realization_2", data.realization_2);
+    formData.append("description_3", data.description_3);
+    formData.append("realization_3", data.realization_3);
+    formData.append("description_4", data.description_4);
+    formData.append("realization_4", data.realization_4);
+    formData.append("description_5", data.description_5);
+    formData.append("realization_5", data.realization_5);
+    formData.append("description_6", data.description_6);
+    formData.append("realization_6", data.realization_6);
+    formData.append("status", data.status);
+
+    data.outputs.forEach((item, index) => {
+      formData.append(
+        `output_result[${index}][status_article]`,
+        item.status_article
+      );
+      formData.append(
+        `output_result[${index}][status_writer]`,
+        item.status_writer
+      );
+      formData.append(
+        `output_result[${index}][journal_name]`,
+        item.journal_name
+      );
+      formData.append(`output_result[${index}][issn]`, item.issn);
+      formData.append(
+        `output_result[${index}][indexing_agency]`,
+        item.indexing_agency
+      );
+      formData.append(`output_result[${index}][journal_url]`, item.journal_url);
+      formData.append(
+        `output_result[${index}][title_article]`,
+        item.title_article
+      );
+      if (item.manuscript_article) {
+        formData.append(
+          `output_result[${index}][manuscript_article]`,
+          item.manuscript_article
+        );
+      }
+      if (item.proof_submit) {
+        formData.append(
+          `output_result[${index}][proof_submit]`,
+          item.proof_submit
+        );
+      }
+    });
+
+    if (isEdit) {
+      const response = await axios.post(
+        `${apiUrl}/api/research-final-report/${reportId}`,
+        formData,
+        getToken()
+      );
+      return response.data;
+    } else {
+      const response = await axios.post(
+        `${apiUrl}/api/research-final-report`,
+        formData,
+        getToken()
+      );
+      console.log(response);
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getResearchFinalReport = async (reportId) => {
+  try {
+    const response = await axios.get(
+      `${apiUrl}/api/research-final-report/${reportId}`,
+      getToken()
+    );
+    console.log(response);
+    return response.data[0];
+  } catch (error) {
+    throw error;
   }
 };

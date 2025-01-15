@@ -1,14 +1,32 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-modal";
 
 // Set root element untuk React Modal
-Modal.setAppElement("#root");
+Modal.setAppElement("#root"); 
 
-const ModalVideoLaporanAkhir = ({ isOpen, onRequestClose }) => {
-  const handleSave = () => {
-    console.log("Data berhasil disimpan");
-    onRequestClose(); // Tutup modal setelah menyimpan
-  };
+const ModalVideoLaporanAkhir = ({ data, setData, isOpen, onRequestClose }) => {
+  const [videoProfile, setvideoProfile] = useState();
+    useEffect(() => {
+      if (data) {
+        setvideoProfile(data.video_profile);
+      }
+    }, [data]);
+  
+    const handleFileChange = (event) => {
+      const { name, files } = event.target;
+      setvideoProfile(files[0]);
+    };
+  
+    const handleSave = () => {
+      console.log("Data berhasil disimpan");
+      setData((prevData) => ({
+        ...prevData,
+        video_profile: videoProfile,
+      }));
+      setvideoProfile();
+      onRequestClose(); // Tutup modal setelah menyimpan
+    };
 
   return (
     <Modal
@@ -18,7 +36,7 @@ const ModalVideoLaporanAkhir = ({ isOpen, onRequestClose }) => {
       className="bg-white rounded-lg shadow-lg p-6 w-[50%] mx-auto mt-auto max-h-[80vh] overflow-y-auto" // Added height limit and scrolling
       overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <h2 className="text-xl font-bold mb-4">POSTER</h2>
+      <h2 className="text-xl font-bold mb-4">videoProfile</h2>
       <form>
         <div className="bg-bluef-50 my-5 p-4 rounded-md shadow-sm flex items-center space-x-4">
           {/* Content */}
@@ -86,9 +104,10 @@ const ModalVideoLaporanAkhir = ({ isOpen, onRequestClose }) => {
             Masukkan Link Video Hasil Penelitian
           </label>
           <input
-            type="text"
-            className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md"
-            placeholder="Tuliskan URL video"
+            name="video_profile"
+            onChange={(e) => handleFileChange(e)}
+            type="file"
+            className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />
         </div>
 

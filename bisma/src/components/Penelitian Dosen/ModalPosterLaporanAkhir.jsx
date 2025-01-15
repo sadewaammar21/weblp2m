@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../DropdownCmp"; // Komponen Dropdown yang Anda buat
 import TextfieldCmp from "../TextfieldCmp"; // Komponen TextField yang Anda buat
@@ -6,9 +6,26 @@ import TextfieldCmp from "../TextfieldCmp"; // Komponen TextField yang Anda buat
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalPosterLaporanAkhir = ({ isOpen, onRequestClose }) => {
+const ModalPosterLaporanAkhir = ({ data, setData, isOpen, onRequestClose }) => {
+  const [poster, setPoster] = useState();
+  useEffect(() => {
+    if (data) {
+      setPoster(data.poster);
+    }
+  }, [data]);
+
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setPoster(files[0]);
+  };
+
   const handleSave = () => {
     console.log("Data berhasil disimpan");
+    setData((prevData) => ({
+      ...prevData,
+      poster: poster,
+    }));
+    setPoster();
     onRequestClose(); // Tutup modal setelah menyimpan
   };
 
@@ -70,6 +87,8 @@ const ModalPosterLaporanAkhir = ({ isOpen, onRequestClose }) => {
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Poster</label>
           <input
+            name="poster"
+            onChange={(e) => handleFileChange(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />

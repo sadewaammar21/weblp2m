@@ -4,7 +4,7 @@ import DropdownCmp from "../DropdownCmp"; // Komponen Dropdown yang Anda buat
 import TextfieldCmp from "../TextfieldCmp"; // Komponen TextField yang Anda buat
 
 // Set root element untuk React Modal
-Modal.setAppElement("#root");
+Modal.setAppElement("#root"); 
 
 const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave }) => {
 

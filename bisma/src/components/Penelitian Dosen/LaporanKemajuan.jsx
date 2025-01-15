@@ -5,7 +5,7 @@ import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const LaporanKemajuan = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); 
   const navigate = useNavigate(); // Hook untuk navigasi
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

@@ -4,7 +4,7 @@ import ModalEditLapKemajuanTab2 from "./ModalEditLapKemajuanTab2";
 const LaporanKemajuanTab2 = ({ research, data, setData }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event) => { 
     const { name, files } = event.target;
     setData((prevData) => ({
       ...prevData,

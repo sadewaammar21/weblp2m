@@ -39,7 +39,7 @@ const ProgressBar = ({ currentStep }) => {
         </div>
       ))}
     </div>
-  );
+  ); 
 };
 
 const LaporanKemajuanTab = () => {

@@ -3,7 +3,7 @@ import TextAreaCmp from "../TextAreaCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { FaDownload } from "react-icons/fa";
 import ModalEditLapKemajuanTab1 from "./ModalEditLapKemajuanTab1";
- 
+  
 const LaporanKemajuanTab1 = ({ research, data, setData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);

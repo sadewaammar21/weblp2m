@@ -6,38 +6,44 @@ import { useNavigate } from "react-router-dom";
 
 const LaporanAkhirList = () => {
   const [data, setData] = useState([]);
-  const navigate = useNavigate(); // Hook untuk navigasi
+  const navigate = useNavigate(); // Hook untuk navigasi 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const handleView = () => {
-    navigate("/penelitian/catatan-harian/:id"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  const handleView = (researchId, report) => {
+    console.log(report)
+    if(report != null){
+      navigate("/penelitian/laporan-akhir/edit", { state: { id: researchId, reportId: report } })
+    }else{
+      navigate("/penelitian/laporan-akhir/baru", { state: { id: researchId, reportId: null } }); // Arahkan ke halaman 'usulan-baru-penelitian'
+    }
   };
 
   const handleClick = () => {
     navigate("/penelitian/laporan-akhir"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const result = await getResearch({
-  //           pageSize: 5,
-  //           currentPage: 1,
-  //           status: 1,
-  //           year: 2024,
-  //           userId: 1,
-  //         });
-  //         setData(result.data);
-  //       } catch (err) {
-  //         setError(err.message);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }, []);
+  const user = JSON.parse(localStorage.getItem('user'));
+    const fetchData = async () => {
+      try {
+        const result = await getResearch({
+          pageSize: 5,
+          currentPage: 1,
+          // status: 1,
+          // year: 2025,
+          userId: user.id,
+        });
+        setData(result.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    useEffect(() => {
+  
+      fetchData();
+    }, []);
 
   return (
     <div className="mx-5">
@@ -100,45 +106,46 @@ const LaporanAkhirList = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="border border-black px-4 py-2 align-middle">
-                  1
-                </td>
-                <td className="border border-black px-4 py-2 align-middle break-words">
-                  Penelitian Fundamental - Reguler Penelitian Kompetitif
-                  Nasional
-                </td>
-                <td className="border border-black px-4 py-2 align-middle break-words">
-                  Pengembangan Aplikasi untuk Optimalisasi Pembelajaran
-                </td>
-                <td className="flex items-center border border-black px-4 py-2 align-middle  break-words">
-                  <a
-                    href={
-                      process.env.PUBLIC_URL +
-                      "/assets/template_laporan_kemajuan 2024.docx"
-                    }
-                    className="text-blue-600 hover:underline flex items-center"
-                  >
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/berkas.svg"}
-                      alt="logo"
-                      className="w-5 h-5 mr-2"
-                    />
-                  </a>
-                </td>
-                <td className="border border-black px-4 py-2 align-middle">
-                  <button
-                    onClick={handleView}
-                    className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
-                  >
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-                      alt="penelitian"
-                      className="w-7 h-7 mr-2"
-                    />
-                  </button>
-                </td>
-              </tr>
+              {data.map((item, index) => (
+                <tr key={index}>
+                  <td className="border border-black px-4 py-2 align-middle">
+                    {index+1}
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle break-words">
+                    {item.scheme.name}
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle break-words">
+                    {item.title}
+                  </td>
+                  <td className="flex items-center border border-black px-4 py-2 align-middle  break-words">
+                    <a
+                      href={
+                        process.env.PUBLIC_URL +
+                        "/assets/template_laporan_kemajuan 2024.docx"
+                      }
+                      className="text-blue-600 hover:underline flex items-center"
+                    >
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/berkas.svg"}
+                        alt="logo"
+                        className="w-5 h-5 mr-2"
+                      />
+                    </a>
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle">
+                    <button
+                      onClick={() => handleView(item.id, item.finalReport[0] ? item.finalReport[0].id : null )}
+                      className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                    >
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                        alt="penelitian"
+                        className="w-7 h-7 mr-2"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
