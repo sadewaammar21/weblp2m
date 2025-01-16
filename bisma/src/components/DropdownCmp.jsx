@@ -9,6 +9,7 @@ const DropdownCmp = ({
   onChange,
   placeholder,
   width = "w-full",
+  disabled,
 }) => {
   return (
     <div className="dropdown">
@@ -19,6 +20,7 @@ const DropdownCmp = ({
         value={value} //ganti nama, sebelumnya bikin bingung
         placeholder={placeholder || "Select an option"}
         className={width}
+        disabled={disabled}
       />
     </div>
   );

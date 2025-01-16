@@ -12,7 +12,7 @@ export const getServices = async ({
   userId,
 }) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/comunity_service`, {
+    const response = await axios.get(`${apiUrl}/api/comunity-service`, {
       ...getToken(),
       params: {
         page_size: pageSize,

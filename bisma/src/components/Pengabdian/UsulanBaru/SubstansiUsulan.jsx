@@ -294,46 +294,6 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           />
         </div>
       </div>
-      {/* 5 */}
-      <div className="my-3 mx-10">
-        <label className=" font-bold text-md text-gray-700 ">
-          Kategori Luaran Peningkatan Pemberdayaan Mitra
-        </label>
-        <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
-          <DropdownCmp
-            label="Kategori Luaran *"
-            options={options}
-            value={``.id_category_output}
-            onChange={(option) =>
-              handleOutputChange(``, "id_category_output", option.value)
-            }
-            placeholder="Pilih Kategori Luaran"
-          />
-          <DropdownCmp
-            label="Jenis Luaran *"
-            options={options}
-            value={``.id_type_output}
-            onChange={(option) =>
-              handleOutputChange(``, "id_type_output", option.value)
-            }
-            placeholder="Pilih Luaran"
-          />
-          <DropdownCmp
-            label="Status *"
-            options={options}
-            value={``.status}
-            onChange={(option) =>
-              handleOutputChange(``, "status", option.value)
-            }
-            placeholder="txt"
-          />
-          <TextAreaCmp
-            label={`Keterangan Optional`}
-            placeholder={`url dan nama jurnal, penerbit, url paten`}
-            rows={2}
-          />
-        </div>
-      </div>
     </div>
   );
 };
