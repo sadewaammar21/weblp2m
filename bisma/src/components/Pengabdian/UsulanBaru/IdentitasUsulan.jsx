@@ -5,16 +5,27 @@ import TextAreaCmp from "../../TextAreaCmp";
 import { FaPlus } from "react-icons/fa";
 import ModalTambahDosen from "./ModalTambahDosen";
 import ModalTambahMahasiswa from "./ModalTambahMahasiswa";
+import { getServices } from "../../../Features/ServiceSlice";
+import { getToken } from "../../../Features/AuthSlice";
+import axios from "axios";
 
+const apiUrl = process.env.REACT_APP_API_URL;
 const IdentitasUsulan = ({ data, setData }) => {
   // const navigate = useNavigate(); // Hook untuk navigasi
+
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDos, setIsOpenDos] = useState(false);
   const [isOpenMhs, setIsOpenMhs] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const handleRadioChange = (value) => {
     setSelectedOption(value);
+    // if (selectedOption === "tematik") {
+    //   setData({ ...data, focus_rirn_id: null });
+    // } else if (selectedOption === "rirn") {
+    //   setData({ ...data, focus_thematic_id: null });
+    // }
+    console.log(selectedOption);
   };
 
   const openModal = () => {
@@ -54,9 +65,15 @@ const IdentitasUsulan = ({ data, setData }) => {
   const handleDropdownChange = (option, fieldName) => {
     setData((prevData) => ({
       ...prevData,
-      [fieldName]: option,
+      [fieldName]: option.value,
     }));
-    console.log("clicked" + option);
+  };
+
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey],
+    }));
   };
 
   //menambah anggota dan mahasiswa
@@ -72,15 +89,110 @@ const IdentitasUsulan = ({ data, setData }) => {
     setData({ ...data, students: updatedStudent });
   };
 
-  const options = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
-  ];
+  const [category, setCategory] = useState([]);
+  const [focus, setFocus] = useState([]);
+  const [tematik, setTematik] = useState([]);
+  const [rirn, setRirn] = useState([]);
+  const [scheme, setScheme] = useState([]);
+  const [scope, setScope] = useState([]);
+  const [year, setYear] = useState([
+    { id: 1, value: 2025 },
+    { id: 2, value: 2026 },
+    { id: 3, value: 2027 },
+    { id: 4, value: 2028 },
+    { id: 5, value: 2029 },
+  ]);
+  const [duration, setDuration] = useState([
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+    { id: 4, value: 4 },
+    { id: 5, value: 5 },
+  ]);
+  const [cluster1, setCluster1] = useState([]);
+  const [cluster2, setCluster2] = useState([]);
+  const [cluster3, setCluster3] = useState([]);
 
+  //fetch data
   useEffect(() => {
-    console.log(data);
-  }, []);
+    fetchCategory();
+    fetchScheme();
+    fetchScope();
+    fetchTematik();
+    fetchRirn();
+    fetchCluster1();
+    fetchCluster2(data.cluster_lv1);
+    fetchCluster3(data.cluster_lv2);
+  }, [data.cluster_lv1, data.cluster_lv2]);
+
+  const fetchCategory = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/service-category`,
+      getToken()
+    );
+    setCategory(response.data);
+    console.log(response.data);
+  };
+
+  const fetchScheme = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/service-scheme`,
+      getToken()
+    );
+    setScheme(response.data);
+    console.log(response.data);
+  };
+
+  const fetchScope = async () => {
+    const response = await axios.get(`${apiUrl}/api/service-scope`, getToken());
+    setScope(response.data);
+    console.log(response.data);
+  };
+
+  const fetchTematik = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/service-focus-temathic`,
+      getToken()
+    );
+    setTematik(response.data);
+    console.log(response.data);
+  };
+
+  const fetchRirn = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/service-focus-rirn`,
+      getToken()
+    );
+    setRirn(response.data);
+    console.log(response.data);
+  };
+
+  const fetchCluster1 = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/service-cluster1`,
+      getToken()
+    );
+    setCluster1(response.data);
+    console.log(response.data);
+  };
+
+  const fetchCluster2 = async ($cluster1) => {
+    const response = await axios.get(
+      `${apiUrl}/api/service-cluster2/${$cluster1}`,
+      getToken()
+    );
+    setCluster2(response.data);
+    console.log(response.data);
+  };
+
+  const fetchCluster3 = async ($cluster2) => {
+    const response = await axios.get(
+      `${apiUrl}/api/service-cluster3/${$cluster2}`,
+      getToken()
+    );
+    setCluster3(response.data);
+    console.log(response.data);
+  };
 
   return (
     <div>
@@ -105,19 +217,21 @@ const IdentitasUsulan = ({ data, setData }) => {
         <div className="grid grid-cols-2 gap-x-10  ">
           <DropdownCmp
             label="1. Kategori Program Pengabdian *"
-            options={options}
-            value={data.scheme_id}
+            options={mapToDropdown(category, "name", "id")}
+            value={mapToDropdown(category, "name", "id").find(
+              (option) => option.value === data.category_id
+            )}
             onChange={(option) =>
-              handleDropdownChange(option.value, "scheme_id")
+              handleDropdownChange(option.value, "category_id")
             }
           />
           <DropdownCmp
             label="6. Lama Kegiatan *"
-            options={options}
-            value={data.cluster_lv1}
-            onChange={(option) =>
-              handleDropdownChange(option.value, "cluster_lv1")
-            }
+            options={mapToDropdown(duration, "value", "id")}
+            value={mapToDropdown(duration, "value", "id").find(
+              (option) => option.value === data.duration
+            )}
+            onChange={(option) => handleDropdownChange(option, "duration")}
           />
           {/* <DropdownCmp
             label="5. Ruang Lingkup *"
@@ -131,7 +245,7 @@ const IdentitasUsulan = ({ data, setData }) => {
             <h2 className=" text-md">2. Bidang Fokus Pengabdian *</h2>
             <div className="mt-4">
               <label className="flex flex-col space-y-2">
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-2 ">
                   {" "}
                   {/* Stack items vertically */}
                   <div className="flex items-center space-x-2">
@@ -139,23 +253,24 @@ const IdentitasUsulan = ({ data, setData }) => {
                       type="radio"
                       name="bidangFokus"
                       value="tematik"
-                      checked={selectedOption === "tematik"}
+                      // checked={selectedOption === "tematik"}
                       onChange={() => handleRadioChange("tematik")}
                       className="w-4 h-4"
                     />
                     <span>Bidang Fokus Tematik</span>
                   </div>
-                  <DropdownCmp
-                    options={[
-                      { value: "tema1", label: "Tema 1" },
-                      { value: "tema2", label: "Tema 2" },
-                    ]}
-                    disabled={selectedOption !== "tematik"}
-                    placeholder="Pilih Bidang Fokus Tematik"
-                    className="mt-2"
-                  />
                 </div>
               </label>
+              <DropdownCmp
+                options={mapToDropdown(tematik, "name", "id")}
+                value={mapToDropdown(tematik, "name", "id").find(
+                  (option) => option.value === data.tematik_id
+                )}
+                onChange={(option) =>
+                  handleDropdownChange(option.value, "tematik_id")
+                }
+                disabled={selectedOption !== "tematik"}
+              />
             </div>
 
             <div className="mt-4">
@@ -168,71 +283,80 @@ const IdentitasUsulan = ({ data, setData }) => {
                       type="radio"
                       name="bidangFokus"
                       value="rirn"
-                      checked={selectedOption === "rirn"}
+                      // checked={selectedOption === "rirn"}
                       onChange={() => handleRadioChange("rirn")}
                       className="w-4 h-4"
                     />
                     <span>Bidang Fokus RIRN</span>
                   </div>
-                  <DropdownCmp
-                    options={[
-                      { value: "rirn1", label: "RIRN 1" },
-                      { value: "rirn2", label: "RIRN 2" },
-                    ]}
-                    disabled={selectedOption !== "rirn"}
-                    placeholder="Pilih Bidang Fokus RIRN"
-                    className="mt-2"
-                  />
                 </div>
               </label>
+              <DropdownCmp
+                options={mapToDropdown(rirn, "name", "id")}
+                value={mapToDropdown(rirn, "name", "id").find(
+                  (option) => option.value === data.rirn_id
+                )}
+                onChange={(option) =>
+                  handleDropdownChange(option.value, "rirn_id")
+                }
+                placeholder="Pilih Bidang Fokus RIRN"
+                className="mt-2"
+                disabled={selectedOption !== "rirn"}
+              />
             </div>
           </div>
 
           <DropdownCmp
             label="7. Rumpun Ilmu Level 1 *"
-            options={options}
-            value={data.cluster_lv2}
-            onChange={(option) =>
-              handleDropdownChange(option.value, "cluster_lv2")
-            }
+            options={mapToDropdown(cluster1, "name", "id")}
+            value={mapToDropdown(cluster1, "name", "id").find(
+              (option) => option.value === data.cluster_lv1
+            )}
+            onChange={(option) => handleDropdownChange(option, "cluster_lv1")}
           />
           <DropdownCmp
             label="3. Kelompok Skema *"
-            options={options}
-            value={data.category_id}
+            options={mapToDropdown(scheme, "name", "id")}
+            value={mapToDropdown(scheme, "name", "id").find(
+              (option) => option.value === data.scheme_id
+            )}
             onChange={(option) =>
-              handleDropdownChange(option.value, "category_id")
+              handleDropdownChange(option.value, "scheme_id")
             }
           />
           <DropdownCmp
             label="8. Rumpun Ilmu Level 2 *"
-            options={options}
-            value={data.cluster_lv3}
-            onChange={(option) =>
-              handleDropdownChange(option.value, "cluster_lv3")
-            }
+            options={mapToDropdown(cluster2, "name", "id")}
+            value={mapToDropdown(cluster2, "name", "id").find(
+              (option) => option.value === data.cluster_lv2
+            )}
+            onChange={(option) => handleDropdownChange(option, "cluster_lv2")}
           />
           <DropdownCmp
             label="4. Ruang Lingkup *"
-            options={options}
-            value={data.focus_id}
+            options={mapToDropdown(scope, "name", "id")}
+            value={mapToDropdown(scope, "name", "id").find(
+              (option) => option.value === data.scope_id
+            )}
             onChange={(option) =>
-              handleDropdownChange(option.value, "focus_id")
+              handleDropdownChange(option.value, "scope_id")
             }
           />
           <DropdownCmp
             label="9. Rumpun Ilmu Level 3 * "
-            options={options}
-            value={data.priority_id}
-            onChange={(option) =>
-              handleDropdownChange(option.value, "priority_id")
-            }
+            options={mapToDropdown(cluster3, "name", "id")}
+            value={mapToDropdown(cluster3, "name", "id").find(
+              (option) => option.value === data.cluster_lv3
+            )}
+            onChange={(option) => handleDropdownChange(option, "cluster_lv3")}
           />
           <DropdownCmp
             label="5 Tahun Pertama Usulan *"
-            options={options}
-            value={data.year}
-            onChange={(option) => handleDropdownChange(option.value, "year")}
+            options={mapToDropdown(year, "value", "value")}
+            value={mapToDropdown(year, "value", "value").find(
+              (option) => option.value === data.year
+            )}
+            onChange={(option) => handleDropdownChange(option, "year")}
           />
         </div>
         <div>
@@ -289,9 +413,9 @@ const IdentitasUsulan = ({ data, setData }) => {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.id}</td>
-                  <td>{item.research_role}</td>
-                  <td>{item.task}</td>
-                  <td>{item.status}</td>
+                  <td>{item.pivot.comunity_service_roles}</td>
+                  <td>{item.pivot.task}</td>
+                  <td>{item.pivot.status}</td>
                   <td>action here</td>
                 </tr>
               ))}
@@ -342,10 +466,18 @@ const IdentitasUsulan = ({ data, setData }) => {
       <ModalTambahDosen
         isOpen={isOpenDos} // Gunakan state boolean isModalOpenMitra
         onRequestClose={closeModalDos}
+        index={data["members"].length}
+        onSave={handleMembersChange}
+        clusters1={cluster1}
+        clusters2={cluster2}
+        clusters3={cluster3}
+        setData={setData}
       />
       <ModalTambahMahasiswa
         isOpen={isOpenMhs} // Gunakan state boolean isModalOpenMitra
         onRequestClose={closeModalMhs}
+        index={data["students"].length}
+        onSave={handleAddStudents}
       />
     </div>
   );
