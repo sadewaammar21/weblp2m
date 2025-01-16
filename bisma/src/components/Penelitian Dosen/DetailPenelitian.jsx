@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { downloadResearchDocument, downloadEveryDocument, getResearchDetail } from "../../Features/ResearchSlice";
 
-const DetailPenelitian = (data) => {
+const DetailPenelitian = () => {
+  const {id} = useParams();
+  const [research, setResearch] = useState({});
+
+  const fetchDetailResearch = async(id) =>{
+    const response = await getResearchDetail(id);
+    setResearch(response.data);
+    console.log(research);
+  }
+
+  useEffect(()=>{
+    fetchDetailResearch(id);
+  }, [id]);
+
+  const handleDownloadPdf = (id) => {
+    downloadResearchDocument(id);
+  }
+
+  const handleDownloadDocument = (filePath) => {
+    downloadEveryDocument(filePath);
+  }
+
   return (
     <div className="px-10">
       <div className="">
@@ -21,7 +44,7 @@ const DetailPenelitian = (data) => {
               </h2>
             </div>
           </div>
-          <button className="cursor-pointer">
+          <button className="cursor-pointer" onClick={() => handleDownloadPdf(research.id)}>
             <img
               src={process.env.PUBLIC_URL + "/assets/icon_pdf_brks.svg"}
               alt="user"
@@ -42,9 +65,7 @@ const DetailPenelitian = (data) => {
                   Judul
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right">
-                  Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris
-                  Berbasis DIgital Visual Literacy dan Keterampilan 5C untuk
-                  Siswa Sekolah Dasar
+                  {research.title}
                 </td>
               </tr>
 
@@ -53,26 +74,26 @@ const DetailPenelitian = (data) => {
                   Kelompok Skema
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  Riset Dasar
+                  {research.scheme.name}
                 </td>
               </tr>
               <tr className=" boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Ruang Lingkup</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  Penelitan Dosen Pemula
+                  {research.scope.name}
                 </td>
               </tr>
 
               <tr className=" boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Bidang Fokus</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  Teknologi Informasi dan Komunikasi
+                  {research.research_focus.name}
                 </td>
               </tr>
               <tr className=" boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Tahun Usulan </td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  2024
+                  {research.year}
                 </td>
               </tr>
               <tr className=" boder border-black border-b-2">
@@ -80,7 +101,7 @@ const DetailPenelitian = (data) => {
                   Tahun Pelaksanaan
                 </td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  2024
+                  {research.year}
                 </td>
               </tr>
             </tbody>
@@ -93,13 +114,13 @@ const DetailPenelitian = (data) => {
               <tr className=" boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Lama Kegiatan</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  1 Tahun
+                  {research.duration} Tahun
                 </td>
               </tr>
               <tr className=" boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Tema Penelitan</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  Teknologi Subsitusi Bahan Bakar
+                  {research.research_theme.name}
                 </td>
               </tr>
               <tr className=" boder border-black border-b-2">
@@ -107,8 +128,7 @@ const DetailPenelitian = (data) => {
                   Topik Penelitian
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right">
-                  Teknologi untuk data informasi berbagai bentuk kearifan lokal
-                  di Indonesia
+                  {research.research_topic.name}
                 </td>
               </tr>
               <tr className="boder border-black border-b-2">
@@ -116,7 +136,7 @@ const DetailPenelitian = (data) => {
                   Rumpun Ilmu Level 3
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  Teknik Komputer
+                  {research.science_cluster1.name}
                 </td>
               </tr>
 
@@ -125,7 +145,7 @@ const DetailPenelitian = (data) => {
                   Target TKT
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                  2
+                  {research.tkt_final}
                 </td>
               </tr>
 
@@ -172,13 +192,17 @@ const DetailPenelitian = (data) => {
             </tr>
           </thead>
           <tbody>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            {research.members && research.members.map((item, index) => (
+              <tr key={index}>
+                <td>{index+1}</td>
+                <td>{item.nidn}</td>
+                <td>{item.name}</td>
+                <td>{item.institution}</td>
+                <td>{item.id_prodi}</td>
+                <td>{item.pivot.task}</td>
+                <td>{item.pivot.status}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -197,22 +221,26 @@ const DetailPenelitian = (data) => {
           <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="border border-black">
               <th className="border border-black px-4 py-2">No</th>
-              <th className="border border-black px-4 py-2">NIDN</th>
+              <th className="border border-black px-4 py-2">NIM</th>
               <th className="border border-black px-4 py-2">Nama</th>
-              <th className="border border-black px-4 py-2">Institusi</th>
+              <th className="border border-black px-4 py-2">Email</th>
               <th className="border border-black px-4 py-2">Prodi</th>
               <th className="border border-black px-4 py-2">Tugas</th>
-              <th className="border border-black px-4 py-2">Status</th>
+              <th className="border border-black px-4 py-2">Peran</th>
             </tr>
           </thead>
           <tbody>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            {research.students && research.students.map((item, index) => (
+              <tr key={index}>
+                <td>{index+1}</td>
+                <td>{item.nim}</td>
+                <td>{item.name}</td>
+                <td>{item.email}</td>
+                <td>{item.prodi}</td>
+                <td>{item.task}</td>
+                <td>{item.role}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -235,7 +263,7 @@ const DetailPenelitian = (data) => {
         <div>
           <div className="font-sans">Substansi</div>
           <div className="font-sans font-bold flex items-center">
-            <button className="ml-2">
+            <button className="ml-2" onClick={() => handleDownloadDocument(research.substance)}>
               <img
                 src={process.env.PUBLIC_URL + "/assets/download_sub.svg"}
                 alt="user"
@@ -259,7 +287,17 @@ const DetailPenelitian = (data) => {
               <th className="border border-black px-4 py-2">Keterangan</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {research.output && research.output.map((item, index) => (
+              <tr key={index}>
+                <td>{item.year}</td>
+                <td>{item.id_category_output}</td>
+                <td>{item.id_type_output}</td>
+                <td>{item.status}</td>
+                <td>{item.description}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
 
@@ -294,7 +332,19 @@ const DetailPenelitian = (data) => {
               <th className="border border-black px-4 py-2">Total</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {research.budget_plan && research.budget_plan.map((item, index) => (
+              <tr key={index}>
+                <td>{item.id_group_budget}</td>
+                <td>{item.id_component_budget}</td>
+                <td>{item.item}</td>
+                <td>{item.unit}</td>
+                <td>{item.price_unit}</td>
+                <td>{item.volume}</td>
+                <td>{item.total}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
       {/* <div className="flex justify-between">
@@ -355,13 +405,17 @@ const DetailPenelitian = (data) => {
             </tr>
           </thead>
           <tbody>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            {research.supporting_document && research.supporting_document.map((item, index) => (
+              <tr key={index}>
+                <td>{item.partner_name}</td>
+                <td>{item.institution}</td>
+                <td>{item.institution_address}</td>
+                <td>{item.country_code}</td>
+                <td>{item.email}</td>
+                <td>{item.document}</td>
+                <td>{item.funding_contribution1 + item.funding_contribution2}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

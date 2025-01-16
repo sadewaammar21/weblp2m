@@ -148,7 +148,7 @@ const UsulanBaruList = () => {
                     </button>
                     <button
                       onClick={() =>
-                        navigate(`/penelitian/usulan/edit/${item.id}`)
+                        navigate(`/penelitian/detail/${item.id}`)
                       }
                       className="bg-blue-500 px-2 py-1 rounded-md text-white"
                     >

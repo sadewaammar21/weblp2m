@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
-import { downloadDocument, getResearch } from "../../Features/ResearchSlice";
+import { downloadResearchDocument, getResearch } from "../../Features/ResearchSlice";
 
 const UsulanDraftOPT = () => {
   const navigate = useNavigate();
@@ -190,7 +190,7 @@ const UsulanDraftOPT = () => {
                         </td>
                         <td className="border border-gray-300 p-2 text-center">
                           <button
-                            onClick={() => downloadDocument(item.id)}
+                            onClick={() => downloadResearchDocument(item.id)}
                             className="text-red-600 text-2xl"
                           >
                             <a

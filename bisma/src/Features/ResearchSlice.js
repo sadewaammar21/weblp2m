@@ -251,12 +251,28 @@ export const updateStatus = async ({ researchId, newStatus, note }) => {
   }
 };
 
-export const downloadDocument = async (researchId) => {
+export const downloadResearchDocument = async (researchId) => {
   try {
     const response = await axios.get(
       `${apiUrl}/api/research/download/${researchId}`,
-      getToken()
+      {
+        ...getToken(),
+        responseType: "blob",
+      }
     );
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+
+    const contentDisposition = response.headers["content-disposition"];
+    const fileName = contentDisposition
+      ? contentDisposition.split("filename=")[1].replace(/"/g, "")
+      : "downloaded-file.pdf";
+
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
     return response;
   } catch (error) {
     console.error("Error download document:", error);
@@ -695,3 +711,32 @@ export const getResearchFinalReport = async (reportId) => {
     throw error;
   }
 };
+
+export const downloadEveryDocument = async ({ filePath }) => {
+  try {
+    const response = await axios.get(`${apiUrl}/api/download/document`, {
+      ...getToken(),
+      params: { file_path: filePath },
+      responseType: "blob",
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+
+    const contentDisposition = response.headers["content-disposition"];
+    const fileName = contentDisposition
+      ? contentDisposition.split("filename=")[1].replace(/"/g, "")
+      : "downloaded-file.pdf";
+
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (error) {
+    console.error("Error downloading the document:", error);
+    alert("Failed to download the document.");
+  }
+};
+
+// export default downloadResearchDocument;

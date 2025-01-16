@@ -95,7 +95,6 @@ function App() {
         <Route path="/" element={<Login />} />
         {/* Dashboard */}
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/detail-penelitian" element={<DetailPenelitianPage />} />
         <Route path="/dashboard-operator" element={<DashboardOperator />} />
         <Route path="/dashboard-reviewer" element={<DashboardReviewer />} />
         <Route
@@ -108,6 +107,7 @@ function App() {
         />
         {/* Dosen Penelitian*/}
         <Route path="/penelitian/usulan" element={<UsulanBaru />} />
+        <Route path="/penelitian/detail/:id" element={<DetailPenelitianPage />} />
         <Route
           path="/penelitian/usulan/baru"
           element={<UsulanBaruPenelitian />}
@@ -147,6 +147,10 @@ function App() {
         />
         <Route
           path="/penelitian/laporan-akhir/baru"
+          element={<LaporanAkhirPnltPage />}
+        />
+        <Route
+          path="/penelitian/laporan-akhir/edit"
           element={<LaporanAkhirPnltPage />}
         />
 

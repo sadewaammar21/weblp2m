@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
-import { downloadDocument, getResearch } from "../../Features/ResearchSlice";
+import { downloadResearchDocument, getResearch } from "../../Features/ResearchSlice";
 import PopUpPersetujuan from "../UsulanBaru/PopUpPersetujuan";
 import axios from "axios";
 import { getToken } from "../../Features/AuthSlice";
@@ -62,7 +62,7 @@ const ListUsulanKaprodi = () => {
   };
 
   const displayDocument = (id) => {
-    downloadDocument(id);
+    downloadResearchDocument(id);
   };
 
   return (
@@ -135,7 +135,7 @@ const ListUsulanKaprodi = () => {
                       </td>
                       <td className="border border-gray-300 p-2 text-center">
                         <button
-                          onClick={() => downloadDocument(item.id)}
+                          onClick={() => downloadResearchDocument(item.id)}
                           className="text-red-600 text-2xl"
                         >
                           <a
