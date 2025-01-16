@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -6,32 +6,52 @@ import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import ModalPerKegLaporanKemajuan from "./ModalPerKegLaporanKemjauan";
 import PerKegLaporanAkhirOPT from "./PerKegLaporanAkhirOPT";
+import { getResearch } from "../../Features/ResearchSlice";
 
 const PerKegLaporanKemajuanOPT = () => {
   const navigate = useNavigate();
-  const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedItem, setSelectedItem] = useState("");
 
-  const openModalView = () => {
+  const fetchData = async () => {
+    try {
+      const result = await getResearch({ page_size: 5, current_page: 1 });
+      setData(result.data);
+      console.log(result);
+      console.log(data);
+      console.log(typeof data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  const openModalView = (id) => {
+    setSelectedItem(id)
     setIsOpen(true);
   };
 
   const closeModalView = () => {
     setIsOpen(false);
+    fetchData();
   };
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
-
-  //   const handleInputChange = (setter) => (e) => {
-  //     setter(e.target.value);
-  //   };
-
-  // Fungsi untuk ekspor data ke Excel
-
-  // Fungsi untuk kembali ke halaman sebelumnya
 
   const options = [
     { label: "Option 1", value: "1" },
@@ -39,7 +59,22 @@ const PerKegLaporanKemajuanOPT = () => {
     { label: "Option 3", value: "3" },
   ];
   const handleBack = () => {
-    navigate("/monitoring/penenelitian/periode-kegiatan/");
+    navigate(-1);
+  };
+
+  const renderAction = (item) => {
+    if (item.progress_report_deadline) {
+      return <p>{item.progress_report_deadline}</p>;
+    } else {
+      return (
+        <button
+          className="bg-bluef-500 text-white px-4 py-2 rounded-md"
+          onClick={() => openModalView(item.id)}
+        >
+          Deadline
+        </button>
+      );
+    }
   };
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
@@ -98,34 +133,33 @@ const PerKegLaporanKemajuanOPT = () => {
                 <tr>
                   <th className="border px-4 py-2">No</th>
                   <th className="border px-4 py-2">Usulan</th>
+                  {/* <td className="border px-4 py-2">Deadline</td> */}
                   <th className="border px-4 py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="border px-4 py-2 text-center">1</td>
-                  <td className="border px-4 py-2 text-bluef-500">
-                    Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris
-                    Berbasis DIgital Visual Literacy dan Keterampilan 5C untuk
-                    Siswa Sekolah Dasar
-                    <br className="mt-5 text-cyan-800" />
-                    Skema-Penelitian Fundamental - Reguler
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    <button
-                      className="bg-bluef-500 text-white px-4 py-2 rounded-md"
-                      onClick={openModalView}
-                    >
-                      Deadline
-                    </button>
-                  </td>
-                </tr>
+                {data.map((item, index) => (
+                  <tr key={index}>
+                    <td className="border px-4 py-2 text-center">
+                      {index + 1}
+                    </td>
+                    <td className="border px-4 py-2 text-bluef-500">
+                      {item.title}
+                      <br className="mt-5 text-cyan-800" />
+                      {item.scheme.name}
+                    </td>
+                    <td className="border px-4 py-2 text-center">
+                      {renderAction(item)}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
         {/* Modal */}
         <ModalPerKegLaporanKemajuan
+          researchId={selectedItem}
           isOpen={isOpen}
           onRequestClose={closeModalView}
         />

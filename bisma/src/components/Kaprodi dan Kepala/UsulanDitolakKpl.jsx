@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
+import {
+  getResearch,
+  downloadResearchDocument,
+} from "../../Features/ResearchSlice";
 
 const UsulanDitolakKpl = () => {
   const navigate = useNavigate();
@@ -15,9 +19,30 @@ const UsulanDitolakKpl = () => {
     setSelectedOption(option);
   };
 
-  //   const handleInputChange = (setter) => (e) => {
-  //     setter(e.target.value);
-  //   };
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getResearch({ page_size: 5, current_page: 1 });
+        setData(result.data);
+        console.log(result);
+        console.log(data);
+        console.log(typeof data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   // Fungsi untuk ekspor data ke Excel
   const handleExportExcel = () => {
@@ -130,36 +155,46 @@ const UsulanDitolakKpl = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="text-center">
-                  <td className="border px-4 py-2">1</td>
-                  <td className="border px-4 py-2 text-left">
-                    <p>Ketua: SRI HARJANTO</p>
-                    <p>NIDN: 0626016803</p>
-                    <p>Tahun Pelaksanaan: 2024</p>
-                    <p>Lama Kegiatan: 1 Tahun</p>
-                    <p>Bidang Fokus: Teknologi Informasi dan Komunikasi</p>
-                  </td>
-                  <td className="border px-4 py-2 text-bluef-500">
-                    <p>Tes Usulan Penelitian</p>
-                    <p>Penelitian Fundamental - Reguler</p>
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    <button>
-                      <img
-                        src="/assets/icon_pdf_brks.svg"
-                        alt="Action Icon"
-                        className="w-7 h-auto z-10 mx-auto"
-                      />
-                    </button>
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    <div className="flex justify-center space-x-2">
-                      <button className="bg-reds-500 text-white px-4 py-2 rounded-md">
-                        Ditolak
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                {data
+                  .filter((item) => item.status == 8)
+                  .map((item, index) => (
+                    <tr key={index}>
+                      <td className="border border-gray-300 p-2 text-center">
+                        {index + 1}
+                      </td>
+                      <td className="border border-gray-300 p-2">
+                        <p>Ketua: {item.user?.name}</p>
+                        <p>NIDN: {item.user?.nidn}</p>
+                        <p>Tahun Pelaksanaan: {item.year}</p>
+                        <p>Lama Kegiatan: {item.duration}</p>
+                        <p>Bidang Fokus: {item.focus.name}</p>
+                      </td>
+                      <td className="border border-gray-300 p-2">
+                        <p className="text-blue-600 font-bold">{item.title}</p>
+                        <p className="text-blue-600 font-bold">
+                          {item.scheme.name}
+                        </p>
+                      </td>
+                      <td className="border border-gray-300 p-2 text-center">
+                        <button
+                          onClick={() => downloadResearchDocument(item.id)}
+                          className="text-red-600 text-2xl"
+                        >
+                          <a
+                            href={`http://localhost:8000/api/research/download/${item.id}`}
+                            target="_blank"
+                          >
+                            📄
+                          </a>
+                        </button>
+                      </td>
+                      <td className="border border-gray-300 p-2 text-center">
+                        <p className="text-white bg-red-800 rounded-md p-2">
+                          Ditolak
+                        </p>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

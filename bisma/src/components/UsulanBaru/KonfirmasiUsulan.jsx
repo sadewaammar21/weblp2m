@@ -28,21 +28,21 @@ const KonfirmasiUsulan = (data) => {
             <td className="px-6 py-4 whitespace-nowrap text-sm font-sans">
               TKT Saat Ini
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">2</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">{data.tkt_current}</td>
           </tr>
 
           <tr className="bg-gray-50">
             <td className="px-6 py-4 whitespace-nowrap text-sm font-sans">
               Target Akhir TKT
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">3</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">{data.tkt_final}</td>
           </tr>
 
           <tr>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-sans ">
               Kelompok Skema
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">Riset Dasar</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">{data.scheme_id}</td>
           </tr>
 
           <tr className="bg-gray-50">
@@ -50,7 +50,7 @@ const KonfirmasiUsulan = (data) => {
             Ruang Lingkup
           </td>
           <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-            Penelitian Kompetitif Nasional – Penelitian Fundamental–Reguler
+            {data.scope_id}
             </td>
           </tr>
 
@@ -59,7 +59,7 @@ const KonfirmasiUsulan = (data) => {
               Kategori SBK
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-              SBK Riset Dasar
+              {data.category_id}
             </td>
           </tr>
 
@@ -67,7 +67,7 @@ const KonfirmasiUsulan = (data) => {
             <td className="px-6 py-4 whitespace-nowrap text-sm font-sans ">
               Bidang Fokus Penelitian
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">Energi</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">{data.focus_id}</td>
           </tr>
 
           <tr>
@@ -75,7 +75,7 @@ const KonfirmasiUsulan = (data) => {
               Prioritas Riset
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-              Green Economy
+              {data.priority_id}
             </td>
           </tr>
         </tbody>
@@ -96,7 +96,7 @@ const KonfirmasiUsulan = (data) => {
 
           <tr className="bg-gray-50">
             <td className="px-6 py-4 whitespace-nowrap text-sm font-sans">
-              Teknik Komputer
+              {data.cluster_lv3}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">3</td>
           </tr>
@@ -105,7 +105,7 @@ const KonfirmasiUsulan = (data) => {
             <td className="px-6 py-4 whitespace-nowrap text-sm font-sans ">
               Tema Penilitian
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">Teknolgi Subsitusi Baham Bakar</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">{data.theme_id}</td>
           </tr>
 
           <tr className="bg-gray-50">
@@ -113,7 +113,7 @@ const KonfirmasiUsulan = (data) => {
             Topik Penelitian
           </td>
           <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-            Pengembanagan Komponen Konverter Kit
+            {data.topic_id}
             </td>
           </tr>
 
@@ -122,7 +122,7 @@ const KonfirmasiUsulan = (data) => {
               Lama Krgiatan 
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-              2 Tahun
+              {data.duration} Tahun
             </td>
           </tr>
 
@@ -130,7 +130,7 @@ const KonfirmasiUsulan = (data) => {
             <td className="px-6 py-4 whitespace-nowrap text-sm font-sans ">
               Tahun Pertahun Usulan
             </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">2023</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">{data.year}</td>
           </tr>
 
         </tbody>

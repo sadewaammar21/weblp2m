@@ -250,7 +250,7 @@ function App() {
           element={<PeriodeKegiatanListPenelitianOPTPage />}
         />
         <Route
-          path="/monitoring/penenelitian/periode-kegiatan/laporan-kemajuan"
+          path="/monitoring/penelitian/periode-kegiatan/laporan-kemajuan"
           element={<PerKegLaporanKemajuanPenelitianPage />}
         />
         <Route

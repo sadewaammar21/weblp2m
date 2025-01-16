@@ -29,8 +29,12 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     setSubstance(response.data);
   }
   const fetchOutputCategory = async(scheme) =>{
-    const response = await axios.get(`${apiUrl}/api/output-category/${scheme}`, getToken());
-    setOutputCategory(response.data);
+    try {
+      const response = await axios.get(`${apiUrl}/api/output-category/${scheme}`, getToken());
+      setOutputCategory(response.data);
+    } catch (error) {
+      setOutputCategory(error.message)
+    }
   }
   const fetchOutputType = async() =>{
     const response = await axios.get(`${apiUrl}/api/output-type`, getToken());

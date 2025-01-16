@@ -3,12 +3,15 @@ import DropdownCmp from "../DropdownCmp";
 import { deleteResearch, getResearch } from "../../Features/ResearchSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ModalTerimaAnggotaPenelitian from "./ModalTerimaAnggotaPenelitian";
 
 const UsulanBaruList = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate(); // Hook untuk navigasi
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState('');
 
   const handleClick = () => {
     navigate("/penelitian/usulan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
@@ -42,6 +45,66 @@ const UsulanBaruList = () => {
     fetchData();
   };
 
+  const openModal = (id) => {
+    setSelectedData(id)
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    fetchData();
+  };
+
+  const renderActionButton = (item) => {
+    if (item.user.id !== user.id) {
+      const currentUserAsMember = item.members.find((member) => member.id === user.id);
+      if(currentUserAsMember.pivot.status !== "pending"){
+        return(
+          <p>
+            {currentUserAsMember.pivot.status}
+          </p>
+        )
+      }else{
+        return (
+          <div>
+            <button
+              onClick={() => openModal(item.id)}
+              className="bg-blue-500 px-2 py-1 rounded-md text-white"
+            >
+              Action
+            </button>
+          </div>
+        );
+      }
+    } else {
+      return (
+        <div>
+          <button
+            onClick={() => navigate(`/penelitian/usulan/edit/${item.id}`)}
+            className={`bg-blue-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? 'hidden': ''}`}
+          >
+            edit
+          </button>
+          <button
+            onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+            className="bg-blue-500 px-2 py-1 rounded-md text-white"
+          >
+            detail
+          </button>
+          <button
+            onClick={() => handleDelete(item.id)}
+            className={`bg-red-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+          >
+            delete
+          </button>
+        </div>
+      );
+    }
+  };
+
+  if(loading){
+    return <p>Loading...</p>
+  }
   return (
     <div className="mx-5">
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
@@ -54,23 +117,24 @@ const UsulanBaruList = () => {
       {/* Card untuk bagian Tambah Usulan dan Tabel */}
       <div className="bg-gray-50 shadow-sm  rounded-sm  p-5 ">
         <div className="my-5">
-          <div className="p-4 bg-violet-100 w-full rounded-md ">
-            <div className="flex">
+          <div className="p-4w-full rounded-md ">
+            {/* <div className="flex">
               <img
                 src={process.env.PUBLIC_URL + "/assets/information.svg"}
                 alt="logo"
                 className="w-6 h-6 mr-4 "
               />
               <h2 className="text-xl font-bold text-violet-800"> Informasi</h2>
-            </div>
-            <h2 className="text-md font-medium text-violet-800 mr-1">
+            </div> */}
+            <ModalTerimaAnggotaPenelitian research={selectedData} userId={user.id} isOpen={isOpen} onRequestClose={closeModal}/>
+            {/* <h2 className="text-md font-medium text-violet-800 mr-1">
               {" "}
               Apakah anda menerima menjadi anggota penelitian?
             </h2>
             <div className="flex justify-start space-x-4 my-5">
               <button
                 className="border border-reds-500 text-reds-500 px-2 py-1 text-sm rounded hover:bg-reds-100"
-                onClick={() => alert("Diterima")} // Ganti dengan aksi yang sesuai
+                onClick={() => openModal()} // Ganti dengan aksi yang sesuai
               >
                 Diterima
               </button>
@@ -80,7 +144,7 @@ const UsulanBaruList = () => {
               >
                 Ditolak
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex justify-between items-center w-full">
@@ -135,31 +199,10 @@ const UsulanBaruList = () => {
                   <td>{item.title}</td>
                   <td>{item.focus.name}</td>
                   <td>{item.year}</td>
-                  <td>{item.roles}</td>
+                  <td>{user.id === item.user.id ? "Ketua" : "Anggota"}</td>
                   <td>{item.status}</td>
                   <td className="flex space-x-2 justify-center">
-                    <button
-                      onClick={() =>
-                        navigate(`/penelitian/usulan/edit/${item.id}`)
-                      }
-                      className="bg-blue-500 px-2 py-1 rounded-md text-white"
-                    >
-                      edit
-                    </button>
-                    <button
-                      onClick={() =>
-                        navigate(`/penelitian/detail/${item.id}`)
-                      }
-                      className="bg-blue-500 px-2 py-1 rounded-md text-white"
-                    >
-                      detail
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className={`bg-red-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
-                    >
-                      delete
-                    </button>
+                    {renderActionButton(item)}
                   </td>
                 </tr>
               ))}

@@ -5,11 +5,20 @@ import { downloadResearchDocument, downloadEveryDocument, getResearchDetail } fr
 const DetailPenelitian = () => {
   const {id} = useParams();
   const [research, setResearch] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const fetchDetailResearch = async(id) =>{
-    const response = await getResearchDetail(id);
-    setResearch(response.data);
-    console.log(research);
+    try {
+      setLoading(true);
+      const response = await getResearchDetail(id);
+      setResearch(response.data);
+      console.log(research);
+    } catch (error) {
+      setError(true)
+    }finally{
+      setLoading(false)
+    }
   }
 
   useEffect(()=>{
@@ -22,6 +31,14 @@ const DetailPenelitian = () => {
 
   const handleDownloadDocument = (filePath) => {
     downloadEveryDocument(filePath);
+  }
+
+  if(loading){
+    return <p>Loading...</p>
+  }
+
+  if(error){
+    return <p>Error ketika mengambil data</p>
   }
 
   return (
