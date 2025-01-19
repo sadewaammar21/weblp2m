@@ -201,7 +201,7 @@ const NavbarOperator = ({ children }) => {
                               </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring/pengabdian/periode-kegiatan">
+                              <Link to="/monitoring/penenelitian/periode-kegiatan/">
                                 <div className="flex items-center justify-between">
                                   Periode Kegiatan
                                 </div>

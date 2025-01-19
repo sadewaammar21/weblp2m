@@ -1,71 +1,131 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import SearchInput from "../../SearchInput";
 import TextfieldCmp from "../../TextfieldCmp";
 import TextAreaCmp from "../../TextAreaCmp";
+import { getToken } from "../../../Features/AuthSlice";
+import axios from "axios";
+import DropdownCmp from "../../DropdownCmp";
 
 Modal.setAppElement("#root");
+const apiUrl = process.env.REACT_APP_API_URL;
 
-const ModalTambahDosen = ({ isOpen, onRequestClose, index, onSave }) => {
+// Helper function for mapping dropdown options
+const mapToDropdown = (data, labelKey, valueKey) => {
+  return data.map((item) => ({
+    label: item[labelKey],
+    value: item[valueKey],
+  }));
+};
+
+const ModalTambahDosen = ({
+  isOpen,
+  onRequestClose,
+  index,
+  onSave,
+  clusters1,
+}) => {
   const [nidn, setNidn] = useState("");
   const [memberData, setMemberData] = useState({
     id: 0,
-    task: "",
-    research_role: "",
-    status: "",
+    pivot: {
+      name: "",
+      comunity_service_roles: "",
+      partner: "",
+      task: "",
+      status: "",
+    },
   });
-  const [rumpunIlmuLv1, setRumpunIlmuLv1] = useState("");
-  const [rumpunIlmuLv2, setRumpunIlmuLv2] = useState("");
-  const [rumpunIlmuLv3, setRumpunIlmuLv3] = useState("");
+  const [cluster2, setCluster2] = useState([]); // Data untuk cluster level 2
+  const [cluster3, setCluster3] = useState([]); // Data untuk cluster level 3
+  const [data, setData] = useState({
+    cluster_lv1: null,
+    cluster_lv2: null,
+    cluster_lv3: null,
+  });
 
-  const rumpunIlmuOptionsLv1 = [
-    "ILMU BAHASA",
-    "ILMU EKONOMI",
-    "ILMU SOSIAL HUMANIORA",
-    "MATEMATIKA DAN ILMU PENGETAHUAN ALAM (MIPA)",
-    "ILMU TANAMAN",
-    "ILMU HEWANI",
-    "ILMU KEDOKTERAN",
-    "ILMU TEKNIK",
-    "AGAMA DAN FILSAFAT",
-    "ILMU SENI, DESAIN DAN MEDIA",
-  ];
+  // Fetch cluster2 berdasarkan cluster1
+  const fetchCluster2 = async (cluster1Id) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/service-cluster2/${cluster1Id}`,
+        getToken()
+      );
+      setCluster2(response.data);
+      setData((prevData) => ({
+        ...prevData,
+        cluster_lv2: null, // Reset pilihan cluster2
+        cluster_lv3: null, // Reset pilihan cluster3
+      }));
+      setCluster3([]); // Kosongkan cluster3
+    } catch (error) {
+      console.error("Error fetching cluster2:", error);
+    }
+  };
 
-  const rumpunIlmuOptionsLv2 = ["ILMU EKONOMI", "ILMU MANAJEMEN"];
+  // Fetch cluster3 berdasarkan cluster2
+  const fetchCluster3 = async (cluster2Id) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/service-cluster3/${cluster2Id}`,
+        getToken()
+      );
+      setCluster3(response.data);
+      setData((prevData) => ({
+        ...prevData,
+        cluster_lv3: null, // Reset pilihan cluster3
+      }));
+    } catch (error) {
+      console.error("Error fetching cluster3:", error);
+    }
+  };
 
-  const rumpunIlmuOptionsLv3 = [
-    "EKONOMI PEMBANGUNAN",
-    "AKUNTANSI",
-    "EKONOMI SYARIAH",
-    "PERBANKAN",
-    "PERPAJAKAN",
-    "ASURANSI NIAGA (KERUGIAN)",
-    "NOTARIAT",
-    "BIDANG EKONOMI LAIN YANG BELUM TERCANTUM",
-    "EKONOMI AKUNTANSI",
-    "EKONOMI PEMASARAN",
-  ];
+  // Handle perubahan dropdown menggunakan fieldName
+  const handleDropdownChange = (option, fieldName) => {
+    setData((prevData) => ({
+      ...prevData,
+      [fieldName]: option.value,
+    }));
 
+    if (fieldName === "cluster_lv1") {
+      fetchCluster2(option.value); // Fetch data cluster2
+    } else if (fieldName === "cluster_lv2") {
+      fetchCluster3(option.value); // Fetch data cluster3
+    }
+  };
+
+  // Handle simpan data
   const handleSave = () => {
     const dataToSave = {
       ...memberData,
-      rumpunIlmuLv1,
-      rumpunIlmuLv2,
-      rumpunIlmuLv3,
+      cluster_lv1: data.cluster_lv1,
+      cluster_lv2: data.cluster_lv2,
+      cluster_lv3: data.cluster_lv3,
     };
+
     onSave(index, dataToSave);
     onRequestClose();
-    console.log(dataToSave);
   };
 
+  // Handle perubahan input teks
   const handleInputChange = (e) => {
-    const inputName = e.target.name;
-    const inputValue = e.target.value;
+    const { name, value } = e.target;
 
-    setMemberData((prevData) => ({
-      ...prevData,
-      [inputName]: inputValue,
-    }));
+    if (name.startsWith("pivot.")) {
+      const field = name.split(".")[1];
+      setMemberData((prevState) => ({
+        ...prevState,
+        pivot: {
+          ...prevState.pivot,
+          [field]: value,
+        },
+      }));
+    } else {
+      setMemberData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   return (
@@ -79,13 +139,29 @@ const ModalTambahDosen = ({ isOpen, onRequestClose, index, onSave }) => {
       <div className="p-4">
         <SearchInput
           label="NIDN"
-          placeholder="select NIDN"
+          placeholder="Masukkan NIDN"
           value={nidn}
           onChange={(e) => setNidn(e.target.value)}
           onSearch={() => console.log("Search for:", nidn)}
           color="bg-blue-800"
         />
       </div>
+
+      <TextfieldCmp
+        label="Id"
+        value={memberData.id}
+        name="id"
+        onChange={handleInputChange}
+        placeholder="Anggota Pengusul"
+      />
+
+      <TextfieldCmp
+        label="Nama"
+        value={memberData.name}
+        name="pivot.name"
+        onChange={handleInputChange}
+        placeholder="Anggota Pengusul"
+      />
 
       <div className="p-4">
         <TextfieldCmp
@@ -95,56 +171,62 @@ const ModalTambahDosen = ({ isOpen, onRequestClose, index, onSave }) => {
           onChange={handleInputChange}
           placeholder="Anggota Pengusul"
         />
+
         <TextAreaCmp
           label="Tugas Dalam Pengabdian"
           value={memberData.task}
           name="task"
           onChange={handleInputChange}
-          placeholder="Anggota Pengusul"
+          placeholder="Deskripsi tugas"
+        />
+        <TextfieldCmp
+          label="Perusahaan"
+          value={memberData.comunity_service_roles}
+          name="partner"
+          onChange={handleInputChange}
+          placeholder="Nama PT"
         />
       </div>
+
       <div className="p-4">
-        <label className="block font-bold mb-2">Rumpun Ilmu Level 1</label>
-        <select
-          value={rumpunIlmuLv1}
-          onChange={(e) => setRumpunIlmuLv1(e.target.value)}
-          className="border border-gray-300 rounded p-2 w-full"
-        >
-          <option value="">Pilih Rumpun Ilmu Level 1</option>
-          {rumpunIlmuOptionsLv1.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        <DropdownCmp
+          label="Rumpun Ilmu Level 1"
+          options={mapToDropdown(clusters1, "name", "id")}
+          value={mapToDropdown(clusters1, "name", "id").find(
+            (item) => item.value === data.cluster_lv1
+          )}
+          onChange={(option) => handleDropdownChange(option, "cluster_lv1")}
+          placeholder="Pilih Rumpun Ilmu Level 1"
+        />
 
-        <label className="block font-bold mt-4 mb-2">Rumpun Ilmu Level 2</label>
-        <select
-          value={rumpunIlmuLv2}
-          onChange={(e) => setRumpunIlmuLv2(e.target.value)}
-          className="border border-gray-300 rounded p-2 w-full"
-        >
-          <option value="">Pilih Rumpun Ilmu Level 2</option>
-          {rumpunIlmuOptionsLv2.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        <DropdownCmp
+          label="Rumpun Ilmu Level 2"
+          options={mapToDropdown(cluster2, "name", "id")}
+          value={mapToDropdown(cluster2, "name", "id").find(
+            (item) => item.value === data.cluster_lv2
+          )}
+          onChange={(option) => handleDropdownChange(option, "cluster_lv2")}
+          placeholder="Pilih Rumpun Ilmu Level 2"
+          isDisabled={!data.cluster_lv1}
+        />
 
-        <label className="block font-bold mt-4 mb-2">Rumpun Ilmu Level 3</label>
-        <select
-          value={rumpunIlmuLv3}
-          onChange={(e) => setRumpunIlmuLv3(e.target.value)}
-          className="border border-gray-300 rounded p-2 w-full"
-        >
-          <option value="">Pilih Rumpun Ilmu Level 3</option>
-          {rumpunIlmuOptionsLv3.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        <DropdownCmp
+          label="Rumpun Ilmu Level 3"
+          options={mapToDropdown(cluster3, "name", "id")}
+          value={mapToDropdown(cluster3, "name", "id").find(
+            (item) => item.value === data.cluster_lv3
+          )}
+          onChange={(option) => handleDropdownChange(option, "cluster_lv3")}
+          placeholder="Pilih Rumpun Ilmu Level 3"
+          isDisabled={!data.cluster_lv2}
+        />
+        <TextfieldCmp
+          label="Status"
+          value={memberData.status}
+          name="pivot.status"
+          onChange={handleInputChange}
+          placeholder="Anggota Pengusul"
+        />
       </div>
 
       <div className="flex justify-end space-x-4">

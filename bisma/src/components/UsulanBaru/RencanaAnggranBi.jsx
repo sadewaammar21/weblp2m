@@ -20,34 +20,37 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
   //data
   const [budgetComponent, setBudgetComponent] = useState([]);
   const [budgetGroup, setBudgetGroup] = useState([]);
-  
-  const fetchBudgetComponent = async() =>{
-    const response = await axios.get(`${apiUrl}/api/budget-component`, getToken());
+
+  const fetchBudgetComponent = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/budget-component`,
+      getToken()
+    );
     setBudgetComponent(response.data);
-  }
-  const fetchBudgetGroup = async() =>{
+  };
+  const fetchBudgetGroup = async () => {
     const response = await axios.get(`${apiUrl}/api/budget-group`, getToken());
     setBudgetGroup(response.data);
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     fetchBudgetComponent();
-    fetchBudgetGroup()
+    fetchBudgetGroup();
   }, []);
 
   const year = [
-      {id: 1, value: 1},
-      {id: 2, value: 2},
-      {id: 3, value: 3},
-      {id: 4, value: 4},
-      {id: 5, value: 5},
-    ];
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+    { id: 4, value: 4 },
+    { id: 5, value: 5 },
+  ];
 
   const mapToDropdown = (data, labelKey, valueKey) => {
     return data.map((item) => ({
       label: item[labelKey],
-      value: item[valueKey]
-    }))
-  }
+      value: item[valueKey],
+    }));
+  };
 
   //tambah rab
   const handleBudgetChange = (index, name, value) => {
@@ -119,8 +122,10 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
         <div className="grid grid-cols-8 gap-x-4">
           <DropdownCmp
             label="Tahun Ke"
-            options={mapToDropdown(year, 'value', 'id')}
-            value={mapToDropdown(year, 'value', 'id').find((option) => option.value === item.year)}
+            options={mapToDropdown(year, "value", "id")}
+            value={mapToDropdown(year, "value", "id").find(
+              (option) => option.value === item.year
+            )}
             onChange={(option) =>
               handleBudgetChange(index, "year", option.value)
             }
@@ -128,8 +133,10 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
           />
           <DropdownCmp
             label="Kelompok RAB"
-            options={mapToDropdown(budgetGroup, 'name', 'id')}
-            value={mapToDropdown(budgetGroup, 'name', 'id').find((option) => option.value === item.id_group_budget)}
+            options={mapToDropdown(budgetGroup, "name", "id")}
+            value={mapToDropdown(budgetGroup, "name", "id").find(
+              (option) => option.value === item.id_group_budget
+            )}
             onChange={(option) =>
               handleBudgetChange(index, "id_group_budget", option.value)
             }
@@ -137,8 +144,10 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
           />
           <DropdownCmp
             label="Komponen"
-            options={mapToDropdown(budgetComponent, 'name', 'id')}
-            value={mapToDropdown(budgetComponent, 'name', 'id').find((option) => option.value === item.id_component_budget)}
+            options={mapToDropdown(budgetComponent, "name", "id")}
+            value={mapToDropdown(budgetComponent, "name", "id").find(
+              (option) => option.value === item.id_component_budget
+            )}
             onChange={(option) =>
               handleBudgetChange(index, "id_component_budget", option.value)
             }

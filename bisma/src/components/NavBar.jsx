@@ -17,13 +17,34 @@ const NavBar = ({ children }) => {
   const dropdownRef = useRef(null);
   const [username, setUsername] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
-
+  const [subDropdownMonitoringPenelitian, setSubDropdownMonitoringPenelitian] =
+    useState(false);
+  const [subDropdownMonitoringPengabdian, setSubDropdownMonitoringPengabdian] =
+    useState(false);
   const [roles, setRoles] = useState({});
   const [currentRoles, setCurrentRoles] = useState(0);
 
+  const handleSubDropdownEnters = (type) => {
+    if (type === "penelitian") {
+      setSubDropdownMonitoringPenelitian(true);
+    } else if (type === "pengabdian") {
+      setSubDropdownMonitoringPengabdian(true);
+    }
+  };
+
+  const handleSubDropdownLeaves = (type) => {
+    if (type === "penelitian") {
+      setSubDropdownMonitoringPenelitian(false);
+    } else if (type === "pengabdian") {
+      setSubDropdownMonitoringPengabdian(false);
+    }
+  };
   // Fungsi untuk membuka dropdown
   const handleDropdownEnter = (dropdownId) => {
     setDropdown(dropdownId);
+  };
+  const handleDropdownLeave = () => {
+    setDropdown(false);
   };
 
   // Fungsi untuk sub-dropdown
@@ -53,12 +74,32 @@ const NavBar = ({ children }) => {
 
   const user = localStorage.getItem("user");
   const parseUser = JSON.parse(user);
+  // useEffect(() => {
+  //   console.log(parseUser);
+  //   setUsername(parseUser.name);
+  //   setRoles(parseUser.roles);
+  //   console.log(roles);
+  //   setCurrentRoles(localStorage.getItem("currentRole"));
+  // }, []);
+
   useEffect(() => {
-    console.log(parseUser);
+    if (!parseUser) {
+      navigate("/"); // Redirect jika pengguna tidak ada
+      return;
+    }
+
     setUsername(parseUser.name);
     setRoles(parseUser.roles);
-    console.log(roles);
-    setCurrentRoles(localStorage.getItem("currentRole"));
+
+    // Tentukan currentRole jika belum ada
+    const savedRole = localStorage.getItem("currentRole");
+    if (!savedRole && parseUser.roles.length === 1) {
+      const singleRole = parseUser.roles[0].id;
+      setCurrentRoles(singleRole);
+      localStorage.setItem("currentRole", singleRole);
+    } else if (savedRole) {
+      setCurrentRoles(savedRole);
+    }
   }, []);
 
   const logout = () => {
@@ -77,10 +118,37 @@ const NavBar = ({ children }) => {
   //   {id:5, label: "Dashboard Kepala LPPM"},
   // ]
 
-  const handleRoleChange = (id) => {
-    localStorage.setItem("currentRole", id);
-    window.location.reload();
-    navigate("/dashboard");
+  // const handleRoleChange = (id) => {
+  //   localStorage.setItem("currentRole", id);
+  //   window.location.reload();
+  //   navigate("/dashboard");
+  // };
+  // const handleRoleChange = (id) => {
+  //   if (id === currentRoles) return; // Jika role sudah dipilih, abaikan
+
+  //   localStorage.setItem("currentRole", id);
+  //   setCurrentRoles(id); // Perbarui state
+  //   window.location.reload();
+  // };
+
+  const handleRoleChanges = (id) => {
+    const roleMapping = {
+      Dosen: "/dashboard",
+      Operator: "/dashboard-operator",
+      Reviewer: "/dashboard-reviewer",
+      KepalaLPPM: "/dashboard-kepala-lppm",
+      Kaprodi: "/dashboard-kaprodi",
+    };
+
+    // Cari role berdasarkan id
+    const selectedRole = parseUser.roles.find((role) => role.id === id);
+
+    if (selectedRole) {
+      const targetPath = roleMapping[selectedRole.name] || "/dashboard"; // Default ke "/dashboard" jika role tidak ditemukan
+      localStorage.setItem("currentRole", id);
+      navigate(targetPath);
+      window.location.reload();
+    }
   };
 
   const showLogoutConfirmation = () => {
@@ -175,7 +243,7 @@ const NavBar = ({ children }) => {
                         <li
                           key={index}
                           className="px-4 py-2  hover:bg-violet-800 relative"
-                          onClick={() => handleRoleChange(item.id)}
+                          onClick={() => handleRoleChanges(item.id)}
                         >
                           Dashboard {item.name}
                         </li>
@@ -321,73 +389,188 @@ const NavBar = ({ children }) => {
                 {/* penilaian proposal */}
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 2 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(4)}
+                  onMouseLeave={handleDropdownLeave}
+                  ref={dropdownRef}
                 >
                   <img
                     src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
                     alt="laporan"
                     className="w-5 h-5 mr-2"
                   />
-                  Penilaian Proposal
+                  <div className="flex items-center justify-between">
+                    Penilaian Proposal
+                    <FaChevronDown className="mx-2 w-4 h-4" />
+                  </div>
+                  {dropdown === 4 && (
+                    <ul className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10">
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/review-penilaian-proposal">Penelitian</Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/review/penilaian-proposal-pengabdian">
+                          Pengabdian
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
 
                 {/* monev */}
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 2 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(5)}
+                  onMouseLeave={handleDropdownLeave}
+                  ref={dropdownRef}
                 >
                   <img
                     src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
                     alt="kekayaan intelektual"
                     className="w-5 h-5 mr-2"
                   />
-                  Monev
+                  <div className="flex items-center justify-between">
+                    Monev
+                    <FaChevronDown className="mx-2 w-4 h-4" />
+                  </div>
+                  {dropdown === 5 && (
+                    <ul className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10">
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/list-monev-penelitian">Penelitian</Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/monitoring/pengabdian">Pengabdian</Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
 
-                {/* data pendukung */}
+                {/* Monitoring */}
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 2 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(6)}
+                  onMouseLeave={handleDropdownLeave}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/pengabdian.svg"}
-                    alt="pengabdian"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Data Pendukung
-                </li>
+                  <div className="flex items-center">
+                    Monitoring
+                    <FaChevronDown className="ml-2" />
+                  </div>
+                  {dropdown === 6 && (
+                    <ul className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48">
+                      {/* Penelitian */}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800 relative"
+                        onMouseEnter={() =>
+                          handleSubDropdownEnters("penelitian")
+                        }
+                        onMouseLeave={() =>
+                          handleSubDropdownLeaves("penelitian")
+                        }
+                      >
+                        <div className="flex items-center justify-between">
+                          Penelitian
+                          <FaChevronRight className="w-4 h-4" />
+                        </div>
+                        {subDropdownMonitoringPenelitian && (
+                          <ul className="absolute top-0 left-full ml-1 w-48 bg-gray-50">
+                            <li className="px-4 py-2 hover:bg-violet-800">
+                              <Link to="/monitoring-usulan-reguler">
+                                Monitoring Usulan
+                              </Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-violet-800">
+                              <Link to="/monitoring-perbaikan-usulan-penelitian">
+                                Perbaikan Usulan
+                              </Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-violet-800">
+                              <Link to="/monitoring-usulan-reguler-hasil-review">
+                                Hasil Review
+                              </Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-violet-800">
+                              <Link to="/monitoring/penelitian/periode-kegiatan">
+                                Periode Kegiatan
+                              </Link>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
 
-                {/* monitoring */}
-                <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 3 ? "show" : "hidden"}`}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
-                    alt="laporan"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Monitoring
+                      {/* Pengabdian */}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800 relative"
+                        onMouseEnter={() =>
+                          handleSubDropdownEnters("pengabdian")
+                        }
+                        onMouseLeave={() =>
+                          handleSubDropdownLeaves("pengabdian")
+                        }
+                      >
+                        <div className="flex items-center justify-between">
+                          Pengabdian
+                          <FaChevronRight className="w-4 h-4" />
+                        </div>
+                        {subDropdownMonitoringPengabdian && (
+                          <ul className="absolute top-0 left-full ml-1 w-48 bg-gray-50">
+                            <li className="px-4 py-2 hover:bg-violet-800">
+                              <Link to="/monitoring/pengabdian/usulan-reguler">
+                                Monitoring Usulan
+                              </Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-violet-800">
+                              <Link to="/monitoring-perbaikan-usulan-pengabdian">
+                                Perbaikan Usulan
+                              </Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-violet-800">
+                              <Link to="/monitoring/pengabdian/hasil-review">
+                                Hasil Review
+                              </Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-violet-800">
+                              <Link to="/monitoring/penenelitian/periode-kegiatan/">
+                                <div className="flex items-center justify-between">
+                                  Periode Kegiatan
+                                </div>
+                              </Link>
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+                    </ul>
+                  )}
                 </li>
 
                 {/* data pendukung */}
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 3 ? "show" : "hidden"}`}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/pengabdian.svg"}
-                    alt="pengabdian"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Data Pendukung
+                  <Link to="/monitoring-data-pendukung">
+                    <div className="flex items-center">
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
+                        alt="kekayaan intelektual"
+                        className="w-5 h-5 mr-2"
+                      />
+                      Data Pendukung
+                    </div>
+                  </Link>
                 </li>
 
                 {/* pengelolaan reviewer */}
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 3 ? "show" : "hidden"}`}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
-                    alt="kekayaan intelektual"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Pengelolaan Reviewer
+                  <Link to="/monitoring-pengelola-review">
+                    <div className="flex items-center">
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
+                        alt="laporan"
+                        className="w-5 h-5 mr-2"
+                      />
+                      Pengelola Review
+                    </div>
+                  </Link>
                 </li>
 
                 {/* pengabdian */}

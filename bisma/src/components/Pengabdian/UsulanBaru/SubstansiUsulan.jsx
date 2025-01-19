@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import DropdownCmp from "../../DropdownCmp";
 import TextAreaCmp from "../../TextAreaCmp";
 import { FaPlus } from "react-icons/fa";
+import axios from "axios";
+import { getToken } from "../../../Features/AuthSlice";
+import { useEffect } from "react";
 
+const apiUrl = process.env.REACT_APP_API_URL;
 const SubtansiUsulan = ({ navigate, data, setData }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [UTDP, setUTDP] = useState("");
 
-  const handleDropdownChange = (option, fieldName) => {
-    setData((prevData) => ({
-      ...prevData,
-      [fieldName]: option,
-    }));
-    console.log("clicked" + option);
-  };
+  // const handleDropdownChange = (option, fieldName) => {
+  //   setData((prevData) => ({
+  //     ...prevData,
+  //     [fieldName]: option,
+  //   }));
+  //   console.log("clicked" + option);
+  // };
 
   const options = [
     { label: "Option 1", value: "1" },
@@ -25,27 +29,124 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   const handleFileChange = (event) => {
     setData((prevData) => ({
       ...prevData,
-      substance: event.target.files[0],
+      substance_document: event.target.files[0],
+    }));
+  };
+
+  const handleDropdownChange = (option, fieldName) => {
+    setData((prevData) => ({
+      ...prevData,
+      [fieldName]: option.value,
+    }));
+    console.log("clicked" + option);
+  };
+
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey],
     }));
   };
 
   //tambah output
-  const handleOutputChange = (index, name, value) => {
-    const updatedOutput = [...data.output];
-    updatedOutput[index][name] = value;
-    setData({ ...data, output: updatedOutput });
-    console.log(data.output);
+  // const handleOutputChange = (index, name, value) => {
+
+  //   const updatedOutputPartner = [...data.output];
+  //   updatedOutputPartner[index][name] = value;
+  //   setData({ ...data, outputPartner: updatedOutputPartner });
+  //   console.log(data.outputPartner);
+
+  //   const updatedOutputPublication = [...data.output];
+  //   updatedOutputPublication[index][name] = value;
+  //   setData({ ...data, output: updatedOutputPublication });
+  //   console.log(data.outputPartner);
+
+  //   const updatedOutputMedia = [...data.output];
+  //   updatedOutputMedia[index][name] = value;
+  //   setData({ ...data, output: updatedOutputMedia });
+  //   console.log(data.outputPartner);
+
+  //   const updatedOutputVideo = [...data.output];
+  //   updatedOutputMedia[index][name] = value;
+  //   setData({ ...data, output: updatedOutputVideo });
+  //   console.log(data.outputPartner);
+  // };
+  const handleOutputChangePatner = (name, value) => {
+    const updatedOutputPartner = [...data.outputPartner];
+    updatedOutputPartner[0][name] = value;
+    setData({ ...data, outputPartner: updatedOutputPartner });
+    console.log(updatedOutputPartner);
   };
+
+  const handleOutputChangePublication = (name, value) => {
+    const updatedOutputPublication = [...data.outputPublication];
+    updatedOutputPublication[0][name] = value;
+    setData({ ...data, outputPublication: updatedOutputPublication });
+    console.log(updatedOutputPublication);
+  };
+
+  const handleOutputChangeMedia = (name, value) => {
+    const updatedOutputMedia = [...data.outputMedia];
+    updatedOutputMedia[0][name] = value;
+
+    setData({
+      ...data,
+      outputMedia: updatedOutputMedia,
+    });
+    console.log(updatedOutputMedia);
+  };
+  const handleOutputChangeVideo = (name, value) => {
+    const updatedOutputVideo = [...data.outputVideo];
+    updatedOutputVideo[0][name] = value;
+
+    setData({
+      ...data,
+      outputVideo: updatedOutputVideo,
+    });
+    console.log(updatedOutputVideo);
+  };
+
+  const status = [
+    { value: "submitted", label: "Submitted" },
+    { value: "draft", label: "Draft" },
+  ];
 
   const addOutputField = () => {
     setData({
       ...data,
-      output: [
-        ...data.output,
+      outputSubstansi: [
+        ...data.outputPartner,
         {
-          year: 0,
-          id_category_output: 0,
-          id_type_output: 0,
+          year: "",
+          id_category_output: "",
+          id_type_output: "",
+          status: "",
+          description: "",
+        },
+      ],
+      outputPublication: [
+        ...data.outputPublication,
+        {
+          id_category_output: "",
+          id_type_output: "",
+          status: "",
+          description: "",
+        },
+      ],
+      outputMedia: [
+        ...data.outputMedia,
+        {
+          id_category_output: "",
+          id_type_output: "",
+          status: "",
+          description: "",
+        },
+      ],
+      outputVideo: [
+        ...data.outputMedia,
+        {
+          id_category_output: "",
+          id_type_output: "",
           status: "",
           description: "",
         },
@@ -60,6 +161,121 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   const handleInputChange = (setter) => (e) => {
     setter(e.target.value);
   };
+
+  const [outputPatnerCtg, setOutputPatnerCtg] = useState([]);
+  const [outputPublicationCtg, setOutputPublcationCtg] = useState([]);
+  const [outputMediaCtg, setOutputMediaCtg] = useState([]);
+  const [outputVideoCtg, setOutputVideoCtg] = useState([]);
+  const [outputPatnerType, setOutputPatnerType] = useState([]);
+  const [outputPublicationType, setOutputPublicationType] = useState([]);
+  const [outputMediaType, setOutputMediaType] = useState([]);
+  const [outputVideoType, setOutputVideoType] = useState([]);
+  const statuses = [
+    { value: "Published", label: "Published" },
+    { value: "Tercapai", label: "Tercapai" },
+    { value: "Online/bisa diakses", label: "Online/bisa diakses" },
+  ];
+
+  // const [status, setStatus] = useState([]);
+  const year = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+    { id: 4, value: 4 },
+    { id: 5, value: 5 },
+  ];
+  // const status = [
+  //   {value: 'submitted', label:'Submitted'},
+  //   {value: 'draft', label:'Draft'}
+  // ]
+
+  const fetchCtgPatner = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/partner-output-category`,
+      getToken()
+    );
+    setOutputPatnerCtg(response.data);
+  };
+  const fetchCtgType = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/partner-output-type`,
+      getToken()
+    );
+    setOutputPatnerType(response.data);
+  };
+  const fetchPublic = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/publication-output-category`,
+      getToken()
+    );
+    setOutputPublcationCtg(response.data);
+  };
+
+  const fetchPublicType = async (id_category_output) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/publication-output-type/${id_category_output}`,
+        getToken()
+      );
+      setOutputPublicationType(response.data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchMedia = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/media-output-category`,
+      getToken()
+    );
+    setOutputMediaCtg(response.data);
+  };
+
+  const fetchMediaType = async (id_category_output) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/media-output-type/${id_category_output}`,
+        getToken()
+      );
+      setOutputMediaType(response.data);
+      console.log("Updated Output Media Type:", response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchVideo = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/video-output-category`,
+      getToken()
+    );
+    setOutputVideoCtg(response.data);
+  };
+  const fetchVideoType = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/video-output-type`,
+      getToken()
+    );
+    setOutputVideoType(response.data);
+  };
+
+  useEffect(() => {
+    // // Fetch data only if category_id is defined
+    // if (data.category_id) {
+    //   fetchPublicType({ category: data.category_id });
+    //   fetchMediaType({ category: data.category_id });
+    // }
+
+    // // Other fetch functions that don't depend on data.category_id
+    fetchPublicType(data.outputPublication[0].id_category_output);
+    fetchCtgPatner();
+    fetchCtgType();
+    fetchMedia();
+    fetchMediaType(data.outputMedia[0].id_category_output);
+    fetchPublic();
+    fetchVideo();
+    fetchVideoType();
+  }, [data.outputMedia, data.outputPublication]);
 
   return (
     <div>
@@ -96,84 +312,70 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             className="border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
             id="file-upload"
           />
-
-          {/* Menampilkan nama file yang dipilih */}
-          {selectedFile && (
-            <p className="mt-2 text-gray-600">
-              File yang dipilih: {selectedFile.name}
-            </p>
-          )}
         </div>
       </div>
       <div className="my-5">
         <DropdownCmp
           label="Tahun Ke"
-          options={options}
-          // value={item.year}
-          // onChange={(option) =>
-          //   handleBudgetChange(index, "year", option.value)
-          // }
+          options={mapToDropdown(year, "value", "value")}
+          value={mapToDropdown(year, "value", "value").find(
+            (option) => option.value === data.year
+          )}
+          onChange={(option) => handleDropdownChange(option, "year")}
           placeholder="1"
           width="w-32"
         />
       </div>
 
-      {/* <div className="flex items-start space-x-4">
-        <div className="mt-7">
-          <button
-            className="flex items-center px-2 py-2 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
-            onClick={addOutputField}
-          >
-            <FaPlus className="mr-2" /> 
-            Tambah Usulan
-          </button>
-        </div>
-        <div></div>
-      </div> */}
-
-      {/* {data.output.map((output, index) => ( */}
-      {/* 1 */}
-
       <div className="mx-10 my-3">
-        <label className=" font-bold text-md text-gray-700 ">
+        <label className="font-bold text-md text-gray-700">
           Kategori Luaran Peningkatan Pemberdayaan Mitra
         </label>
-        <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
+        <div className="grid grid-cols-4 gap-x-10 mt-2">
           <DropdownCmp
             label="Kategori Luaran *"
-            options={options}
-            value={``.id_category_output}
+            options={mapToDropdown(outputPatnerCtg, "name", "id")}
+            value={mapToDropdown(outputPatnerCtg, "name", "id").find(
+              (option) =>
+                option.value === data.outputPartner[0].id_category_output
+            )}
             onChange={(option) =>
-              handleOutputChange(``, "id_category_output", option.value)
+              handleOutputChangePatner("id_category_output", option.value)
             }
             placeholder="Pilih Kategori Luaran"
           />
           <DropdownCmp
             label="Jenis Luaran *"
-            options={options}
-            value={``.id_type_output}
+            options={mapToDropdown(outputPatnerType, "name", "id")}
+            value={mapToDropdown(outputPatnerType, "name", "id").find(
+              (option) => option.value === data.outputPartner[0].id_type_output
+            )}
             onChange={(option) =>
-              handleOutputChange(``, "id_type_output", option.value)
+              handleOutputChangePatner("id_type_output", option.value)
             }
             placeholder="Pilih Luaran"
           />
+
           <DropdownCmp
             label="Status *"
-            options={options}
-            value={``.status}
-            onChange={(option) =>
-              handleOutputChange(``, "status", option.value)
-            }
-            placeholder="txt"
+            options={statuses} // Gunakan array `statuses` yang sudah didefinisikan
+            value={statuses.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
+            onChange={(option) => handleOutputChangePatner(option, "status")} // Tangani perubahan
+            placeholder="Pilih Status"
           />
+
           <TextAreaCmp
-            label={`Keterangan Optional`}
-            placeholder={`url dan nama jurnal, penerbit, url paten`}
+            label="Keterangan Optional"
+            value={data.outputPartner.description}
+            onChange={(e) =>
+              handleOutputChangePatner("description", e.target.value)
+            }
+            placeholder="url dan nama jurnal, penerbit, url paten"
             rows={2}
           />
         </div>
       </div>
-      {/* 2 */}
+
       <div className=" mx-10 my-2">
         <label className=" font-bold text-md text-gray-700 ">
           Kategori Luaran Publikasi
@@ -181,39 +383,49 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
         <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
           <DropdownCmp
             label="Kategori Luaran *"
-            options={options}
-            value={``.id_category_output}
+            options={mapToDropdown(outputPublicationCtg, "name", "id")}
+            value={mapToDropdown(outputPublicationCtg, "name", "id").find(
+              (option) =>
+                option.value === data.outputPublication[0].id_category_output
+            )}
             onChange={(option) =>
-              handleOutputChange(``, "id_category_output", option.value)
+              handleOutputChangePublication("id_category_output", option.value)
             }
             placeholder="Pilih Kategori Luaran"
           />
           <DropdownCmp
             label="Jenis Luaran *"
-            options={options}
-            value={``.id_type_output}
+            options={mapToDropdown(outputPublicationType, "name", "id")}
+            value={mapToDropdown(outputPublicationType, "name", "id").find(
+              (option) =>
+                option.value === data.outputPublication[0].id_type_output
+            )}
             onChange={(option) =>
-              handleOutputChange(``, "id_type_output", option.value)
+              handleOutputChangePublication("id_type_output", option.value)
             }
             placeholder="Pilih Luaran"
           />
           <DropdownCmp
             label="Status *"
-            options={options}
-            value={``.status}
+            options={statuses} // Gunakan array `statuses` yang sudah didefinisikan
+            value={statuses.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
             onChange={(option) =>
-              handleOutputChange(``, "status", option.value)
-            }
-            placeholder="txt"
+              handleOutputChangePublication(option, "status")
+            } // Tangani perubahan
+            placeholder="Pilih Status"
           />
           <TextAreaCmp
-            label={`Keterangan Optional`}
-            placeholder={`url dan nama jurnal, penerbit, url paten`}
+            label="Keterangan Optional"
+            value={data.outputPublication[0].description}
+            onChange={(e) =>
+              handleOutputChangePublication("description", e.target.value)
+            }
+            placeholder="url dan nama jurnal, penerbit, url paten"
             rows={2}
           />
         </div>
       </div>
-      {/* 3 */}
+
       <div className="my-3 mx-10">
         <label className=" font-bold text-md text-gray-700 ">
           Kategori Luaran Publikasi Media
@@ -221,115 +433,88 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
         <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
           <DropdownCmp
             label="Kategori Luaran *"
-            options={options}
-            value={``.id_category_output}
+            options={mapToDropdown(outputMediaCtg, "name", "id")}
+            value={mapToDropdown(outputMediaCtg, "name", "id").find(
+              (option) =>
+                option.value === data.outputMedia[0].id_category_output
+            )}
             onChange={(option) =>
-              handleOutputChange(``, "id_category_output", option.value)
+              handleOutputChangeMedia("id_category_output", option.value)
             }
             placeholder="Pilih Kategori Luaran"
           />
           <DropdownCmp
             label="Jenis Luaran *"
-            options={options}
-            value={``.id_type_output}
+            options={mapToDropdown(outputMediaType, "name", "id")}
+            value={mapToDropdown(outputMediaType, "name", "id").find(
+              (option) => option.value === data.outputMedia[0].id_type_output
+            )}
             onChange={(option) =>
-              handleOutputChange(``, "id_type_output", option.value)
+              handleOutputChangeMedia("id_type_output", option.value)
             }
             placeholder="Pilih Luaran"
           />
           <DropdownCmp
             label="Status *"
-            options={options}
-            value={``.status}
-            onChange={(option) =>
-              handleOutputChange(``, "status", option.value)
-            }
-            placeholder="txt"
+            options={statuses} // Gunakan array `statuses` yang sudah didefinisikan
+            value={statuses.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
+            onChange={(option) => handleOutputChangeMedia(option, "status")} // Tangani perubahan
+            placeholder="Pilih Status"
           />
           <TextAreaCmp
-            label={`Keterangan Optional`}
-            placeholder={`url dan nama jurnal, penerbit, url paten`}
+            label="Keterangan Optional"
+            value={data.outputMedia[0].description}
+            onChange={(e) =>
+              handleOutputChangeMedia("description", e.target.value)
+            }
+            placeholder="url dan nama jurnal, penerbit, url paten"
             rows={2}
           />
         </div>
       </div>
-      {/* 4 */}
 
       <div className="my-3 mx-10">
         <label className=" font-bold text-md text-gray-700 ">
-          Kategori Luaran Video
+          Kategori Luaran Publikasi Video
         </label>
         <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
           <DropdownCmp
             label="Kategori Luaran *"
-            options={options}
-            value={``.id_category_output}
+            options={mapToDropdown(outputVideoCtg, "name", "id")}
+            value={mapToDropdown(outputVideoCtg, "name", "id").find(
+              (option) =>
+                option.value === data.outputVideo[0].id_category_output
+            )}
             onChange={(option) =>
-              handleOutputChange(``, "id_category_output", option.value)
+              handleOutputChangeVideo("id_category_output", option.value)
             }
             placeholder="Pilih Kategori Luaran"
           />
           <DropdownCmp
             label="Jenis Luaran *"
-            options={options}
-            value={``.id_type_output}
+            options={mapToDropdown(outputVideoType, "name", "id")}
+            value={mapToDropdown(outputVideoType, "name", "id").find(
+              (option) => option.value === data.outputVideo[0].id_type_output
+            )}
             onChange={(option) =>
-              handleOutputChange(``, "id_type_output", option.value)
+              handleOutputChangeVideo("id_type_output", option.value)
             }
             placeholder="Pilih Luaran"
           />
           <DropdownCmp
             label="Status *"
-            options={options}
-            value={``.status}
-            onChange={(option) =>
-              handleOutputChange(``, "status", option.value)
-            }
-            placeholder="txt"
+            options={statuses} // Gunakan array `statuses` yang sudah didefinisikan
+            value={statuses.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
+            onChange={(option) => handleOutputChangeVideo(option, "status")} // Tangani perubahan
+            placeholder="Pilih Status"
           />
           <TextAreaCmp
-            label={`Keterangan Optional`}
-            placeholder={`url dan nama jurnal, penerbit, url paten`}
-            rows={2}
-          />
-        </div>
-      </div>
-      {/* 5 */}
-      <div className="my-3 mx-10">
-        <label className=" font-bold text-md text-gray-700 ">
-          Kategori Luaran Peningkatan Pemberdayaan Mitra
-        </label>
-        <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
-          <DropdownCmp
-            label="Kategori Luaran *"
-            options={options}
-            value={``.id_category_output}
-            onChange={(option) =>
-              handleOutputChange(``, "id_category_output", option.value)
+            label="Keterangan Optional"
+            value={data.outputVideo[0].description}
+            onChange={(e) =>
+              handleOutputChangeVideo("description", e.target.value)
             }
-            placeholder="Pilih Kategori Luaran"
-          />
-          <DropdownCmp
-            label="Jenis Luaran *"
-            options={options}
-            value={``.id_type_output}
-            onChange={(option) =>
-              handleOutputChange(``, "id_type_output", option.value)
-            }
-            placeholder="Pilih Luaran"
-          />
-          <DropdownCmp
-            label="Status *"
-            options={options}
-            value={``.status}
-            onChange={(option) =>
-              handleOutputChange(``, "status", option.value)
-            }
-            placeholder="txt"
-          />
-          <TextAreaCmp
-            label={`Keterangan Optional`}
-            placeholder={`url dan nama jurnal, penerbit, url paten`}
+            placeholder="url dan nama jurnal, penerbit, url paten"
             rows={2}
           />
         </div>

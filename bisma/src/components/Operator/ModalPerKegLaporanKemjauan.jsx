@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { FaCalendarAlt } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { setResearchProgressReportDeadline } from "../../Features/OperatorSlice";
 
 Modal.setAppElement("#root");
 
@@ -25,25 +26,22 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
   </div>
 ));
 
-const ModalPerKegLaporanKemajuan = ({ isOpen, onRequestClose }) => {
+const ModalPerKegLaporanKemajuan = ({ researchId, isOpen, onRequestClose }) => {
   const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
 
-  const handleStartDateChange = (date) => {
-    if (endDate && date > endDate) {
-      alert("Tanggal awal tidak boleh melebihi tanggal akhir!");
-      return;
-    }
-    setStartDate(date);
+  const handleStartDateChange = (dateStr) => {
+    const date = new Date(dateStr);
+    const formattedDate = date.toISOString().split("T")[0]
+    setStartDate(formattedDate);
   };
 
-  const handleEndDateChange = (date) => {
-    if (startDate && date < startDate) {
-      alert("Tanggal akhir tidak boleh lebih kecil dari tanggal awal!");
-      return;
-    }
-    setEndDate(date);
-  };
+  const handleSubmit = async() => {
+    const response = await setResearchProgressReportDeadline({researchId, data:{progress_report_deadline:startDate}})
+    console.log(response);
+    console.log(startDate)
+    setStartDate(null)
+    onRequestClose()
+  }
 
   return (
     <Modal
@@ -76,7 +74,7 @@ const ModalPerKegLaporanKemajuan = ({ isOpen, onRequestClose }) => {
             <DatePicker
               selected={startDate}
               onChange={handleStartDateChange}
-              dateFormat="dd/MM/yyyy"
+              dateFormat="yyyy/MM/dd"
               customInput={<CustomInput />}
             />
           </div>
@@ -92,9 +90,7 @@ const ModalPerKegLaporanKemajuan = ({ isOpen, onRequestClose }) => {
           </button>
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            onClick={() =>
-              console.log("Tanggal Awal:", startDate, "Tanggal Akhir:", endDate)
-            }
+            onClick={() => handleSubmit()}
           >
             Submit
           </button>

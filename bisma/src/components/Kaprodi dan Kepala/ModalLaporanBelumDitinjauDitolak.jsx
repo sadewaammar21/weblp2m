@@ -6,17 +6,15 @@ import TextfieldCmp from "../TextfieldCmp";
 Modal.setAppElement("#root");
 
 const ModalLaporanBelumDitinjauDitolak = ({
+  data,
   isOpen,
   onRequestClose,
-  researchId,
-  isAccepted,
 }) => {
   const [note, setNote] = useState("");
 
   const handleSubmit = async () => {
-    const newStatus = isAccepted ? 3 : 1; // Here
     try {
-      const response = await updateStatus({ researchId, newStatus, note });
+      const response = await updateStatus({ researchId: data.id, newStatus: 8, note: note });
       console.log("Response:", response);
       alert("Status updated successfully!");
       onRequestClose();

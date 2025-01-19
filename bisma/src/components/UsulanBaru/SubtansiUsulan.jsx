@@ -24,43 +24,50 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   const [outputCategory, setOutputCategory] = useState([]);
   const [outputType, setOutputType] = useState([]);
 
-  const fetchSubstance = async() =>{
+  const fetchSubstance = async () => {
     const response = await axios.get(`${apiUrl}/api/substance`, getToken());
     setSubstance(response.data);
-  }
-  const fetchOutputCategory = async(scheme) =>{
-    const response = await axios.get(`${apiUrl}/api/output-category/${scheme}`, getToken());
-    setOutputCategory(response.data);
-  }
-  const fetchOutputType = async() =>{
+  };
+  const fetchOutputCategory = async (scheme) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/output-category/${scheme}`,
+        getToken()
+      );
+      setOutputCategory(response.data);
+    } catch (error) {
+      setOutputCategory(error.message);
+    }
+  };
+  const fetchOutputType = async () => {
     const response = await axios.get(`${apiUrl}/api/output-type`, getToken());
     setOutputType(response.data);
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     fetchSubstance();
     fetchOutputCategory(data.scheme_id);
-    fetchOutputType()
+    fetchOutputType();
   }, [data.scheme_id, data.output.id_category_output]);
 
-  const year= [
-      {id: 1, value: 1},
-      {id: 2, value: 2},
-      {id: 3, value: 3},
-      {id: 4, value: 4},
-      {id: 5, value: 5},
-    ];
+  const year = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+    { id: 4, value: 4 },
+    { id: 5, value: 5 },
+  ];
 
   const status = [
-    {value: 'submitted', label:'Submitted'},
-    {value: 'draft', label:'Draft'}
-  ]
+    { value: "submitted", label: "Submitted" },
+    { value: "draft", label: "Draft" },
+  ];
 
   const mapToDropdown = (data, labelKey, valueKey) => {
     return data.map((item) => ({
       label: item[labelKey],
-      value: item[valueKey]
-    }))
-  }
+      value: item[valueKey],
+    }));
+  };
 
   //file
   const [selectedFile, setSelectedFile] = useState(null);
@@ -112,11 +119,11 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
       <div className="grid grid-cols-2 gap-x-10  ">
         <DropdownCmp
           label="Kelompok Makro Riset *"
-          options={mapToDropdown(substance, 'name', 'id')}
-          value={mapToDropdown(substance, 'name', 'id').find((option) => option.value === data.substance_id)}
-          onChange={(option) =>
-            handleDropdownChange(option, "substance_id")
-          }
+          options={mapToDropdown(substance, "name", "id")}
+          value={mapToDropdown(substance, "name", "id").find(
+            (option) => option.value === data.substance_id
+          )}
+          onChange={(option) => handleDropdownChange(option, "substance_id")}
           placeholder="Kelompok Riset teknologi tinggi"
         />
         <div>
@@ -181,36 +188,52 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
         <div className="grid grid-cols-4 gap-x-10">
           <DropdownCmp
             label="Tahun Ke*"
-            options={mapToDropdown(year, 'value', 'id')}
-            value={mapToDropdown(year, 'value', 'id').find((option) => option.value === output.year)}
-            onChange={(option) => handleOutputChange(index, 'year', option.value)}
+            options={mapToDropdown(year, "value", "id")}
+            value={mapToDropdown(year, "value", "id").find(
+              (option) => option.value === output.year
+            )}
+            onChange={(option) =>
+              handleOutputChange(index, "year", option.value)
+            }
             placeholder="Tahun"
           />
           <DropdownCmp
             label="Kategori Luaran *"
-            options={mapToDropdown(outputCategory, 'name', 'id')}
-            value={mapToDropdown(outputCategory, 'name', 'id').find((option) => option.value === output.id_category_output)}
-            onChange={(option) => handleOutputChange(index, 'id_category_output', option.value)}
+            options={mapToDropdown(outputCategory, "name", "id")}
+            value={mapToDropdown(outputCategory, "name", "id").find(
+              (option) => option.value === output.id_category_output
+            )}
+            onChange={(option) =>
+              handleOutputChange(index, "id_category_output", option.value)
+            }
             placeholder="Pilih Kategori Luaran"
           />
           <DropdownCmp
             label="Tipe Luaran *"
-            options={mapToDropdown(outputType, 'name', 'id')}
-            value={mapToDropdown(outputType, 'name', 'id').find((option) => option.value === output.id_type_output)}
-            onChange={(option) => handleOutputChange(index, 'id_type_output', option.value)}
+            options={mapToDropdown(outputType, "name", "id")}
+            value={mapToDropdown(outputType, "name", "id").find(
+              (option) => option.value === output.id_type_output
+            )}
+            onChange={(option) =>
+              handleOutputChange(index, "id_type_output", option.value)
+            }
             placeholder="txt"
           />
           <DropdownCmp
             label="Status *"
             options={status}
             value={status.find((option) => option.value === output.status)}
-            onChange={(option) => handleOutputChange(index, 'status', option.value)}
+            onChange={(option) =>
+              handleOutputChange(index, "status", option.value)
+            }
             placeholder="Pilih Luaran"
           />
           <TextAreaCmp
             label="Keterangan (optional)"
             value={output.description}
-            onChange={(e) => handleOutputChange(index, 'description', e.target.value)}
+            onChange={(e) =>
+              handleOutputChange(index, "description", e.target.value)
+            }
             placeholder="url dan nama jurnal, penerbit, url paten"
             rows={3}
           />

@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { updateStatus } from "../../Features/ResearchSlice";
+import { setResearchApprovalFunds, updateStatus } from "../../Features/ResearchSlice";
 import TextfieldCmp from "../TextfieldCmp";
 
 Modal.setAppElement("#root");
 
 const ModalLaporanBelumDitinjau = ({
+  data,
   isOpen,
   onRequestClose,
-  researchId,
-  isAccepted,
 }) => {
   const [note, setNote] = useState("");
+  const [funds, setFunds] = useState(0);
+
+  const totalBudget = data.budgetPlan.reduce((sum, item) => sum + item.total, 0);
 
   const handleSubmit = async () => {
-    const newStatus = isAccepted ? 3 : 1; // Here
     try {
-      const response = await updateStatus({ researchId, newStatus, note });
+      const response = await updateStatus({ researchId: data.id, newStatus: 6, note: note});
       console.log("Response:", response);
-      alert("Status updated successfully!");
+      const setFunds = setResearchApprovalFunds({researchId: data.id, approval_funds: funds})
+      console.log(setFunds);
+      setNote('');
       onRequestClose();
     } catch (error) {
       console.error("Error updating status:", error);
@@ -58,7 +61,7 @@ const ModalLaporanBelumDitinjau = ({
           </h2>
           <h2 className="text-sm font-bold text-violet-800 mr-1">
             {" "}
-            Rp. 10.000.000,00
+            Rp. {totalBudget}
           </h2>
         </div>
       </div>
@@ -68,6 +71,7 @@ const ModalLaporanBelumDitinjau = ({
       </label>
       <TextfieldCmp
         // label={`Masukkan dana yang disetujui oleh kepala LPPM`}
+        onChange={(e) => setFunds(e.target.value)}
         className="w-full"
         placeholder="Rp. 10.000.000,00"
       />

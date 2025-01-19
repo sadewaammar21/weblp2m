@@ -1,16 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import ModalPeriodeKegiatanOPT from "./ModalPeriodeKegiatanOPT";
+import { deletePeriod, getAllPeriods } from "../../Features/OperatorSlice";
 
 const PeriodeKegiatanListOPT = () => {
-  const navigate = useNavigate();
-  const [judul, setJudul] = useState("");
+  const navigate = useNavigate(); 
+  const [periods, setPeriods] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const fetchPeriods = async() => {
+    try {
+      setLoading(true);
+      const response = await getAllPeriods();
+      setPeriods(response);
+      console.log(periods);
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setLoading(false);
+    }
+  }
+  useEffect(()=>{
+    fetchPeriods();
+  },[]);
 
   const openModalView = () => {
     setIsOpen(true);
@@ -18,19 +36,12 @@ const PeriodeKegiatanListOPT = () => {
 
   const closeModalView = () => {
     setIsOpen(false);
+    fetchPeriods();
   };
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
-
-  //   const handleInputChange = (setter) => (e) => {
-  //     setter(e.target.value);
-  //   };
-
-  // Fungsi untuk ekspor data ke Excel
-
-  // Fungsi untuk kembali ke halaman sebelumnya
 
   const options = [
     { label: "Option 1", value: "1" },
@@ -40,6 +51,17 @@ const PeriodeKegiatanListOPT = () => {
   const handleBack = () => {
     navigate("/monitoring/penenelitian/periode-kegiatan");
   };
+
+  const handleDelete = async(id) => {
+    const response = await deletePeriod(id);
+    console.log(response);
+    fetchPeriods();
+  }
+
+  if(loading){
+    return <p>Loading...</p>
+  }
+  
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       {/* Judul Halaman */}
@@ -89,6 +111,12 @@ const PeriodeKegiatanListOPT = () => {
             <h1 className="text-md font-bold text-violet-800 mb-4">
               Rekap Usulan
             </h1>
+            <button
+                        className="bg-bluef-500 text-white px-4 py-2 rounded-md"
+                        onClick={openModalView}
+                      >
+                        Tambah Periode Kegiatan
+                      </button>
           </div>
           {/* Tabel */}
           <div className="overflow-x-auto mx-5 my-10">
@@ -96,42 +124,37 @@ const PeriodeKegiatanListOPT = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                 <tr>
                   <th className="border px-4 py-2">No</th>
-                  <th className="border px-4 py-2">Usulan</th>
+                  <th className="border px-4 py-2">Kegiatan</th>
                   <th className="border px-4 py-2">Periode Kegiatan Awal</th>
                   <th className="border px-4 py-2">Periode Kegiatan Akhir</th>
                   <th className="border px-4 py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="border px-4 py-2 text-center">1</td>
-                  <td className="border px-4 py-2 text-bluef-500">
-                    Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris
-                    Berbasis DIgital Visual Literacy dan Keterampilan 5C untuk
-                    Siswa Sekolah Dasar
-                    <br className="mt-5 text-cyan-800" />
-                    Skema-Penelitian Fundamental - Reguler
-                  </td>
-                  <td className="border px-4 py-2 text-bluef-500">
-                    <span className="bg-white text-bluef-500 border border-bluef-500 px-4 py-2 rounded-md">
-                      Detail
-                    </span>
-                    <br />
-                  </td>
-                  <td className="border px-4 py-2">
-                    <span className="bg-white text-bluef-500 border border-bluef-500 px-4 py-2 rounded-md">
-                      Detail
-                    </span>
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    <button
-                      className="bg-bluef-500 text-white px-4 py-2 rounded-md"
-                      onClick={openModalView}
-                    >
-                      Ubah
-                    </button>
-                  </td>
-                </tr>
+                {periods.map((item, index) => (
+                  <tr key={index}>
+                    <td className="border px-4 py-2 text-center">{index+1}</td>
+                    <td className="border px-4 py-2 text-bluef-500">
+                      {item.type}
+                    </td>
+                    <td className="border px-4 py-2 text-bluef-500">
+                      <span className="bg-white text-bluef-500 border border-bluef-500 px-4 py-2 rounded-md">
+                        Detail
+                      </span>
+                      <br />
+                    </td>
+                    <td className="border px-4 py-2">
+                      <span className="bg-white text-bluef-500 border border-bluef-500 px-4 py-2 rounded-md">
+                        Detail
+                      </span>
+                    </td>
+                    <td className="border px-4 py-2 text-center">
+                      <button className="text-white bg-red-700 p-2 rounded-md" onClick={() => handleDelete(item.id)}>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

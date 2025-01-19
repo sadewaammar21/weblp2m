@@ -12,7 +12,7 @@ export const getServices = async ({
   userId,
 }) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/comunity_service`, {
+    const response = await axios.get(`${apiUrl}/api/comunity-service`, {
       ...getToken(),
       params: {
         page_size: pageSize,
@@ -157,6 +157,7 @@ export const addService = async ({
     formData.append(`partner[${index}][province]`, partner.province);
     formData.append(`partner[${index}][leader_name]`, partner.leader_name);
     formData.append(`partner[${index}][group_id]`, partner.group_id);
+    formData.append(`partner[${index}][city]`, partner.city);
     formData.append(
       `partner[${index}][partner_type_id]`,
       partner.partner_type_id

@@ -1,65 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
+import { getResearch, downloadResearchDocument } from "../../Features/ResearchSlice";
 
 const UsulanDisetujuiKpl = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
 
+  const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isAccepted, setIsAccepted] = useState(false);
+    const [status, setStatus] = useState(0);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const parseUser = JSON.parse(user);
+    const fetchData = async () => {
+      try {
+        const result = await getResearch({page_size: 5,       
+            current_page: 1} );
+        setData(result.data);
+        console.log(result);
+        console.log(data);
+        console.log(typeof data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   const handleDropdownChange = (option) => {
-    setSelectedOption(option);
+    setSelectedOption(option); 
   };
 
-  //   const handleInputChange = (setter) => (e) => {
-  //     setter(e.target.value);
-  //   };
-
-  // Fungsi untuk ekspor data ke Excel
-  const handleExportExcel = () => {
-    const tableData = [
-      ["No", "Pengusul", "Skema", "Judul", "Berkas"],
-      [
-        "1",
-        `Ketua: SRI HARJANTO
-        NIDN: 0626016803
-        Tahun Pelaksanaan: 2024
-        Lama Kegiatan: 1 Tahun
-        Bidang Fokus: Teknologi Informasi dan Komunikasi`,
-        "Penelitian Dasar - Penelitian Dosen Pemula",
-        "Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa Sekolah Dasar",
-        "-",
-      ],
-    ];
-
-    // Membuat worksheet dan workbook
-    const worksheet = XLSX.utils.aoa_to_sheet(tableData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Usulan Draft");
-
-    // Menyimpan file Excel
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
-    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(data, "UsulanDraftMonitoring.xlsx");
-  };
+  
 
   // Fungsi untuk kembali ke halaman sebelumnya
   const handleBack = () => {
-    navigate("/dashboard-kepala-lppm");
+    navigate(-1);
   };
 
-  const options = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
-  ];
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
@@ -87,7 +82,7 @@ const UsulanDisetujuiKpl = () => {
           <div className="flex justify-between mx-5 ">
             <div className="mx-2 my-2">
               <button
-                onClick={handleExportExcel}
+                // onClick={handleExportExcel}
                 className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 <img
@@ -100,7 +95,7 @@ const UsulanDisetujuiKpl = () => {
             </div>
             <div className="mx-2 my-2">
               <DropdownCmp
-                options={options}
+                // options={options}
                 selectedOption={selectedOption}
                 onChange={(e) => handleDropdownChange(e.target.value)}
                 placeholder="Jumlah Baris"
@@ -130,36 +125,51 @@ const UsulanDisetujuiKpl = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="text-center">
-                  <td className="border px-4 py-2">1</td>
-                  <td className="border px-4 py-2 text-left">
-                    <p>Ketua: SRI HARJANTO</p>
-                    <p>NIDN: 0626016803</p>
-                    <p>Tahun Pelaksanaan: 2024</p>
-                    <p>Lama Kegiatan: 1 Tahun</p>
-                    <p>Bidang Fokus: Teknologi Informasi dan Komunikasi</p>
-                  </td>
-                  <td className="border px-4 py-2 text-bluef-500">
-                    <p>Tes Usulan Penelitian</p>
-                    <p>Penelitian Fundamental - Reguler</p>
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    <button>
-                      <img
-                        src="/assets/icon_pdf_brks.svg"
-                        alt="Action Icon"
-                        className="w-7 h-auto z-10 mx-auto"
-                      />
-                    </button>
-                  </td>
-                  <td className="border px-4 py-2 text-center">
-                    <div className="flex justify-center space-x-2">
-                      <button className="bg-bluef-500 text-white px-4 py-2 rounded-md">
-                        Disetujui
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                {data
+                .filter((item) => item.status == 6)
+                .map(
+                  (
+                    item,
+                    index 
+                  ) => (
+                    <tr key={index}>
+                      <td className="border border-gray-300 p-2 text-center">
+                        {index + 1}
+                      </td>
+                      <td className="border border-gray-300 p-2">
+                        <p>Ketua: {item.user?.name}</p>
+                        <p>NIDN: {item.user?.nidn}</p>
+                        <p>Tahun Pelaksanaan: {item.year}</p>
+                        <p>Lama Kegiatan: {item.duration}</p>
+                        <p>Bidang Fokus: {item.focus.name}</p>
+                      </td>
+                      <td className="border border-gray-300 p-2">
+                        <p className="text-blue-600 font-bold">{item.title}</p>
+                        <p className="text-blue-600 font-bold">
+                          {item.scheme.name}
+                        </p>
+                      </td>
+                      <td className="border border-gray-300 p-2 text-center">
+                        <button
+                          onClick={() => downloadResearchDocument(item.id)}
+                          className="text-red-600 text-2xl"
+                        >
+                          <a
+                            href={`http://localhost:8000/api/research/download/${item.id}`}
+                            target="_blank"
+                          >
+                            📄
+                          </a>
+                        </button>
+                      </td>
+                      <td className="border border-gray-300 p-2 text-center">
+                        <p className="text-white bg-green-600 p-2 rounded-md">
+                          Disetujui
+                        </p>
+                      </td>
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
           </div>
