@@ -69,19 +69,37 @@ const ProgressUsulanBaruPengabdian = () => {
   //data management
   const [data, setData] = useState({
     title: "",
-    tkt_current: "",
-    tkt_final: "",
+    category_id: "",
+    focus_thematic_id: "",
+    focus_rirn_id: "",
+    scheme_id: "",
+    scope_id: "",
+    year: "",
+    duration: "",
+    cluster_lv1: "",
+    cluster_lv2: "",
+    cluster_lv3: "",
+    leader_name: "",
+    leader_task: "",
+    status: "",
+    approval_funds: "",
+    letter_of_intent: "",
+    substance_document: [],
     members: [],
     students: [],
-    output: [],
-    budgetPlan: [],
-    supportingDocument: [],
+    outputPartner: [{ id_category_output: "" }],
+    outputPublication: [{ id_category_output: "" }],
+    outputMedia: [{ description: "", id_category_output: "" }],
+    outputVideo: [{ description: "" }],
+    partner: [],
+    budgetPlanService: [],
+    supportingFile: [],
   });
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `${apiUrl}/api/research/${id}`,
+        `${apiUrl}/api/comunity-service/${id}`,
         getToken()
       );
       console.log(response.data);
@@ -105,7 +123,7 @@ const ProgressUsulanBaruPengabdian = () => {
       const response = await addService({
         data: data,
         isEdit: isEdit,
-        researchId: data.id,
+        serviceId: data.id,
         isSubmit: true,
         newStatus: 2,
       });
@@ -115,7 +133,7 @@ const ProgressUsulanBaruPengabdian = () => {
       const response = await addService({
         data: data,
         isEdit: isEdit,
-        researchId: data.id,
+        serviceId: data.id,
         isSubmit: true,
         newStatus: 2,
       });

@@ -176,18 +176,18 @@ const IdentitasUsulan = ({ data, setData }) => {
     console.log(response.data);
   };
 
-  const fetchCluster2 = async ($cluster1) => {
+  const fetchCluster2 = async ($cluster_lv1) => {
     const response = await axios.get(
-      `${apiUrl}/api/service-cluster2/${$cluster1}`,
+      `${apiUrl}/api/service-cluster2/${$cluster_lv1}`,
       getToken()
     );
     setCluster2(response.data);
     console.log(response.data);
   };
 
-  const fetchCluster3 = async ($cluster2) => {
+  const fetchCluster3 = async ($cluster_lv2) => {
     const response = await axios.get(
-      `${apiUrl}/api/service-cluster3/${$cluster2}`,
+      `${apiUrl}/api/service-cluster3/${$cluster_lv2}`,
       getToken()
     );
     setCluster3(response.data);
@@ -221,9 +221,7 @@ const IdentitasUsulan = ({ data, setData }) => {
             value={mapToDropdown(category, "name", "id").find(
               (option) => option.value === data.category_id
             )}
-            onChange={(option) =>
-              handleDropdownChange(option.value, "category_id")
-            }
+            onChange={(option) => handleDropdownChange(option, "category_id")}
           />
           <DropdownCmp
             label="6. Lama Kegiatan *"
@@ -264,10 +262,10 @@ const IdentitasUsulan = ({ data, setData }) => {
               <DropdownCmp
                 options={mapToDropdown(tematik, "name", "id")}
                 value={mapToDropdown(tematik, "name", "id").find(
-                  (option) => option.value === data.tematik_id
+                  (option) => option.value === data.focus_thematic_id
                 )}
                 onChange={(option) =>
-                  handleDropdownChange(option.value, "tematik_id")
+                  handleDropdownChange(option, "focus_thematic_id")
                 }
                 disabled={selectedOption !== "tematik"}
               />
@@ -294,10 +292,10 @@ const IdentitasUsulan = ({ data, setData }) => {
               <DropdownCmp
                 options={mapToDropdown(rirn, "name", "id")}
                 value={mapToDropdown(rirn, "name", "id").find(
-                  (option) => option.value === data.rirn_id
+                  (option) => option.value === data.focus_rirn_id
                 )}
                 onChange={(option) =>
-                  handleDropdownChange(option.value, "rirn_id")
+                  handleDropdownChange(option, "focus_rirn_id")
                 }
                 placeholder="Pilih Bidang Fokus RIRN"
                 className="mt-2"
@@ -320,9 +318,7 @@ const IdentitasUsulan = ({ data, setData }) => {
             value={mapToDropdown(scheme, "name", "id").find(
               (option) => option.value === data.scheme_id
             )}
-            onChange={(option) =>
-              handleDropdownChange(option.value, "scheme_id")
-            }
+            onChange={(option) => handleDropdownChange(option, "scheme_id")}
           />
           <DropdownCmp
             label="8. Rumpun Ilmu Level 2 *"
@@ -338,9 +334,7 @@ const IdentitasUsulan = ({ data, setData }) => {
             value={mapToDropdown(scope, "name", "id").find(
               (option) => option.value === data.scope_id
             )}
-            onChange={(option) =>
-              handleDropdownChange(option.value, "scope_id")
-            }
+            onChange={(option) => handleDropdownChange(option, "scope_id")}
           />
           <DropdownCmp
             label="9. Rumpun Ilmu Level 3 * "
@@ -413,7 +407,7 @@ const IdentitasUsulan = ({ data, setData }) => {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.id}</td>
-                  <td>{item.pivot.comunity_service_roles}</td>
+                  <td>{item.pivot.name}</td>
                   <td>{item.pivot.task}</td>
                   <td>{item.pivot.status}</td>
                   <td>action here</td>
