@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
-import { getResearch } from "../../Features/ResearchSlice";
+import { deleteService, getServices } from "../../Features/ServiceSlice";
 import { FaPlus, FaPen, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ModalTerimaAnggotaPenelitian from "../UsulanBaru/ModalTerimaAnggotaPenelitian";
+
+const user = JSON.parse(localStorage.getItem("user"));
 
 const UsulanBaruList = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate(); // Hook untuk navigasi
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState("");
 
   const handleClick = () => {
     navigate("/pengabdian/usulan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
@@ -17,26 +22,87 @@ const UsulanBaruList = () => {
     navigate("/detail-pengabdian"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getResearch({
-          pageSize: 5,
-          currentPage: 1,
-          status: 1,
-          year: 2024,
-          userId: 1,
-        });
-        setData(result.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const openModal = (id) => {
+    setSelectedData(id);
+    setIsOpen(true);
+  };
 
+  const closeModal = () => {
+    setIsOpen(false);
+    fetchData();
+  };
+
+  const fetchData = async () => {
+    try {
+      const result = await getServices({
+        pageSize: 5,
+        currentPage: 1,
+        status: 1,
+        year: 2024,
+        userId: 1,
+      });
+      setData(result.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
+
+  const handleDelete = async (id) => {
+    const response = await deleteService(id);
+    console.log(response);
+    fetchData();
+  };
+
+  const renderActionButton = (item) => {
+    if (item.user.id !== user.id) {
+      const currentUserAsMember = item.members.find(
+        (member) => member.id === user.id
+      );
+      if (currentUserAsMember.pivot.status !== "pending") {
+        return <p>{currentUserAsMember.pivot.status}</p>;
+      } else {
+        return (
+          <div>
+            <button
+              onClick={() => openModal(item.id)}
+              className="bg-blue-500 px-2 py-1 rounded-md text-white"
+            >
+              Action
+            </button>
+          </div>
+        );
+      }
+    } else {
+      return (
+        <div>
+          <button
+            onClick={() => navigate(`/penelitian/usulan/edit/${item.id}`)}
+            className={`bg-blue-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+          >
+            edit
+          </button>
+          <button
+            onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+            className="bg-blue-500 px-2 py-1 rounded-md text-white"
+          >
+            detail
+          </button>
+          <button
+            onClick={() => handleDelete(item.id)}
+            className={`bg-red-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+          >
+            delete
+          </button>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="mx-5">
@@ -76,6 +142,13 @@ const UsulanBaruList = () => {
           </div>
         </div>
 
+        <ModalTerimaAnggotaPenelitian
+          research={selectedData}
+          userId={user.id}
+          isOpen={isOpen}
+          onRequestClose={closeModal}
+        />
+
         {/* Tabel */}
         <div className="relative overflow-x-auto  my-10">
           <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
@@ -103,14 +176,8 @@ const UsulanBaruList = () => {
                   <td>{item.year}</td>
                   <td>{item.roles}</td>
                   <td>{item.status}</td>
-                  <td>
-                    <button
-                      onClick={() =>
-                        navigate(`/usulan-penelitian-edit/${item.id}`)
-                      }
-                    >
-                      action here
-                    </button>
+                  <td className="flex space-x-2 justify-center">
+                    {renderActionButton(item)}
                   </td>
                 </tr>
               ))}
@@ -122,11 +189,11 @@ const UsulanBaruList = () => {
                 <td>-</td>
                 <td>2024</td>
                 <td>Perbaikan</td>
-                <td>
+                {/* <td>
                   <button onClick={handleView}>
                     <FaEye className="py-2 w-5 h-auto z-5" />
                   </button>
-                </td>
+                </td> */}
               </tr>
             </tbody>
           </table>
