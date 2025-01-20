@@ -22,41 +22,37 @@ const steps = [
   { id: 5, label: "Konfirmasi Usulan" },
 ];
 
-const ProgressBar = ({ currentStep }) => {
-  return (
-    <div className="flex items-center">
-      {steps.map((step) => (
-        <div key={step.id} className="flex-1">
-          <div className="relative flex items-center">
-            <div
-              className={`h-2 flex-1 rounded-full ${
-                currentStep >= step.id ? "bg-blue-600" : "bg-gray-300"
-              }`}
-            />
-            <div
-              className={`absolute w-6 h-6 rounded-full flex items-center justify-center text-sm border-2 ${
-                currentStep >= step.id
-                  ? "bg-blue-600 border-blue-600 text-white"
-                  : "bg-white border-gray-300 text-black"
-              }`}
-            >
-              {step.id}
-            </div>
+const ProgressBar = ({ currentStep }) => (
+  <div className="flex items-center">
+    {steps.map((step) => (
+      <div key={step.id} className="flex-1">
+        <div className="relative flex items-center">
+          <div
+            className={`h-2 flex-1 rounded-full ${
+              currentStep >= step.id ? "bg-blue-600" : "bg-gray-300"
+            }`}
+          />
+          <div
+            className={`absolute w-6 h-6 rounded-full flex items-center justify-center text-sm border-2 ${
+              currentStep >= step.id
+                ? "bg-blue-600 border-blue-600 text-white"
+                : "bg-white border-gray-300 text-black"
+            }`}
+          >
+            {step.id}
           </div>
-          <div className="text-center mt-2 text-sm">{step.label}</div>
         </div>
-      ))}
-    </div>
-  );
-};
+        <div className="text-center mt-2 text-sm">{step.label}</div>
+      </div>
+    ))}
+  </div>
+);
 
 const ProgressUsulanBaruPengabdian = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = Boolean(id);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState({
     title: "",
@@ -90,16 +86,20 @@ const ProgressUsulanBaruPengabdian = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-      setLoading(true);
-      const response = await axios.get(
-        `${apiUrl}/api/comunity-service/${id}`,
-        getToken()
-      );
-<<<<<<< HEAD
-      setData({ ...data, ...response.data });
+        setLoading(true);
+        const response = await axios.get(
+          `${apiUrl}/api/comunity-service/${id}`,
+          getToken()
+        );
+        setData((prevData) => ({ ...prevData, ...response.data }));
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching data:", error);
+      }
     };
     if (isEdit) fetchData();
-  }, [id]);
+  }, [id, isEdit]);
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
@@ -111,40 +111,7 @@ const ProgressUsulanBaruPengabdian = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await addService({
-      data: data,
-      isEdit: isEdit,
-      serviceId: data.id,
-      isSubmit: true,
-      newStatus: 2,
-    });
-    navigate("/pengabdian/usulan");
-    console.log(response);
-=======
-      console.log(response.data);
-      setData({
-        ...data,
-        ...response.data,
-      });
-    } catch (error) {
-      setError(true);
-    }finally{
-      setLoading(false);
-    }
-  };
-  if (isEdit) fetchData();
-  console.log(data);
-}, [id]);
-
-
-  // useEffect(() => {
-  //   console.log(data);
-  // });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (e.target.name === "ajukan") {
+    try {
       const response = await addService({
         data: data,
         isEdit: isEdit,
@@ -152,20 +119,11 @@ const ProgressUsulanBaruPengabdian = () => {
         isSubmit: true,
         newStatus: 2,
       });
-      console.log(response);
       navigate("/pengabdian/usulan");
-    } else {
-      const response = await addService({
-        data: data,
-        isEdit: isEdit,
-        serviceId: data.id,
-        isSubmit: true,
-        // newStatus: 2,
-      });
       console.log(response);
-      navigate("/pengabdian/usulan");
+    } catch (error) {
+      console.error("Error submitting data:", error);
     }
->>>>>>> f44b30bc602de50915c4c0f0affeb8f237e555a2
   };
 
   const renderStepContent = (step) => {
@@ -185,13 +143,9 @@ const ProgressUsulanBaruPengabdian = () => {
     }
   };
 
-  // if(loading){
-  //   return <p>Loading...</p>
-  // }
-
-  // if(error){
-  //   return <p>Terjadi Kesalahan.</p>
-  // }
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -219,14 +173,14 @@ const ProgressUsulanBaruPengabdian = () => {
             >
               Next
             </button>
-            <div className={`${currentStep === steps.length ? "" : "hidden"}`}>
+            {currentStep === steps.length && (
               <button
-                onClick={(e) => handleSubmit(e)}
+                onClick={handleSubmit}
                 className="px-4 py-2 bg-blue-600 text-white rounded mx-5"
               >
                 Submit
               </button>
-            </div>
+            )}
           </div>
         </div>
       </div>
