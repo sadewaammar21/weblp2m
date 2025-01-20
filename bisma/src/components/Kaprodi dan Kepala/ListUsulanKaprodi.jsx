@@ -20,20 +20,17 @@ const ListUsulanKaprodi = () => {
     const parseUser = JSON.parse(user);
     const fetchData = async () => {
       try {
+        setLoading(true);
         const result = await axios.get(`${apiUrl}/api/research`, { ...getToken(),
           params: {
-            prodi_id: 5,         
-            // status: 2,  
+            prodi_id: parseUser.id_prodi,         
+            status: 2,  
             // year: 2023,          
             page_size: 5,       
             current_page: 1 
           },
         });
         setData(result.data.data);
-        console.log(result);
-        console.log(data);
-        console.log(parseUser.id_prodi)
-        console.log(typeof data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -80,7 +77,7 @@ const ListUsulanKaprodi = () => {
           <div className="bg-green-700 text-white p-2 px-4 rounded-md">
             Exel
           </div>
-          <DropdownCmp />
+          {/* <DropdownCmp /> */}
         </div>
         <input
           type="text"

@@ -26,7 +26,7 @@ const UsulanDisetujuiKpl = () => {
     const fetchData = async () => {
       try {
         const result = await getResearch({page_size: 5,       
-            current_page: 1} );
+            current_page: 1, status: 6} );
         setData(result.data);
         console.log(result);
         console.log(data);

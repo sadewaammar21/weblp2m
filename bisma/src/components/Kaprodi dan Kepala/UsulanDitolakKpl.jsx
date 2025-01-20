@@ -26,7 +26,7 @@ const UsulanDitolakKpl = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getResearch({ page_size: 5, current_page: 1 });
+        const result = await getResearch({ page_size: 5, current_page: 1, status: 8 });
         setData(result.data);
         console.log(result);
         console.log(data);

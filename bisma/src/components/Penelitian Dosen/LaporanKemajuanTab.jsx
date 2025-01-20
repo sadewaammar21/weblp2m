@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import LaporanKemajuanTab1 from "./LaporanKemajuanTab1";
 import LaporanKemajuanTab2 from "./LaporanKemajuanTab2";
 import LaporanKemajuan from "./LaporanKemajuan";
-import { addResearchProgressReport, getResearch, getResearchDetail, getResearchProgressReport } from "../../Features/ResearchSlice";
+import {
+  addResearchProgressReport,
+  getResearch,
+  getResearchDetail,
+  getResearchProgressReport,
+} from "../../Features/ResearchSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const steps = [
@@ -39,13 +44,14 @@ const ProgressBar = ({ currentStep }) => {
         </div>
       ))}
     </div>
-  ); 
+  );
 };
 
 const LaporanKemajuanTab = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [isLaporanKemajuan, setIsLaporanKemajuan] = useState(false);
+  const [loading, setLoading] = useEffect(true);
 
   //data penelitian
   const [research, setResearch] = useState({});
@@ -55,27 +61,35 @@ const LaporanKemajuanTab = () => {
   const { id, reportId } = location.state || {};
   const [report, setReport] = useState({});
 
-  const fetchResearch = async() => {
+  const fetchResearch = async () => {
     const response = await getResearchDetail(id);
     setResearch(response.data);
-    console.log(research)
-  }
-  const fetchReport = async() => {
-    if(reportId){
-      const response = await getResearchProgressReport(reportId);
-      setReport(response);
-      console.log(report);
-    }else{
-      setReport({summary: '', keyword: '', outputs:[]});
+    console.log(research);
+  };
+  const fetchReport = async () => {
+    try {
+      if (reportId) {
+        setLoading(true);
+        const response = await getResearchProgressReport(reportId);
+        setReport(response);
+        console.log(report);
+      } else {
+        setReport({ summary: "", keyword: "", outputs: [] });
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchResearch()
-    if(reportId){
-      fetchReport()
+    fetchResearch();
+    if (reportId) {
+      fetchReport();
     }
-  }, [reportId])
+  }, [reportId]);
 
   //handle next step
   const handleNextStep = () => {
@@ -93,9 +107,21 @@ const LaporanKemajuanTab = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <LaporanKemajuanTab1 research={research} data={report} setData={setReport}/>;
+        return (
+          <LaporanKemajuanTab1
+            research={research}
+            data={report}
+            setData={setReport}
+          />
+        );
       case 2:
-        return <LaporanKemajuanTab2 research={research} data={report} setData={setReport}/>;
+        return (
+          <LaporanKemajuanTab2
+            research={research}
+            data={report}
+            setData={setReport}
+          />
+        );
       default:
         return null;
     }
@@ -106,19 +132,32 @@ const LaporanKemajuanTab = () => {
   }
 
   const handleSubmit = async (status) => {
-    if(reportId){
-      setReport({...report, status: status})
+    if (reportId) {
+      setReport({ ...report, status: status });
       // console.log(report)
-      const response = await addResearchProgressReport({researchId: research.id, data: report, isEdit: true, reportId: report.id});
+      const response = await addResearchProgressReport({
+        researchId: research.id,
+        data: report,
+        isEdit: true,
+        reportId: report.id,
+      });
       console.log(response);
       navigate(-1);
-    }else{
-      setReport({...report, status: status})
+    } else {
+      setReport({ ...report, status: status });
       // console.log(report)
-      const response = await addResearchProgressReport({researchId: research.id, data: report, isEdit: false});
+      const response = await addResearchProgressReport({
+        researchId: research.id,
+        data: report,
+        isEdit: false,
+      });
       console.log(response);
       navigate(-1);
     }
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -148,19 +187,19 @@ const LaporanKemajuanTab = () => {
               <div>
                 <button
                   onClick={handleNextStep}
-                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? 'hidden' : ''}`}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? "hidden" : ""}`}
                 >
                   Next
                 </button>
                 <button
-                  onClick={()=>handleSubmit(1)}
-                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? '' : 'hidden'}`}
+                  onClick={() => handleSubmit(1)}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? "" : "hidden"}`}
                 >
                   Simpan
                 </button>
                 <button
-                  onClick={()=>handleSubmit(2)}
-                  className={`px-4 py-2 bg-green-600 text-white rounded ${currentStep === 2 ? '' : 'hidden'}`}
+                  onClick={() => handleSubmit(2)}
+                  className={`px-4 py-2 bg-green-600 text-white rounded ${currentStep === 2 ? "" : "hidden"}`}
                 >
                   Submit
                 </button>

@@ -110,7 +110,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       const response = await axios.get(`${apiUrl}/api/research-scheme/${target}`, getToken());
       setScheme(response.data);
     } catch (error) {
-      setScheme(error.message)
+      setScheme([])
     }
   }
   const fetchScope = async() =>{
@@ -133,7 +133,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       const response = await axios.get(`${apiUrl}/api/research-theme/${focus}`, getToken());
       setTheme(response.data);
     } catch (error) {
-      setTheme(error.message);
+      setTheme([]);
     }
   }
   const fetchTopic = async(theme) =>{
@@ -141,7 +141,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       const response = await axios.get(`${apiUrl}/api/research-topic/${theme}`, getToken());
       setTopic(response.data);
     } catch (error) {
-      setTopic(error.message);
+      setTopic([]);
     }
   }
   const fetchCluster1 = async() =>{
@@ -153,7 +153,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       const response = await axios.get(`${apiUrl}/api/cluster2/${$cluster1}`, getToken());
       setCluster2(response.data);
     } catch (error) {
-      setCluster2(error.message);
+      setCluster2([]);
     }
   }
   const fetchCluster3 = async($cluster2) =>{
@@ -161,7 +161,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       const response = await axios.get(`${apiUrl}/api/cluster3/${$cluster2}`, getToken());
       setCluster3(response.data);
     } catch (error) {
-      setCluster3(error.message);
+      setCluster3([]);
     }
   }
   const fetchPriority = async() =>{

@@ -48,8 +48,9 @@ const UsulanBelumDitinjauKpl = () => {
       const user = localStorage.getItem("user");
       const fetchData = async () => {
         try {
+          setLoading(true)
           const result = await getResearch({page_size: 5,       
-              current_page: 1} );
+              current_page: 1, status: 5} );
           setData(result.data);
           console.log(result);
           console.log(data);

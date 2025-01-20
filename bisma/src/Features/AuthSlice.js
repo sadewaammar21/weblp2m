@@ -63,7 +63,7 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
 export const LogOut = createAsyncThunk("user/api/LogOut", async () => {
   localStorage.removeItem("currentRole");
   localStorage.removeItem("user");
-  const response = await axios.post(`${apiUrl}/logout`, getToken);
+  const response = await axios.post(`${apiUrl}/api/logout`, getToken);
   localStorage.removeItem("accessToken");
   return response;
 });
