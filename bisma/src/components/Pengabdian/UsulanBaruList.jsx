@@ -144,7 +144,7 @@ const UsulanBaruList = () => {
 
         <ModalTerimaAnggotaPenelitian
           research={selectedData}
-          userId={user.id}
+          // userId={user.id}
           isOpen={isOpen}
           onRequestClose={closeModal}
         />
