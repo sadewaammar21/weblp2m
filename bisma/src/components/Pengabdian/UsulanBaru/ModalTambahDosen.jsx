@@ -23,12 +23,18 @@ const ModalTambahDosen = ({
   onRequestClose,
   index,
   onSave,
-  clusters1, // Cluster level 1 (data awal)
+  clusters1,
 }) => {
   const [nidn, setNidn] = useState("");
   const [memberData, setMemberData] = useState({
     id: 0,
-    pivot: { comunity_service_roles: "", task: "", status: "" },
+    pivot: {
+      name: "",
+      comunity_service_roles: "",
+      partner: "",
+      task: "",
+      status: "",
+    },
   });
   const [cluster2, setCluster2] = useState([]); // Data untuk cluster level 2
   const [cluster3, setCluster3] = useState([]); // Data untuk cluster level 3
@@ -141,6 +147,22 @@ const ModalTambahDosen = ({
         />
       </div>
 
+      <TextfieldCmp
+        label="Id"
+        value={memberData.id}
+        name="id"
+        onChange={handleInputChange}
+        placeholder="Anggota Pengusul"
+      />
+
+      <TextfieldCmp
+        label="Nama"
+        value={memberData.name}
+        name="pivot.name"
+        onChange={handleInputChange}
+        placeholder="Anggota Pengusul"
+      />
+
       <div className="p-4">
         <TextfieldCmp
           label="Peran"
@@ -149,12 +171,20 @@ const ModalTambahDosen = ({
           onChange={handleInputChange}
           placeholder="Anggota Pengusul"
         />
+
         <TextAreaCmp
           label="Tugas Dalam Pengabdian"
           value={memberData.task}
           name="task"
           onChange={handleInputChange}
           placeholder="Deskripsi tugas"
+        />
+        <TextfieldCmp
+          label="Perusahaan"
+          value={memberData.comunity_service_roles}
+          name="partner"
+          onChange={handleInputChange}
+          placeholder="Nama PT"
         />
       </div>
 

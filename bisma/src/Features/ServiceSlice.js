@@ -4,12 +4,13 @@ import { getToken } from "./AuthSlice";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 //community-service
-export const getServices = async ({
+export const getService = async ({
   pageSize,
   currentPage,
   status,
   year,
   userId,
+  prodiId,
 }) => {
   try {
     const response = await axios.get(`${apiUrl}/api/comunity-service`, {
@@ -20,6 +21,7 @@ export const getServices = async ({
         status: status,
         year: year,
         user_id: userId,
+        prodi_id: prodiId,
       },
     });
     console.log(response.data);
@@ -68,7 +70,7 @@ export const addService = async ({
   formData.append("cluster_lv3", data.cluster_lv3);
   formData.append("leader_name", data.leader_name);
   formData.append("leader_task", data.leader_task);
-  formData.append("status", data.status);
+  formData.append("status", 1);
   formData.append("approval_funds", data.approval_funds);
   formData.append("letter_of_intent", data.letter_of_intent);
 
@@ -135,21 +137,21 @@ export const addService = async ({
     formData.append(`outputVideo[${index}][description]`, video.description);
   });
 
-  data.budgetPlanService.forEach((budgetPlan, index) => {
-    formData.append(`budgetPlan[${index}][year]`, budgetPlan.year);
+  data.budgetPlanService.forEach((budgetPlanService, index) => {
+    formData.append(`budgetPlanService[${index}][year]`, budgetPlanService.year);
     formData.append(
-      `budgetPlan[${index}][id_group_budget]`,
-      budgetPlan.id_group_budget
+      `budgetPlanService[${index}][id_group_budget]`,
+      budgetPlanService.id_group_budget
     );
     formData.append(
-      `budgetPlan[${index}][id_component_budget]`,
-      budgetPlan.id_component_budget
+      `budgetPlanService[${index}][id_component_budget]`,
+      budgetPlanService.id_component_budget
     );
-    formData.append(`budgetPlan[${index}][item]`, budgetPlan.item);
-    formData.append(`budgetPlan[${index}][unit]`, budgetPlan.unit);
-    formData.append(`budgetPlan[${index}][volume]`, budgetPlan.volume);
-    formData.append(`budgetPlan[${index}][price_unit]`, budgetPlan.price_unit);
-    formData.append(`budgetPlan[${index}][total]`, budgetPlan.total);
+    formData.append(`budgetPlanService[${index}][item]`, budgetPlanService.item);
+    formData.append(`budgetPlanService[${index}][unit]`, budgetPlanService.unit);
+    formData.append(`budgetPlanService[${index}][volume]`, budgetPlanService.volume);
+    formData.append(`budgetPlanService[${index}][price_unit]`, budgetPlanService.price_unit);
+    formData.append(`budgetPlanService[${index}][total]`, budgetPlanService.total);
   });
 
   data.partner.forEach((partner, index) => {
@@ -157,6 +159,7 @@ export const addService = async ({
     formData.append(`partner[${index}][province]`, partner.province);
     formData.append(`partner[${index}][leader_name]`, partner.leader_name);
     formData.append(`partner[${index}][group_id]`, partner.group_id);
+    formData.append(`partner[${index}][city]`, partner.city);
     formData.append(
       `partner[${index}][partner_type_id]`,
       partner.partner_type_id
@@ -183,6 +186,17 @@ export const addService = async ({
     formData.append(`members[${index}][task]`, member.pivot.task);
   });
 
+  data.studentServices.forEach((studentService, index) => {
+    formData.append(`studentServices[${index}][name]`, studentService.name);
+    formData.append(`studentServices[${index}][nim]`, studentService.nim);
+    formData.append(`studentServices[${index}][address]`, studentService.address);
+    formData.append(`studentServices[${index}][email]`, studentService.email);
+    formData.append(`studentServices[${index}][phone]`, studentService.phone);
+    formData.append(`studentServices[${index}][prodi]`, studentService.prodi);
+    formData.append(`studentServices[${index}][role]`, studentService.role);
+    formData.append(`studentServices[${index}][task]`, studentService.task);
+  });
+
   try {
     if (isEdit) {
       const response = await axios.post(
@@ -191,17 +205,44 @@ export const addService = async ({
         getToken()
       );
       if (isSubmit) {
-        // const responseStatus = await
-      }
-      console.log(response.data);
+              if (
+                response.data.data.members.every(
+                  (member) =>
+                    member.pivot.status === "2" || member.pivot.status === "accepted"
+                )
+              ) {
+                const responseStatus = await updateStatus({
+                  serviceId: response.data.data.id,
+                  newStatus: newStatus,
+                  note: "diajukan",
+                });
+                console.log("Response:", responseStatus);
+              }
+            }
+            console.log(response.data);
     } else {
       const response = await axios.post(
         `${apiUrl}/api/comunity-service`,
         formData,
         getToken()
       );
-      console.log(response.data);
-    }
+     if (isSubmit) {
+             if (
+               response.data.data.members.every(
+                 (member) =>
+                   member.pivot.status === "2" || member.pivot.status === "accepted"
+               )
+             ) {
+               const responseStatus = await updateStatus({
+                 serviceId: response.data.data.id,
+                 newStatus: newStatus,
+                 note: "diajukan",
+               });
+               console.log("Response:", responseStatus);
+             }
+           }
+           console.log(response.data);
+         }
   } catch (error) {
     console.log(error);
     return error;
@@ -211,12 +252,12 @@ export const addService = async ({
 export const deleteService = async (id) => {
   const response = await axios.delete(
     `${apiUrl}/api/comunity-service/${id}`,
-    getToken
+    getToken()
   );
   return response.data;
 };
 
-export const updateServiceStatus = async ({ serviceId, newStatus, note }) => {
+export const updateStatus = async ({ serviceId, newStatus, note }) => {
   try {
     const response = await axios.post(
       `${apiUrl}/api/comunity-service/${serviceId}/status-update`,
@@ -244,6 +285,22 @@ export const downloadServiceDocument = async (serviceId) => {
   } catch (error) {
     console.error("Error download document:", error);
     throw error;
+  }
+};
+
+export const updateMemberStatus = async ({ serviceId, userId, status }) => {
+  try {
+    const response = await axios.post(
+      `${apiUrl}/api/comunity-service/member-status/${serviceId}`,
+      {
+        user_id: userId,
+        new_status: status,
+      },
+      getToken()
+    );
+    return response.message;
+  } catch (error) {
+    return error.message;
   }
 };
 

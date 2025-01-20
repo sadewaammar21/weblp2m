@@ -7,17 +7,46 @@ import DropdownCmp from "../../DropdownCmp";
 
 Modal.setAppElement("#root");
 
-const ModalDokPendukung = ({ isOpen, onRequestClose, index, onSave }) => {
+const ModalDokMitra = ({
+  isOpen,
+  onRequestClose,
+  index,
+  onSave,
+  partnerGroup,
+  partnerType,
+}) => {
   const [documentData, setDocumentData] = useState({
-    partner_name: "",
+    name: "",
     email: "",
+    province: "",
+    leader_name: "",
     institution: "",
     country_code: "",
-    institution_address: "",
-    funding_contribution1: "",
-    funding_contribution2: "",
+    group_id: "",
+    partner_type_id: "",
+    funding_contribution: "",
     document: null,
   });
+
+  const [data, setData] = useState({
+    cluster_lv1: null,
+    cluster_lv2: null,
+    cluster_lv3: null,
+  });
+
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey],
+    }));
+  };
+
+  const handleDropdownChange = (option, fieldName) => {
+    setDocumentData((prevData) => ({
+      ...prevData,
+      [fieldName]: option.value,
+    }));
+  };
 
   const handleInputChange = (e) => {
     const inputName = e.target.name;
@@ -37,6 +66,14 @@ const ModalDokPendukung = ({ isOpen, onRequestClose, index, onSave }) => {
   };
 
   const handleSave = () => {
+    if (
+      !documentData.name ||
+      !documentData.partner_type_id ||
+      !documentData.group_id
+    ) {
+      alert("Harap lengkapi semua data sebelum menyimpan.");
+      return;
+    }
     onSave(index, documentData);
     onRequestClose();
     console.log(documentData);
@@ -57,25 +94,29 @@ const ModalDokPendukung = ({ isOpen, onRequestClose, index, onSave }) => {
         <div className="grid grid-cols-2 gap-x-10  ">
           <TextfieldCmp
             label="Nama Mitra"
-            value={documentData.partner_name}
-            name="partner_name"
+            value={documentData.name}
+            name="name"
             onChange={handleInputChange}
             placeholder="Masukkan Nama Mitra"
           />
-          <TextfieldCmp
-            label="Jenis Mitra"
-            value={documentData.email}
-            name="email"
-            onChange={handleInputChange}
-            placeholder="Email Instansi"
+          <DropdownCmp
+            label="Jenis Mitra "
+            options={mapToDropdown(partnerType, "name", "id")}
+            value={mapToDropdown(partnerType, "name", "id").find(
+              (item) => item.value === documentData.partner_type_id
+            )}
+            onChange={(option) =>
+              handleDropdownChange(option, "partner_type_id")
+            }
+            placeholder="Pilih Jenis Mitra"
           />
 
           <TextfieldCmp
             label="Provinsi"
-            value={documentData.institution}
-            name="institution"
+            value={documentData.province}
+            name="province"
             onChange={handleInputChange}
-            placeholder="Nama Instansi"
+            placeholder="Provinsi"
           />
           <TextfieldCmp
             label="Kota"
@@ -86,33 +127,34 @@ const ModalDokPendukung = ({ isOpen, onRequestClose, index, onSave }) => {
           />
           <TextfieldCmp
             label="Pimpinan Mitra"
-            value={documentData.institution}
-            name="institution"
+            value={documentData.leader_name}
+            name="leader_name"
             onChange={handleInputChange}
             placeholder="Nama Instansi"
           />
           <TextfieldCmp
             label="Alamat Surel"
-            value={documentData.institution}
-            name="institution"
+            value={documentData.email}
+            name="email"
             onChange={handleInputChange}
-            placeholder="Nama Instansi"
+            placeholder="Alamat Surel"
           />
           <DropdownCmp
-            label="Kelompok Mitra "
-            options={``}
-            // value={data.priority_id}
-            // onChange={(option) =>
-            //   handleDropdownChange(option.value, "priority_id")
-            // }
+            label="Kelompok Mitra"
+            options={mapToDropdown(partnerGroup, "name", "id")}
+            value={mapToDropdown(partnerGroup, "name", "id").find(
+              (item) => item.value === documentData.group_id
+            )}
+            onChange={(option) => handleDropdownChange(option, "group_id")}
+            placeholder="Pilih Kelompok"
           />
         </div>
         <div>
           <h1 className="text-xl font-bold my-5">Kontribusi Pendanaan</h1>
           <TextfieldCmp
             label="Tahun"
-            value={documentData.institution}
-            name="institution"
+            value={documentData.funding_contribution}
+            name="funding_contribution"
             onChange={handleInputChange}
             placeholder="Tahun 1"
           />
@@ -151,4 +193,4 @@ const ModalDokPendukung = ({ isOpen, onRequestClose, index, onSave }) => {
   );
 };
 
-export default ModalDokPendukung;
+export default ModalDokMitra;

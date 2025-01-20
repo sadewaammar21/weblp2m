@@ -1,66 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import DropdownCmp from "../../DropdownCmp";
 import TextfieldCmp from "../../TextfieldCmp";
+import axios from "axios";
+import { getToken } from "../../../Features/AuthSlice";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const RAB = ({ navigate, data, setData }) => {
-  const [selectedOption, setSelectedOption] = useState("");
-  const [kelompok, setKelompok] = useState("");
-  const [komponen, setKomponen] = useState("");
-  const [item, setItem] = useState("");
-  const [satuan, setSatuan] = useState("");
-  const [volume, setVolume] = useState("");
-  const [hargaSatuan, setHargaSatuan] = useState("");
-  const [total, setTotal] = useState("");
+  const [budgetComponent, setBudgetComponent] = useState([]);
+  const [budgetGroup, setBudgetGroup] = useState([]);
+  const [totalBudget, setTotalBudget] = useState(0); // State untuk total anggaran
 
-  const handleDropdownChange = (field, value) => {
-    setData((prevData) => ({
-      ...prevData,
-      [field]: value,
+  const fetchBudgetComponent = async () => {
+    const response = await axios.get(
+      `${apiUrl}/api/budget-component`,
+      getToken()
+    );
+    setBudgetComponent(response.data);
+  };
+
+  const fetchBudgetGroup = async () => {
+    const response = await axios.get(`${apiUrl}/api/budget-group`, getToken());
+    setBudgetGroup(response.data);
+  };
+
+  useEffect(() => {
+    fetchBudgetComponent();
+    fetchBudgetGroup();
+  }, []);
+
+  const year = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+    { id: 4, value: 4 },
+    { id: 5, value: 5 },
+  ];
+
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey],
     }));
   };
 
-  const options = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
-  ];
-  //   const kelompokOptions = ["Kelompok 1", "Kelompok 2", "Kelompok 3"];
-  //   const komponenOptions = ["Komponen 1", "Komponen 2", "Komponen 3"];
-  // const satuanOptions = ["Satuan 1", "Satuan 2", "Satuan 3"];
-
-  const kelompokRABOptions = [
-    { label: "Honorarium (Pelaksanaan Pengabdian)", value: "honorarium" },
-    { label: "Biaya Pelatihan", value: "biaya_pelatihan" },
-    { label: "Perjalanan", value: "perjalanan" },
-    { label: "Biaya Lainnya", value: "biaya_lainnya" },
-  ];
-
-  const komponenOptions = [
-    { label: "Biaya Konsumsi", value: "biaya_konsumsi" },
-    { label: "Uang Saku", value: "uang_saku" },
-    { label: "Biaya Paket Ruangan dan Konsumsi", value: "biaya_paket" },
-  ];
-
-  const handleClick = () => {
-    navigate("#"); // Arahkan ke halaman 'usulan-baru-penelitian'
-  };
-
-  //tambah rab
   const handleBudgetChange = (index, name, value) => {
-    const updatedBudget = [...data.budgetPlan];
-    updatedBudget[index][name] = value;
-    setData({ ...data, budgetPlan: updatedBudget });
-    console.log(data.budgetPlan);
+    const updatedBudgetPlan = [...data.budgetPlanService];
+    updatedBudgetPlan[index][name] = value;
+
+    // Hitung total otomatis untuk item
+    if (name === "volume" || name === "price_unit") {
+      const volume = parseFloat(updatedBudgetPlan[index].volume) || 0;
+      const priceUnit = parseFloat(updatedBudgetPlan[index].price_unit) || 0;
+      updatedBudgetPlan[index].total = volume * priceUnit;
+    }
+
+    setData({ ...data, budgetPlanService: updatedBudgetPlan });
   };
 
   const addBudgetField = () => {
     setData({
       ...data,
-      budgetPlan: [
-        ...data.budgetPlan,
+      budgetPlanService: [
+        ...data.budgetPlanService,
         {
-          year: 0,
           id_group_budget: 0,
           id_component_budget: 0,
           item: "",
@@ -72,11 +76,35 @@ const RAB = ({ navigate, data, setData }) => {
       ],
     });
   };
+  const handleDropdownChange = (option, fieldName) => {
+    setData((prevData) => ({
+      ...prevData,
+      [fieldName]: option.value,
+    }));
+    console.log("clicked" + option);
+  };
+  // Hitung total anggaran keseluruhan
+  useEffect(() => {
+    const calculateTotal = () => {
+      const total = data.budgetPlanService.reduce((acc, curr) => {
+        const volume = parseFloat(curr.volume) || 0;
+        const priceUnit = parseFloat(curr.price_unit) || 0;
+        return acc + volume * priceUnit;
+      }, 0);
+      setTotalBudget(total);
+    };
+
+    calculateTotal();
+  }, [data.budgetPlanService]);
+
+  const formatNumber = (num) => {
+    return num ? parseFloat(num).toLocaleString() : "";
+  };
 
   return (
     <div>
       <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-        3.1 Rencana Anggran Biaya{" "}
+        3.1 Rencana Anggaran Biaya{" "}
       </h1>
       <div className="px-10">
         <div className="p-4 bg-violet-100 w-full rounded-md ">
@@ -90,104 +118,94 @@ const RAB = ({ navigate, data, setData }) => {
           </div>
           <div className="my-2 flex">
             <h2 className="text-sm font-medium text-violet-800 mr-1">
-              {" "}
               Maksimal Usulan Dana Pertahun
             </h2>
             <h2 className="text-md font-bold text-violet-800">
-              {" "}
               Rp. 10.000.000
             </h2>
           </div>
         </div>
       </div>
-      <div className="mx-10 my-5 flex items-start space-x-4">
+      <div className="my-5 flex items-start space-x-4">
         <div className="mt-7">
           <button
             className="flex items-center px-2 py-2 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
             onClick={addBudgetField}
           >
-            <FaPlus className="mr-2" /> {/* Icon tambah */}
-            Tambah
+            <FaPlus className="mr-2" /> Tambah
           </button>
         </div>
-        <div>
+        <DropdownCmp
+          label="Tahun Ke"
+          options={mapToDropdown(year, "value", "value")}
+          value={mapToDropdown(year, "value", "value").find(
+            (option) => option.value === data.year
+          )}
+          onChange={(option) => handleDropdownChange(option, "year")}
+          placeholder="1"
+          width="w-32"
+        />
+      </div>
+      {data.budgetPlanService.map((item, index) => (
+        <div key={index} className="grid grid-cols-8 gap-x-4">
           <DropdownCmp
-            label="Tahun Ke"
-            options={options}
-            value={item.year}
-            onChange={``}
-            placeholder="1"
+            label="Kelompok RAB"
+            options={mapToDropdown(budgetGroup, "name", "id")}
+            value={mapToDropdown(budgetGroup, "name", "id").find(
+              (option) => option.value === item.id_group_budget
+            )}
+            onChange={(option) =>
+              handleBudgetChange(index, "id_group_budget", option.value)
+            }
+          />
+          <DropdownCmp
+            label="Komponen"
+            options={mapToDropdown(budgetComponent, "name", "id")}
+            value={mapToDropdown(budgetComponent, "name", "id").find(
+              (option) => option.value === item.id_component_budget
+            )}
+            onChange={(option) =>
+              handleBudgetChange(index, "id_component_budget", option.value)
+            }
+          />
+          <TextfieldCmp
+            label="Item"
+            value={item.item}
+            onChange={(e) => handleBudgetChange(index, "item", e.target.value)}
+          />
+          <TextfieldCmp
+            label="Satuan"
+            value={item.unit}
+            onChange={(e) => handleBudgetChange(index, "unit", e.target.value)}
+          />
+          <TextfieldCmp
+            label="Volume"
+            value={item.volume}
+            onChange={(e) =>
+              handleBudgetChange(index, "volume", e.target.value)
+            }
+          />
+          <TextfieldCmp
+            label="Harga Satuan"
+            value={item.price_unit} // Biarkan nilai asli untuk input
+            onChange={(e) =>
+              handleBudgetChange(index, "price_unit", e.target.value)
+            }
+          />
+          <TextfieldCmp
+            label="Total"
+            value={formatNumber(item.total)}
+            readOnly // Hanya bisa dibaca
           />
         </div>
-      </div>
-      <div className="mx-10">
-        {data.budgetPlan.map((item, index) => (
-          <div className="grid grid-cols-8 gap-x-4">
-            <DropdownCmp
-              label="Kelompok RAB"
-              options={kelompokRABOptions}
-              onChange={(option) =>
-                handleDropdownChange("kelompokRAB", option.value)
-              }
-              placeholder="Pilih Kelompok RAB"
-            />
-            <DropdownCmp
-              label="Komponen"
-              options={komponenOptions}
-              onChange={(option) =>
-                handleDropdownChange("komponen", option.value)
-              }
-              placeholder="Pilih Komponen"
-            />
-            <TextfieldCmp
-              label="Item"
-              value={item.item}
-              onChange={(e) =>
-                handleBudgetChange(index, "item", e.target.value)
-              }
-              // width="w-64" // Custom width untuk text input
-            />
-            <TextfieldCmp
-              label="Satuan"
-              value={item.unit}
-              onChange={(e) =>
-                handleBudgetChange(index, "unit", e.target.value)
-              }
-              // width="w-20" // Custom width untuk text input
-            />
-            <TextfieldCmp
-              label="Volume"
-              value={item.volume}
-              onChange={(e) =>
-                handleBudgetChange(index, "volume", e.target.value)
-              }
-              // width="w-20" // Custom width untuk text input
-            />
-            <TextfieldCmp
-              label="Harga Satuan"
-              value={item.price_unit}
-              onChange={(e) =>
-                handleBudgetChange(index, "price_unit", e.target.value)
-              }
-              width="w-full" // Lebar penuh untuk text input
-            />
-            <TextfieldCmp
-              label="Total"
-              value={item.total}
-              onChange={(e) =>
-                handleBudgetChange(index, "total", e.target.value)
-              }
-              width="w-full" // Lebar penuh untuk text input
-            />
-            <label className="text-sm font-medium  mr-1"> Aksi</label>
-          </div>
-        ))}
-        <div className="flex justify-between mx-5">
-          <h1 className="text-ml font-bold text-bluef-500 mx-5 my-5">
-            Total Anggaran
-          </h1>
-          <h1 className="text-ml font-bold  mx-5 my-5"> Rp.0</h1>
-        </div>
+      ))}
+      <div className="flex justify-between mx-5">
+        <h1 className="text-ml font-bold text-bluef-500 mx-5 my-5">
+          Total Anggaran
+        </h1>
+        <h1 className="text-ml font-bold mx-5 my-5">
+          Rp. {totalBudget.toLocaleString()}
+        </h1>
       </div>
     </div>
   );

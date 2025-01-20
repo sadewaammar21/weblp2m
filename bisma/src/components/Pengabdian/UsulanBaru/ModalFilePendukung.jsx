@@ -12,48 +12,24 @@ const ModalFilePendukung = ({
   onRequestClose,
   index,
   onSave,
-  data,
-  setData,
+  supportingFile,
 }) => {
   const [documentData, setDocumentData] = useState({
-    partner_name: "",
-    email: "",
-    institution: "",
-    country_code: "",
-    institution_address: "",
-    funding_contribution1: "",
-    funding_contribution2: "",
-    kelompokFP: "", // Tambahkan state untuk dropdown
-    document: null,
+    type_id: "",
+    document: [],
   });
 
-  const kelompokFPOptions = [
-    {
-      label: "Gambaran teknologi yang diterapkan kepada mitra",
-      value: "Gambaran teknologi yang diterapkan kepada mitra",
-    },
-    {
-      label: "Peta yang menggambarkan jarak lokasi",
-      value: "Peta yang menggambarkan jarak lokasi",
-    },
-    {
-      label: "Surat pernyataan originalitas usulan",
-      value: "Surat pernyataan originalitas usulan",
-    },
-    {
-      label: "Bukti keterkaitan program dengan RPJMD/RPJMDes",
-      value: "Bukti keterkaitan program dengan RPJMD/RPJMDes",
-    },
-    {
-      label: "Harga Perkiraan Sendiri (HPS) Komponen RAB Alat dan Bahan",
-      value: "Harga Perkiraan Sendiri (HPS) Komponen RAB Alat dan Bahan",
-    },
-  ];
+  const mapToDropdown = (data, labelKey, valueKey) => {
+    return data.map((item) => ({
+      label: item[labelKey],
+      value: item[valueKey],
+    }));
+  };
 
-  const handleDropdownChange = (value) => {
+  const handleDropdownChange = (option, fieldName) => {
     setDocumentData((prevData) => ({
       ...prevData,
-      kelompokFP: value, // Perbarui state lokal
+      [fieldName]: option.value,
     }));
   };
 
@@ -95,9 +71,11 @@ const ModalFilePendukung = ({
         {/* Dropdown untuk jenis file */}
         <DropdownCmp
           label="Jenis"
-          options={kelompokFPOptions}
-          value={documentData.kelompokFP} // Ikat dengan state lokal
-          onChange={(option) => handleDropdownChange(option.value)}
+          options={mapToDropdown(supportingFile, "name", "id")}
+          value={mapToDropdown(supportingFile, "name", "id").find(
+            (item) => item.value === documentData.type_id
+          )}
+          onChange={(option) => handleDropdownChange(option, "type_id")}
           placeholder="Pilih jenis file"
         />
 

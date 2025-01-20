@@ -160,13 +160,13 @@ const ProgressBarUsulan = () => {
     }
   };
 
-  if(loading){
-    return <p>Loading...</p>
-  }
+  // if(loading){
+  //   return <p>Loading...</p>
+  // }
 
-  if(error){
-    return <p>Terjadi Kesalahan.</p>
-  }
+  // if(error){
+  //   return <p>Terjadi Kesalahan.</p>
+  // }
   
   return (
     <div>

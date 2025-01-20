@@ -163,6 +163,10 @@ function App() {
           path="/pengabdian/usulan/baru"
           element={<ProgressUsulanBaruPengabdianPage />}
         />
+        <Route
+          path="/pengabdian/usulan/edit/:id"
+          element={<ProgressUsulanBaruPengabdianPage />}
+        />
         <Route path="/detail-pengabdian" element={<DetailPengabdianPage />} />
         <Route
           path="/pengabdian/perbaikan"
