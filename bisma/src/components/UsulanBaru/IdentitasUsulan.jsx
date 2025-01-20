@@ -113,7 +113,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       );
       setScheme(response.data);
     } catch (error) {
-      setScheme(error.message);
+      setScheme([]);
     }
   };
   const fetchScope = async () => {

@@ -53,6 +53,8 @@ const ProgressUsulanBaruPengabdian = () => {
   const { id } = useParams();
   console.log(id);
   const isEdit = Boolean(id);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   //progress bar
   const [currentStep, setCurrentStep] = React.useState(1);
@@ -86,7 +88,7 @@ const ProgressUsulanBaruPengabdian = () => {
     letter_of_intent: "",
     substance_document: [],
     members: [],
-    students: [],
+    studentServices: [],
     outputPartner: [{ id_category_output: "" }],
     outputPublication: [{ id_category_output: "" }],
     outputMedia: [{ description: "", id_category_output: "" }],
@@ -98,6 +100,8 @@ const ProgressUsulanBaruPengabdian = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      try {
+      setLoading(true);
       const response = await axios.get(
         `${apiUrl}/api/comunity-service/${id}`,
         getToken()
@@ -107,14 +111,20 @@ const ProgressUsulanBaruPengabdian = () => {
         ...data,
         ...response.data,
       });
-    };
-    if (isEdit) fetchData();
-    console.log(data);
-  }, [id]);
+    } catch (error) {
+      setError(true);
+    }finally{
+      setLoading(false);
+    }
+  };
+  if (isEdit) fetchData();
+  console.log(data);
+}, [id]);
 
-  useEffect(() => {
-    console.log(data);
-  });
+
+  // useEffect(() => {
+  //   console.log(data);
+  // });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -135,7 +145,7 @@ const ProgressUsulanBaruPengabdian = () => {
         isEdit: isEdit,
         serviceId: data.id,
         isSubmit: true,
-        newStatus: 2,
+        // newStatus: 2,
       });
       console.log(response);
       navigate("/pengabdian/usulan");
@@ -159,6 +169,14 @@ const ProgressUsulanBaruPengabdian = () => {
         return <UsulanBaruList />;
     }
   };
+
+  // if(loading){
+  //   return <p>Loading...</p>
+  // }
+
+  // if(error){
+  //   return <p>Terjadi Kesalahan.</p>
+  // }
 
   return (
     <div>

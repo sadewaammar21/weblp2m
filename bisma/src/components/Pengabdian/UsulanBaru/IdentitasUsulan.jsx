@@ -70,9 +70,13 @@ const IdentitasUsulan = ({ data, setData }) => {
   };
 
   const mapToDropdown = (data, labelKey, valueKey) => {
+    if (!Array.isArray(data)) {
+        console.error('Data is not an array:', data);
+        return [];
+    }
     return data.map((item) => ({
-      label: item[labelKey],
-      value: item[valueKey],
+        label: item[labelKey],
+        value: item[valueKey],
     }));
   };
 
@@ -84,9 +88,9 @@ const IdentitasUsulan = ({ data, setData }) => {
   };
 
   const handleAddStudents = (index, studentData) => {
-    const updatedStudent = [...data.students];
+    const updatedStudent = [...data.studentServices];
     updatedStudent[index] = studentData;
-    setData({ ...data, students: updatedStudent });
+    setData({ ...data, studentServices: updatedStudent });
   };
 
   const [category, setCategory] = useState([]);
@@ -168,32 +172,43 @@ const IdentitasUsulan = ({ data, setData }) => {
   };
 
   const fetchCluster1 = async () => {
-    const response = await axios.get(
-      `${apiUrl}/api/service-cluster1`,
-      getToken()
-    );
-    setCluster1(response.data);
-    console.log(response.data);
-  };
+    try {
+        const response = await axios.get(`${apiUrl}/api/service-cluster1`, getToken());
+        const data = Array.isArray(response.data) ? response.data : []; // Validasi array
+        setCluster1(data);
+    } catch (error) {
+        console.error('Error fetching cluster1:', error);
+        setCluster1([]);
+    }
+};
 
-  const fetchCluster2 = async ($cluster_lv1) => {
-    const response = await axios.get(
-      `${apiUrl}/api/service-cluster2/${$cluster_lv1}`,
-      getToken()
-    );
-    setCluster2(response.data);
-    console.log(response.data);
-  };
+const fetchCluster2 = async ($cluster1) => {
+    try {
+        const response = await axios.get(
+            `${apiUrl}/api/service-cluster2/${$cluster1}`,
+            getToken()
+        );
+        const data = Array.isArray(response.data) ? response.data : [];
+        setCluster2(data);
+    } catch (error) {
+        console.error('Error fetching cluster2:', error);
+        setCluster2([]);
+    }
+};
 
-  const fetchCluster3 = async ($cluster_lv2) => {
-    const response = await axios.get(
-      `${apiUrl}/api/service-cluster3/${$cluster_lv2}`,
-      getToken()
-    );
-    setCluster3(response.data);
-    console.log(response.data);
-  };
-
+const fetchCluster3 = async ($cluster2) => {
+    try {
+        const response = await axios.get(
+            `${apiUrl}/api/service-cluster3/${$cluster2}`,
+            getToken()
+        );
+        const data = Array.isArray(response.data) ? response.data : [];
+        setCluster3(data);
+    } catch (error) {
+        console.error('Error fetching cluster3:', error);
+        setCluster3([]);
+    }
+};
   return (
     <div>
       <div>
@@ -443,7 +458,7 @@ const IdentitasUsulan = ({ data, setData }) => {
               </tr>
             </thead>
             <tbody>
-              {data.students.map((item, index) => (
+              {data.studentServices.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.nim}</td>
@@ -470,7 +485,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       <ModalTambahMahasiswa
         isOpen={isOpenMhs} // Gunakan state boolean isModalOpenMitra
         onRequestClose={closeModalMhs}
-        index={data["students"].length}
+        index={data["studentServices"].length}
         onSave={handleAddStudents}
       />
     </div>

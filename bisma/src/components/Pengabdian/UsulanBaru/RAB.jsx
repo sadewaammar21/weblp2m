@@ -65,7 +65,6 @@ const RAB = ({ navigate, data, setData }) => {
       budgetPlanService: [
         ...data.budgetPlanService,
         {
-          year: 0,
           id_group_budget: 0,
           id_component_budget: 0,
           item: "",
