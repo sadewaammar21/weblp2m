@@ -1,45 +1,27 @@
 import React, { useEffect, useState } from "react";
-import DropdownCmp from "../DropdownCmp";
-import { deleteService, getServices } from "../../Features/ServiceSlice";
-import { FaPlus, FaPen, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import ModalTerimaAnggotaPenelitian from "../UsulanBaru/ModalTerimaAnggotaPenelitian";
-
-const user = JSON.parse(localStorage.getItem("user"));
+import { FaPlus } from "react-icons/fa";
+import { getService, deleteService } from "../../Features/ServiceSlice";
 
 const UsulanBaruList = () => {
   const [data, setData] = useState([]);
-  const navigate = useNavigate(); // Hook untuk navigasi
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState("");
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleClick = () => {
-    navigate("/pengabdian/usulan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
-  };
-  const handleView = () => {
-    navigate("/detail-pengabdian"); // Arahkan ke halaman 'usulan-baru-penelitian'
-  };
-
-  const openModal = (id) => {
-    setSelectedData(id);
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-    fetchData();
+    navigate("/pengabdian/usulan/baru");
   };
 
   const fetchData = async () => {
     try {
-      const result = await getServices({
+      const result = await getService({
         pageSize: 5,
         currentPage: 1,
-        status: 1,
-        year: 2024,
-        userId: 1,
+        userId: user.id,
       });
       setData(result.data);
     } catch (err) {
@@ -54,8 +36,21 @@ const UsulanBaruList = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    const response = await deleteService(id);
-    console.log(response);
+    try {
+      await deleteService(id);
+      fetchData();
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const openModal = (id) => {
+    setSelectedData(id);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
     fetchData();
   };
 
@@ -68,36 +63,38 @@ const UsulanBaruList = () => {
         return <p>{currentUserAsMember.pivot.status}</p>;
       } else {
         return (
-          <div>
-            <button
-              onClick={() => openModal(item.id)}
-              className="bg-blue-500 px-2 py-1 rounded-md text-white"
-            >
-              Action
-            </button>
-          </div>
+          <button
+            onClick={() => openModal(item.id)}
+            className="bg-blue-500 px-2 py-1 rounded-md text-white"
+          >
+            Action
+          </button>
         );
       }
     } else {
       return (
-        <div>
+        <div className="space-x-2">
           <button
-            onClick={() => navigate(`/penelitian/usulan/edit/${item.id}`)}
-            className={`bg-blue-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+            onClick={() => navigate(`/pengabdian/usulan/edit/${item.id}`)}
+            className={`bg-blue-500 px-2 py-1 rounded-md text-white ${
+              item.status !== 1 ? "hidden" : ""
+            }`}
           >
-            edit
+            Edit
           </button>
           <button
             onClick={() => navigate(`/penelitian/detail/${item.id}`)}
             className="bg-blue-500 px-2 py-1 rounded-md text-white"
           >
-            detail
+            Detail
           </button>
           <button
             onClick={() => handleDelete(item.id)}
-            className={`bg-red-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+            className={`bg-red-500 px-2 py-1 rounded-md text-white ${
+              item.status !== 1 ? "hidden" : ""
+            }`}
           >
-            delete
+            Delete
           </button>
         </div>
       );
@@ -106,54 +103,22 @@ const UsulanBaruList = () => {
 
   return (
     <div className="mx-5">
-      {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
-      <div>
-        <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENGABDIAN
-        </h1>
-      </div>
-
-      {/* Card untuk bagian Tambah Usulan dan Tabel */}
-      <div className="bg-gray-50 shadow-sm  rounded-sm  p-5 ">
-        <div className="flex justify-between items-center w-full">
-          <div>
-            <button
-              className="flex items-center px-4 py-2 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
-              onClick={handleClick}
-            >
-              <FaPlus className="mr-2" /> {/* Icon tambah */}
-              Tambah Usulan
-            </button>
-          </div>
-          <div>
-            <h1>Tahun Pelaksana</h1>
-            <div className="flex">
-              <button className="bg-bluef-500 px-1 text-white hover:bg-bluef-300 focus:outline-none">
-                <FaPen className="items-center" size={15} />
-              </button>
-              <input
-                type="text"
-                className="text-sm w-full border border-black"
-                value=""
-                onChange={``}
-                placeholder="2024"
-              />
-            </div>
-          </div>
+      <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
+        USULAN PENGABDIAN
+      </h1>
+      <div className="bg-gray-50 shadow-sm rounded-sm p-5">
+        <div className="flex justify-between items-center w-full mb-4">
+          <button
+            className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 focus:outline-none"
+            onClick={handleClick}
+          >
+            <FaPlus className="mr-2" /> Tambah Usulan
+          </button>
         </div>
-
-        <ModalTerimaAnggotaPenelitian
-          research={selectedData}
-          // userId={user.id}
-          isOpen={isOpen}
-          onRequestClose={closeModal}
-        />
-
-        {/* Tabel */}
-        <div className="relative overflow-x-auto  my-10">
-          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
-            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr className="border border-black">
+        <div className="relative overflow-x-auto my-10">
+          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
                 <th className="border border-black px-4 py-2">No</th>
                 <th className="border border-black px-4 py-2">Ketua</th>
                 <th className="border border-black px-4 py-2">Judul</th>
@@ -167,34 +132,40 @@ const UsulanBaruList = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.user?.name}</td>
-                  <td>{item.title}</td>
-                  <td>{item.focus.name}</td>
-                  <td>{item.year}</td>
-                  <td>{item.roles}</td>
-                  <td>{item.status}</td>
-                  <td className="flex space-x-2 justify-center">
-                    {renderActionButton(item)}
+              {loading ? (
+                <tr>
+                  <td colSpan="8" className="text-center py-4">
+                    Loading...
                   </td>
                 </tr>
-              ))}
-              <tr>
-                <td>1</td>
-                <td>Coba</td>
-                <td>Penelitian dan Pengabdian</td>
-                <td>2024</td>
-                <td>-</td>
-                <td>2024</td>
-                <td>Perbaikan</td>
-                {/* <td>
-                  <button onClick={handleView}>
-                    <FaEye className="py-2 w-5 h-auto z-5" />
-                  </button>
-                </td> */}
-              </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan="8" className="text-center py-4 text-red-500">
+                    {error}
+                  </td>
+                </tr>
+              ) : data.length > 0 ? (
+                data.map((item, index) => (
+                  <tr key={item.id}>
+                    <td>{index + 1}</td>
+                    <td>{item.user?.name}</td>
+                    <td>{item.title}</td>
+                    <td>
+                      {item.focus_thematic.name || item.focus_r_i_r_n_s.name}
+                    </td>
+                    <td>{item.year}</td>
+                    <td>{user.id === item.user.id ? "Ketua" : "Anggota"}</td>
+                    <td>{item.status}</td>
+                    <td>{renderActionButton(item)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" className="text-center py-4">
+                    No data available.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

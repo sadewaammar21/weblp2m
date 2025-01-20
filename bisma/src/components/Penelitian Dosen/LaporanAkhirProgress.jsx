@@ -2,7 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import LaporanAkhirTab1 from "./LaporanAkhirTab1";
 import LaporanAkhirTab2 from "./LaporanAkhirTab2";
-import { addResearchFinalReport, getResearchDetail, getResearchFinalReport } from "../../Features/ResearchSlice";
+import {
+  addResearchFinalReport,
+  getResearchDetail,
+  getResearchFinalReport,
+} from "../../Features/ResearchSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const steps = [
@@ -21,7 +25,7 @@ const ProgressBar = ({ currentStep }) => {
               className={`h-2 flex-1 rounded-full ${
                 currentStep >= step.id ? "bg-blue-600" : "bg-gray-300"
               }`}
-            /> 
+            />
             {/* Step circle */}
             <div
               className={`absolute w-6 h-6 rounded-full flex items-center justify-center text-sm border-2 ${
@@ -43,39 +47,48 @@ const ProgressBar = ({ currentStep }) => {
 
 const LaporanAkhirProgress = () => {
   const navigate = useNavigate();
-    const [currentStep, setCurrentStep] = useState(1);
-    const [isLaporanKemajuan, setIsLaporanKemajuan] = useState(false);
-  
-    //data penelitian
-    const [research, setResearch] = useState({});
-  
-    //data laporan kemajuan
-    const location = useLocation();
-    const { id, reportId } = location.state || {};
-    console.log(reportId);
-    const [report, setReport] = useState({});
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isLaporanKemajuan, setIsLaporanKemajuan] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-    const fetchResearch = async() => {
-        const response = await getResearchDetail(id);
-        setResearch(response.data);
-        console.log(research)
+  //data penelitian
+  const [research, setResearch] = useState({});
+
+  //data laporan kemajuan
+  const location = useLocation();
+  const { id, reportId } = location.state || {};
+  console.log(reportId);
+  const [report, setReport] = useState({});
+
+  const fetchResearch = async () => {
+    const response = await getResearchDetail(id);
+    setResearch(response.data);
+    console.log(research);
+  };
+  const fetchReport = async () => {
+    try {
+      if (reportId) {
+        setLoading(true);
+        const response = await getResearchFinalReport(reportId);
+        setReport(response);
+        console.log(report);
+      } else {
+        setReport({ summary: "", keyword: "", outputs: [] });
+        setLoading(false);
       }
-      const fetchReport = async() => {
-        if(reportId){
-          const response = await getResearchFinalReport(reportId);
-          setReport(response);
-          console.log(report);
-        }else{
-          setReport({summary: '', keyword: '', outputs:[]});
-        }
-      }
-    
-      useEffect(() => {
-        fetchResearch()
-        if(reportId){
-          fetchReport()
-        }
-      }, [reportId])
+    } catch (error) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResearch();
+    if (reportId) {
+      fetchReport();
+    }
+  }, [reportId]);
 
   const handleNextStep = () => {
     if (currentStep < steps.length) {
@@ -92,9 +105,21 @@ const LaporanAkhirProgress = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <LaporanAkhirTab1  research={research} data={report} setData={setReport}/>;
+        return (
+          <LaporanAkhirTab1
+            research={research}
+            data={report}
+            setData={setReport}
+          />
+        );
       case 2:
-        return <LaporanAkhirTab2  research={research} data={report} setData={setReport}/>;
+        return (
+          <LaporanAkhirTab2
+            research={research}
+            data={report}
+            setData={setReport}
+          />
+        );
       default:
         return null;
     }
@@ -105,20 +130,29 @@ const LaporanAkhirProgress = () => {
   }
 
   const handleSubmit = async (status) => {
-      if(reportId){
-        setReport((prevReport) => ({ ...prevReport, status: status }))
-        console.log(report)
-        const response = await addResearchFinalReport({researchId: research.id, data: report, isEdit: true, reportId: report.id});
-        console.log(response);
-        navigate(-1);
-      }else{
-        setReport((prevReport) => ({ ...prevReport, status: status }))
-        console.log(report)
-        const response = await addResearchFinalReport({researchId: research.id, data: report, isEdit: false});
-        console.log(response);
-        navigate(-1);
-      }
+    if (reportId) {
+      setReport((prevReport) => ({ ...prevReport, status: status }));
+      console.log(report);
+      const response = await addResearchFinalReport({
+        researchId: research.id,
+        data: report,
+        isEdit: true,
+        reportId: report.id,
+      });
+      console.log(response);
+      navigate(-1);
+    } else {
+      setReport((prevReport) => ({ ...prevReport, status: status }));
+      console.log(report);
+      const response = await addResearchFinalReport({
+        researchId: research.id,
+        data: report,
+        isEdit: false,
+      });
+      console.log(response);
+      navigate(-1);
     }
+  };
 
   return (
     <div>
@@ -147,19 +181,19 @@ const LaporanAkhirProgress = () => {
               <div>
                 <button
                   onClick={handleNextStep}
-                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? 'hidden' : ''}`}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? "hidden" : ""}`}
                 >
                   Next
                 </button>
                 <button
-                  onClick={()=>handleSubmit('draft')}
-                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? '' : 'hidden'}`}
+                  onClick={() => handleSubmit("draft")}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? "" : "hidden"}`}
                 >
                   Simpan
                 </button>
                 <button
-                  onClick={()=>handleSubmit('submitted')}
-                  className={`px-4 py-2 bg-green-600 text-white rounded ${currentStep === 2 ? '' : 'hidden'}`}
+                  onClick={() => handleSubmit("submitted")}
+                  className={`px-4 py-2 bg-green-600 text-white rounded ${currentStep === 2 ? "" : "hidden"}`}
                 >
                   Submit
                 </button>

@@ -13,7 +13,7 @@ const ModalLaporanBelumDitinjau = ({
   const [note, setNote] = useState("");
   const [funds, setFunds] = useState(0);
 
-  const totalBudget = data.budgetPlan.reduce((sum, item) => sum + item.total, 0);
+  const totalBudget = (data?.budgetPlan || []).reduce((sum, item) => sum + item.total, 0);
 
   const handleSubmit = async () => {
     try {

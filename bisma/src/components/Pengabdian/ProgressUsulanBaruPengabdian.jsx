@@ -54,6 +54,8 @@ const ProgressUsulanBaruPengabdian = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = Boolean(id);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState({
@@ -75,7 +77,7 @@ const ProgressUsulanBaruPengabdian = () => {
     letter_of_intent: "",
     substance_document: [],
     members: [],
-    students: [],
+    studentServices: [],
     outputPartner: [{ id_category_output: "" }],
     outputPublication: [{ id_category_output: "" }],
     outputMedia: [{ description: "", id_category_output: "" }],
@@ -87,10 +89,13 @@ const ProgressUsulanBaruPengabdian = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      try {
+      setLoading(true);
       const response = await axios.get(
         `${apiUrl}/api/comunity-service/${id}`,
         getToken()
       );
+<<<<<<< HEAD
       setData({ ...data, ...response.data });
     };
     if (isEdit) fetchData();
@@ -115,6 +120,52 @@ const ProgressUsulanBaruPengabdian = () => {
     });
     navigate("/pengabdian/usulan");
     console.log(response);
+=======
+      console.log(response.data);
+      setData({
+        ...data,
+        ...response.data,
+      });
+    } catch (error) {
+      setError(true);
+    }finally{
+      setLoading(false);
+    }
+  };
+  if (isEdit) fetchData();
+  console.log(data);
+}, [id]);
+
+
+  // useEffect(() => {
+  //   console.log(data);
+  // });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (e.target.name === "ajukan") {
+      const response = await addService({
+        data: data,
+        isEdit: isEdit,
+        serviceId: data.id,
+        isSubmit: true,
+        newStatus: 2,
+      });
+      console.log(response);
+      navigate("/pengabdian/usulan");
+    } else {
+      const response = await addService({
+        data: data,
+        isEdit: isEdit,
+        serviceId: data.id,
+        isSubmit: true,
+        // newStatus: 2,
+      });
+      console.log(response);
+      navigate("/pengabdian/usulan");
+    }
+>>>>>>> f44b30bc602de50915c4c0f0affeb8f237e555a2
   };
 
   const renderStepContent = (step) => {
@@ -133,6 +184,14 @@ const ProgressUsulanBaruPengabdian = () => {
         return <UsulanBaruList />;
     }
   };
+
+  // if(loading){
+  //   return <p>Loading...</p>
+  // }
+
+  // if(error){
+  //   return <p>Terjadi Kesalahan.</p>
+  // }
 
   return (
     <div>

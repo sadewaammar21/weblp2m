@@ -113,7 +113,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       );
       setScheme(response.data);
     } catch (error) {
-      setScheme(error.message);
+      setScheme([])
     }
   };
   const fetchScope = async () => {
@@ -139,7 +139,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       );
       setTheme(response.data);
     } catch (error) {
-      setTheme(error.message);
+      setTheme([]);
     }
   };
   const fetchTopic = async (theme) => {
@@ -150,7 +150,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       );
       setTopic(response.data);
     } catch (error) {
-      setTopic(error.message);
+      setTopic([]);
     }
   };
   const fetchCluster1 = async () => {
@@ -165,7 +165,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       );
       setCluster2(response.data);
     } catch (error) {
-      setCluster2(error.message);
+      setCluster2([]);
     }
   };
   const fetchCluster3 = async ($cluster2) => {
@@ -176,7 +176,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       );
       setCluster3(response.data);
     } catch (error) {
-      setCluster3(error.message);
+      setCluster3([]);
     }
   };
   const fetchPriority = async () => {

@@ -53,7 +53,7 @@ const ProgressBarUsulan = () => {
   const { id } = useParams();
   console.log(id);
   const isEdit = Boolean(id);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   //progress bar
@@ -83,18 +83,22 @@ const ProgressBarUsulan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        const response = await axios.get(
-          `${apiUrl}/api/research/${id}`,
-          getToken()
-        );
-        console.log(response.data);
-        setData({
-          ...data,
-          ...response.data,
-        });
+        if(id){
+          setLoading(true);
+          const response = await axios.get(
+            `${apiUrl}/api/research/${id}`,
+            getToken()
+          );
+          console.log(response.data);
+          setData({
+            ...data,
+            ...response.data,
+          });
+        }else{
+          setLoading(false)
+        }
       } catch (error) {
-        setError(true);
+        setLoading(false);
       }finally{
         setLoading(false);
       }
@@ -156,13 +160,13 @@ const ProgressBarUsulan = () => {
     }
   };
 
-  if(loading){
-    return <p>Loading...</p>
-  }
+  // if(loading){
+  //   return <p>Loading...</p>
+  // }
 
-  if(error){
-    return <p>Terjadi Kesalahan.</p>
-  }
+  // if(error){
+  //   return <p>Terjadi Kesalahan.</p>
+  // }
   
   return (
     <div>

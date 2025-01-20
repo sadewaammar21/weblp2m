@@ -157,6 +157,7 @@ const UsulanBaruList = () => {
               Tambah Usulan
             </button>
           </div>
+          {error && <p className="text-red-500">{error}</p>}
           <div>
             <h1>Tahun Pelaksana</h1>
             <div className="flex">
