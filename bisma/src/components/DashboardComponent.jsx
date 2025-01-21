@@ -22,50 +22,51 @@ const DashboardComponent = () => {
   const handlePengabdian = () => {
     navigate("/pengabdian/usulan"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
+  const user = JSON.parse(localStorage.getItem('user'));
   const metrics = [
     {
       title: "Identitas",
-      count: "Rapek",
+      count: user.name,
       icon: <FaUser size={24} className="text-violet-800" />,
     },
     {
       title: "Artikel Jurnal Internasional Bereputasi",
-      count: 0,
+      count: user.article ?? 0,
       icon: <FaGlobe size={24} className="text-violet-800" />,
     },
     {
       title: "Buku",
-      count: 0,
+      count: user.books ?? 0,
       icon: <FaBook size={24} className="text-violet-800" />,
     },
     {
       title: "Scopus H-Index",
-      count: 0,
+      count: user.h_index_scopus ?? 0,
       icon: <FaChartBar size={24} className="text-violet-800" />,
     },
     {
       title: "SS 3Yr",
-      count: 0,
+      count: user.ss_3yr_v3 ?? 0,
       icon: <FaCogs size={24} className="text-violet-800" />,
     },
     {
       title: "HKI",
-      count: 0,
+      count: user.hki ?? 0,
       icon: <FaLightbulb size={24} className="text-violet-800" />,
     },
     {
       title: "Sinta Skor Overall",
-      count: 0,
+      count: user.ss_overall_v3 ?? 0,
       icon: <FaChartBar size={24} className="text-violet-800" />,
     },
     {
       title: "Jumlah Proposal Pengabdian",
-      count: 0,
+      count: user.comunityService ?? 0,
       icon: <FaClipboardList size={24} className="text-violet-800" />,
     },
     {
       title: "Jumlah Proposal Penelitian",
-      count: 0,
+      count: user.research ?? 0,
       icon: <FaPen size={24} className="text-violet-800" />,
     },
   ];
@@ -183,31 +184,31 @@ const DashboardComponent = () => {
             <div className="text-gray-700 font-semibold">Identitas</div>
             <div className="bg-gray-100 p-3 rounded-md">
               <p className="font-semibold text-violet-800">
-                Yustina Retno Wahyu Utami
+                {user.name}
               </p>
-              <p>Program Studi Informatika</p>
+              <p>{user.prodi ?? 'Informatika'}</p>
             </div>
             <div className="space-y-1">
               <p className="font-semibold text-gray-700">
-                NIDN/NIDK: <span className="text-gray-600">0020337801</span>
+                NIDN/NIDK: <span className="text-gray-600">{user.nidn ?? '12345678'}</span>
               </p>
               <p className="font-semibold text-gray-700">
                 Klaster:{" "}
-                <span className="text-gray-600">Kelompok PT Madya</span>
+                <span className="text-gray-600">{user.cluster ?? 'Kelompok PT Madya'}</span>
               </p>
               <p className="font-semibold text-gray-700">
                 Institusi:{" "}
-                <span className="text-gray-600">STMIK Sinar Nusantara</span>
+                <span className="text-gray-600">{user.institution ?? 'STMIK Sinar Nusantara'}</span>
               </p>
               <p className="font-semibold text-gray-700">
                 Program Studi:{" "}
-                <span className="text-gray-600">Informatika</span>
+                <span className="text-gray-600">{user.prodi ?? 'Informatika'}</span>
               </p>
               <p className="font-semibold text-gray-700">
-                Jenjang Pendidikan: <span className="text-gray-600">S2</span>
+                Jenjang Pendidikan: <span className="text-gray-600">{user.education_level ?? 'S2'}</span>
               </p>
               <p className="font-semibold text-gray-700">
-                Jabatan Akademik: <span className="text-gray-600">Lektor</span>
+                Jabatan Akademik: <span className="text-gray-600">{user.position ?? 'Lektor'}</span>
               </p>
             </div>
           </div>
@@ -217,25 +218,25 @@ const DashboardComponent = () => {
             <div className="space-y-1">
               <p className="font-semibold text-gray-700">
                 Tempat Tanggal Lahir:{" "}
-                <span className="text-gray-600">Semarang, 23 Maret 1978</span>
+                <span className="text-gray-600">{user.place_of_birth ?? 'Semarang'}, {user.date_of_birth ??'23 Maret 1978'}</span>
               </p>
               <p className="font-semibold text-gray-700">
-                No KTP: <span className="text-gray-600">33223111111</span>
+                No KTP: <span className="text-gray-600">{user.nik ?? '33223111111'}</span>
               </p>
               <p className="font-semibold text-gray-700">
-                No Telepon: <span className="text-gray-600">0271-9993333</span>
+                No Telepon: <span className="text-gray-600">{user.phone ?? '0271-9993333'}</span>
               </p>
               <p className="font-semibold text-gray-700">
-                No HP: <span className="text-gray-600">08223332222</span>
+                No HP: <span className="text-gray-600">{user.phone ?? '08223332222'}</span>
               </p>
               <p className="font-semibold text-gray-700">
                 Alamat Surel:{" "}
-                <span className="text-gray-600">yust.retno@gmail.com</span>
+                <span className="text-gray-600">{user.email ?? 'yust.retno@gmail.com'}</span>
               </p>
               <p className="font-semibold text-gray-700">
                 Alamat:{" "}
                 <span className="text-gray-600">
-                  Griya Kelapa Gading No. 6 Blulukan Colomadu
+                  {user.address ?? 'Griya Kelapa Gading No. 6 Blulukan Colomadu'}
                 </span>
               </p>
             </div>
