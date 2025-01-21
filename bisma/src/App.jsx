@@ -84,6 +84,7 @@ import PerKegLaporanAkhirPenelitianPage from "./pages/PerKegLaporanAkhirPeneliti
 import ResetPasswordListPage from "./pages/ResetPasswordListPage";
 import ProfileUserListPage from "./pages/ProfileUserListPage";
 import EditProfileUserPage from "./pages/EditProfileUserPage";
+import DashboardKaprodiPage from "./pages/DashboardKaprodiPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -108,6 +109,7 @@ function App() {
           path="/dashboard-kaprodi-dan-kepala"
           element={<DashboardKaprKepl />}
         />
+        <Route path="/dashboard-kaprodi" element={<DashboardKaprodiPage />} />
         {/* Dosen Penelitian*/}
         <Route path="/penelitian/usulan" element={<UsulanBaru />} />
         <Route
