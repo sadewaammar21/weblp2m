@@ -59,36 +59,15 @@ const ProgressLaporanKemajuan = () => {
   //data pengabdian
   const [service, setService] = useState({});
 
-  // const fetchService = async () => {
-  //   try {
-  //     const response = await getServiceDetail(id);
-  //     setService(response.data || {});
-  //   } catch (error) {
-  //     console.error("Error fetching service details:", error);
-  //   }
-  // };
-
-  // const fetchService = async () => {
-  //   if (id) {
-  //     console.error("Service ID is required!");
-  //     setLoading(true);
-  //     return;
-  //   }
-  //   try {
-  //     const response = await getServiceDetail(id);
-  //     setService(response.data || {});
-  //   } catch (error) {
-  //     console.error("Error fetching service details:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const fetchService = async () => {
-    const response = await getServiceDetail(id);
-    setService(response.data);
-    console.log(service);
-  };
+      try {
+        const response = await getServiceDetail(id);
+        setService(response);
+        console.log(service);
+      } catch (error) {
+        throw error;
+      }
+    };
 
   const fetchReport = async () => {
     try {
@@ -147,9 +126,9 @@ const ProgressLaporanKemajuan = () => {
       case 1:
         return (
           <LaporanKemajuanTab1
-            service={service}
-            data={report}
-            setData={setReport}
+          service={service}
+          data={report} 
+          setData={setReport}
           />
         );
       case 2:
@@ -194,9 +173,9 @@ const ProgressLaporanKemajuan = () => {
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <div>

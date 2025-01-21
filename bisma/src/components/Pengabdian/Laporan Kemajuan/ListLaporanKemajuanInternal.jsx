@@ -153,7 +153,7 @@ const ListLaporanKemajuanInternal = () => {
                       onClick={() =>
                         handleView(
                           item.id,
-                          item.progressReport[0]
+                          item.progressReport
                             ? item.progressReport[0].id
                             : null
                         )
