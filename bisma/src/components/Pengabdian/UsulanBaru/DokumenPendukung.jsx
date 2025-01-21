@@ -40,9 +40,9 @@ const DokumenPendukung = ({ data, setData }) => {
   };
 
   const handleAddFile = (index, supportingFile) => {
-    const updatedSupportingFile = [...data.supportingFile];
+    const updatedSupportingFile = [...data.supporting_file];
     updatedSupportingFile[index] = supportingFile;
-    setData({ ...data, supportingFile: updatedSupportingFile });
+    setData({ ...data, supporting_file: updatedSupportingFile });
   };
 
   const fetchPartnerGroup = async () => {
@@ -154,7 +154,7 @@ const DokumenPendukung = ({ data, setData }) => {
             </tr>
           </thead>
           <tbody>
-            {data.supportingFile.map((item, index) => (
+            {data.supporting_file.map((item, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{item.document?.name || "Unknown File"}</td>{" "}
@@ -181,7 +181,7 @@ const DokumenPendukung = ({ data, setData }) => {
       <ModalFilePendukung
         isOpen={isModalOpenFP} // Gunakan state boolean isModalOpenFP
         onRequestClose={closeModalFP}
-        index={data["supportingFile"].length}
+        index={data["supporting_file"].length}
         onSave={handleAddFile}
         supportingFile={supportingFileType}
       />

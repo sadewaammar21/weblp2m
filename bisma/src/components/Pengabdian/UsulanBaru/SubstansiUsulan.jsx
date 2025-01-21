@@ -56,7 +56,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   //   setData({ ...data, outputPartner: updatedOutputPartner });
   //   console.log(data.outputPartner);
 
-  //   const updatedOutputPublication = [...data.output];
+  //   const updatedoutput_publication = [...data.output];
   //   updatedOutputPublication[index][name] = value;
   //   setData({ ...data, output: updatedOutputPublication });
   //   console.log(data.outputPartner);
@@ -72,21 +72,21 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   //   console.log(data.outputPartner);
   // };
   const handleOutputChangePatner = (name, value) => {
-    const updatedOutputPartner = [...data.outputPartner];
+    const updatedOutputPartner = [...data.output_partner];
     updatedOutputPartner[0][name] = value;
-    setData({ ...data, outputPartner: updatedOutputPartner });
+    setData({ ...data, output_partner: updatedOutputPartner });
     console.log(updatedOutputPartner);
   };
 
   const handleOutputChangePublication = (name, value) => {
-    const updatedOutputPublication = [...data.outputPublication];
+    const updatedOutputPublication = [...data.output_publication];
     updatedOutputPublication[0][name] = value;
-    setData({ ...data, outputPublication: updatedOutputPublication });
+    setData({ ...data, output_publication: updatedOutputPublication });
     console.log(updatedOutputPublication);
   };
 
   const handleOutputChangeMedia = (name, value) => {
-    const updatedOutputMedia = [...data.outputMedia];
+    const updatedOutputMedia = [...data.output_media];
     updatedOutputMedia[0][name] = value;
 
     setData({
@@ -96,7 +96,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     console.log(updatedOutputMedia);
   };
   const handleOutputChangeVideo = (name, value) => {
-    const updatedOutputVideo = [...data.outputVideo];
+    const updatedOutputVideo = [...data.output_video];
     updatedOutputVideo[0][name] = value;
 
     setData({
@@ -115,7 +115,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     setData({
       ...data,
       outputSubstansi: [
-        ...data.outputPartner,
+        ...data.output_partner,
         {
           year: "",
           id_category_output: "",
@@ -125,7 +125,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
         },
       ],
       outputPublication: [
-        ...data.outputPublication,
+        ...data.output_publication,
         {
           id_category_output: "",
           id_type_output: "",
@@ -134,7 +134,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
         },
       ],
       outputMedia: [
-        ...data.outputMedia,
+        ...data.output_media,
         {
           id_category_output: "",
           id_type_output: "",
@@ -143,7 +143,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
         },
       ],
       outputVideo: [
-        ...data.outputMedia,
+        ...data.output_media,
         {
           id_category_output: "",
           id_type_output: "",
@@ -171,16 +171,16 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   const [outputMediaType, setOutputMediaType] = useState([]);
   const [outputVideoType, setOutputVideoType] = useState([]);
   const statusPartnerOutput = [
-    { value: 1, label: "Tercapai" },
+    { value: "Tercapai", label: "Tercapai" },
   ];
   const statusPublicationOutput = [
-    { value: 1, label: "Published" },
+    { value: "Published", label: "Published" },
   ];
   const statusMediaOutput = [
-    { value: 1, label: "Online/bisa diakses" },
+    { value: "Online/bisa diakses", label: "Online/bisa diakses" },
   ];
   const statusVideoOutput = [
-    { value: 1, label: "Published" },
+    { value: "Published", label: "Published" },
   ];
 
   // const [status, setStatus] = useState([]);
@@ -197,6 +197,15 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   // ]
 
   const fetchCtgPatner = async () => {
+    // try {
+    //   const response = await axios.get(
+    //     `${apiUrl}/api/partner-output-category`,
+    //     getToken()
+    //   );
+    //   setOutputPartnerCtg(response.data);
+    // } catch (error) {
+    //   setOutputPartnerCtg(error.message);
+    // }
     try {
       const response = await axios.get(`${apiUrl}/api/partner-output-category`, getToken());
       const data = Array.isArray(response.data) ? response.data : [];
@@ -339,15 +348,15 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     // }
 
     // // Other fetch functions that don't depend on data.category_id
-    fetchPublicType(data.outputPublication[0].id_category_output);
+    fetchPublicType(data.output_publication[0].id_category_output);
     fetchCtgPatner();
     fetchCtgType();
     fetchMedia();
-    fetchMediaType(data.outputMedia[0].id_category_output);
+    fetchMediaType(data.output_media[0].id_category_output);
     fetchPublic();
     fetchVideo();
     fetchVideoType();
-  }, [data.outputMedia, data.outputPublication]);
+  }, [data.output_media, data.output_publication]);
 
   return (
     <div>
@@ -389,14 +398,18 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
       <div className="my-5">
         <DropdownCmp
           label="Tahun Ke"
-          options={mapToDropdown(year, "value", "value")}
-          value={mapToDropdown(year, "value", "value").find(
-            (option) => option.value === data.year
+          options={year}
+          value={year.find(
+            (option) => option.value === data.output_partner[0].year
           )}
-          onChange={(option) => handleDropdownChange(option, "year")}
+          onChange={(option) => handleOutputChangePatner("year", option.value)}
           placeholder="1"
           width="w-32"
         />
+        {/* options={statusPartnerOutput} // Gunakan array `statuses` yang sudah didefinisikan
+            value={statusPartnerOutput.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
+            onChange={(option) => handleOutputChangePatner(option, "status")} // Tangani perubahan
+            placeholder="Pilih Status" */}
       </div>
 
       <div className="mx-10 my-3">
@@ -409,7 +422,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             options={mapToDropdown(outputPatnerCtg, "name", "id")}
             value={mapToDropdown(outputPatnerCtg, "name", "id").find(
               (option) =>
-                option.value === data.outputPartner[0].id_category_output
+                option.value === data.output_partner[0].id_category_output
             )}
             onChange={(option) =>
               handleOutputChangePatner("id_category_output", option.value)
@@ -420,7 +433,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             label="Jenis Luaran *"
             options={mapToDropdown(outputPatnerType, "name", "id")}
             value={mapToDropdown(outputPatnerType, "name", "id").find(
-              (option) => option.value === data.outputPartner[0].id_type_output
+              (option) => option.value === data.output_partner[0].id_type_output
             )}
             onChange={(option) =>
               handleOutputChangePatner("id_type_output", option.value)
@@ -431,14 +444,14 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           <DropdownCmp
             label="Status *"
             options={statusPartnerOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusPartnerOutput.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
-            onChange={(option) => handleOutputChangePatner(option, "status")} // Tangani perubahan
+            value={statusPartnerOutput.find((option) => option.value === data.output_partner[0].status)} // Cocokkan nilai yang dipilih
+            onChange={(option) => handleOutputChangePatner("status", option.value)} // Tangani perubahan
             placeholder="Pilih Status"
           />
 
           <TextAreaCmp
             label="Keterangan Optional"
-            value={data.outputPartner.description}
+            value={data.output_partner[0].description}
             onChange={(e) =>
               handleOutputChangePatner("description", e.target.value)
             }
@@ -458,7 +471,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             options={mapToDropdown(outputPublicationCtg, "name", "id")}
             value={mapToDropdown(outputPublicationCtg, "name", "id").find(
               (option) =>
-                option.value === data.outputPublication[0].id_category_output
+                option.value === data.output_publication[0].id_category_output
             )}
             onChange={(option) =>
               handleOutputChangePublication("id_category_output", option.value)
@@ -470,7 +483,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             options={mapToDropdown(outputPublicationType, "name", "id")}
             value={mapToDropdown(outputPublicationType, "name", "id").find(
               (option) =>
-                option.value === data.outputPublication[0].id_type_output
+                option.value === data.output_publication[0].id_type_output
             )}
             onChange={(option) =>
               handleOutputChangePublication("id_type_output", option.value)
@@ -480,15 +493,15 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           <DropdownCmp
             label="Status *"
             options={statusPublicationOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusPublicationOutput.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
+            value={statusPublicationOutput.find((option) => option.value === data.output_publication[0].status)} // Cocokkan nilai yang dipilih
             onChange={(option) =>
-              handleOutputChangePublication(option, "status")
+              handleOutputChangePublication("status", option.value)
             } // Tangani perubahan
             placeholder="Pilih Status"
           />
           <TextAreaCmp
             label="Keterangan Optional"
-            value={data.outputPublication[0].description}
+            value={data.output_publication[0].description}
             onChange={(e) =>
               handleOutputChangePublication("description", e.target.value)
             }
@@ -508,7 +521,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             options={mapToDropdown(outputMediaCtg, "name", "id")}
             value={mapToDropdown(outputMediaCtg, "name", "id").find(
               (option) =>
-                option.value === data.outputMedia[0].id_category_output
+                option.value === data.output_media[0].id_category_output
             )}
             onChange={(option) =>
               handleOutputChangeMedia("id_category_output", option.value)
@@ -519,7 +532,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             label="Jenis Luaran *"
             options={mapToDropdown(outputMediaType, "name", "id")}
             value={mapToDropdown(outputMediaType, "name", "id").find(
-              (option) => option.value === data.outputMedia[0].id_type_output
+              (option) => option.value === data.output_media[0].id_type_output
             )}
             onChange={(option) =>
               handleOutputChangeMedia("id_type_output", option.value)
@@ -529,13 +542,13 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           <DropdownCmp
             label="Status *"
             options={statusMediaOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusMediaOutput.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
-            onChange={(option) => handleOutputChangeMedia(option, "status")} // Tangani perubahan
+            value={statusMediaOutput.find((option) => option.value === data.output_media[0].status)} // Cocokkan nilai yang dipilih
+            onChange={(option) => handleOutputChangeMedia("status", option.value)} // Tangani perubahan
             placeholder="Pilih Status"
           />
           <TextAreaCmp
             label="Keterangan Optional"
-            value={data.outputMedia[0].description}
+            value={data.output_media[0].description}
             onChange={(e) =>
               handleOutputChangeMedia("description", e.target.value)
             }
@@ -555,7 +568,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             options={mapToDropdown(outputVideoCtg, "name", "id")}
             value={mapToDropdown(outputVideoCtg, "name", "id").find(
               (option) =>
-                option.value === data.outputVideo[0].id_category_output
+                option.value === data.output_video[0].id_category_output
             )}
             onChange={(option) =>
               handleOutputChangeVideo("id_category_output", option.value)
@@ -566,7 +579,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             label="Jenis Luaran *"
             options={mapToDropdown(outputVideoType, "name", "id")}
             value={mapToDropdown(outputVideoType, "name", "id").find(
-              (option) => option.value === data.outputVideo[0].id_type_output
+              (option) => option.value === data.output_video[0].id_type_output
             )}
             onChange={(option) =>
               handleOutputChangeVideo("id_type_output", option.value)
@@ -576,13 +589,13 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           <DropdownCmp
             label="Status *"
             options={statusVideoOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusVideoOutput.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
-            onChange={(option) => handleOutputChangeVideo(option, "status")} // Tangani perubahan
+            value={statusVideoOutput.find((option) => option.value === data.output_video[0].status)} // Cocokkan nilai yang dipilih
+            onChange={(option) => handleOutputChangeVideo("status", option.value)} // Tangani perubahan
             placeholder="Pilih Status"
           />
           <TextAreaCmp
             label="Keterangan Optional"
-            value={data.outputVideo[0].description}
+            value={data.output_video[0].description}
             onChange={(e) =>
               handleOutputChangeVideo("description", e.target.value)
             }

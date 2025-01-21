@@ -88,14 +88,14 @@ const ProgressUsulanBaruPengabdian = () => {
     letter_of_intent: "",
     substance_document: [],
     members: [],
-    studentServices: [],
-    outputPartner: [{ id_category_output: "" }],
-    outputPublication: [{ id_category_output: "" }],
-    outputMedia: [{ description: "", id_category_output: "" }],
-    outputVideo: [{ description: "" }],
+    student_services: [],
+    output_partner: [{ id_category_output: "" }],
+    output_publication: [{ id_category_output: "" }],
+    output_media: [{ description: "", id_category_output: "" }],
+    output_video: [{ description: "" }],
     partner: [],
-    budgetPlanService: [],
-    supportingFile: [],
+    budget_plan_service: [],
+    supporting_file: [],
   });
 
   useEffect(() => {

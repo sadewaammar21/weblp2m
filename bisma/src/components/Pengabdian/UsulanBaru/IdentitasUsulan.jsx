@@ -88,9 +88,9 @@ const IdentitasUsulan = ({ data, setData }) => {
   };
 
   const handleAddStudents = (index, studentData) => {
-    const updatedStudent = [...data.studentServices];
+    const updatedStudent = [...data.student_services];
     updatedStudent[index] = studentData;
-    setData({ ...data, studentServices: updatedStudent });
+    setData({ ...data, student_services: updatedStudent });
   };
 
   const [category, setCategory] = useState([]);
@@ -458,7 +458,7 @@ const fetchCluster3 = async ($cluster2) => {
               </tr>
             </thead>
             <tbody>
-              {data.studentServices.map((item, index) => (
+              {data.student_services.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.nim}</td>
@@ -485,7 +485,7 @@ const fetchCluster3 = async ($cluster2) => {
       <ModalTambahMahasiswa
         isOpen={isOpenMhs} // Gunakan state boolean isModalOpenMitra
         onRequestClose={closeModalMhs}
-        index={data["studentServices"].length}
+        index={data["student_services"].length}
         onSave={handleAddStudents}
       />
     </div>

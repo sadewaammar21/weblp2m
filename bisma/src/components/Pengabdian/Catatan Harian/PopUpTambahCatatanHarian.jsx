@@ -4,18 +4,26 @@ import SearchInput from "../../SearchInput";
 import TextfieldCmp from "../../TextfieldCmp";
 import TextAreaCmp from "../../TextAreaCmp";
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
-import { addLogbook } from "../../../Features/ResearchSlice";
+import { addServiceLogbook } from "../../../Features/ServiceSlice";
 import DropdownCmp from "../../DropdownCmp";
 
 Modal.setAppElement("#root");
 
 const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
   const [logbook, setLogbook] = useState({
-    type: "research",
     id: id,
     date_activity: "",
+    group_budget: "",
+    nominal: "",
+    file_number: "",
     activity_description: "",
     percentage: 0,
+    // document: [],
+    // type: "research",
+    // id: id,
+    // date_activity: "",
+    // activity_description: "",
+    // percentage: 0,
   });
 
   const handleInputChange = (e) => {
@@ -38,18 +46,23 @@ const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
   };
 
   const handleSubmit = () => {
-    const response = addLogbook({
+    const response = addServiceLogbook({
       id: logbook.id,
       dateActivity: logbook.date_activity,
+      groupBudget: logbook.group_budget,
+      nominal: logbook.nominal,
+      fileNumber: logbook.file_number,
       activityDescription: logbook.activity_description,
       percentage: logbook.percentage,
       document: logbook.document,
     });
     console.log(response);
     setLogbook({
-      type: "research",
       id: id,
       date_activity: "",
+      group_budget: "",
+      nominal: "",
+      file_number: "",
       activity_description: "",
       percentage: 0,
     });
@@ -144,18 +157,18 @@ const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
             </label>
             <input
               name="percentage"
-              value={logbook.percentage}
+              value={logbook.nominal}
               onChange={(e) => handleInputChange(e)}
               type="text"
               placeholder="Text Field"
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Persentase
+              Nomor Berkas
             </label>
             <input
               name="percentage"
-              value={logbook.percentage}
+              value={logbook.file_number}
               onChange={(e) => handleInputChange(e)}
               type="text"
               placeholder="Text Field"
