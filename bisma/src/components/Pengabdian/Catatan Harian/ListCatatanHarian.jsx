@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../../DropdownCmp";
-import { getResearch } from "../../../Features/ResearchSlice";
+import { getService } from "../../../Features/ServiceSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -11,13 +11,13 @@ const ListCatatanHarian = () => {
   const [error, setError] = useState(null);
 
   const handleView = (id) => {
-    navigate(`/pengabdian/catatan-harian/:id`); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate(`/pengabdian/catatan-harian/${id}`); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   const user = JSON.parse(localStorage.getItem("user"));
   const fetchData = async () => {
     try {
-      const result = await getResearch({
+      const result = await getService({
         pageSize: 5,
         currentPage: 1,
         // status: 1,
@@ -110,10 +110,10 @@ const ListCatatanHarian = () => {
                     Informasi terkait penelitian ini disediakan pada kolom
                     berikut.
                   </td>
-                  <td className="border border-black px-4 py-2 align-middle">
+                  <td className="border border-black px-2 py-2 align-middle flex justify-center items-center w-20">
                     <button
                       onClick={() => handleView(item.id)}
-                      className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                      className="flex items-center px-1 py-1 rounded-md hover:text-cyan-500"
                     >
                       <img
                         src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}

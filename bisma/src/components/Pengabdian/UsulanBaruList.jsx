@@ -3,108 +3,112 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { getService, deleteService } from "../../Features/ServiceSlice";
 
-const user = JSON.parse(localStorage.getItem("user"));
-
 const UsulanBaruList = () => {
-   const [data, setData] = useState([]);
-    const navigate = useNavigate(); // Hook untuk navigasi
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedData, setSelectedData] = useState('');
-  
-    const handleClick = () => {
-      navigate("/pengabdian/usulan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
-    };
-  
-    const user = JSON.parse(localStorage.getItem("user"));
-    const fetchData = async () => {
-      try {
-        const result = await getService({
-          pageSize: 5,
-          currentPage: 1,
-          // status: 1,
-          // year: 2024,
-          userId: user.id,
-        });
-        setData(result.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    useEffect(() => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
+
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const fetchData = async () => {
+    try {
+      const result = await getService({
+        pageSize: 5,
+        currentPage: 1,
+        userId: user.id,
+      });
+      setData(result.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleClick = () => {
+    navigate("/pengabdian/usulan/baru");
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteService(id);
       fetchData();
-    }, []);
-  
-    const handleDelete = async (id) => {
-      const response = await deleteService(id);
-      console.log(response);
-      fetchData();
-    };
-  
-    const openModal = (id) => {
-      setSelectedData(id)
-      setIsOpen(true);
-    };
-  
-    const closeModal = () => {
-      setIsOpen(false);
-      fetchData();
-    };
-  
-    const renderActionButton = (item) => {
-      if (item.user.id !== user.id) {
-        const currentUserAsMember = item.members.find((member) => member.id === user.id);
-        if(currentUserAsMember.pivot.status !== "pending"){
-          return(
-            <p>
-              {currentUserAsMember.pivot.status}
-            </p>
-          )
-        }else{
-          return (
-            <div>
-              <button
-                onClick={() => openModal(item.id)}
-                className="bg-blue-500 px-2 py-1 rounded-md text-white"
-              >
-                Action
-              </button>
-            </div>
-          );
-        }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const openModal = (id) => {
+    setSelectedData(id);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    fetchData();
+  };
+
+  const renderActionButton = (item) => {
+    if (item.user.id !== user.id) {
+      const currentUserAsMember = item.members.find(
+        (member) => member.id === user.id
+      );
+      if (currentUserAsMember?.pivot?.status !== "pending") {
+        return <p>{currentUserAsMember.pivot.status}</p>;
       } else {
         return (
-          <div>
-            <button
-              onClick={() => navigate(`/pengabdian/usulan/edit/${item.id}`)}
-              className={`bg-blue-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? 'hidden': ''}`}
-            >
-              edit
-            </button>
-            <button
-              onClick={() => navigate(`/penelitian/detail/${item.id}`)}
-              className="bg-blue-500 px-2 py-1 rounded-md text-white"
-            >
-              detail
-            </button>
-            <button
-              onClick={() => handleDelete(item.id)}
-              className={`bg-red-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
-            >
-              delete
-            </button>
-          </div>
+          <button
+            onClick={() => openModal(item.id)}
+            className="bg-blue-500 px-2 py-1 rounded-md text-white"
+          >
+            Action
+          </button>
         );
       }
-    };
-  
-    // if(loading){
-    //   return <p>Loading...</p>
-    // }
+    } else {
+      return (
+        <div className="flex space-x-2">
+          <button
+            onClick={() => navigate(`/pengabdian/usulan/edit/${item.id}`)}
+            className={` px-2 py-1 rounded-md text-white ${item.status !== 1 ? "hidden" : ""}`}
+          >
+            <img
+              src={process.env.PUBLIC_URL + "/assets/edit_perusl.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
+          </button>
+          <button
+            onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+            className=" px-2 py-1 rounded-md text-white"
+          >
+            <img
+              src={process.env.PUBLIC_URL + "/assets/detail.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
+          </button>
+          <button
+            onClick={() => handleDelete(item.id)}
+            className={` px-2 py-1 rounded-md text-white ${item.status !== 1 ? "hidden" : ""}`}
+          >
+            <img
+              src={process.env.PUBLIC_URL + "/assets/remove.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
+          </button>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="mx-5">
@@ -128,7 +132,7 @@ const UsulanBaruList = () => {
         ) : (
           <div className="relative overflow-x-auto">
             <table className="w-full text-sm text-left bg-neutral-20 text-gray-500 border border-gray-300">
-              <thead className="border-b text-xs text-gray-700 uppercase bg-gray-50">
+              <thead className="border-b text-xs text-gray-700 uppercase bg-gray-50 text-center">
                 <tr>
                   <th className="px-4 py-2">No</th>
                   <th className="px-4 py-2">Ketua</th>
@@ -141,20 +145,26 @@ const UsulanBaruList = () => {
                 </tr>
               </thead>
               <tbody>
-              {data.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.user?.name}</td>
-                  <td>{item.title}</td>
-                  <td>{item.focus_thematic.name || item.focus_r_i_r_n_s.name}</td>
-                  <td>{item.year}</td>
-                  <td>{user.id === item.user.id ? "Ketua" : "Anggota"}</td>
-                  <td>{item.status}</td>
-                  <td className="flex space-x-2 justify-center">
-                    {renderActionButton(item)}
-                  </td>
-                </tr>
-              ))}
+                {data.map((item, index) => (
+                  <tr key={item.id} className="border-b text-center">
+                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className="px-4 py-2">{item.user?.name}</td>
+                    <td className="px-4 py-2">{item.title}</td>
+                    <td className="px-4 py-2">
+                      {item.focus_thematic?.name || item.focus_r_i_r_n_s?.name}
+                    </td>
+                    <td className="px-4 py-2">{item.year}</td>
+                    <td className="px-4 py-2">
+                      {user.id === item.user.id ? "Ketua" : "Anggota"}
+                    </td>
+                    <td className="px-4 py-2">{item.status}</td>
+                    <td className="px-4 py-2 ">
+                      <div className="inline-block">
+                        {renderActionButton(item)}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

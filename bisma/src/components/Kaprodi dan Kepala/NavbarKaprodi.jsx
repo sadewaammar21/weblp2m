@@ -8,36 +8,36 @@ import { MdLogout, MdErrorOutline } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const NavbarOperator = ({ children }) => {
+const NavbarKaprodi = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [dropdown, setDropdown] = useState(false);
-  const [subDropdown, setSubDropdown] = useState(null); // Updated to track which sub-dropdown is open
+  const [subDropdown, setSubDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const [username, setUsername] = useState("");
   const apiUrl = process.env.REACT_APP_API_URL;
 
   // Fungsi untuk membuka dropdown
-  const handleDropdownEnter = (dropdownId) => {
-    setDropdown(dropdownId);
+  const handleDropdownEnter = () => {
+    setDropdown(true);
   };
 
   // Fungsi untuk sub-dropdown
-  const handleSubDropdownEnter = (dropdownId) => {
-    setSubDropdown(dropdownId); // Set specific sub-dropdown based on its ID
+  const handleSubDropdownEnter = () => {
+    setSubDropdown(true);
   };
 
   const handleSubDropdownLeave = () => {
-    setSubDropdown(null); // Close the sub-dropdown when leaving
+    setSubDropdown(false);
   };
 
   // Menangani klik di luar dropdown untuk menutup dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdown(false); // Close dropdown
-        setSubDropdown(null); // Close sub-dropdown
+        setDropdown(false);
+        setSubDropdown(false);
       }
     };
 
@@ -138,21 +138,21 @@ const NavbarOperator = ({ children }) => {
             <div className="container mx-auto flex justify-between items-center">
               <ul className="flex justify-between items-center w-full">
                 <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
-                  <Link to="/dashboard-operator" className="flex items-center">
+                  <Link to="/dashboard" className="flex items-center">
                     <img
                       src={process.env.PUBLIC_URL + "/assets/dashboard.svg"}
                       alt="dashboard"
                       className="w-5 h-5 mr-2"
                     />
                     {/* Dashboard */}
-                    <Link to="/dashboard-operator">Dashboard</Link>
+                    <Link to="/dashboard">Dashboard</Link>
                   </Link>
                 </li>
 
                 {/* Dropdown di Penelitian */}
                 <li
                   className="text-white hover:text-gray-300 cursor-pointer relative flex items-center"
-                  onMouseEnter={() => handleDropdownEnter(2)}
+                  onMouseEnter={handleDropdownEnter}
                 >
                   <img
                     src={process.env.PUBLIC_URL + "/assets/penelitian.svg"}
@@ -160,149 +160,74 @@ const NavbarOperator = ({ children }) => {
                     className="w-5 h-5 mr-2"
                   />
                   <div className="flex items-center">
-                    Monitoring
+                    Pengabdian
                     <FaChevronDown className="ml-2" />
                   </div>
-                  {dropdown === 2 && (
+                  {dropdown && (
                     <ul
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
                       <li
-                        className="px-4 py-2 hover:bg-violet-800 relative"
-                        onMouseEnter={() => handleSubDropdownEnter(1)} // Unique ID for the first sub-dropdown
+                        className="px-4 py-2  hover:bg-violet-800 relative"
+                        onMouseEnter={handleSubDropdownEnter}
                         onMouseLeave={handleSubDropdownLeave}
                       >
                         <div className="flex items-center justify-between">
-                          Penelitian
+                          Penelitian Internal
                           <FaChevronRight className="w-4 h-4" />
                         </div>
-                        {subDropdown === 1 && (
-                          <ul className="absolute top-0 left-full ml-1 w-48 bg-gray-50">
+                        {subDropdown && (
+                          <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
                             <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/monitoring-usulan-reguler">
-                                <div className="flex items-center justify-between">
-                                  Monitoring Usulan
-                                </div>
+                              <Link to="/penelitian/usulan">Usulan Baru</Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                              <Link to="/penelitian/perbaikan">
+                                Perbaikan Usulan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring-perbaikan-usulan-penelitian">
-                                <div className="flex items-center justify-between">
-                                  Perbaikan Usulan
-                                </div>
+                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                              <Link to="/penelitian/laporan-kemajuan">
+                                Laporan Kemajuan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring-usulan-reguler-hasil-review">
-                                <div className="flex items-center justify-between">
-                                  Hasil Review
-                                </div>
+                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                              <Link to="/penelitian/laporan-akhir">
+                                Laporan Akhir
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring/penenelitian/periode-kegiatan/">
-                                <div className="flex items-center justify-between">
-                                  Periode Kegiatan
-                                </div>
-                              </Link>
+                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                              <Link to="/catatanakhir">Catatan Akhir</Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                              <Link to="/luaran">Luaran</Link>
                             </li>
                           </ul>
                         )}
                       </li>
-
-                      <li
-                        className="px-4 py-2 hover:bg-violet-800 relative"
-                        onMouseEnter={() => handleSubDropdownEnter(2)} // Unique ID for the second sub-dropdown
-                        onMouseLeave={handleSubDropdownLeave}
-                      >
-                        <div className="flex items-center justify-between">
-                          Pengabdian
-                          <FaChevronRight className="w-4 h-4" />
-                        </div>
-                        {subDropdown === 2 && (
-                          <ul className="absolute top-0 left-full ml-1 w-48 bg-gray-50">
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/monitoring/pengabdian/usulan-reguler">
-                                <div className="flex items-center justify-between">
-                                  Monitoring Usulan
-                                </div>
-                              </Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring-perbaikan-usulan-pengabdian">
-                                <div className="flex items-center justify-between">
-                                  Perbaikan Usulan
-                                </div>
-                              </Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring/pengabdian/hasil-review">
-                                <div className="flex items-center justify-between">
-                                  Hasil Review
-                                </div>
-                              </Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring/pengabdian/periode-kegiatan">
-                                <div className="flex items-center justify-between">
-                                  Periode Kegiatan
-                                </div>
-                              </Link>
-                            </li>
-                          </ul>
-                        )}
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        Penelitian Eksternal
                       </li>
                     </ul>
                   )}
                 </li>
 
-                {/* Dropdown di Data Pendukung */}
-                <li
-                  className="text-white hover:text-gray-300 cursor-pointer relative"
-                  onMouseEnter={() => handleDropdownEnter(3)}
-                  onMouseLeave={() => setDropdown(false)}
-                >
-                  <div className="flex items-center">
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
-                      alt="kekayaan intelektual"
-                      className="w-5 h-5 mr-2"
-                    />
-                    Data Pendukung
-                    <FaChevronDown className="ml-2" />
-                  </div>
-                  {dropdown === 3 && (
-                    <ul className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10">
-                      <li className="px-4 py-2 hover:bg-violet-800">
-                        <Link to="/monitoring/data-pendukung/edit-profil-lembaga">
-                          Edit Profil Lembaga
-                        </Link>
-                      </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
-                        <Link to="/monitoring/data-pendukung/profil-user-list">
-                          Edit Profil User
-                        </Link>
-                      </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
-                        <Link to="/monitoring/data-pendukung/reset-password-user">
-                          Reset Password User
-                        </Link>
-                      </li>
-                    </ul>
-                  )}
+                <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
+                    alt="kekayaan intelektual"
+                    className="w-5 h-5 mr-2"
+                  />
+                  Program Lainnya
                 </li>
                 <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
-                  <Link to="/monitoring-pengelola-review">
-                    <div className="flex items-center">
-                      <img
-                        src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
-                        alt="laporan"
-                        className="w-5 h-5 mr-2"
-                      />
-                      Pengelola Review
-                    </div>
-                  </Link>
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
+                    alt="laporan"
+                    className="w-5 h-5 mr-2"
+                  />
+                  Persetujuan Usulan
                 </li>
 
                 <li
@@ -336,4 +261,4 @@ const NavbarOperator = ({ children }) => {
   );
 };
 
-export default NavbarOperator;
+export default NavbarKaprodi;

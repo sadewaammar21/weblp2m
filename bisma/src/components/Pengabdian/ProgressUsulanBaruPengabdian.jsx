@@ -25,22 +25,24 @@ const steps = [
 const ProgressBar = ({ currentStep }) => {
   return (
     <div className="flex items-center">
-      {steps.map((step, index) => (
+      {steps.map((step) => (
         <div key={step.id} className="flex-1">
           <div className="relative flex items-center">
-            {/* Progress line */}
             <div
-              className={`h-2 flex-1 rounded-full ${currentStep >= step.id ? "bg-blue-600" : "bg-gray-300"}`}
+              className={`h-2 flex-1 rounded-full ${
+                currentStep >= step.id ? "bg-blue-600" : "bg-gray-300"
+              }`}
             />
-
-            {/* Step circle */}
             <div
-              className={`absolute w-6 h-6 rounded-full flex items-center justify-center text-sm border-2 ${currentStep >= step.id ? "bg-blue-600 border-blue-600 text-white" : "bg-white border-gray-300 text-black"}`}
+              className={`absolute w-10 h-10 rounded-full flex items-center justify-center text-sm border-2 ${
+                currentStep >= step.id
+                  ? "bg-blue-600 border-blue-600 text-white"
+                  : "bg-white border-gray-300 text-black"
+              }`}
             >
               {step.id}
             </div>
           </div>
-          {/* Step label */}
           <div className="text-center mt-2 text-sm">{step.label}</div>
         </div>
       ))}
@@ -51,24 +53,11 @@ const ProgressBar = ({ currentStep }) => {
 const ProgressUsulanBaruPengabdian = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
   const isEdit = Boolean(id);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
-  //progress bar
-  const [currentStep, setCurrentStep] = React.useState(1);
-
-  const handleNextStep = () => {
-    setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
-    console.log(data);
-  };
-
-  const handlePrevStep = () => {
-    setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
-  };
-
-  //data management
+  const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState({
     title: "",
     category_id: "",
@@ -88,71 +77,61 @@ const ProgressUsulanBaruPengabdian = () => {
     letter_of_intent: "",
     substance_document: [],
     members: [],
-    studentServices: [],
-    outputPartner: [{ id_category_output: "" }],
-    outputPublication: [{ id_category_output: "" }],
-    outputMedia: [{ description: "", id_category_output: "" }],
-    outputVideo: [{ description: "" }],
+    student_services: [],
+    output_partner: [{ id_category_output: "" }],
+    output_publication: [{ id_category_output: "" }],
+    output_media: [{ description: "", id_category_output: "" }],
+    output_video: [{ description: "" }],
     partner: [],
-    budgetPlanService: [],
-    supportingFile: [],
+    budget_plan_service: [],
+    supporting_file: [],
   });
+
+  const handleNextStep = () => {
+    setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-      setLoading(true);
-      const response = await axios.get(
-        `${apiUrl}/api/comunity-service/${id}`,
-        getToken()
-      );
-      console.log(response.data);
-      setData({
-        ...data,
-        ...response.data,
-      });
-    } catch (error) {
-      setError(true);
-    }finally{
-      setLoading(false);
-    }
-  };
-  if (isEdit) fetchData();
-  console.log(data);
-}, [id]);
+        setLoading(true);
+        const response = await axios.get(
+          `${apiUrl}/api/comunity-service/${id}`,
+          getToken()
+        );
+        setData((prev) => ({ ...prev, ...response.data }));
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-
-  // useEffect(() => {
-  //   console.log(data);
-  // });
+    if (isEdit) fetchData();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (e.target.name === "ajukan") {
-      const response = await addService({
-        data: data,
-        isEdit: isEdit,
-        serviceId: data.id,
-        isSubmit: true,
-        newStatus: 2,
-      });
-      console.log(response);
-      navigate("/pengabdian/usulan");
-    } else {
-      const response = await addService({
-        data: data,
-        isEdit: isEdit,
-        serviceId: data.id,
-        isSubmit: true,
-        // newStatus: 2,
-      });
-      console.log(response);
-      navigate("/pengabdian/usulan");
-    }
+    const isSubmit = e.target.name === "ajukan";
+    const newStatus = isSubmit ? 2 : undefined;
+
+    const response = await addService({
+      data,
+      isEdit,
+      serviceId: data.id,
+      isSubmit,
+      newStatus,
+    });
+
+    console.log(response);
+    navigate("/pengabdian/usulan");
   };
 
-  //element page
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
@@ -170,83 +149,57 @@ const ProgressUsulanBaruPengabdian = () => {
     }
   };
 
-  // if(loading){
-  //   return <p>Loading...</p>
-  // }
-
-  // if(error){
-  //   return <p>Terjadi Kesalahan.</p>
-  // }
-
   return (
     <div>
-      <div>
-        <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENGABDIAN
-        </h1>
-        <div className="container mx-auto">
-          <div className="bg-gray-50 shadow-sm  rounded-sm  p-5 ">
-            <ProgressBar currentStep={currentStep} />
-            <div className="mt-6">{renderStepContent(currentStep)}</div>
-
-            {/* <div className="flex justify-between my-10">
-              <button
-                onClick={handlePrevStep}
-                disabled={currentStep === 1}
-                className="px-4 py-2 bg-gray-500 text-white rounded"
-              >
-                Previous
-              </button>
-              <button
-                onClick={handleNextStep}
-                disabled={currentStep === steps.length}
-                className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === steps.length ? "hidden" : ""}`}
-              >
-                Next
-              </button>
-              <button
-                onClick={handleSubmit}
-                disabled={currentStep < steps.length}
-                className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === steps.length ? "" : "hidden"}`}
-              >
-                Submit
-              </button>
-            </div> */}
-            <div className="flex justify-between my-10">
-              <button
-                onClick={handlePrevStep}
-                disabled={currentStep === 1}
-                className="px-4 py-2 bg-gray-500 text-white rounded"
-              >
-                Previous
-              </button>
-              <button
-                onClick={handleNextStep}
-                disabled={currentStep === steps.length}
-                className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === steps.length ? "hidden" : ""}`}
-              >
-                Next
-              </button>
-              <div
-                className={`${currentStep === steps.length ? "" : "hidden"}`}
-              >
+      <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
+        USULAN PENGABDIAN
+      </h1>
+      <div className="container mx-auto">
+        <div className="bg-gray-50 shadow-sm rounded-sm p-5">
+          <ProgressBar currentStep={currentStep} />
+          <div className="mt-6">{renderStepContent(currentStep)}</div>
+          <div className="flex justify-between my-10">
+            <button
+              onClick={handlePrevStep}
+              disabled={currentStep === 1}
+              className="px-4 py-2 bg-gray-500 text-white rounded"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleNextStep}
+              disabled={currentStep === steps.length}
+              className={`px-4 py-2 bg-blue-600 text-white rounded ${
+                currentStep === steps.length ? "hidden" : ""
+              }`}
+            >
+              Next
+            </button>
+            {currentStep === steps.length && (
+              <div>
                 <button
-                  onClick={(e) => handleSubmit(e)}
-                  disabled={currentStep < steps.length}
-                  className={`px-4 py-2 bg-blue-600 text-white rounded mx-5 ${currentStep === steps.length ? "" : "hidden"}`}
+                  onClick={handleSubmit}
+                  className="px-4 py-2 bg-blue-600 text-white rounded mx-5"
                 >
                   Submit
                 </button>
                 <button
-                  onClick={(e) => handleSubmit(e)}
+                  onClick={handleSubmit}
                   name="ajukan"
-                  disabled={currentStep < steps.length}
-                  className={`px-4 py-2 bg-green-600 text-white rounded ${data.members.every((member) => member.pivot.status === "2" || member.pivot.status === "accepted") ? "" : "hidden"}`}
+                  className={`px-4 py-2 bg-green-600 text-white rounded ${
+                    data.members.every(
+                      (member) =>
+                        member.pivot.status === "2" ||
+                        member.pivot.status === "accepted"
+                    )
+                      ? ""
+                      : "hidden"
+                  }`}
                 >
                   Ajukan
                 </button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

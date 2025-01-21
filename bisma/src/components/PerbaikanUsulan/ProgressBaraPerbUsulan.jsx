@@ -28,7 +28,7 @@ const ProgressBar = ({ currentStep }) => {
 
             {/* Step circle */}
             <div
-              className={`absolute w-6 h-6 rounded-full flex items-center justify-center text-sm border-2 ${currentStep >= step.id ? "bg-blue-600 border-blue-600 text-white" : "bg-white border-gray-300 text-black"}`}
+              className={`absolute w-10 h-10 rounded-full flex items-center justify-center text-sm border-2 ${currentStep >= step.id ? "bg-blue-600 border-blue-600 text-white" : "bg-white border-gray-300 text-black"}`}
             >
               {step.id}
             </div>

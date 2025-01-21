@@ -6,7 +6,13 @@ import TextfieldCmp from "../../TextfieldCmp";
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalLuaranElektronik = ({ isOpen, onRequestClose }) => {
+const ModalLuaranElektronik = ({
+  data,
+  isOpen,
+  onRequestClose,
+  index,
+  onSave,
+}) => {
   const handleSave = () => {
     console.log("Data berhasil disimpan");
     onRequestClose(); // Tutup modal setelah menyimpan

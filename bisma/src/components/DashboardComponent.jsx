@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  FaDashcube,
   FaBook,
-  FaFileAlt,
   FaGlobe,
   FaChartBar,
   FaCogs,
@@ -16,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const DashboardComponent = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const handlePenelitian = () => {
     navigate("/penelitian/usulan"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
@@ -164,10 +163,18 @@ const DashboardComponent = () => {
               key={index}
               className="bg-gray-100 rounded-lg shadow-lg p-5 flex flex-col items-center text-center"
             >
-              {metric.icon}
+              {/* Wrapper untuk icon dengan background bulat */}
+              <div className="bg-violet-800 rounded-full p-4 flex items-center justify-center mb-3">
+                {/* Pastikan ikon memiliki ukuran sesuai */}
+                <div className="text-white w-6 h-6">{metric.icon}</div>
+              </div>
+
+              {/* Judul */}
               <p className="text-violet-800 font-semibold mt-2">
                 {metric.title}
               </p>
+
+              {/* Jumlah */}
               <p className="text-3xl font-bold text-violet-800">
                 {metric.count}
               </p>
@@ -176,9 +183,28 @@ const DashboardComponent = () => {
         </div>
       </div>
 
-      <div className="mx-5 my-5 bg-white rounded-lg shadow-lg p-5">
-        <h1 className="text-xl font-bold text-violet-800 mb-4">Profil Anda</h1>
-        <div className="grid grid-cols-2 gap-4">
+      <div className=" bg-white rounded-lg shadow-lg p-5">
+        {/* <h1 className="text-xl font-bold text-violet-800 mb-4">Profil Anda</h1> */}
+        <div className="bg-bluef-50 rounded-lg shadow-lg w-full p-10">
+          <div className="flex justify-between">
+            <div className="mx-5 my-5">
+              <h1 className="text-2xl font-bold text-violet-800 ">
+                Yustina Retno Wahyu Utami
+              </h1>
+              <h1 className="text-xl font-bold text-violet-800 ">
+                Program Studi Informatika
+              </h1>
+            </div>
+            <div>
+              <img
+                src={process.env.PUBLIC_URL + "/assets/user_profil.png"}
+                alt="logo"
+                className=""
+              />
+            </div>
+          </div>
+        </div>
+        <div className=" mx-5 my-5 grid grid-cols-2 gap-4">
           {/* Kiri - Informasi Profil */}
           <div className="space-y-2">
             <div className="text-gray-700 font-semibold">Identitas</div>
@@ -214,7 +240,6 @@ const DashboardComponent = () => {
           </div>
           {/* Kanan - Kontak dan Informasi Tambahan */}
           <div className="space-y-2">
-            <div className="text-gray-700 font-semibold">Kontak</div>
             <div className="space-y-1">
               <p className="font-semibold text-gray-700">
                 Tempat Tanggal Lahir:{" "}
@@ -240,12 +265,13 @@ const DashboardComponent = () => {
                 </span>
               </p>
             </div>
-            <div className="mt-4">
-              <button className="bg-yellow-500 text-white py-2 px-4 rounded-md">
-                Sunting
-              </button>
-            </div>
           </div>
+        </div>
+        <hr className="border-gray-300 my-2" />
+        <div className="flex justify-end">
+          <button className="bg-yellow-500 text-white py-2 px-4 rounded-md">
+            Sunting
+          </button>
         </div>
       </div>
     </div>

@@ -81,6 +81,10 @@ import PeriodeKegiatanPenelitianPage from "./pages/PeriodeKegiatanPenelitianPage
 import PeriodeKegiatanListPenelitianOPTPage from "./pages/PeriodeKegiatanListPenelitianOPTPage";
 import PerKegLaporanKemajuanPenelitianPage from "./pages/PerKegLaporanKemajuanPenelitianPage";
 import PerKegLaporanAkhirPenelitianPage from "./pages/PerKegLaporanAkhirPenelitianPage";
+import ResetPasswordListPage from "./pages/ResetPasswordListPage";
+import ProfileUserListPage from "./pages/ProfileUserListPage";
+import EditProfileUserPage from "./pages/EditProfileUserPage";
+import DashboardKaprodiPage from "./pages/DashboardKaprodiPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -105,9 +109,13 @@ function App() {
           path="/dashboard-kaprodi-dan-kepala"
           element={<DashboardKaprKepl />}
         />
+        <Route path="/dashboard-kaprodi" element={<DashboardKaprodiPage />} />
         {/* Dosen Penelitian*/}
         <Route path="/penelitian/usulan" element={<UsulanBaru />} />
-        <Route path="/penelitian/detail/:id" element={<DetailPenelitianPage />} />
+        <Route
+          path="/penelitian/detail/:id"
+          element={<DetailPenelitianPage />}
+        />
         <Route
           path="/penelitian/usulan/baru"
           element={<UsulanBaruPenelitian />}
@@ -363,6 +371,23 @@ function App() {
         <Route
           path="/review/penilaian-proposal-pengabdian/view"
           element={<ProposalPengabdianPage />}
+        />
+        {/* data pendukung */}
+        <Route
+          path="/monitoring/data-pendukung/edit-profil-lembaga"
+          element={<DataPendukungPage />}
+        />
+        <Route
+          path="/monitoring/data-pendukung/reset-password-user"
+          element={<ResetPasswordListPage />}
+        />
+        <Route
+          path="/monitoring/data-pendukung/profil-user-list"
+          element={<ProfileUserListPage />}
+        />
+        <Route
+          path="/monitoring/data-pendukung/edit-profil-user"
+          element={<EditProfileUserPage />}
         />
         {/* kepla LPPM */}
         <Route

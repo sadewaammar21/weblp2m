@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
-import { downloadResearchDocument, getResearch } from "../../Features/ResearchSlice";
+import {
+  downloadResearchDocument,
+  getResearch,
+} from "../../Features/ResearchSlice";
 import PopUpPersetujuan from "../UsulanBaru/PopUpPersetujuan";
 import axios from "axios";
 import { getToken } from "../../Features/AuthSlice";
@@ -21,13 +24,14 @@ const ListUsulanKaprodi = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await axios.get(`${apiUrl}/api/research`, { ...getToken(),
+        const result = await axios.get(`${apiUrl}/api/research`, {
+          ...getToken(),
           params: {
-            prodi_id: parseUser.id_prodi,         
-            status: 2,  
-            // year: 2023,          
-            page_size: 5,       
-            current_page: 1 
+            prodi_id: parseUser.id_prodi,
+            status: 2,
+            // year: 2023,
+            page_size: 5,
+            current_page: 1,
           },
         });
         setData(result.data.data);
@@ -108,65 +112,60 @@ const ListUsulanKaprodi = () => {
             <tbody>
               {data
                 .filter((item) => item.status !== 1)
-                .map(
-                  (
-                    item,
-                    index 
-                  ) => (
-                    <tr key={index}>
-                      <td className="border border-gray-300 p-2 text-center">
-                        {index + 1}
-                      </td>
-                      <td className="border border-gray-300 p-2">
-                        <p>Ketua: {item.user?.name}</p>
-                        <p>NIDN: {item.user?.nidn}</p>
-                        <p>Tahun Pelaksanaan: {item.year}</p>
-                        <p>Lama Kegiatan: {item.duration}</p>
-                        <p>Bidang Fokus: {item.focus.name}</p>
-                      </td>
-                      <td className="border border-gray-300 p-2">
-                        <p className="text-blue-600 font-bold">{item.title}</p>
-                        <p className="text-blue-600 font-bold">
-                          {item.scheme.name}
-                        </p>
-                      </td>
-                      <td className="border border-gray-300 p-2 text-center">
-                        <button
-                          onClick={() => downloadResearchDocument(item.id)}
-                          className="text-red-600 text-2xl"
+                .map((item, index) => (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2 text-center">
+                      {index + 1}
+                    </td>
+                    <td className="border border-gray-300 p-2">
+                      <p>Ketua: {item.user?.name}</p>
+                      <p>NIDN: {item.user?.nidn}</p>
+                      <p>Tahun Pelaksanaan: {item.year}</p>
+                      <p>Lama Kegiatan: {item.duration}</p>
+                      <p>Bidang Fokus: {item.focus.name}</p>
+                    </td>
+                    <td className="border border-gray-300 p-2">
+                      <p className="text-blue-600 font-bold">{item.title}</p>
+                      <p className="text-blue-600 font-bold">
+                        {item.scheme.name}
+                      </p>
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <button
+                        onClick={() => downloadResearchDocument(item.id)}
+                        className="text-red-600 text-2xl"
+                      >
+                        <a
+                          href={`http://localhost:8000/api/research/download/${item.id}`}
+                          target="_blank"
                         >
-                          <a
-                            href={`http://localhost:8000/api/research/download/${item.id}`}
-                            target="_blank"
-                          >
-                            📄
-                          </a>
-                        </button>
-                      </td>
-                      <td className="border border-gray-300 p-2 text-center">
-                        <button
-                          className={`bg-blue-600 text-white px-4 py-1 rounded-md mr-2`}
-                          onClick={() => handleModal(true, 3)}
-                        >
-                          Setujui
-                        </button>
-                        <button
-                          className={`bg-red-600 text-white px-4 py-1 rounded-md`}
-                          onClick={() => handleModal(false, 8)}
-                        >
-                          Ditolak
-                        </button>
-                        {/* <p className={`text-white px-4 py-1 rounded-md ${status === 2 ? 'hidden' : (status === 8 ? 'bg-red-600' : 'bg-green-500')}`}>{status === 8 ? 'Ditolak' : 'Disetujui'}</p> */}
-                        <PopUpPersetujuan
-                          isOpen={isOpen}
-                          onRequestClose={closeModal}
-                          researchId={item.id}
-                          isAccepted={isAccepted}
-                        />
-                      </td>
-                    </tr>
-                  )
-                )}
+                          📄
+                        </a>
+                      </button>
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <button
+                        className={`bg-blue-600 text-white px-4 py-1 rounded-md mr-2`}
+                        onClick={() => handleModal(true, 3)}
+                      >
+                        Setujui
+                      </button>
+                      <button
+                        className={`bg-red-600 text-white px-4 py-1 rounded-md`}
+                        onClick={() => handleModal(false, 8)}
+                      >
+                        Ditolak
+                      </button>
+                      {/* <p className={`text-white px-4 py-1 rounded-md ${status === 2 ? 'hidden' : (status === 8 ? 'bg-red-600' : 'bg-green-500')}`}>{status === 8 ? 'Ditolak' : 'Disetujui'}</p> */}
+                      <PopUpPersetujuan
+                        isOpen={isOpen}
+                        onRequestClose={closeModal}
+                        researchId={item.id}
+                        isAccepted={isAccepted}
+                      />
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

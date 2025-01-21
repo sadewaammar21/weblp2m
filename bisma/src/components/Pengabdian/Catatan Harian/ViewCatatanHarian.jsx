@@ -3,15 +3,16 @@ import { FaArrowLeft, FaPen, FaPlus } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import PopUpTambahCatatanHarian from "./PopUpTambahCatatanHarian";
 import {
-  deleteLogbook,
-  getLogbooks,
-  getResearchDetail,
-} from "../../../Features/ResearchSlice";
+  deleteServiceLogbook,
+  getServiceLogbooks,
+  getDetailServiceLogbook,
+  getServiceDetail,
+} from "../../../Features/ServiceSlice";
 import PopUpEditCatatanHarian from "./PopUpEditCatatanHarian";
 
 const ViewCatatanHarian = () => {
   const { id } = useParams();
-  const [research, setResearch] = useState({});
+  const [service, setService] = useState({});
   const [logbook, setLogbook] = useState([]);
   const [isOpenTambah, setIsOpenTambah] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
@@ -41,11 +42,11 @@ const ViewCatatanHarian = () => {
     navigate("/pengabdian/catatan-harian");
   };
 
-  const fetchResearch = async () => {
+  const fetchService = async () => {
     try {
-      const response = await getResearchDetail(id);
-      setResearch(response.data);
-      console.log(research);
+      const response = await getServiceDetail(id);
+      setService(response);
+      console.log(service);
     } catch (error) {
       throw error;
     }
@@ -53,7 +54,7 @@ const ViewCatatanHarian = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const fetchLogbooks = async () => {
     try {
-      const response = await getLogbooks({
+      const response = await getServiceLogbooks({
         user_id: user.id,
         id: id,
         pageSize: 10,
@@ -65,12 +66,12 @@ const ViewCatatanHarian = () => {
     }
   };
   useEffect(() => {
-    fetchResearch();
+    fetchService();
     fetchLogbooks();
   }, [id]);
 
   const handleDelete = (id) => {
-    deleteLogbook(id);
+    deleteServiceLogbook(id);
     fetchLogbooks();
   };
 
@@ -81,7 +82,7 @@ const ViewCatatanHarian = () => {
 
         {/* Content */}
         <div>
-          <h2 className="text-lg font-bold text-gray-800">{research.title}</h2>
+          <h2 className="text-lg font-bold text-gray-800">{service.title}</h2>
           <p className="text-sm text-gray-600 mt-1">
             Penelitian Fundamental - Reguler Penelitian Kompetitif Nasional -
             Reguler | Thn Usulan 2024 | Thn. Pelaksanaan 2024

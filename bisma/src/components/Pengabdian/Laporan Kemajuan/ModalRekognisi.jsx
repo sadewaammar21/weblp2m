@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp"; // Komponen Dropdown yang Anda buat
 import TextfieldCmp from "../../TextfieldCmp"; // Komponen TextField yang Anda buat
@@ -6,21 +6,45 @@ import TextfieldCmp from "../../TextfieldCmp"; // Komponen TextField yang Anda b
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalRekognisi = ({ isOpen, onRequestClose, data, setData }) => {
-  const handleDropdownChange = (field, value) => {
-    setData((prevData) => ({
+const ModalRekognisi = ({ data, isOpen, onRequestClose, index, onSave }) => {
+  const [outputData, setOutputData] = useState({});
+  useEffect(() => {
+    if (data) {
+      setOutputData(data[index]);
+    }
+  }, [data, index]);
+
+  const handleDropdownChange = (option, fieldName) => {
+    setOutputData((prevData) => ({
       ...prevData,
-      [field]: value,
+      [fieldName]: option.value,
     }));
   };
+
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setOutputData((prevData) => ({
+      ...prevData,
+      [name]: files[0],
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
+    setOutputData((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
+  };
+
   const handleSave = () => {
     console.log("Data berhasil disimpan");
+    onSave(index, outputData);
+    setOutputData({});
     onRequestClose(); // Tutup modal setelah menyimpan
   };
-  const komponenRekognisi = [
-    { label: "Tercapai", value: "Tercapai" },
-    { label: "Tidak Tercapai", value: "Tidak_tercapai" },
-  ];
 
   return (
     <Modal
@@ -38,7 +62,6 @@ const ModalRekognisi = ({ isOpen, onRequestClose, data, setData }) => {
         <div className="mb-4">
           <DropdownCmp
             label={`Status Rekognisi Mahasiswa`}
-            options={komponenRekognisi}
             onChange={(option) => {
               handleDropdownChange("status_rekognisi", option.value);
             }}
@@ -66,7 +89,10 @@ const ModalRekognisi = ({ isOpen, onRequestClose, data, setData }) => {
         <div className="mb-4">
           <TextfieldCmp
             label={`Jumlah SKS yang direkognisi (minimal 6 SKS)`}
-            placeholder="nomor"
+            value={outputData.journal_name}
+            name="journal_name"
+            onChange={(e) => handleInputChange(e)}
+            placeholder="Nama Jurnal"
           />
         </div>
         <div className="mb-4">
@@ -91,13 +117,13 @@ const ModalRekognisi = ({ isOpen, onRequestClose, data, setData }) => {
             className="bg-white text-red-500 border border-red-500 px-4 py-2 rounded hover:bg-red-100"
             onClick={onRequestClose}
           >
-            Tutup
+            Cancel
           </button>
           <button
             className="bg-bluef-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             onClick={handleSave} // Ganti dengan aksi yang sesuai
           >
-            Selesai
+            Simpan
           </button>
         </div>
       </form>

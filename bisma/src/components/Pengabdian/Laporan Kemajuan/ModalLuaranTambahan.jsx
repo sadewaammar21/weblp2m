@@ -7,7 +7,14 @@ import TextfieldCmp from "../../TextfieldCmp";
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalLuaranTambahan = ({ isOpen, onRequestClose, data, setData }) => {
+const ModalLuaranTambahan = ({
+  isOpen,
+  onRequestClose,
+  data,
+  setData,
+  index,
+  onSave,
+}) => {
   const handleDropdownChange = (field, value) => {
     setData((prevData) => ({
       ...prevData,

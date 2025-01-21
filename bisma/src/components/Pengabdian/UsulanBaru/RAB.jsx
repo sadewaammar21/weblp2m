@@ -46,7 +46,7 @@ const RAB = ({ navigate, data, setData }) => {
   };
 
   const handleBudgetChange = (index, name, value) => {
-    const updatedBudgetPlan = [...data.budgetPlanService];
+    const updatedBudgetPlan = [...data.budget_plan_service];
     updatedBudgetPlan[index][name] = value;
 
     // Hitung total otomatis untuk item
@@ -62,9 +62,10 @@ const RAB = ({ navigate, data, setData }) => {
   const addBudgetField = () => {
     setData({
       ...data,
-      budgetPlanService: [
-        ...data.budgetPlanService,
+      budget_plan_service: [
+        ...data.budget_plan_service,
         {
+          year: 0,
           id_group_budget: 0,
           id_component_budget: 0,
           item: "",
@@ -86,7 +87,7 @@ const RAB = ({ navigate, data, setData }) => {
   // Hitung total anggaran keseluruhan
   useEffect(() => {
     const calculateTotal = () => {
-      const total = data.budgetPlanService.reduce((acc, curr) => {
+      const total = data.budget_plan_service.reduce((acc, curr) => {
         const volume = parseFloat(curr.volume) || 0;
         const priceUnit = parseFloat(curr.price_unit) || 0;
         return acc + volume * priceUnit;
@@ -95,7 +96,7 @@ const RAB = ({ navigate, data, setData }) => {
     };
 
     calculateTotal();
-  }, [data.budgetPlanService]);
+  }, [data.budget_plan_service]);
 
   const formatNumber = (num) => {
     return num ? parseFloat(num).toLocaleString() : "";
@@ -135,19 +136,31 @@ const RAB = ({ navigate, data, setData }) => {
             <FaPlus className="mr-2" /> Tambah
           </button>
         </div>
-        <DropdownCmp
+        {/* <DropdownCmp
           label="Tahun Ke"
           options={mapToDropdown(year, "value", "value")}
           value={mapToDropdown(year, "value", "value").find(
-            (option) => option.value === data.year
+            (option) => option.value === it.year
           )}
           onChange={(option) => handleDropdownChange(option, "year")}
           placeholder="1"
           width="w-32"
-        />
+        /> */}
       </div>
-      {data.budgetPlanService.map((item, index) => (
+      {data.budget_plan_service.map((item, index) => (
         <div key={index} className="grid grid-cols-8 gap-x-4">
+          <DropdownCmp
+          label="Tahun Ke"
+          options={mapToDropdown(year, "value", "value")}
+          value={mapToDropdown(year, "value", "value").find(
+            (option) => option.value === item.year
+          )}
+          onChange={(option) =>
+            handleBudgetChange(index, "year", option.value)
+          }
+          placeholder="1"
+          width="w-32"
+        />
           <DropdownCmp
             label="Kelompok RAB"
             options={mapToDropdown(budgetGroup, "name", "id")}
