@@ -386,9 +386,7 @@ const LaporanKemajuanTab1 = (data, setData, service) => {
           Ringkasan
         </label>
         <h2 className="text-md font-sans text-gray-800 my-5">
-          Tuliskan secara ringkas latar belakang penlitian, tujuan dan tahapan
-          metode, luaran yang ditargetkan, dan hasil yang diperoleh sesuai
-          dengan tahun pelaksanaan
+          {service.title}
         </h2>
         <TextAreaCmp
           value={data.summary}

@@ -21,59 +21,55 @@ const DashboardComponent = () => {
   const handlePengabdian = () => {
     navigate("/pengabdian/usulan"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      const parseUser = JSON.parse(user);
-      setUsername(parseUser.name);
-    }
-  }, []);
+  const handleEdit = () => {
+    navigate("/dosen/edit-user"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  };
+  const user = JSON.parse(localStorage.getItem("user"));
   const metrics = [
     {
       title: "Identitas",
-      count: username,
-      icon: <FaUser size={24} className="text-white" />,
+      count: user.name,
+      icon: <FaUser size={24} className="text-violet-800" />,
     },
     {
       title: "Artikel Jurnal Internasional Bereputasi",
-      count: 0,
-      icon: <FaGlobe size={24} className="text-white" />,
+      count: user.article ?? 0,
+      icon: <FaGlobe size={24} className="text-violet-800" />,
     },
     {
       title: "Buku",
-      count: 0,
-      icon: <FaBook size={24} className="text-white" />,
+      count: user.books ?? 0,
+      icon: <FaBook size={24} className="text-violet-800" />,
     },
     {
       title: "Scopus H-Index",
-      count: 0,
-      icon: <FaChartBar size={24} className="text-white" />,
+      count: user.h_index_scopus ?? 0,
+      icon: <FaChartBar size={24} className="text-violet-800" />,
     },
     {
       title: "SS 3Yr",
-      count: 0,
-      icon: <FaCogs size={24} className="text-white" />,
+      count: user.ss_3yr_v3 ?? 0,
+      icon: <FaCogs size={24} className="text-violet-800" />,
     },
     {
       title: "HKI",
-      count: 0,
-      icon: <FaLightbulb size={24} className="text-white" />,
+      count: user.hki ?? 0,
+      icon: <FaLightbulb size={24} className="text-violet-800" />,
     },
     {
       title: "Sinta Skor Overall",
-      count: 0,
-      icon: <FaChartBar size={24} className="text-white" />,
+      count: user.ss_overall_v3 ?? 0,
+      icon: <FaChartBar size={24} className="text-violet-800" />,
     },
     {
       title: "Jumlah Proposal Pengabdian",
-      count: 0,
-      icon: <FaClipboardList size={24} className="text-white" />,
+      count: user.comunityService ?? 0,
+      icon: <FaClipboardList size={24} className="text-violet-800" />,
     },
     {
       title: "Jumlah Proposal Penelitian",
-      count: 0,
-      icon: <FaPen size={24} className="text-white" />,
+      count: user.research ?? 0,
+      icon: <FaPen size={24} className="text-violet-800" />,
     },
   ];
 
@@ -214,66 +210,87 @@ const DashboardComponent = () => {
         <div className=" mx-5 my-5 grid grid-cols-2 gap-4">
           {/* Kiri - Informasi Profil */}
           <div className="space-y-2">
+            <div className="text-gray-700 font-semibold">Identitas</div>
+            <div className="bg-gray-100 p-3 rounded-md">
+              <p className="font-semibold text-violet-800">{user.name}</p>
+              <p>{user.prodi ?? "Informatika"}</p>
+            </div>
             <div className="space-y-1">
-              <p className="font-semibold text-gray-700 mb-3">
-                NIDN/NIDK:
-                <br />
-                <span className="text-violet-800">0020337801</span>
+              <p className="font-semibold text-gray-700">
+                NIDN/NIDK:{" "}
+                <span className="text-gray-600">{user.nidn ?? "12345678"}</span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Klaster: <br />
-                <span className="text-violet-800">Kelompok PT Madya</span>
+              <p className="font-semibold text-gray-700">
+                Klaster:{" "}
+                <span className="text-gray-600">
+                  {user.cluster ?? "Kelompok PT Madya"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Institusi: <br />
-                <span className="text-violet-800">STMIK Sinar Nusantara</span>
+              <p className="font-semibold text-gray-700">
+                Institusi:{" "}
+                <span className="text-gray-600">
+                  {user.institution ?? "STMIK Sinar Nusantara"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Program Studi: <br />
-                <span className="text-violet-800">Informatika</span>
+              <p className="font-semibold text-gray-700">
+                Program Studi:{" "}
+                <span className="text-gray-600">
+                  {user.prodi ?? "Informatika"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Jenjang Pendidikan:
-                <br />
-                <span className="text-violet-800">S2</span>
+              <p className="font-semibold text-gray-700">
+                Jenjang Pendidikan:{" "}
+                <span className="text-gray-600">
+                  {user.education_level ?? "S2"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Jabatan Akademik:
-                <br />
-                <span className="text-violet-800">Lektor</span>
+              <p className="font-semibold text-gray-700">
+                Jabatan Akademik:{" "}
+                <span className="text-gray-600">
+                  {user.position ?? "Lektor"}
+                </span>
               </p>
             </div>
           </div>
           {/* Kanan - Kontak dan Informasi Tambahan */}
           <div className="space-y-2">
             <div className="space-y-1">
-              <p className="font-semibold text-gray-700 mb-3">
-                Tempat Tanggal Lahir: <br />
-                <span className="text-violet-800">Semarang, 23 Maret 1978</span>
+              <p className="font-semibold text-gray-700">
+                Tempat Tanggal Lahir:{" "}
+                <span className="text-gray-600">
+                  {user.place_of_birth ?? "Semarang"},{" "}
+                  {user.date_of_birth ?? "23 Maret 1978"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                No KTP:
-                <br />
-                <span className="text-violet-800">33223111111</span>
+              <p className="font-semibold text-gray-700">
+                No KTP:{" "}
+                <span className="text-gray-600">
+                  {user.nik ?? "33223111111"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                No Telepon:
-                <br />
-                <span className="text-violet-800">0271-9993333</span>
+              <p className="font-semibold text-gray-700">
+                No Telepon:{" "}
+                <span className="text-gray-600">
+                  {user.phone ?? "0271-9993333"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                No HP:
-                <br />
-                <span className="text-violet-800">08223332222</span>
+              <p className="font-semibold text-gray-700">
+                No HP:{" "}
+                <span className="text-gray-600">
+                  {user.phone ?? "08223332222"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Alamat Surel: <br />
-                <span className="text-violet-800">yust.retno@gmail.com</span>
+              <p className="font-semibold text-gray-700">
+                Alamat Surel:{" "}
+                <span className="text-gray-600">
+                  {user.email ?? "yust.retno@gmail.com"}
+                </span>
               </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Alamat: <br />
-                <span className="text-violet-800">
-                  Griya Kelapa Gading No. 6 Blulukan Colomadu
+              <p className="font-semibold text-gray-700">
+                Alamat:{" "}
+                <span className="text-gray-600">
+                  {user.address ??
+                    "Griya Kelapa Gading No. 6 Blulukan Colomadu"}
                 </span>
               </p>
             </div>
@@ -281,7 +298,10 @@ const DashboardComponent = () => {
         </div>
         <hr className="border-gray-300 my-2" />
         <div className="flex justify-end">
-          <button className="bg-yellow-500 text-white py-2 px-4 rounded-md">
+          <button
+            className="bg-yellow-500 text-white py-2 px-4 rounded-md"
+            onClick={handleEdit}
+          >
             Sunting
           </button>
         </div>
