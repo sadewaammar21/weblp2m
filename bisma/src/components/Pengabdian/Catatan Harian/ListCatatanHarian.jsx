@@ -110,10 +110,10 @@ const ListCatatanHarian = () => {
                     Informasi terkait penelitian ini disediakan pada kolom
                     berikut.
                   </td>
-                  <td className="border border-black px-4 py-2 align-middle">
+                  <td className="border border-black px-2 py-2 align-middle flex justify-center items-center w-20">
                     <button
                       onClick={() => handleView(item.id)}
-                      className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                      className="flex items-center px-1 py-1 rounded-md hover:text-cyan-500"
                     >
                       <img
                         src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}

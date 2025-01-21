@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ListLaporanKemajuanInternal from "./ListLaporanKemajuanInternal";
 import LaporanKemajuanTab1 from "./LaporanKemajuanTab1";
 import LaporanKemajuanTab2 from "./LaporanKemajuanTab2";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  addServiceProgressReport,
+  getServiceDetail,
+  getServiceProgressReport,
+} from "../../../Features/ServiceSlice";
 
 const steps = [
   { id: 1, label: "Laporran Kemajuan" },
@@ -40,8 +46,55 @@ const ProgressBar = ({ currentStep }) => {
 };
 
 const ProgressLaporanKemajuan = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = React.useState(1);
   const [isLaporanKemajuan, setIsLaporanKemajuan] = React.useState(false);
+
+  const location = useLocation();
+  const { id, reportId } = location.state || {};
+  const [report, setReport] = useState({});
+
+  //data pengabdian
+  const [service, setService] = useState({});
+
+  const fetchService = async () => {
+    const response = await getServiceDetail(id);
+    setService(response.data);
+    console.log(service);
+  };
+
+  const fetchReport = async () => {
+    if (reportId) {
+      const response = await getServiceProgressReport(reportId);
+      setReport(response);
+      console.log(report);
+    } else {
+      setReport({
+        summary: "",
+        keyword: "",
+        substance: "",
+        partner_contribution: "",
+        budget_use: "",
+        output_progress_report1s: [],
+        output_progress_report2s: [],
+        output_progress_report3s: [],
+        output_progress_report4s: [],
+        output_progress_report5s: [],
+        output_progress_report6s: [],
+        output_progress_report7s: [],
+        output_progress_report8s: [],
+        output_progress_report9s: [],
+        output_progress_report10s: [],
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchService();
+    if (reportId) {
+      fetchReport();
+    }
+  }, [reportId]);
 
   const handleNextStep = () => {
     if (currentStep < steps.length) {
@@ -58,9 +111,21 @@ const ProgressLaporanKemajuan = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <LaporanKemajuanTab1 />;
+        return (
+          <LaporanKemajuanTab1
+            service={service}
+            data={report}
+            setData={setReport}
+          />
+        );
       case 2:
-        return <LaporanKemajuanTab2 />;
+        return (
+          <LaporanKemajuanTab2
+            service={service}
+            data={report}
+            setData={setReport}
+          />
+        );
       default:
         return null;
     }
@@ -69,6 +134,31 @@ const ProgressLaporanKemajuan = () => {
   if (isLaporanKemajuan) {
     return <ListLaporanKemajuanInternal />;
   }
+
+  const handleSubmit = async (status) => {
+    if (reportId) {
+      setReport({ ...report, status: status });
+      // console.log(report)
+      const response = await addServiceProgressReport({
+        researchId: service.id,
+        data: report,
+        isEdit: true,
+        reportId: report.id,
+      });
+      console.log(response);
+      navigate(-1);
+    } else {
+      setReport({ ...report, status: status });
+      // console.log(report)
+      const response = await addServiceProgressReport({
+        researchId: service.id,
+        data: report,
+        isEdit: false,
+      });
+      console.log(response);
+      navigate(-1);
+    }
+  };
 
   return (
     <div>

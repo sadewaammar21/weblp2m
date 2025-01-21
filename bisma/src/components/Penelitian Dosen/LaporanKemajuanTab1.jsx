@@ -3,7 +3,7 @@ import TextAreaCmp from "../TextAreaCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { FaDownload } from "react-icons/fa";
 import ModalEditLapKemajuanTab1 from "./ModalEditLapKemajuanTab1";
-  
+
 const LaporanKemajuanTab1 = ({ research, data, setData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -38,16 +38,16 @@ const LaporanKemajuanTab1 = ({ research, data, setData }) => {
       ...prevData,
       [name]: files[0],
     }));
-    console.log(data)
+    console.log(data);
   };
 
   const [outputIndex, setOutputIndex] = useState(0);
   const handleOutputData = (index, outputData) => {
     const updatedOutput = Array.isArray(data.outputs) ? [...data.outputs] : [];
     updatedOutput[index] = outputData;
-    setData({...data, outputs: updatedOutput});
+    setData({ ...data, outputs: updatedOutput });
     console.log(data);
-  }
+  };
 
   return (
     <div>
@@ -91,7 +91,13 @@ const LaporanKemajuanTab1 = ({ research, data, setData }) => {
         </div>
       </div>
       <div>
-        <ModalEditLapKemajuanTab1 data={data.outputs} isOpen={isOpen} onRequestClose={closeModal} index={outputIndex} onSave={handleOutputData}/>
+        <ModalEditLapKemajuanTab1
+          data={data.outputs}
+          isOpen={isOpen}
+          onRequestClose={closeModal}
+          index={outputIndex}
+          onSave={handleOutputData}
+        />
         <label className="text-lg font-bold font-sans text-gray-800">
           Ringkasan
         </label>
@@ -100,12 +106,12 @@ const LaporanKemajuanTab1 = ({ research, data, setData }) => {
           metode, luaran yang ditargetkan, dan hasil yang diperoleh sesuai
           dengan tahun pelaksanaan
         </h2>
-        <TextAreaCmp 
+        <TextAreaCmp
           value={data.summary}
-          name='summary'
+          name="summary"
           onChange={handleInputChange()}
-          placeholder={`Ringksan Penelitian`} 
-          rows={4} 
+          placeholder={`Ringksan Penelitian`}
+          rows={4}
         />
       </div>
       <div>
@@ -139,7 +145,7 @@ const LaporanKemajuanTab1 = ({ research, data, setData }) => {
             {/* Input file */}
             <input
               type="file"
-              name='substance'
+              name="substance"
               onChange={(e) => handleFileChange(e)}
               className="border border-gray-300 rounded-lg p-2 w-1/2"
               id="file-upload"
@@ -205,7 +211,9 @@ const LaporanKemajuanTab1 = ({ research, data, setData }) => {
           <tbody>
             {(research?.output || []).map((item, index) => (
               <tr key={index}>
-                <td className="border border-black px-4 py-2 align-middle">{index+1}</td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {index + 1}
+                </td>
                 <td className="border border-black px-4 py-2 break-words text-right">
                   {item.description}
                 </td>

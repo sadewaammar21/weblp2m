@@ -243,7 +243,9 @@ const LaporanAkhirTab1 = ({ research, data, setData }) => {
           <tbody>
             {(research?.output || []).map((item, index) => (
               <tr key={index}>
-                <td className="border border-black px-4 py-2 align-middle">{index+1}</td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {index + 1}
+                </td>
                 <td className="border border-black px-4 py-2 break-words text-right">
                   {item.description}
                 </td>

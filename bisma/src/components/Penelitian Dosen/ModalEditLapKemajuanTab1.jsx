@@ -4,28 +4,33 @@ import DropdownCmp from "../DropdownCmp"; // Komponen Dropdown yang Anda buat
 import TextfieldCmp from "../TextfieldCmp"; // Komponen TextField yang Anda buat
 
 // Set root element untuk React Modal
-Modal.setAppElement("#root"); 
+Modal.setAppElement("#root");
 
-const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave }) => {
-
+const ModalEditLapKemajuanTab1 = ({
+  data,
+  isOpen,
+  onRequestClose,
+  index,
+  onSave,
+}) => {
   const [outputData, setOutputData] = useState({});
-  useEffect(()=>{
-    if(data){
-      setOutputData(data[index])
+  useEffect(() => {
+    if (data) {
+      setOutputData(data[index]);
     }
-  },[data, index])
+  }, [data, index]);
 
   const statusArticle = [
-    {value: 'submitted', label: 'Submitted'},
-    {value: 'draft', label: 'Draft'},
-    {value: 'accepted', label: 'Accepted'},
-    {value: 'published', label: 'Published'},
+    { value: "submitted", label: "Submitted" },
+    { value: "draft", label: "Draft" },
+    { value: "accepted", label: "Accepted" },
+    { value: "published", label: "Published" },
   ];
 
   const statusAuthor = [
-    {value: 'first-author', label: 'First-author'},
-    {value: 'co-author', label: 'Co-author'},
-    {value: 'author', label: 'Author'},
+    { value: "first-author", label: "First-author" },
+    { value: "co-author", label: "Co-author" },
+    { value: "author", label: "Author" },
   ];
 
   const handleDropdownChange = (option, fieldName) => {
@@ -55,7 +60,7 @@ const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave 
 
   const handleSave = () => {
     console.log("Data berhasil disimpan");
-    onSave(index, outputData)
+    onSave(index, outputData);
     setOutputData({});
     onRequestClose(); // Tutup modal setelah menyimpan
   };
@@ -77,29 +82,38 @@ const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave 
           <label className="block text-gray-700 mb-2">
             Status Artikel di Jurnal Bereputasi Internasional
           </label>
-          <DropdownCmp 
-            options={statusArticle} 
-            value={statusArticle.find((option) => option.value === outputData.status_article)}
-            onChange={(option) => handleDropdownChange(option, 'status_article')}/>
+          <DropdownCmp
+            options={statusArticle}
+            value={statusArticle.find(
+              (option) => option.value === outputData.status_article
+            )}
+            onChange={(option) =>
+              handleDropdownChange(option, "status_article")
+            }
+          />
         </div>
 
         {/* Dropdown Status Penulis */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Status Penulis</label>
-          <DropdownCmp 
-            options={statusAuthor} 
-            value={statusAuthor.find((option) => option.value === outputData.status_writer)}
-            onChange={(option) => handleDropdownChange(option, 'status_writer')} />
+          <DropdownCmp
+            options={statusAuthor}
+            value={statusAuthor.find(
+              (option) => option.value === outputData.status_writer
+            )}
+            onChange={(option) => handleDropdownChange(option, "status_writer")}
+          />
         </div>
 
         {/* Nama Jurnal */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Nama Jurnal</label>
-          <TextfieldCmp 
+          <TextfieldCmp
             value={outputData.journal_name}
-            name='journal_name'
+            name="journal_name"
             onChange={(e) => handleInputChange(e)}
-            placeholder="Nama Jurnal" />
+            placeholder="Nama Jurnal"
+          />
         </div>
 
         {/* ISSN/EISSN dan Lembaga Pengindeks */}
@@ -108,9 +122,10 @@ const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave 
             <label className="block text-gray-700 mb-2">ISSN/EISSN</label>
             <TextfieldCmp
               value={outputData.issn}
-              name='issn'
+              name="issn"
               onChange={(e) => handleInputChange(e)}
-              placeholder="ISSN/EISSN" />
+              placeholder="ISSN/EISSN"
+            />
           </div>
           <div>
             <label className="block text-gray-700 mb-2">
@@ -118,9 +133,10 @@ const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave 
             </label>
             <TextfieldCmp
               value={outputData.indexing_agency}
-              name='indexing_agency'
+              name="indexing_agency"
               onChange={(e) => handleInputChange(e)}
-              placeholder="Lembaga Pengindeks" />
+              placeholder="Lembaga Pengindeks"
+            />
           </div>
         </div>
 
@@ -129,9 +145,10 @@ const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave 
           <label className="block text-gray-700 mb-2">URL Jurnal</label>
           <TextfieldCmp
             value={outputData.journal_url}
-            name='journal_url'
+            name="journal_url"
             onChange={(e) => handleInputChange(e)}
-            placeholder="URL Jurnal" />
+            placeholder="URL Jurnal"
+          />
         </div>
 
         {/* Judul Artikel */}
@@ -139,16 +156,17 @@ const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave 
           <label className="block text-gray-700 mb-2">Judul Artikel</label>
           <TextfieldCmp
             value={outputData.title_article}
-            name='title_article'
+            name="title_article"
             onChange={(e) => handleInputChange(e)}
-            placeholder="Judul Artikel" />
+            placeholder="Judul Artikel"
+          />
         </div>
 
         {/* File Upload */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Naskah Artikel</label>
           <input
-            name='manuscript_article'
+            name="manuscript_article"
             onChange={(e) => handleFileChange(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
@@ -157,7 +175,7 @@ const ModalEditLapKemajuanTab1 = ({ data, isOpen, onRequestClose, index, onSave 
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Bukti Submit</label>
           <input
-            name='proof_submit'
+            name="proof_submit"
             onChange={(e) => handleFileChange(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
