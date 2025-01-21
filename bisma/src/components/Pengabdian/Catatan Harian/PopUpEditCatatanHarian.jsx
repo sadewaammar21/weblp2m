@@ -1,22 +1,37 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import Modal from "react-modal";
 import SearchInput from "../../SearchInput";
 import TextfieldCmp from "../../TextfieldCmp";
 import TextAreaCmp from "../../TextAreaCmp";
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
-import { addLogbook } from "../../../Features/ResearchSlice";
+import { getDetailServiceLogbook, addServiceLogbook } from "../../../Features/ServiceSlice";
 import DropdownCmp from "../../DropdownCmp";
 
 Modal.setAppElement("#root");
 
 const PopUpEditCatatanHarian = ({ isOpen, onRequestClose, id }) => {
-  const [logbook, setLogbook] = useState({
-    type: "research",
-    id: id,
-    date_activity: "",
-    activity_description: "",
-    percentage: 0,
+ const [logbook, setLogbook] = useState({
+     id: id,
+     date_activity: "",
+     group_budget: "",
+     nominal: "",
+     file_number: "",
+     activity_description: "",
+     percentage: 0,
   });
+ 
+   const fetchLogbooks = async () => {
+      const response = await getDetailServiceLogbook(id);
+      console.log(response);
+      setLogbook(response);
+      console.log(logbook);
+    }
+    useEffect(() => {
+      if(isOpen){
+        fetchLogbooks();
+      }
+    }, [isOpen])
+
 
   const handleInputChange = (e) => {
     const inputName = e.target.name;
@@ -37,19 +52,40 @@ const PopUpEditCatatanHarian = ({ isOpen, onRequestClose, id }) => {
     }));
   };
 
+  const kelompokBiaya = [
+    { value: "Teknologi dan Inovasi", label: "Teknologi dan Inovasi" },
+    { value: "Biaya Upah dan Jasa", label: "Biaya Upah dan Jasa" },
+    { value: "Biaya Perjalanan", label: "Biaya Perjalanan" },
+    { value: "Biaya Pelatihan", label: "Biaya Pelatihan" },
+    { value: "Biaya Lainnya", label: "Biaya Lainnya" },
+  ];
+
+  const handleGroupBudget = (value) => {
+    setLogbook({ ...logbook, group_budget: value });
+    console.log(logbook.group_budget);
+  };
+
   const handleSubmit = () => {
-    const response = addLogbook({
-      id: logbook.id,
+    const response = addServiceLogbook({
+      id: logbook.comunity_service_id,
       dateActivity: logbook.date_activity,
+      groupBudget: logbook.group_budget,
+      nominal: logbook.nominal,
+      fileNumber: logbook.file_number,
       activityDescription: logbook.activity_description,
       percentage: logbook.percentage,
       document: logbook.document,
+      isEdit: true,
+      logbookId: logbook.id
     });
     console.log(response);
+    console.log(logbook);
     setLogbook({
-      type: "research",
       id: id,
       date_activity: "",
+      group_budget: "",
+      nominal: "",
+      file_number: "",
       activity_description: "",
       percentage: 0,
     });
@@ -108,7 +144,7 @@ const PopUpEditCatatanHarian = ({ isOpen, onRequestClose, id }) => {
               </button> */}
               <input
                 type="file"
-                onChange={handleFileChange}
+                onChange={(e)=>handleFileChange(e)}
                 className="border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
                 id="file-upload"
               />
@@ -128,12 +164,9 @@ const PopUpEditCatatanHarian = ({ isOpen, onRequestClose, id }) => {
             </label>
             <DropdownCmp
               width="w-full"
-              options={[
-                { value: "teknologi-inovasi", label: "Teknologi dan Inovasi" },
-                { value: "upah-jasa", label: "Biaya Upah dan Jasa" },
-                { value: "perjalanan", label: "Biaya Perjalanan" },
-                { value: "lainnya", label: "Biaya Lainnya" },
-              ]}
+              options={kelompokBiaya}
+              value={kelompokBiaya.find((option) => option.value === logbook.group_budget)}
+              onChange={(option) => handleGroupBudget(option.value)} 
             />
           </div>
 
@@ -143,19 +176,19 @@ const PopUpEditCatatanHarian = ({ isOpen, onRequestClose, id }) => {
               Nominal
             </label>
             <input
-              name="percentage"
-              value={logbook.percentage}
-              onChange={(e) => handleInputChange(e)}
-              type="text"
-              placeholder="Text Field"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            name="nominal"
+            value={logbook.nominal}
+            onChange={(e) => handleInputChange(e)}
+            type="text"
+            placeholder="Text Field"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+             />
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Persentase
+              Nomor Berkas
             </label>
             <input
-              name="percentage"
-              value={logbook.percentage}
+              name="file_number"
+              value={logbook.file_number}
               onChange={(e) => handleInputChange(e)}
               type="text"
               placeholder="Text Field"

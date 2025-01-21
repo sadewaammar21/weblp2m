@@ -438,7 +438,18 @@ export const getDetailServiceLogbook = async (id) => {
   }
 };
 
-export const addServiceLogbook = async ({ id, data, isEdit, logbookId }) => {
+export const addServiceLogbook = async ({
+  id,
+  data,
+  dateActivity,
+  groupBudget,
+  nominal,
+  fileNumber,
+  activityDescription,
+  percentage,
+  document,
+  isEdit,
+  logbookId }) => {
   const formData = new FormData();
 
   if (isEdit) {
@@ -446,14 +457,14 @@ export const addServiceLogbook = async ({ id, data, isEdit, logbookId }) => {
   }
 
   formData.append("comunity_service_id", id);
-  formData.append("date_activity", data.date_activity);
-  formData.append("group_budget", data.group_budget);
-  formData.append("nominal", data.nominal);
-  formData.append("file_number", data.file_number);
-  formData.append("activity_description", data.activity_description);
-  formData.append("percentage", data.percentage);
-  if (data.document) {
-    formData.append("document", data.document);
+  formData.append("date_activity", dateActivity);
+  formData.append("group_budget", groupBudget);
+  formData.append("nominal", nominal);
+  formData.append("file_number", fileNumber);
+  formData.append("activity_description", activityDescription);
+  formData.append("percentage", percentage);
+  if (document) {
+    formData.append("document", document);
   }
   try {
     if (isEdit) {
@@ -472,6 +483,7 @@ export const addServiceLogbook = async ({ id, data, isEdit, logbookId }) => {
       console.log(response);
     }
   } catch (error) {
+    console.log(error);
     return error.message;
   }
 };
