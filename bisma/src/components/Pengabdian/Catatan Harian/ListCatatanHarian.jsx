@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../../DropdownCmp";
-import { getResearch } from "../../../Features/ResearchSlice";
+import { getService } from "../../../Features/ServiceSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ const ListCatatanHarian = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const fetchData = async () => {
     try {
-      const result = await getResearch({
+      const result = await getService({
         pageSize: 5,
         currentPage: 1,
         // status: 1,

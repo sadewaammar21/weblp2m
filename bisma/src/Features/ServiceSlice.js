@@ -59,8 +59,13 @@ export const addService = async ({
 
   formData.append("title", data.title);
   formData.append("category_id", data.category_id);
-  formData.append("focus_thematic_id", data.focus_thematic_id);
-  formData.append("focus_rirn_id", data.focus_rirn_id);
+  if(data.focus_thematic_id){
+    formData.append("focus_thematic_id", data.focus_thematic_id);
+  }
+  if(data.focus_rirn_id){
+    formData.append("focus_rirn_id", data.focus_rirn_id);
+  }
+  
   formData.append("scheme_id", data.scheme_id);
   formData.append("scope_id", data.scope_id);
   formData.append("year", data.year);
@@ -71,14 +76,14 @@ export const addService = async ({
   formData.append("leader_name", data.leader_name);
   formData.append("leader_task", data.leader_task);
   formData.append("status", 1);
-  formData.append("approval_funds", data.approval_funds);
-  formData.append("letter_of_intent", data.letter_of_intent);
+  // formData.append("approval_funds", data.approval_funds);
+  // formData.append("letter_of_intent", data.letter_of_intent);
 
   if (data.substance_document) {
     formData.append("substance_document", data.substance_document);
   }
 
-  data.outputPartner.forEach((partner, index) => {
+  data.output_partner.forEach((partner, index) => {
     formData.append(`outputPartner[${index}][year]`, partner.year);
     formData.append(
       `outputPartner[${index}][id_category_output]`,
@@ -95,7 +100,7 @@ export const addService = async ({
     );
   });
 
-  data.outputPublication.forEach((publication, index) => {
+  data.output_publication.forEach((publication, index) => {
     formData.append(
       `outputPublication[${index}][id_category_output]`,
       publication.id_category_output
@@ -111,7 +116,7 @@ export const addService = async ({
     );
   });
 
-  data.outputMedia.forEach((media, index) => {
+  data.output_media.forEach((media, index) => {
     formData.append(
       `outputMedia[${index}][id_category_output]`,
       media.id_category_output
@@ -124,7 +129,7 @@ export const addService = async ({
     formData.append(`outputMedia[${index}][description]`, media.description);
   });
 
-  data.outputVideo.forEach((video, index) => {
+  data.output_video.forEach((video, index) => {
     formData.append(
       `outputVideo[${index}][id_category_output]`,
       video.id_category_output
@@ -137,7 +142,7 @@ export const addService = async ({
     formData.append(`outputVideo[${index}][description]`, video.description);
   });
 
-  data.budgetPlanService.forEach((budgetPlanService, index) => {
+  data.budget_plan_service.forEach((budgetPlanService, index) => {
     formData.append(`budgetPlanService[${index}][year]`, budgetPlanService.year);
     formData.append(
       `budgetPlanService[${index}][id_group_budget]`,
@@ -174,7 +179,7 @@ export const addService = async ({
     }
   });
 
-  data.supportingFile.forEach((file, index) => {
+  data.supporting_file.forEach((file, index) => {
     formData.append(`supportingFile[${index}][type_id]`, file.type_id);
     if (file.document) {
       formData.append(`supportingFile[${index}][document]`, file.document);
@@ -186,7 +191,7 @@ export const addService = async ({
     formData.append(`members[${index}][task]`, member.pivot.task);
   });
 
-  data.studentServices.forEach((studentService, index) => {
+  data.student_services.forEach((studentService, index) => {
     formData.append(`studentServices[${index}][name]`, studentService.name);
     formData.append(`studentServices[${index}][nim]`, studentService.nim);
     formData.append(`studentServices[${index}][address]`, studentService.address);
