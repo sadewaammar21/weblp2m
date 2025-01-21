@@ -11,7 +11,7 @@ const UsulanBaruList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedData, setSelectedData] = useState('');
+  const [selectedData, setSelectedData] = useState("");
 
   const handleClick = () => {
     navigate("/penelitian/usulan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
@@ -46,7 +46,7 @@ const UsulanBaruList = () => {
   };
 
   const openModal = (id) => {
-    setSelectedData(id)
+    setSelectedData(id);
     setIsOpen(true);
   };
 
@@ -57,14 +57,12 @@ const UsulanBaruList = () => {
 
   const renderActionButton = (item) => {
     if (item.user.id !== user.id) {
-      const currentUserAsMember = item.members.find((member) => member.id === user.id);
-      if(currentUserAsMember.pivot.status !== "pending"){
-        return(
-          <p>
-            {currentUserAsMember.pivot.status}
-          </p>
-        )
-      }else{
+      const currentUserAsMember = item.members.find(
+        (member) => member.id === user.id
+      );
+      if (currentUserAsMember.pivot.status !== "pending") {
+        return <p>{currentUserAsMember.pivot.status}</p>;
+      } else {
         return (
           <div>
             <button
@@ -81,7 +79,7 @@ const UsulanBaruList = () => {
         <div>
           <button
             onClick={() => navigate(`/penelitian/usulan/edit/${item.id}`)}
-            className={`bg-blue-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? 'hidden': ''}`}
+            className={`bg-blue-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
           >
             edit
           </button>
@@ -102,8 +100,8 @@ const UsulanBaruList = () => {
     }
   };
 
-  if(loading){
-    return <p>Loading...</p>
+  if (loading) {
+    return <p>Loading...</p>;
   }
   return (
     <div className="mx-5">
@@ -126,7 +124,12 @@ const UsulanBaruList = () => {
               />
               <h2 className="text-xl font-bold text-violet-800"> Informasi</h2>
             </div> */}
-            <ModalTerimaAnggotaPenelitian research={selectedData} userId={user.id} isOpen={isOpen} onRequestClose={closeModal}/>
+            <ModalTerimaAnggotaPenelitian
+              research={selectedData}
+              userId={user.id}
+              isOpen={isOpen}
+              onRequestClose={closeModal}
+            />
             {/* <h2 className="text-md font-medium text-violet-800 mr-1">
               {" "}
               Apakah anda menerima menjadi anggota penelitian?

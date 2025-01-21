@@ -5,7 +5,14 @@ import DropdownCmp from "../../DropdownCmp";
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalPoster = ({ isOpen, onRequestClose, data, setData }) => {
+const ModalPoster = ({
+  data,
+  isOpen,
+  onRequestClose,
+  index,
+  onSave,
+  setData,
+}) => {
   const handleDropdownChange = (field, value) => {
     setData((prevData) => ({
       ...prevData,
