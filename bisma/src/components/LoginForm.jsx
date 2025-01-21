@@ -24,7 +24,8 @@ const LoginForm = () => {
       Dosen: "/dashboard",
       Operator: "/dashboard-operator",
       Reviewer: "/dashboard-reviewer",
-      "Kepala LPPM": "/dashboard-kepala-lppm",
+      Kaprodi: "/dashboard-kaprodi",
+      KepalaLPPM: "/dashboard-kepala-lppm",
     };
 
     for (const role of roles) {
