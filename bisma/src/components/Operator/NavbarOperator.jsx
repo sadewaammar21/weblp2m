@@ -257,17 +257,40 @@ const NavbarOperator = ({ children }) => {
                   )}
                 </li>
 
-                <li className="text-white hover:text-gray-300 cursor-pointer ">
-                  <Link to="/monitoring-data-pendukung">
-                    <div className="flex items-center">
-                      <img
-                        src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
-                        alt="kekayaan intelektual"
-                        className="w-5 h-5 mr-2"
-                      />
-                      Data Pendukung
-                    </div>
-                  </Link>
+                {/* Dropdown di Data Pendukung */}
+                <li
+                  className="text-white hover:text-gray-300 cursor-pointer relative"
+                  onMouseEnter={() => handleDropdownEnter(3)}
+                  onMouseLeave={() => setDropdown(false)}
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
+                      alt="kekayaan intelektual"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Data Pendukung
+                    <FaChevronDown className="ml-2" />
+                  </div>
+                  {dropdown === 3 && (
+                    <ul className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10">
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/monitoring/data-pendukung/edit-profil-lembaga">
+                          Edit Profil Lembaga
+                        </Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/monitoring/data-pendukung/profil-user-list">
+                          Edit Profil User
+                        </Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/monitoring/data-pendukung/reset-password-user">
+                          Reset Password User
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
                 <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
                   <Link to="/monitoring-pengelola-review">

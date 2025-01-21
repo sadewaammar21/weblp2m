@@ -8,13 +8,10 @@ const UsulanBaruList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedData, setSelectedData] = useState("");
+  const [selectedData, setSelectedData] = useState(null);
+
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-
-  const handleClick = () => {
-    navigate("/pengabdian/usulan/baru");
-  };
 
   const fetchData = async () => {
     try {
@@ -35,12 +32,16 @@ const UsulanBaruList = () => {
     fetchData();
   }, []);
 
+  const handleClick = () => {
+    navigate("/pengabdian/usulan/baru");
+  };
+
   const handleDelete = async (id) => {
     try {
       await deleteService(id);
       fetchData();
     } catch (err) {
-      console.error(err.message);
+      console.error(err);
     }
   };
 
@@ -59,7 +60,7 @@ const UsulanBaruList = () => {
       const currentUserAsMember = item.members.find(
         (member) => member.id === user.id
       );
-      if (currentUserAsMember.pivot.status !== "pending") {
+      if (currentUserAsMember?.pivot?.status !== "pending") {
         return <p>{currentUserAsMember.pivot.status}</p>;
       } else {
         return (
@@ -73,28 +74,36 @@ const UsulanBaruList = () => {
       }
     } else {
       return (
-        <div className="space-x-2">
+        <div className="flex space-x-2">
           <button
             onClick={() => navigate(`/pengabdian/usulan/edit/${item.id}`)}
-            className={`bg-blue-500 px-2 py-1 rounded-md text-white ${
-              item.status !== 1 ? "hidden" : ""
-            }`}
+            className={` px-2 py-1 rounded-md text-white ${item.status !== 1 ? "hidden" : ""}`}
           >
-            Edit
+            <img
+              src={process.env.PUBLIC_URL + "/assets/edit_perusl.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
           </button>
           <button
             onClick={() => navigate(`/penelitian/detail/${item.id}`)}
-            className="bg-blue-500 px-2 py-1 rounded-md text-white"
+            className=" px-2 py-1 rounded-md text-white"
           >
-            Detail
+            <img
+              src={process.env.PUBLIC_URL + "/assets/detail.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
           </button>
           <button
             onClick={() => handleDelete(item.id)}
-            className={`bg-red-500 px-2 py-1 rounded-md text-white ${
-              item.status !== 1 ? "hidden" : ""
-            }`}
+            className={` px-2 py-1 rounded-md text-white ${item.status !== 1 ? "hidden" : ""}`}
           >
-            Delete
+            <img
+              src={process.env.PUBLIC_URL + "/assets/remove.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
           </button>
         </div>
       );
@@ -106,6 +115,7 @@ const UsulanBaruList = () => {
       <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
         USULAN PENGABDIAN
       </h1>
+      {/* <ModalTerimaAnggotaPenelitian service={selectedData} userId={user.id} isOpen={isOpen} onRequestClose={closeModal}/> */}
       <div className="bg-gray-50 shadow-sm rounded-sm p-5">
         <div className="flex justify-between items-center w-full mb-4">
           <button
@@ -115,60 +125,50 @@ const UsulanBaruList = () => {
             <FaPlus className="mr-2" /> Tambah Usulan
           </button>
         </div>
-        <div className="relative overflow-x-auto my-10">
-          <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
-            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th className="border border-black px-4 py-2">No</th>
-                <th className="border border-black px-4 py-2">Ketua</th>
-                <th className="border border-black px-4 py-2">Judul</th>
-                <th className="border border-black px-4 py-2">Bidang Fokus</th>
-                <th className="border border-black px-4 py-2">
-                  Tahun Pelaksanaan
-                </th>
-                <th className="border border-black px-4 py-2">Peran</th>
-                <th className="border border-black px-4 py-2">Status Usulan</th>
-                <th className="border border-black px-4 py-2">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
+
+        {error && <p className="text-red-500">{error}</p>}
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="relative overflow-x-auto">
+            <table className="w-full text-sm text-left bg-neutral-20 text-gray-500 border border-gray-300">
+              <thead className="border-b text-xs text-gray-700 uppercase bg-gray-50 text-center">
                 <tr>
-                  <td colSpan="8" className="text-center py-4">
-                    Loading...
-                  </td>
+                  <th className="px-4 py-2">No</th>
+                  <th className="px-4 py-2">Ketua</th>
+                  <th className="px-4 py-2">Judul</th>
+                  <th className="px-4 py-2">Bidang Fokus</th>
+                  <th className="px-4 py-2">Tahun Pelaksanaan</th>
+                  <th className="px-4 py-2">Peran</th>
+                  <th className="px-4 py-2">Status Usulan</th>
+                  <th className="px-4 py-2">Aksi</th>
                 </tr>
-              ) : error ? (
-                <tr>
-                  <td colSpan="8" className="text-center py-4 text-red-500">
-                    {error}
-                  </td>
-                </tr>
-              ) : data.length > 0 ? (
-                data.map((item, index) => (
-                  <tr key={item.id}>
-                    <td>{index + 1}</td>
-                    <td>{item.user?.name}</td>
-                    <td>{item.title}</td>
-                    <td>
-                      {item.focus_thematic.name || item.focus_r_i_r_n_s.name}
+              </thead>
+              <tbody>
+                {data.map((item, index) => (
+                  <tr key={item.id} className="border-b text-center">
+                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className="px-4 py-2">{item.user?.name}</td>
+                    <td className="px-4 py-2">{item.title}</td>
+                    <td className="px-4 py-2">
+                      {item.focus_thematic?.name || item.focus_r_i_r_n_s?.name}
                     </td>
-                    <td>{item.year}</td>
-                    <td>{user.id === item.user.id ? "Ketua" : "Anggota"}</td>
-                    <td>{item.status}</td>
-                    <td>{renderActionButton(item)}</td>
+                    <td className="px-4 py-2">{item.year}</td>
+                    <td className="px-4 py-2">
+                      {user.id === item.user.id ? "Ketua" : "Anggota"}
+                    </td>
+                    <td className="px-4 py-2">{item.status}</td>
+                    <td className="px-4 py-2 ">
+                      <div className="inline-block">
+                        {renderActionButton(item)}
+                      </div>
+                    </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="8" className="text-center py-4">
-                    No data available.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
