@@ -10,7 +10,7 @@ import {
   downloadResearchDocument,
 } from "../../Features/ResearchSlice";
 
-const UsulanDitolakKpl = () => {
+const UsulanDitolakKpr = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -26,7 +26,11 @@ const UsulanDitolakKpl = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getResearch({ page_size: 5, current_page: 1, status: 8 });
+        const result = await getResearch({
+          page_size: 5,
+          current_page: 1,
+          status: 8,
+        });
         setData(result.data);
         console.log(result);
         console.log(data);
@@ -88,7 +92,7 @@ const UsulanDitolakKpl = () => {
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        LIST USULAN DITOLAK KEPALA LPPM
+        LIST USULAN DITOLAK KAPRODI
       </h1>
 
       <div>
@@ -204,4 +208,4 @@ const UsulanDitolakKpl = () => {
   );
 };
 
-export default UsulanDitolakKpl;
+export default UsulanDitolakKpr;

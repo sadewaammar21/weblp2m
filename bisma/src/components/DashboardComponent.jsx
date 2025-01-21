@@ -21,6 +21,9 @@ const DashboardComponent = () => {
   const handlePengabdian = () => {
     navigate("/pengabdian/usulan"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
+  const handleEdit = () => {
+    navigate("/dosen/edit-user"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  };
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -281,7 +284,10 @@ const DashboardComponent = () => {
         </div>
         <hr className="border-gray-300 my-2" />
         <div className="flex justify-end">
-          <button className="bg-yellow-500 text-white py-2 px-4 rounded-md">
+          <button
+            className="bg-yellow-500 text-white py-2 px-4 rounded-md"
+            onClick={handleEdit}
+          >
             Sunting
           </button>
         </div>

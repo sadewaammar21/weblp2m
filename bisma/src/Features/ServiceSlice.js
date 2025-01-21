@@ -59,13 +59,13 @@ export const addService = async ({
 
   formData.append("title", data.title);
   formData.append("category_id", data.category_id);
-  if(data.focus_thematic_id){
+  if (data.focus_thematic_id) {
     formData.append("focus_thematic_id", data.focus_thematic_id);
   }
-  if(data.focus_rirn_id){
+  if (data.focus_rirn_id) {
     formData.append("focus_rirn_id", data.focus_rirn_id);
   }
-  
+
   formData.append("scheme_id", data.scheme_id);
   formData.append("scope_id", data.scope_id);
   formData.append("year", data.year);
@@ -143,7 +143,10 @@ export const addService = async ({
   });
 
   data.budget_plan_service.forEach((budgetPlanService, index) => {
-    formData.append(`budgetPlanService[${index}][year]`, budgetPlanService.year);
+    formData.append(
+      `budgetPlanService[${index}][year]`,
+      budgetPlanService.year
+    );
     formData.append(
       `budgetPlanService[${index}][id_group_budget]`,
       budgetPlanService.id_group_budget
@@ -152,11 +155,26 @@ export const addService = async ({
       `budgetPlanService[${index}][id_component_budget]`,
       budgetPlanService.id_component_budget
     );
-    formData.append(`budgetPlanService[${index}][item]`, budgetPlanService.item);
-    formData.append(`budgetPlanService[${index}][unit]`, budgetPlanService.unit);
-    formData.append(`budgetPlanService[${index}][volume]`, budgetPlanService.volume);
-    formData.append(`budgetPlanService[${index}][price_unit]`, budgetPlanService.price_unit);
-    formData.append(`budgetPlanService[${index}][total]`, budgetPlanService.total);
+    formData.append(
+      `budgetPlanService[${index}][item]`,
+      budgetPlanService.item
+    );
+    formData.append(
+      `budgetPlanService[${index}][unit]`,
+      budgetPlanService.unit
+    );
+    formData.append(
+      `budgetPlanService[${index}][volume]`,
+      budgetPlanService.volume
+    );
+    formData.append(
+      `budgetPlanService[${index}][price_unit]`,
+      budgetPlanService.price_unit
+    );
+    formData.append(
+      `budgetPlanService[${index}][total]`,
+      budgetPlanService.total
+    );
   });
 
   data.partner.forEach((partner, index) => {
@@ -194,7 +212,10 @@ export const addService = async ({
   data.student_services.forEach((studentService, index) => {
     formData.append(`studentServices[${index}][name]`, studentService.name);
     formData.append(`studentServices[${index}][nim]`, studentService.nim);
-    formData.append(`studentServices[${index}][address]`, studentService.address);
+    formData.append(
+      `studentServices[${index}][address]`,
+      studentService.address
+    );
     formData.append(`studentServices[${index}][email]`, studentService.email);
     formData.append(`studentServices[${index}][phone]`, studentService.phone);
     formData.append(`studentServices[${index}][prodi]`, studentService.prodi);
@@ -210,44 +231,44 @@ export const addService = async ({
         getToken()
       );
       if (isSubmit) {
-              if (
-                response.data.data.members.every(
-                  (member) =>
-                    member.pivot.status === "2" || member.pivot.status === "accepted"
-                )
-              ) {
-                const responseStatus = await updateStatus({
-                  serviceId: response.data.data.id,
-                  newStatus: newStatus,
-                  note: "diajukan",
-                });
-                console.log("Response:", responseStatus);
-              }
-            }
-            console.log(response.data);
+        if (
+          response.data.data.members.every(
+            (member) =>
+              member.pivot.status === "2" || member.pivot.status === "accepted"
+          )
+        ) {
+          const responseStatus = await updateStatus({
+            serviceId: response.data.data.id,
+            newStatus: newStatus,
+            note: "diajukan",
+          });
+          console.log("Response:", responseStatus);
+        }
+      }
+      console.log(response.data);
     } else {
       const response = await axios.post(
         `${apiUrl}/api/comunity-service`,
         formData,
         getToken()
       );
-     if (isSubmit) {
-             if (
-               response.data.data.members.every(
-                 (member) =>
-                   member.pivot.status === "2" || member.pivot.status === "accepted"
-               )
-             ) {
-               const responseStatus = await updateStatus({
-                 serviceId: response.data.data.id,
-                 newStatus: newStatus,
-                 note: "diajukan",
-               });
-               console.log("Response:", responseStatus);
-             }
-           }
-           console.log(response.data);
-         }
+      if (isSubmit) {
+        if (
+          response.data.data.members.every(
+            (member) =>
+              member.pivot.status === "2" || member.pivot.status === "accepted"
+          )
+        ) {
+          const responseStatus = await updateStatus({
+            serviceId: response.data.data.id,
+            newStatus: newStatus,
+            note: "diajukan",
+          });
+          console.log("Response:", responseStatus);
+        }
+      }
+      console.log(response.data);
+    }
   } catch (error) {
     console.log(error);
     return error;

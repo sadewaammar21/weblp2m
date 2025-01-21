@@ -30,19 +30,19 @@ const DashboardKaprodi = () => {
       title: "Usulan Belum Ditinjau",
       count: 0,
       icon: <FaHdd size={24} className="text-violet-800" />,
-      path: "/kepala-lppm-usulan-belum-ditinjau",
+      path: "/kaprodi/usulan-belum-ditinjau",
     },
     {
       title: "Usulan Disetujui",
       count: 1,
       icon: <FaBullseye size={24} className="text-violet-800" />,
-      path: "/kepala-lppm-usulan-disetujui",
+      path: "/kaprodi/usulan-disetujui",
     },
     {
       title: "Usulan Ditolak",
       count: 0,
       icon: <FaChartBar size={24} className="text-violet-800" />,
-      path: "/kepala-lppm-usulan-ditolak",
+      path: "/kaprodi/usulan-ditolak",
     },
   ];
 

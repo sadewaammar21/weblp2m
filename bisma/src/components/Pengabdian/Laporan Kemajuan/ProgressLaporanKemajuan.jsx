@@ -10,7 +10,7 @@ import {
 } from "../../../Features/ServiceSlice";
 
 const steps = [
-  { id: 1, label: "Laporran Kemajuan" },
+  { id: 1, label: "Laporan Kemajuan" },
   { id: 2, label: "Pengunaan Anggaran" },
 ];
 
@@ -47,15 +47,42 @@ const ProgressBar = ({ currentStep }) => {
 
 const ProgressLaporanKemajuan = () => {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = React.useState(1);
-  const [isLaporanKemajuan, setIsLaporanKemajuan] = React.useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isLaporanKemajuan, setIsLaporanKemajuan] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  //data laporan kemajuan
   const location = useLocation();
   const { id, reportId } = location.state || {};
   const [report, setReport] = useState({});
 
   //data pengabdian
   const [service, setService] = useState({});
+
+  // const fetchService = async () => {
+  //   try {
+  //     const response = await getServiceDetail(id);
+  //     setService(response.data || {});
+  //   } catch (error) {
+  //     console.error("Error fetching service details:", error);
+  //   }
+  // };
+
+  // const fetchService = async () => {
+  //   if (id) {
+  //     console.error("Service ID is required!");
+  //     setLoading(true);
+  //     return;
+  //   }
+  //   try {
+  //     const response = await getServiceDetail(id);
+  //     setService(response.data || {});
+  //   } catch (error) {
+  //     console.error("Error fetching service details:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const fetchService = async () => {
     const response = await getServiceDetail(id);
@@ -64,28 +91,35 @@ const ProgressLaporanKemajuan = () => {
   };
 
   const fetchReport = async () => {
-    if (reportId) {
-      const response = await getServiceProgressReport(reportId);
-      setReport(response);
-      console.log(report);
-    } else {
-      setReport({
-        summary: "",
-        keyword: "",
-        substance: "",
-        partner_contribution: "",
-        budget_use: "",
-        output_progress_report1s: [],
-        output_progress_report2s: [],
-        output_progress_report3s: [],
-        output_progress_report4s: [],
-        output_progress_report5s: [],
-        output_progress_report6s: [],
-        output_progress_report7s: [],
-        output_progress_report8s: [],
-        output_progress_report9s: [],
-        output_progress_report10s: [],
-      });
+    try {
+      if (reportId) {
+        const response = await getServiceProgressReport(reportId);
+        setReport(response);
+        console.log(report);
+      } else {
+        setReport({
+          summary: "",
+          keyword: "",
+          substance: "",
+          partner_contribution: "",
+          budget_use: "",
+          output_progress_report1s: [],
+          output_progress_report2s: [],
+          output_progress_report3s: [],
+          output_progress_report4s: [],
+          output_progress_report5s: [],
+          output_progress_report6s: [],
+          output_progress_report7s: [],
+          output_progress_report8s: [],
+          output_progress_report9s: [],
+          output_progress_report10s: [],
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -140,7 +174,7 @@ const ProgressLaporanKemajuan = () => {
       setReport({ ...report, status: status });
       // console.log(report)
       const response = await addServiceProgressReport({
-        researchId: service.id,
+        serviceId: service.id,
         data: report,
         isEdit: true,
         reportId: report.id,
@@ -151,7 +185,7 @@ const ProgressLaporanKemajuan = () => {
       setReport({ ...report, status: status });
       // console.log(report)
       const response = await addServiceProgressReport({
-        researchId: service.id,
+        serviceId: service.id,
         data: report,
         isEdit: false,
       });
@@ -159,6 +193,10 @@ const ProgressLaporanKemajuan = () => {
       navigate(-1);
     }
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -194,9 +232,7 @@ const ProgressLaporanKemajuan = () => {
                     Penelitian | Tahun Pelaksanaan 2024
                   </p>
                   <h2 className="text-lg font-bold text-gray-800">
-                    Membangun Kemandirian Ekonomi Desa melalui Implementasi
-                    Sistem Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa
-                    Sinergi Sidowayah
+                    {service.title}
                   </h2>
 
                   <div className="flex mx-1 my-2">
@@ -225,12 +261,26 @@ const ProgressLaporanKemajuan = () => {
               >
                 Previous
               </button>
-              <button
-                onClick={handleNextStep}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
-              >
-                Next
-              </button>
+              <div>
+                <button
+                  onClick={handleNextStep}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? "hidden" : ""}`}
+                >
+                  Next
+                </button>
+                <button
+                  onClick={() => handleSubmit(1)}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? "" : "hidden"}`}
+                >
+                  Simpan
+                </button>
+                <button
+                  onClick={() => handleSubmit(2)}
+                  className={`px-4 py-2 bg-green-600 text-white rounded ${currentStep === 2 ? "" : "hidden"}`}
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
         </div>
