@@ -1,13 +1,14 @@
-import React from 'react';
-import NavbarReviewer from '../components/Reviewer/NavbarReviewer';
-import PenilaianProposal from '../components/Reviewer/PenilaianProposal';
+import React from "react";
+import NavbarReviewer from "../components/Reviewer/NavbarReviewer";
+import PenilaianProposal from "../components/Reviewer/PenilaianProposal";
+import NavBar from "../components/NavBar";
 
 const PenilaianProposalPage = () => {
   return (
-    <NavbarReviewer>
-        <PenilaianProposal/>
-    </NavbarReviewer>
-  )
-}
+    <NavBar>
+      <PenilaianProposal />
+    </NavBar>
+  );
+};
 
 export default PenilaianProposalPage;

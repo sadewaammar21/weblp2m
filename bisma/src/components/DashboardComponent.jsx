@@ -28,7 +28,7 @@ const DashboardComponent = () => {
   const metrics = [
     {
       title: "Identitas",
-      count: user.name,
+      // count: user.name,
       icon: <FaUser size={24} className="text-violet-800" />,
     },
     {

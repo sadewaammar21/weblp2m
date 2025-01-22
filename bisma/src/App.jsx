@@ -49,7 +49,6 @@ import ProgresPerUsPegabdianPage from "./pages/ProgresPerUsPegabdianPage";
 import DetailPengabdianPage from "./pages/DetailPengabdianPage";
 import ListLaporanKemajuanInternalPage from "./pages/ListLaporanKemajuanInternalPage";
 import LaporanKemajuanPengabdianPage from "./pages/LaporanKemajuanPengabdianPage";
-import DashboardKepalaLPPMPage from "./pages/DashboardKepalaLPPMPage";
 import UsulanBelumDitinjauKepalaLPPMPage from "./pages/UsulanBelumDitinjauKepalaLPPMPage";
 import UsulanDisetujuiKepalaLPPMPage from "./pages/UsulanDisetujuiKepalaLPPMPage";
 import UsulanDitolakKepalaLPPMPage from "./pages/UsulanDitolakKepalaLPPMPage";
@@ -89,6 +88,7 @@ import UserEditDosenPage from "./pages/UserEditDosenPage";
 import UsulanBelumDitinjauKprPage from "./pages/UsulanBelumDitinjauKprPage";
 import UsulanDisetujuiKprPage from "./pages/UsulanDisetujuiKprPage";
 import UsulanDitolakKprPage from "./pages/UsulanDitolakKprPage";
+import DashboardKeplLppmPage from "./pages/DashboardKeplLppmPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -107,7 +107,7 @@ function App() {
         <Route path="/dashboard-reviewer" element={<DashboardReviewer />} />
         <Route
           path="/dashboard-kepala-lppm"
-          element={<DashboardKepalaLPPMPage />}
+          element={<DashboardKeplLppmPage />}
         />
         <Route
           path="/dashboard-kaprodi-dan-kepala"
@@ -331,7 +331,7 @@ function App() {
           element={<MonitoringUsulanPenelitianPage />}
         />
         <Route
-          path="/monitoring-perbaikan-usulan-pengabdian"
+          path="/monitoring/pengabdian"
           element={<MonitoringUsulanPengabdianPage />}
         />
         <Route

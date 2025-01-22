@@ -470,7 +470,8 @@ export const addServiceLogbook = async ({
   percentage,
   document,
   isEdit,
-  logbookId }) => {
+  logbookId,
+}) => {
   const formData = new FormData();
 
   if (isEdit) {

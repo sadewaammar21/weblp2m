@@ -1,13 +1,14 @@
-import React from 'react'
-import NavbarOperator from '../components/Operator/NavbarOperator'
-import ReviewerInternal from '../components/Operator/ReviewerInternal'
+import React from "react";
+import NavbarOperator from "../components/Operator/NavbarOperator";
+import ReviewerInternal from "../components/Operator/ReviewerInternal";
+import NavBar from "../components/NavBar";
 
 const ReviewerInternalPage = () => {
   return (
-    <NavbarOperator>
-        <ReviewerInternal/>
-    </NavbarOperator>
-  )
-}
+    <NavBar>
+      <ReviewerInternal />
+    </NavBar>
+  );
+};
 
-export default ReviewerInternalPage
+export default ReviewerInternalPage;

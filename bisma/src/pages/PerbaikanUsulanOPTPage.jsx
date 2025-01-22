@@ -1,13 +1,14 @@
-import React from 'react'
-import NavbarOperator from '../components/Operator/NavbarOperator'
-import PerbaikanUsulanOPT from '../components/Operator/PerbaikanUsulanOPT'
+import React from "react";
+import NavbarOperator from "../components/Operator/NavbarOperator";
+import PerbaikanUsulanOPT from "../components/Operator/PerbaikanUsulanOPT";
+import NavBar from "../components/NavBar";
 
 const PerbaikanUsulanOPTPage = () => {
   return (
-    <NavbarOperator>
-        <PerbaikanUsulanOPT/>
-    </NavbarOperator>
-  )
-}
+    <NavBar>
+      <PerbaikanUsulanOPT />
+    </NavBar>
+  );
+};
 
-export default PerbaikanUsulanOPTPage
+export default PerbaikanUsulanOPTPage;

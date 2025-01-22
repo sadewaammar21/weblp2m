@@ -1,13 +1,14 @@
-import React from 'react'
-import NavbarOperator from '../components/Operator/NavbarOperator'
-import UsulanDikirimOPT from '../components/Operator/UsulanDikirimOPT'
+import React from "react";
+import NavbarOperator from "../components/Operator/NavbarOperator";
+import UsulanDikirimOPT from "../components/Operator/UsulanDikirimOPT";
+import NavBar from "../components/NavBar";
 
 const UsulanDikirimOPTPage = () => {
   return (
-    <NavbarOperator>
-        <UsulanDikirimOPT/>
-    </NavbarOperator>
-  )
-}
+    <NavBar>
+      <UsulanDikirimOPT />
+    </NavBar>
+  );
+};
 
-export default UsulanDikirimOPTPage
+export default UsulanDikirimOPTPage;

@@ -1,13 +1,14 @@
-import React from 'react'
-import NavbarOperator from '../components/Operator/NavbarOperator'
-import ReviewerEksternal from '../components/Operator/ReviewerEksternal'
+import React from "react";
+import NavbarOperator from "../components/Operator/NavbarOperator";
+import ReviewerEksternal from "../components/Operator/ReviewerEksternal";
+import NavBar from "../components/NavBar";
 
 const ReviewerEksternalPage = () => {
   return (
-    <NavbarOperator>
-        <ReviewerEksternal/>
-    </NavbarOperator>
-  )
-}
+    <NavBar>
+      <ReviewerEksternal />
+    </NavBar>
+  );
+};
 
-export default ReviewerEksternalPage
+export default ReviewerEksternalPage;
