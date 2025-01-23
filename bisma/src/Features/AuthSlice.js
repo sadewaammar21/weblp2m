@@ -21,11 +21,7 @@ export const LoginAuth = createAsyncThunk(
           email: user.email,
           password: user.password,
         },
-        {
-          headers: {
-            "x-api-key": process.env.REACT_APP_API_KEY,
-          },
-        }
+        getToken()
       );
       console.log(response);
 
@@ -44,6 +40,7 @@ export const LoginAuth = createAsyncThunk(
         const message = error.response.data.error;
         return thunkAPI.rejectWithValue(message);
       }
+      console.log(error);
     }
   }
 );
@@ -63,8 +60,9 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
 export const LogOut = createAsyncThunk("user/api/LogOut", async () => {
   localStorage.removeItem("currentRole");
   localStorage.removeItem("user");
-  const response = await axios.post(`${apiUrl}/api/logout`, getToken);
   localStorage.removeItem("accessToken");
+  localStorage.removeItem("roles");
+  const response = await axios.post(`${apiUrl}/api/logout`, getToken);
   return response;
 });
 

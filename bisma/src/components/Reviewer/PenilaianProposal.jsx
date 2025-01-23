@@ -188,7 +188,7 @@ const PenilaianProposal = () => {
                           />
                         </button>
                       </td>
-                      <td className="border px-4 py-2 text-center">
+                      <td className={`border px-4 py-2 text-center ${item.status == 4 ? '' : 'hidden'}`}>
                         <button
                           onClick={() => handleAction(item.id)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"

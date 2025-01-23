@@ -23,7 +23,7 @@ const PengelolaReview = () => {
         const result = await getResearch({
           pageSize: 10,
           currentPage: 1,
-          // status: 1,
+          status: 3,
           year: 2025,
           // userId: 2,
         });

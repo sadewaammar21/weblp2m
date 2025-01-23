@@ -20,7 +20,7 @@ const PerbaikanUsulanList = () => {
     const response = await getResearch({
       pageSize: 10, 
       currentPage: 1, 
-      // status: , 
+      status: 6, 
       // year: , 
       userId: user.id
     });
