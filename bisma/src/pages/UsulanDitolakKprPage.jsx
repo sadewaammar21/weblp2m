@@ -1,14 +1,14 @@
 import React from "react";
 import NavbarKaprodi from "../components/Kaprodi dan Kepala/NavbarKaprodi";
-import DashboardKaprodi from "../components/Kaprodi/DashboardKaprodi";
+import UsulanDitolakKpr from "../components/Kaprodi/UsulanDitolakKpr";
 import NavBar from "../components/NavBar";
 
-const DashboardKaprodiPage = () => {
+const UsulanDitolakKprPage = () => {
   return (
     <NavBar>
-      <DashboardKaprodi />
+      <UsulanDitolakKpr />
     </NavBar>
   );
 };
 
-export default DashboardKaprodiPage;
+export default UsulanDitolakKprPage;

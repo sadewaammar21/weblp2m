@@ -51,7 +51,7 @@ const LaporanKemajuanTab = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [isLaporanKemajuan, setIsLaporanKemajuan] = useState(false);
-  const [loading, setLoading] = useEffect(true);
+  const [loading, setLoading] = useState(true);
 
   //data penelitian
   const [research, setResearch] = useState({});
@@ -156,9 +156,9 @@ const LaporanKemajuanTab = () => {
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <div>

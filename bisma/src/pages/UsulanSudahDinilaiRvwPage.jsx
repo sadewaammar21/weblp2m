@@ -1,13 +1,14 @@
-import React from 'react'
-import NavbarReviewer from '../components/Reviewer/NavbarReviewer'
-import UsulanSudahDinilaiRvw from '../components/Reviewer/UsulanSudahDinilaiRvw'
+import React from "react";
+import NavbarReviewer from "../components/Reviewer/NavbarReviewer";
+import UsulanSudahDinilaiRvw from "../components/Reviewer/UsulanSudahDinilaiRvw";
+import NavBar from "../components/NavBar";
 
 const UsulanSudahDinilaiRvwPage = () => {
   return (
-    <NavbarReviewer>
-        <UsulanSudahDinilaiRvw/>
-    </NavbarReviewer>
-  )
-}
+    <NavBar>
+      <UsulanSudahDinilaiRvw />
+    </NavBar>
+  );
+};
 
-export default UsulanSudahDinilaiRvwPage
+export default UsulanSudahDinilaiRvwPage;

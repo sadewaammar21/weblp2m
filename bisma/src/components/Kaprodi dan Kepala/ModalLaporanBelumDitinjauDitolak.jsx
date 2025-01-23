@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { updateStatus } from "../../Features/ResearchSlice";
+import { updateStatus } from "../../Features/ServiceSlice";
 import TextfieldCmp from "../TextfieldCmp";
 
 Modal.setAppElement("#root");
 
-const ModalLaporanBelumDitinjauDitolak = ({
-  data,
-  isOpen,
-  onRequestClose,
-}) => {
+const ModalLaporanBelumDitinjauDitolak = ({ data, isOpen, onRequestClose }) => {
   const [note, setNote] = useState("");
 
   const handleSubmit = async () => {
     try {
-      const response = await updateStatus({ researchId: data.id, newStatus: 8, note: note });
+      const response = await updateStatus({
+        serviceId: data.id,
+        newStatus: 8,
+        note: note,
+      });
       console.log("Response:", response);
       alert("Status updated successfully!");
       onRequestClose();

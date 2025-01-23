@@ -49,7 +49,6 @@ import ProgresPerUsPegabdianPage from "./pages/ProgresPerUsPegabdianPage";
 import DetailPengabdianPage from "./pages/DetailPengabdianPage";
 import ListLaporanKemajuanInternalPage from "./pages/ListLaporanKemajuanInternalPage";
 import LaporanKemajuanPengabdianPage from "./pages/LaporanKemajuanPengabdianPage";
-import DashboardKepalaLPPMPage from "./pages/DashboardKepalaLPPMPage";
 import UsulanBelumDitinjauKepalaLPPMPage from "./pages/UsulanBelumDitinjauKepalaLPPMPage";
 import UsulanDisetujuiKepalaLPPMPage from "./pages/UsulanDisetujuiKepalaLPPMPage";
 import UsulanDitolakKepalaLPPMPage from "./pages/UsulanDitolakKepalaLPPMPage";
@@ -85,6 +84,11 @@ import ResetPasswordListPage from "./pages/ResetPasswordListPage";
 import ProfileUserListPage from "./pages/ProfileUserListPage";
 import EditProfileUserPage from "./pages/EditProfileUserPage";
 import DashboardKaprodiPage from "./pages/DashboardKaprodiPage";
+import UserEditDosenPage from "./pages/UserEditDosenPage";
+import UsulanBelumDitinjauKprPage from "./pages/UsulanBelumDitinjauKprPage";
+import UsulanDisetujuiKprPage from "./pages/UsulanDisetujuiKprPage";
+import UsulanDitolakKprPage from "./pages/UsulanDitolakKprPage";
+import DashboardKeplLppmPage from "./pages/DashboardKeplLppmPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -103,13 +107,29 @@ function App() {
         <Route path="/dashboard-reviewer" element={<DashboardReviewer />} />
         <Route
           path="/dashboard-kepala-lppm"
-          element={<DashboardKepalaLPPMPage />}
+          element={<DashboardKeplLppmPage />}
         />
         <Route
           path="/dashboard-kaprodi-dan-kepala"
           element={<DashboardKaprKepl />}
         />
+        {/* kaprodi */}
+        <Route
+          path="/kaprodi/usulan-belum-ditinjau"
+          element={<UsulanBelumDitinjauKprPage />}
+        />
+        <Route
+          path="/kaprodi/usulan-disetujui"
+          element={<UsulanDisetujuiKprPage />}
+        />
+        <Route
+          path="/kaprodi/usulan-ditolak"
+          element={<UsulanDitolakKprPage />}
+        />
+
         <Route path="/dashboard-kaprodi" element={<DashboardKaprodiPage />} />
+        {/* user */}
+        <Route path="/dosen/edit-user" element={<UserEditDosenPage />} />
         {/* Dosen Penelitian*/}
         <Route path="/penelitian/usulan" element={<UsulanBaru />} />
         <Route
@@ -311,7 +331,7 @@ function App() {
           element={<MonitoringUsulanPenelitianPage />}
         />
         <Route
-          path="/monitoring-perbaikan-usulan-pengabdian"
+          path="/monitoring/pengabdian"
           element={<MonitoringUsulanPengabdianPage />}
         />
         <Route

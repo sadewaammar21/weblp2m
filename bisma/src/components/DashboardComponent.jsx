@@ -21,11 +21,14 @@ const DashboardComponent = () => {
   const handlePengabdian = () => {
     navigate("/pengabdian/usulan"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
-  const user = JSON.parse(localStorage.getItem('user'));
+  const handleEdit = () => {
+    navigate("/dosen/edit-user"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  };
+  const user = JSON.parse(localStorage.getItem("user"));
   const metrics = [
     {
       title: "Identitas",
-      count: user.name,
+      // count: user.name,
       icon: <FaUser size={24} className="text-violet-800" />,
     },
     {
@@ -209,32 +212,43 @@ const DashboardComponent = () => {
           <div className="space-y-2">
             <div className="text-gray-700 font-semibold">Identitas</div>
             <div className="bg-gray-100 p-3 rounded-md">
-              <p className="font-semibold text-violet-800">
-                {user.name}
-              </p>
-              <p>{user.prodi ?? 'Informatika'}</p>
+              <p className="font-semibold text-violet-800">{user.name}</p>
+              <p>{user.prodi ?? "Informatika"}</p>
             </div>
             <div className="space-y-1">
               <p className="font-semibold text-gray-700">
-                NIDN/NIDK: <span className="text-gray-600">{user.nidn ?? '12345678'}</span>
+                NIDN/NIDK:{" "}
+                <span className="text-gray-600">{user.nidn ?? "12345678"}</span>
               </p>
               <p className="font-semibold text-gray-700">
                 Klaster:{" "}
-                <span className="text-gray-600">{user.cluster ?? 'Kelompok PT Madya'}</span>
+                <span className="text-gray-600">
+                  {user.cluster ?? "Kelompok PT Madya"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
                 Institusi:{" "}
-                <span className="text-gray-600">{user.institution ?? 'STMIK Sinar Nusantara'}</span>
+                <span className="text-gray-600">
+                  {user.institution ?? "STMIK Sinar Nusantara"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
                 Program Studi:{" "}
-                <span className="text-gray-600">{user.prodi ?? 'Informatika'}</span>
+                <span className="text-gray-600">
+                  {user.prodi ?? "Informatika"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
-                Jenjang Pendidikan: <span className="text-gray-600">{user.education_level ?? 'S2'}</span>
+                Jenjang Pendidikan:{" "}
+                <span className="text-gray-600">
+                  {user.education_level ?? "S2"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
-                Jabatan Akademik: <span className="text-gray-600">{user.position ?? 'Lektor'}</span>
+                Jabatan Akademik:{" "}
+                <span className="text-gray-600">
+                  {user.position ?? "Lektor"}
+                </span>
               </p>
             </div>
           </div>
@@ -243,25 +257,40 @@ const DashboardComponent = () => {
             <div className="space-y-1">
               <p className="font-semibold text-gray-700">
                 Tempat Tanggal Lahir:{" "}
-                <span className="text-gray-600">{user.place_of_birth ?? 'Semarang'}, {user.date_of_birth ??'23 Maret 1978'}</span>
+                <span className="text-gray-600">
+                  {user.place_of_birth ?? "Semarang"},{" "}
+                  {user.date_of_birth ?? "23 Maret 1978"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
-                No KTP: <span className="text-gray-600">{user.nik ?? '33223111111'}</span>
+                No KTP:{" "}
+                <span className="text-gray-600">
+                  {user.nik ?? "33223111111"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
-                No Telepon: <span className="text-gray-600">{user.phone ?? '0271-9993333'}</span>
+                No Telepon:{" "}
+                <span className="text-gray-600">
+                  {user.phone ?? "0271-9993333"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
-                No HP: <span className="text-gray-600">{user.phone ?? '08223332222'}</span>
+                No HP:{" "}
+                <span className="text-gray-600">
+                  {user.phone ?? "08223332222"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
                 Alamat Surel:{" "}
-                <span className="text-gray-600">{user.email ?? 'yust.retno@gmail.com'}</span>
+                <span className="text-gray-600">
+                  {user.email ?? "yust.retno@gmail.com"}
+                </span>
               </p>
               <p className="font-semibold text-gray-700">
                 Alamat:{" "}
                 <span className="text-gray-600">
-                  {user.address ?? 'Griya Kelapa Gading No. 6 Blulukan Colomadu'}
+                  {user.address ??
+                    "Griya Kelapa Gading No. 6 Blulukan Colomadu"}
                 </span>
               </p>
             </div>
@@ -269,7 +298,10 @@ const DashboardComponent = () => {
         </div>
         <hr className="border-gray-300 my-2" />
         <div className="flex justify-end">
-          <button className="bg-yellow-500 text-white py-2 px-4 rounded-md">
+          <button
+            className="bg-yellow-500 text-white py-2 px-4 rounded-md"
+            onClick={handleEdit}
+          >
             Sunting
           </button>
         </div>

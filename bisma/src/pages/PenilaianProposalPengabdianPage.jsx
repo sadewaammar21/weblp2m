@@ -1,12 +1,13 @@
 import React from "react";
 import NavbarReviewer from "../components/Reviewer/NavbarReviewer";
 import PenilaianProposalPengabdian from "../components/Reviewer/PenilaianProposalPengabdian";
+import NavBar from "../components/NavBar";
 
 const PenilaianProposalPengabdianPage = () => {
   return (
-    <NavbarReviewer>
+    <NavBar>
       <PenilaianProposalPengabdian />
-    </NavbarReviewer>
+    </NavBar>
   );
 };
 

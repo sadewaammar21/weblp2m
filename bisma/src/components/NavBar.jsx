@@ -305,9 +305,6 @@ const NavBar = ({ children }) => {
                                 Catatan Harian
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/luaran">Luaran</Link>
-                            </li>
                           </ul>
                         )}
                       </li>
@@ -371,9 +368,6 @@ const NavBar = ({ children }) => {
                                 Catatan Harian
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/luaran">Luaran</Link>
-                            </li>
                           </ul>
                         )}
                       </li>
@@ -390,8 +384,8 @@ const NavBar = ({ children }) => {
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 2 ? "show" : "hidden"}`}
                   onMouseEnter={() => handleDropdownEnter(4)}
-                  onMouseLeave={handleDropdownLeave}
-                  ref={dropdownRef}
+                  // onMouseLeave={handleDropdownLeave}
+                  // ref={dropdownRef}
                 >
                   <img
                     src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
@@ -403,7 +397,10 @@ const NavBar = ({ children }) => {
                     <FaChevronDown className="mx-2 w-4 h-4" />
                   </div>
                   {dropdown === 4 && (
-                    <ul className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10">
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
                       <li className="px-4 py-2 hover:bg-violet-800">
                         <Link to="/review-penilaian-proposal">Penelitian</Link>
                       </li>
@@ -420,7 +417,7 @@ const NavBar = ({ children }) => {
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 2 ? "show" : "hidden"}`}
                   onMouseEnter={() => handleDropdownEnter(5)}
-                  onMouseLeave={handleDropdownLeave}
+                  // onMouseLeave={handleDropdownLeave}
                   ref={dropdownRef}
                 >
                   <img
@@ -433,7 +430,10 @@ const NavBar = ({ children }) => {
                     <FaChevronDown className="mx-2 w-4 h-4" />
                   </div>
                   {dropdown === 5 && (
-                    <ul className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10">
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
                       <li className="px-4 py-2 hover:bg-violet-800">
                         <Link to="/list-monev-penelitian">Penelitian</Link>
                       </li>
@@ -446,16 +446,20 @@ const NavBar = ({ children }) => {
 
                 {/* Monitoring */}
                 <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 2 ? "show" : "hidden"}`}
+                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 3 ? "show" : "hidden"}`}
                   onMouseEnter={() => handleDropdownEnter(6)}
-                  onMouseLeave={handleDropdownLeave}
+                  // onMouseLeave={handleDropdownLeave}
+                  ref={dropdownRef}
                 >
                   <div className="flex items-center">
                     Monitoring
                     <FaChevronDown className="ml-2" />
                   </div>
                   {dropdown === 6 && (
-                    <ul className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48">
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48"
+                      ref={dropdownRef}
+                    >
                       {/* Penelitian */}
                       <li
                         className="px-4 py-2 hover:bg-violet-800 relative"
@@ -471,7 +475,10 @@ const NavBar = ({ children }) => {
                           <FaChevronRight className="w-4 h-4" />
                         </div>
                         {subDropdownMonitoringPenelitian && (
-                          <ul className="absolute top-0 left-full ml-1 w-48 bg-gray-50">
+                          <ul
+                            className="absolute top-0 left-full ml-1 w-48 bg-gray-50"
+                            ref={dropdownRef}
+                          >
                             <li className="px-4 py-2 hover:bg-violet-800">
                               <Link to="/monitoring-usulan-reguler">
                                 Monitoring Usulan
@@ -511,7 +518,10 @@ const NavBar = ({ children }) => {
                           <FaChevronRight className="w-4 h-4" />
                         </div>
                         {subDropdownMonitoringPengabdian && (
-                          <ul className="absolute top-0 left-full ml-1 w-48 bg-gray-50">
+                          <ul
+                            className="absolute top-0 left-full ml-1 w-48 bg-gray-50"
+                            ref={dropdownRef}
+                          >
                             <li className="px-4 py-2 hover:bg-violet-800">
                               <Link to="/monitoring/pengabdian/usulan-reguler">
                                 Monitoring Usulan
@@ -541,20 +551,43 @@ const NavBar = ({ children }) => {
                   )}
                 </li>
 
-                {/* data pendukung */}
+                {/* Dropdown di Data Pendukung */}
                 <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 3 ? "show" : "hidden"}`}
+                  className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 3 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(7)}
+                  // onMouseLeave={handleDropdownLeave}
                 >
-                  <Link to="/monitoring-data-pendukung">
-                    <div className="flex items-center">
-                      <img
-                        src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
-                        alt="kekayaan intelektual"
-                        className="w-5 h-5 mr-2"
-                      />
-                      Data Pendukung
-                    </div>
-                  </Link>
+                  <div className="flex items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
+                      alt="kekayaan intelektual"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Data Pendukung
+                    <FaChevronDown className="ml-2" />
+                  </div>
+                  {dropdown === 7 && (
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/monitoring/data-pendukung/edit-profil-lembaga">
+                          Edit Profil Lembaga
+                        </Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/monitoring/data-pendukung/profil-user-list">
+                          Edit Profil User
+                        </Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800">
+                        <Link to="/monitoring/data-pendukung/reset-password-user">
+                          Reset Password User
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
 
                 {/* pengelolaan reviewer */}
@@ -572,68 +605,9 @@ const NavBar = ({ children }) => {
                     </div>
                   </Link>
                 </li>
+                {/* Operator */}
 
-                {/* pengabdian */}
-                <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 4 ? "show" : "hidden"}`}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
-                    alt="laporan"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Pengabdian
-                </li>
-
-                {/* program lainnya */}
-                <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 4 ? "show" : "hidden"}`}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
-                    alt="kekayaan intelektual"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Program Lainnya
-                </li>
-
-                {/* persetujuan usulan */}
-                <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 4 ? "show" : "hidden"}`}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/pengabdian.svg"}
-                    alt="pengabdian"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Persetujuan Usulan
-                </li>
-
-                {/* pengabdian */}
-                <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 5 ? "show" : "hidden"}`}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
-                    alt="laporan"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Pengabdian
-                </li>
-
-                {/* program lainnya */}
-                <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 5 ? "show" : "hidden"}`}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
-                    alt="kekayaan intelektual"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Program Lainnya
-                </li>
-
-                {/* persetujuan usulan */}
+                {/* persetujuan usulan Kepala LPPM*/}
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 5 ? "show" : "hidden"}`}
                 >
@@ -644,6 +618,20 @@ const NavBar = ({ children }) => {
                   />
                   Persetujuan Usulan
                 </li>
+                {/* persetujuan usulan Kepala LPPM*/}
+
+                {/* kaprodi */}
+                <li
+                  className={`text-white hover:text-gray-300 cursor-pointer flex items-center ${currentRoles == 4 ? "show" : "hidden"}`}
+                >
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
+                    alt="laporan"
+                    className="w-5 h-5 mr-2"
+                  />
+                  Persetujuan Usulan
+                </li>
+                {/* kaprodi */}
 
                 <li
                   className="text-white hover:text-gray-300 cursor-pointer flex items-center"

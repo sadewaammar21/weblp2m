@@ -5,39 +5,76 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
+import ModalLaporanBelumDitinjau from "./ModalLaporanBelumDitinjau";
+import ModalLaporanBelumDitinjauDitolak from "./ModalLaporanBelumDitinjauDitolak";
+// import {
+//   getResearch,
+//   downloadResearchDocument,
+// } from "../../Features/ResearchSlice";
 import {
-  getResearch,
-  downloadResearchDocument,
-} from "../../Features/ResearchSlice";
+  getService,
+  downloadServiceDocument,
+} from "../../Features/ServiceSlice";
 
-const UsulanDitolakKpl = () => {
+const UsulanBelumDitinjauKpr = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isTolak, setIsDitolak] = useState(false);
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
 
+  const openModalDitolak = (item) => {
+    setSelectedData(item);
+    setIsDitolak(true);
+  };
+  const closeModalDitolak = () => {
+    setIsDitolak(false);
+    fetchData();
+  };
+  const openModal = (item) => {
+    console.log(item);
+    setSelectedData(item);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    fetchData();
+  };
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [status, setStatus] = useState(0);
+  const [selectedData, setSelectedData] = useState({});
+
+  const user = localStorage.getItem("user");
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const result = await getService({
+        pageSize: 5,
+        currentPage: 1,
+        // status: 5,
+        prodiId: 5,
+      });
+      setData(result.data);
+      console.log(result);
+      console.log(data);
+      console.log(typeof data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getResearch({ page_size: 5, current_page: 1, status: 8 });
-        setData(result.data);
-        console.log(result);
-        console.log(data);
-        console.log(typeof data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -88,7 +125,7 @@ const UsulanDitolakKpl = () => {
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        LIST USULAN DITOLAK KEPALA LPPM
+        LIST USULAN BELUM DITINJAU KAPRODI
       </h1>
 
       <div>
@@ -155,53 +192,72 @@ const UsulanDitolakKpl = () => {
                 </tr>
               </thead>
               <tbody>
-                {data
-                  .filter((item) => item.status == 8)
-                  .map((item, index) => (
-                    <tr key={index}>
-                      <td className="border border-gray-300 p-2 text-center">
-                        {index + 1}
-                      </td>
-                      <td className="border border-gray-300 p-2">
-                        <p>Ketua: {item.user?.name}</p>
-                        <p>NIDN: {item.user?.nidn}</p>
-                        <p>Tahun Pelaksanaan: {item.year}</p>
-                        <p>Lama Kegiatan: {item.duration}</p>
-                        <p>Bidang Fokus: {item.focus.name}</p>
-                      </td>
-                      <td className="border border-gray-300 p-2">
-                        <p className="text-blue-600 font-bold">{item.title}</p>
-                        <p className="text-blue-600 font-bold">
-                          {item.scheme.name}
-                        </p>
-                      </td>
-                      <td className="border border-gray-300 p-2 text-center">
-                        <button
-                          onClick={() => downloadResearchDocument(item.id)}
-                          className="text-red-600 text-2xl"
+                {data.map((item, index) => (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2 text-center">
+                      {index + 1}
+                    </td>
+                    <td className="border border-gray-300 p-2">
+                      <p>Ketua: {item.user?.name}</p>
+                      <p>NIDN: {item.user?.nidn}</p>
+                      <p>Tahun Pelaksanaan: {item.year}</p>
+                      <p>Lama Kegiatan: {item.duration}</p>
+                      {/* <p>Bidang Fokus: {item.focus.name}</p> */}
+                    </td>
+                    <td className="border border-gray-300 p-2">
+                      <p className="text-blue-600 font-bold">{item.title}</p>
+                      <p className="text-blue-600 font-bold">
+                        {item.scheme.name}
+                      </p>
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <button
+                        onClick={() => downloadServiceDocument(item.id)}
+                        className="text-red-600 text-2xl"
+                      >
+                        <a
+                          href={`http://localhost:8000/api/comunity-service/download/${item.id}`}
+                          target="_blank"
                         >
-                          <a
-                            href={`http://localhost:8000/api/research/download/${item.id}`}
-                            target="_blank"
-                          >
-                            📄
-                          </a>
+                          📄
+                        </a>
+                      </button>
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <div className="flex justify-center space-x-2">
+                        <button
+                          onClick={() => openModal(item)}
+                          className="bg-bluef-500 text-white px-4 py-2 rounded-md"
+                        >
+                          Disetujui
                         </button>
-                      </td>
-                      <td className="border border-gray-300 p-2 text-center">
-                        <p className="text-white bg-red-800 rounded-md p-2">
+                        <button
+                          onClick={() => openModalDitolak(item)}
+                          className="bg-reds-500 text-white px-4 py-2 rounded-md"
+                        >
                           Ditolak
-                        </p>
-                      </td>
-                    </tr>
-                  ))}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
+      <ModalLaporanBelumDitinjau
+        data={selectedData}
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+      />
+      <ModalLaporanBelumDitinjauDitolak
+        data={selectedData}
+        isOpen={isTolak}
+        onRequestClose={closeModalDitolak}
+      />
     </div>
   );
 };
 
-export default UsulanDitolakKpl;
+export default UsulanBelumDitinjauKpr;

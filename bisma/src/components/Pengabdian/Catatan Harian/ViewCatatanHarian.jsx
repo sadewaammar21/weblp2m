@@ -28,11 +28,13 @@ const ViewCatatanHarian = () => {
   };
 
   const openModalEdit = (id) => {
-    setIsOpenEdit(true);
     setLogbookId(id);
+    setIsOpenEdit(true);
+   
   };
 
   const closeModalEdit = () => {
+    fetchLogbooks();
     setIsOpenEdit(false);
   };
 
@@ -210,41 +212,7 @@ const ViewCatatanHarian = () => {
                       </td>
                     </tr>
                   ))}
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td className="border border-black px-4 py-2 align-middle">
-                      <div className="flex justify-center items-center space-x">
-                        <button
-                          onClick={openModalEdit}
-                          className="flex items-center px-2 py-1 rounded-md"
-                        >
-                          <img
-                            src={
-                              process.env.PUBLIC_URL + "/assets/act_edit.svg"
-                            }
-                            alt="edit"
-                            className="w-7 h-7"
-                          />
-                        </button>
-                        <button
-                          className="flex items-center px-2 py-1 rounded-md"
-                          onClick={handleDelete}
-                        >
-                          <img
-                            src={
-                              process.env.PUBLIC_URL + "/assets/act_remove.svg"
-                            }
-                            alt="remove"
-                            className="w-7 h-7"
-                          />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+
                 </tbody>
               </table>
             </div>
@@ -256,7 +224,7 @@ const ViewCatatanHarian = () => {
             <PopUpEditCatatanHarian
               isOpen={isOpenEdit}
               onRequestClose={closeModalEdit}
-              logbookId={logbookId}
+              id={logbookId}
             />
           </div>
         </div>

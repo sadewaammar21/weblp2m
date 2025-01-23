@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import DropdownCmp from "../../components/DropdownCmp";
 // import { getResearch } from "../../Features/ResearchSlice";
+import { getService } from "../../../Features/ServiceSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -10,34 +11,45 @@ const ListLaporanKemajuanInternal = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const handleView = () => {
-    navigate("/catatan-harian-view"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  const handleView = (serviceId, report) => {
+    console.log(report);
+    if (report != null) {
+      navigate("/pengabdian/laporan-kemajuan/baru", {
+        state: { id: serviceId, reportId: report },
+      });
+    } else {
+      navigate("/pengabdian/laporan-kemajuan/baru", {
+        state: { id: serviceId, reportId: null },
+      }); // Arahkan ke halaman 'usulan-baru-penelitian'
+    } // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   const handleClick = () => {
     navigate("/pengabdian/laporan-kemajuan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const result = await getResearch({
-  //           pageSize: 5,
-  //           currentPage: 1,
-  //           status: 1,
-  //           year: 2024,
-  //           userId: 1,
-  //         });
-  //         setData(result.data);
-  //       } catch (err) {
-  //         setError(err.message);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  //     fetchData();
-  //   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getService({
+          pageSize: 5,
+          currentPage: 1,
+          // status: 1,
+          // year: 2024,
+          userId: user.id,
+        });
+        setData(result.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="mx-5">
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
@@ -99,36 +111,35 @@ const ListLaporanKemajuanInternal = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="border border-black px-4 py-2 align-middle">
-                  1
-                </td>
-                <td className="border border-black px-4 py-2 align-middle break-words">
-                  Penelitian Fundamental - Reguler Penelitian Kompetitif
-                  Nasional
-                </td>
-                <td className="border border-black px-4 py-2 align-middle break-words">
-                  Membangun Kemandirian Ekonomi Desa melalui Implementasi Sistem
-                  Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa Sinergi
-                  Sidowayah
-                </td>
-                <td className="border border-black px-4 py-2 align-middle text-center">
-                  <a
-                    href={
-                      process.env.PUBLIC_URL +
-                      "/assets/template_laporan_kemajuan 2024.docx"
-                    }
-                    className="text-blue-600 hover:underline inline-block"
-                  >
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/berkas.svg"}
-                      alt="logo"
-                      className="w-5 h-5 mx-auto"
-                    />
-                  </a>
-                </td>
-                <td className="border border-black px-4 py-2 align-middle">
-                  <button
+              {data.map((item, index) => (
+                <tr key={index}>
+                  <td className="border border-black px-4 py-2 align-middle">
+                    {index + 1}
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle break-words">
+                    Penelitian Fundamental - Reguler Penelitian Kompetitif
+                    Nasional
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle break-words">
+                    {item.title}
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle text-center">
+                    <a
+                      href={
+                        process.env.PUBLIC_URL +
+                        "/assets/template_laporan_kemajuan 2024.docx"
+                      }
+                      className="text-blue-600 hover:underline inline-block"
+                    >
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/berkas.svg"}
+                        alt="logo"
+                        className="w-5 h-5 mx-auto"
+                      />
+                    </a>
+                  </td>
+                  <td className="border border-black px-4 py-2 align-middle">
+                    {/* <button
                     onClick={handleView}
                     className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
                   >
@@ -137,9 +148,27 @@ const ListLaporanKemajuanInternal = () => {
                       alt="penelitian"
                       className="w-7 h-7 mr-2"
                     />
-                  </button>
-                </td>
-              </tr>
+                  </button> */}
+                    <button
+                      onClick={() =>
+                        handleView(
+                          item.id,
+                          item.progressReport
+                            ? item.progressReport[0].id
+                            : null
+                        )
+                      }
+                      className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                    >
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                        alt="penelitian"
+                        className="w-7 h-7 mr-2"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

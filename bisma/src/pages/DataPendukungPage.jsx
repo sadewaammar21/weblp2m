@@ -1,13 +1,13 @@
-import React from 'react'
-import NavbarOperator from '../components/Operator/NavbarOperator'
-import DataPendukungOPT from '../components/Operator/DataPendukungOPT'
+import React from "react";
+import DataPendukungOPT from "../components/Operator/DataPendukungOPT";
+import NavBar from "../components/NavBar";
 
 const DataPendukungPage = () => {
   return (
-    <NavbarOperator>
-        <DataPendukungOPT/>
-    </NavbarOperator>
-  )
-}
+    <NavBar>
+      <DataPendukungOPT />
+    </NavBar>
+  );
+};
 
-export default DataPendukungPage
+export default DataPendukungPage;

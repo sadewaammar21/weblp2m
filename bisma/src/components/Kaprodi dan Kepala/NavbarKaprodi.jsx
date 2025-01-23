@@ -150,77 +150,9 @@ const NavbarKaprodi = ({ children }) => {
                 </li>
 
                 {/* Dropdown di Penelitian */}
-                <li
-                  className="text-white hover:text-gray-300 cursor-pointer relative flex items-center"
-                  onMouseEnter={handleDropdownEnter}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/penelitian.svg"}
-                    alt="penelitian"
-                    className="w-5 h-5 mr-2"
-                  />
-                  <div className="flex items-center">
-                    Pengabdian
-                    <FaChevronDown className="ml-2" />
-                  </div>
-                  {dropdown && (
-                    <ul
-                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
-                      ref={dropdownRef}
-                    >
-                      <li
-                        className="px-4 py-2  hover:bg-violet-800 relative"
-                        onMouseEnter={handleSubDropdownEnter}
-                        onMouseLeave={handleSubDropdownLeave}
-                      >
-                        <div className="flex items-center justify-between">
-                          Penelitian Internal
-                          <FaChevronRight className="w-4 h-4" />
-                        </div>
-                        {subDropdown && (
-                          <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/penelitian/usulan">Usulan Baru</Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/penelitian/perbaikan">
-                                Perbaikan Usulan
-                              </Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/penelitian/laporan-kemajuan">
-                                Laporan Kemajuan
-                              </Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/penelitian/laporan-akhir">
-                                Laporan Akhir
-                              </Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/catatanakhir">Catatan Akhir</Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
-                              <Link to="/luaran">Luaran</Link>
-                            </li>
-                          </ul>
-                        )}
-                      </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
-                        Penelitian Eksternal
-                      </li>
-                    </ul>
-                  )}
-                </li>
 
-                <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
-                    alt="kekayaan intelektual"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Program Lainnya
-                </li>
+                {/* kaprodi */}
+
                 <li className="text-white hover:text-gray-300 cursor-pointer flex items-center">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/laporan.svg"}

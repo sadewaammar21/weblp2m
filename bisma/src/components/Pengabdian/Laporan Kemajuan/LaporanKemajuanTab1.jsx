@@ -14,7 +14,7 @@ import ModalLuaranPdf from "./ModalLuaranPdf";
 import ModalLuaranTambahan from "./ModalLuaranTambahan";
 // import ModalEditLapKemajuanTab1 from "./ModalEditLapKemajuanTab1";
 
-const LaporanKemajuanTab1 = (data, setData, service) => {
+const LaporanKemajuanTab1 = ({service, data, setData}) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isOpenRekognisi, setIsOpenRekognisi] = useState(false);
   const [isOpenPoster, setIsOpenPoster] = useState(false);
@@ -385,11 +385,11 @@ const LaporanKemajuanTab1 = (data, setData, service) => {
         <label className="text-lg font-bold font-sans text-gray-800">
           Ringkasan
         </label>
-        <h2 className="text-md font-sans text-gray-800 my-5">
-          Tuliskan secara ringkas latar belakang penlitian, tujuan dan tahapan
+        {/* <h2 className="text-md font-sans text-gray-800 my-5">
+        Tuliskan secara ringkas latar belakang penlitian, tujuan dan tahapan
           metode, luaran yang ditargetkan, dan hasil yang diperoleh sesuai
           dengan tahun pelaksanaan
-        </h2>
+        </h2> */}
         <TextAreaCmp
           value={data.summary}
           name="summary"
@@ -630,13 +630,14 @@ const LaporanKemajuanTab1 = (data, setData, service) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+          {(service?.output || []).map((item, index) => (
+            <tr key={index}>
               <td className="border border-black px-4 py-2 break-words text-left">
-                Luaran Tambahan
+              {item.description}
               </td>
               <td className="border border-black px-4 py-2 align-middle">
                 <button
-                  onClick={openModalLuaranTambahan}
+                  onClick={()=>openModalLuaranTambahan(index)}
                   className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
                 >
                   <img
@@ -647,6 +648,7 @@ const LaporanKemajuanTab1 = (data, setData, service) => {
                 </button>
               </td>
             </tr>
+          ))}
           </tbody>
         </table>
       </div>

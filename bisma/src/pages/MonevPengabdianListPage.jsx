@@ -1,12 +1,13 @@
 import React from "react";
 import NavbarReviewer from "../components/Reviewer/NavbarReviewer";
 import MonevPengabdianList from "../components/Reviewer/MonevPengabdianList";
+import NavBar from "../components/NavBar";
 
 const MonevPengabdianListPage = () => {
   return (
-    <NavbarReviewer>
+    <NavBar>
       <MonevPengabdianList />
-    </NavbarReviewer>
+    </NavBar>
   );
 };
 
