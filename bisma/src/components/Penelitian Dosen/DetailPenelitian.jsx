@@ -1,44 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { downloadResearchDocument, downloadEveryDocument, getResearchDetail } from "../../Features/ResearchSlice";
+import {
+  downloadResearchDocument,
+  downloadEveryDocument,
+  getResearchDetail,
+} from "../../Features/ResearchSlice";
 
 const DetailPenelitian = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const [research, setResearch] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const fetchDetailResearch = async(id) =>{
+  const fetchDetailResearch = async (id) => {
     try {
       setLoading(true);
       const response = await getResearchDetail(id);
       setResearch(response.data);
       console.log(research);
     } catch (error) {
-      setError(true)
-    }finally{
-      setLoading(false)
+      setError(true);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchDetailResearch(id);
   }, [id]);
 
   const handleDownloadPdf = (id) => {
     downloadResearchDocument(id);
-  }
+  };
 
   const handleDownloadDocument = (filePath) => {
     downloadEveryDocument(filePath);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
-  if(loading){
-    return <p>Loading...</p>
-  }
-
-  if(error){
-    return <p>Error ketika mengambil data</p>
+  if (error) {
+    return <p>Error ketika mengambil data</p>;
   }
 
   return (
@@ -61,7 +65,10 @@ const DetailPenelitian = () => {
               </h2>
             </div>
           </div>
-          <button className="cursor-pointer" onClick={() => handleDownloadPdf(research.id)}>
+          <button
+            className="cursor-pointer"
+            onClick={() => handleDownloadPdf(research.id)}
+          >
             <img
               src={process.env.PUBLIC_URL + "/assets/icon_pdf_brks.svg"}
               alt="user"
@@ -209,17 +216,18 @@ const DetailPenelitian = () => {
             </tr>
           </thead>
           <tbody>
-            {research.members && research.members.map((item, index) => (
-              <tr key={index}>
-                <td>{index+1}</td>
-                <td>{item.nidn}</td>
-                <td>{item.name}</td>
-                <td>{item.institution}</td>
-                <td>{item.id_prodi}</td>
-                <td>{item.pivot.task}</td>
-                <td>{item.pivot.status}</td>
-              </tr>
-            ))}
+            {research.members &&
+              research.members.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.nidn}</td>
+                  <td>{item.name}</td>
+                  <td>{item.institution}</td>
+                  <td>{item.id_prodi}</td>
+                  <td>{item.pivot.task}</td>
+                  <td>{item.pivot.status}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -247,17 +255,18 @@ const DetailPenelitian = () => {
             </tr>
           </thead>
           <tbody>
-            {research.students && research.students.map((item, index) => (
-              <tr key={index}>
-                <td>{index+1}</td>
-                <td>{item.nim}</td>
-                <td>{item.name}</td>
-                <td>{item.email}</td>
-                <td>{item.prodi}</td>
-                <td>{item.task}</td>
-                <td>{item.role}</td>
-              </tr>
-            ))}
+            {research.students &&
+              research.students.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.nim}</td>
+                  <td>{item.name}</td>
+                  <td>{item.email}</td>
+                  <td>{item.prodi}</td>
+                  <td>{item.task}</td>
+                  <td>{item.role}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -280,7 +289,10 @@ const DetailPenelitian = () => {
         <div>
           <div className="font-sans">Substansi</div>
           <div className="font-sans font-bold flex items-center">
-            <button className="ml-2" onClick={() => handleDownloadDocument(research.substance)}>
+            <button
+              className="ml-2"
+              onClick={() => handleDownloadDocument(research.substance)}
+            >
               <img
                 src={process.env.PUBLIC_URL + "/assets/download_sub.svg"}
                 alt="user"
@@ -305,15 +317,16 @@ const DetailPenelitian = () => {
             </tr>
           </thead>
           <tbody>
-            {research.output && research.output.map((item, index) => (
-              <tr key={index}>
-                <td>{item.year}</td>
-                <td>{item.id_category_output}</td>
-                <td>{item.id_type_output}</td>
-                <td>{item.status}</td>
-                <td>{item.description}</td>
-              </tr>
-            ))}
+            {research.output &&
+              research.output.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.year}</td>
+                  <td>{item.id_category_output}</td>
+                  <td>{item.id_type_output}</td>
+                  <td>{item.status}</td>
+                  <td>{item.description}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -350,17 +363,18 @@ const DetailPenelitian = () => {
             </tr>
           </thead>
           <tbody>
-            {research.budget_plan && research.budget_plan.map((item, index) => (
-              <tr key={index}>
-                <td>{item.id_group_budget}</td>
-                <td>{item.id_component_budget}</td>
-                <td>{item.item}</td>
-                <td>{item.unit}</td>
-                <td>{item.price_unit}</td>
-                <td>{item.volume}</td>
-                <td>{item.total}</td>
-              </tr>
-            ))}
+            {research.budget_plan &&
+              research.budget_plan.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.id_group_budget}</td>
+                  <td>{item.id_component_budget}</td>
+                  <td>{item.item}</td>
+                  <td>{item.unit}</td>
+                  <td>{item.price_unit}</td>
+                  <td>{item.volume}</td>
+                  <td>{item.total}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -422,17 +436,20 @@ const DetailPenelitian = () => {
             </tr>
           </thead>
           <tbody>
-            {research.supporting_document && research.supporting_document.map((item, index) => (
-              <tr key={index}>
-                <td>{item.partner_name}</td>
-                <td>{item.institution}</td>
-                <td>{item.institution_address}</td>
-                <td>{item.country_code}</td>
-                <td>{item.email}</td>
-                <td>{item.document}</td>
-                <td>{item.funding_contribution1 + item.funding_contribution2}</td>
-              </tr>
-            ))}
+            {research.supporting_document &&
+              research.supporting_document.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.partner_name}</td>
+                  <td>{item.institution}</td>
+                  <td>{item.institution_address}</td>
+                  <td>{item.country_code}</td>
+                  <td>{item.email}</td>
+                  <td>{item.document}</td>
+                  <td>
+                    {item.funding_contribution1 + item.funding_contribution2}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

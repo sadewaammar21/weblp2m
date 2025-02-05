@@ -68,7 +68,7 @@ const ProgressBarPerbaikanUsulan = () => {
     <div>
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          PERBAIKAN USULAN PENELITIAN
+          PERBAIKAN USULAN PENGABDIAN
         </h1>
         <div className="container mx-auto">
           <div className="bg-gray-50 shadow-sm  rounded-sm  p-5 ">

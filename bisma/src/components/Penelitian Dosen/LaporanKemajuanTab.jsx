@@ -85,6 +85,14 @@ const LaporanKemajuanTab = () => {
   };
 
   useEffect(() => {
+    if (reportId) {
+      console.log("Report ID tersedia:", reportId);
+    } else {
+      console.log("Tidak ada report id");
+    }
+  }, [reportId]);
+
+  useEffect(() => {
     fetchResearch();
     if (reportId) {
       fetchReport();

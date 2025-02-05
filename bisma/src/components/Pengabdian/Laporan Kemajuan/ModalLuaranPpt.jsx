@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp";
 import TextfieldCmp from "../../TextfieldCmp";
@@ -6,28 +6,30 @@ import TextfieldCmp from "../../TextfieldCmp";
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalLuaranPpt = ({
-  isOpen,
-  onRequestClose,
-  data,
-  setData,
-  index,
-  onSave,
-}) => {
-  const handleDropdownChange = (field, value) => {
-    setData((prevData) => ({
+const ModalLuaranPpt = ({ isOpen, onRequestClose, data, index, onSave }) => {
+  const [outputData, setOutputData] = useState({});
+
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setOutputData((prevData) => ({
       ...prevData,
-      [field]: value,
+      [name]: files[0],
     }));
   };
-  const handleSave = () => {
+
+  useEffect(() => {
+    if (data && index >= 0) {
+      setOutputData(data[index]); // Update data modal berdasarkan index
+    }
+  }, [data, index]);
+
+  const handleSave = (e) => {
+    e.preventDefault(); // Prevent default form submission
     console.log("Data berhasil disimpan");
-    onRequestClose(); // Tutup modal setelah menyimpan
+    onSave(index, outputData);
+    setOutputData({});
+    onRequestClose(); // Close modal after save
   };
-  const komponenRekognisi = [
-    { label: "Tercapai", value: "Tercapai" },
-    { label: "Tidak Tercapai", value: "Tidak_tercapai" },
-  ];
 
   return (
     <Modal
@@ -38,7 +40,7 @@ const ModalLuaranPpt = ({
       overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <h2 className="text-xl font-bold mb-4">Presentasi Power Point</h2>
-      <form>
+      <form onSubmit={handleSave}>
         <div className="bg-bluef-50 my-5 p-4 rounded-md shadow-sm flex items-center space-x-4">
           {/* Content */}
           <div className="text-bluef-500">
@@ -111,6 +113,8 @@ const ModalLuaranPpt = ({
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Presentasi</label>
           <input
+            name="presentation"
+            onChange={(e) => handleFileChange(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />

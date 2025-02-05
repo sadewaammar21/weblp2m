@@ -37,13 +37,19 @@ const UsulanBelumDitinjauKpr = () => {
   };
   const openModal = (item) => {
     console.log(item);
-    setSelectedData(item);
+    // setSelectedData(item);
     setIsOpen(true);
   };
 
   const closeModal = () => {
     setIsOpen(false);
     fetchData();
+  };
+
+  const handleModal = (accepted, status) => {
+    setIsAccepted(accepted);
+    setStatus(status);
+    openModal();
   };
 
   const [data, setData] = useState([]);
@@ -60,7 +66,7 @@ const UsulanBelumDitinjauKpr = () => {
       const result = await getService({
         pageSize: 5,
         currentPage: 1,
-        // status: 5,
+        status: 2,
         prodiId: 5,
       });
       setData(result.data);
@@ -226,18 +232,25 @@ const UsulanBelumDitinjauKpr = () => {
                     <td className="border border-gray-300 p-2 text-center">
                       <div className="flex justify-center space-x-2">
                         <button
-                          onClick={() => openModal(item)}
+                          onClick={() => handleModal(true, 3)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"
                         >
                           Disetujui
                         </button>
                         <button
-                          onClick={() => openModalDitolak(item)}
+                          onClick={() => handleModal(false, 8)}
                           className="bg-reds-500 text-white px-4 py-2 rounded-md"
                         >
                           Ditolak
                         </button>
                       </div>
+                      <ModalLaporanBelumDitinjau
+                        data={selectedData}
+                        isOpen={isOpen}
+                        onRequestClose={closeModal}
+                        seriviceId={item.id}
+                        isAccepted={isAccepted}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -246,11 +259,6 @@ const UsulanBelumDitinjauKpr = () => {
           </div>
         </div>
       </div>
-      <ModalLaporanBelumDitinjau
-        data={selectedData}
-        isOpen={isOpen}
-        onRequestClose={closeModal}
-      />
       <ModalLaporanBelumDitinjauDitolak
         data={selectedData}
         isOpen={isTolak}

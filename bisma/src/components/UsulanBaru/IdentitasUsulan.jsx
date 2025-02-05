@@ -113,7 +113,7 @@ const IdentitasUsulan = ({ data, setData }) => {
       );
       setScheme(response.data);
     } catch (error) {
-      setScheme([])
+      setScheme([]);
     }
   };
   const fetchScope = async () => {
@@ -220,7 +220,7 @@ const IdentitasUsulan = ({ data, setData }) => {
   return (
     <div>
       <div>
-        <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
+        <h1 className="text-h5 text-violet-800 mx-5 my-5">
           1.1 Identitas Usulan Penelitian{" "}
         </h1>
         <div className="grid grid-cols-3 gap-4">
@@ -415,24 +415,39 @@ const IdentitasUsulan = ({ data, setData }) => {
         <div className="relative overflow-x-auto  my-10">
           <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
             <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr className="border border-black">
-                <th className="border border-black px-4 py-2">No</th>
-                <th className="border border-black px-4 py-2">NIDN</th>
-                <th className="border border-black px-4 py-2">Nama</th>
-                <th className="border border-black px-4 py-2">Tugas</th>
-                <th className="border border-black px-4 py-2">Status</th>
-                <th className="border border-black px-4 py-2">Aksi</th>
+              <tr className="border border-neutral-100">
+                <th className="border border-neutral-100 px-4 py-2">No</th>
+                <th className="border border-neutral-100 px-4 py-2">NIDN</th>
+                <th className="border border-neutral-100 px-4 py-2">Nama</th>
+                <th className="border border-neutral-100 px-4 py-2">Tugas</th>
+                <th className="border border-neutral-100 px-4 py-2">Status</th>
+                <th className="border border-neutral-100 px-4 py-2">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {data.members.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.id}</td>
-                  <td>{item.pivot.research_roles}</td>
-                  <td>{item.pivot.task}</td>
-                  <td>{item.pivot.status}</td>
-                  <td>action here</td>
+                <tr
+                  key={index}
+                  className="border-b text-center text-neutral-100 text-b3"
+                >
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {index + 1}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {item.id}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {item.pivot.research_roles}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {item.pivot.task}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {item.pivot.status}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    action here
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -454,25 +469,39 @@ const IdentitasUsulan = ({ data, setData }) => {
         </div>
         <div className="relative overflow-x-auto  my-10">
           <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
-            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr className="border border-black">
-                <th className="border border-black px-4 py-2">No</th>
-                <th className="border border-black px-4 py-2">NIM</th>
-                <th className="border border-black px-4 py-2">Nama</th>
-                <th className="border border-black px-4 py-2">Instansi</th>
-                <th className="border border-black px-4 py-2">Tugas</th>
-                <th className="border border-black px-4 py-2">Aksi</th>
+            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-neutral-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="border border-neutral-100">
+                <th className="border border-neutral-100 px-4 py-2">No</th>
+                <th className="border border-neutral-100 px-4 py-2">NIM</th>
+                <th className="border border-neutral-100 px-4 py-2">Nama</th>
+                <th className="border border-neutral-100 px-4 py-2">
+                  Instansi
+                </th>
+                <th className="border border-neutral-100 px-4 py-2">Tugas</th>
+                <th className="border border-neutral-100 px-4 py-2">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {data.students.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.nim}</td>
-                  <td>{item.name}</td>
-                  <td>{item.prodi}</td>
-                  <td>{item.task}</td>
-                  <td>action here</td>
+                <tr key={index} className="border-b text-center text-b3">
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {index + 1}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {item.nim}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {item.name}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {item.prodi}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    {item.task}
+                  </td>
+                  <td clasname="border border-neutral-100 px-4 py-2">
+                    action here
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -14,40 +14,24 @@ const ModalLuaranWajibInternasional = ({
   onSave,
 }) => {
   const [outputData, setOutputData] = useState({});
-
   useEffect(() => {
-    if (data) {
-      setOutputData(data[index]);
+    if (data && index >= 0) {
+      setOutputData(data[index]); // Update data modal berdasarkan index
     }
   }, [data, index]);
 
-  const handleSave = () => {
-    console.log("Data berhasil disimpan");
-    onSave(index, outputData);
-    setOutputData({});
-    onRequestClose(); // Tutup modal setelah menyimpan
-  };
+  const statusArticle = [
+    { value: "Submited", label: "Submited" },
+    { value: "Accepted", label: "Accepted" },
+    { value: "Published", label: "Published " },
+    { value: "Draft", label: "Draft" },
+  ];
 
   const statusAuthor = [
-    { value: "first-author", label: "First-author" },
-    { value: "co-author", label: "Co-author" },
-    { value: "author", label: "Author" },
+    { value: "First Author", label: "First Author" },
+    { value: "Co-Author", label: "Co-Author" },
+    { value: "Author", label: "Author" },
   ];
-
-  const statusArticle = [
-    { value: "submitted", label: "Submitted" },
-    { value: "draft", label: "Draft" },
-    { value: "accepted", label: "Accepted" },
-    { value: "published", label: "Published" },
-  ];
-
-  const handleFileChange = (event) => {
-    const { name, files } = event.target;
-    setOutputData((prevData) => ({
-      ...prevData,
-      [name]: files[0],
-    }));
-  };
 
   const handleDropdownChange = (option, fieldName) => {
     setOutputData((prevData) => ({
@@ -66,6 +50,22 @@ const ModalLuaranWajibInternasional = ({
     }));
   };
 
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setOutputData((prevData) => ({
+      ...prevData,
+      [name]: files[0],
+    }));
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Data berhasil disimpan");
+    onSave(index, outputData);
+    setOutputData({});
+    onRequestClose(); // Close modal after save
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -77,7 +77,7 @@ const ModalLuaranWajibInternasional = ({
       <h2 className="text-xl font-bold mb-4">
         Luaran Wajib Artikel di Jurnal Bereputasi Internasional
       </h2>
-      <form>
+      <form onSubmit={handleSave}>
         {/* Dropdown Status Artikel */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">
@@ -97,7 +97,13 @@ const ModalLuaranWajibInternasional = ({
         {/* Dropdown Status Penulis */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Status Penulis</label>
-          <DropdownCmp options={["First Author", "Co-Author"]} />
+          <DropdownCmp
+            options={statusAuthor}
+            value={statusAuthor.find(
+              (option) => option.value === outputData.status_writer
+            )}
+            onChange={(option) => handleDropdownChange(option, "status_writer")}
+          />
         </div>
 
         {/* Nama Jurnal */}
@@ -116,8 +122,8 @@ const ModalLuaranWajibInternasional = ({
           <div>
             <label className="block text-gray-700 mb-2">ISSN/EISSN</label>
             <TextfieldCmp
-              value={outputData.issn}
-              name="issn"
+              value={outputData.issn_eissn}
+              name="issn_eissn"
               onChange={(e) => handleInputChange(e)}
               placeholder="ISSN/EISSN"
             />
@@ -127,10 +133,10 @@ const ModalLuaranWajibInternasional = ({
               Lembaga Pengindeks
             </label>
             <TextfieldCmp
-              placeholder="Lembaga Pengindeks"
-              alue={outputData.lembaga_pengindeks}
-              name="lembaga_pengindeks"
+              value={outputData.indexing_agency}
+              name="indexing_agency"
               onChange={(e) => handleInputChange(e)}
+              placeholder="Lembaga Pengindeks"
             />
           </div>
         </div>

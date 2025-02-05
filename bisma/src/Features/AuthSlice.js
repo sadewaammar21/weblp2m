@@ -41,9 +41,25 @@ export const LoginAuth = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (error.response) {
-        const message = error.response.data.error;
-        return thunkAPI.rejectWithValue(message);
+        const errorData = error.response.data;
+
+        // Cek error dari email
+        if (errorData.email) {
+          return thunkAPI.rejectWithValue(errorData.email[0]);
+        }
+
+        if (errorData.password) {
+          return thunkAPI.rejectWithValue(errorData.password[0]);
+        }
+
+        // Cek error dari password atau login gagal
+        if (errorData.message) {
+          return thunkAPI.rejectWithValue(errorData.message);
+        }
+
+        return thunkAPI.rejectWithValue("Terjadi kesalahan pada server.");
       }
+      return thunkAPI.rejectWithValue("Tidak dapat terhubung ke server.");
     }
   }
 );
@@ -60,13 +76,23 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   }
 });
 
-export const LogOut = createAsyncThunk("user/api/LogOut", async () => {
-  localStorage.removeItem("currentRole");
-  localStorage.removeItem("user");
-  const response = await axios.post(`${apiUrl}/api/logout`, getToken);
-  localStorage.removeItem("accessToken");
-  return response;
-});
+export const LogOut = createAsyncThunk(
+  "user/api/LogOut",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.post(`${apiUrl}/api/logout`, {}, getToken());
+
+      // Hapus data autentikasi dari localStorage
+      localStorage.removeItem("currentRole");
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+
+      return response.data; // Pastikan server mengembalikan { message: "Successfully logged out" }
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Logout gagal, silakan coba lagi.");
+    }
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -98,6 +124,18 @@ export const authSlice = createSlice({
       state.user = action.payload;
     });
     builder.addCase(getMe.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    });
+    builder.addCase(LogOut.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.user = null;
+      state.message = action.payload.message; // Menyimpan pesan logout
+    });
+
+    builder.addCase(LogOut.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;

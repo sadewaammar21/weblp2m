@@ -59,15 +59,30 @@ const ProgressLaporanKemajuan = () => {
   //data pengabdian
   const [service, setService] = useState({});
 
+  // const fetchService = async () => {
+  //   try {
+  //     const response = await getServiceDetail(id);
+  //     setService(response);
+  //     console.log(service);
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
+
   const fetchService = async () => {
-      try {
-        const response = await getServiceDetail(id);
+    try {
+      const response = await getServiceDetail(id);
+      if (response && response.id) {
         setService(response);
-        console.log(service);
-      } catch (error) {
-        throw error;
+        console.log("Service ID:", response.id);
+      } else {
+        console.log("Tidak ada service id");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching service:", error);
+      console.log("Tidak ada service id");
+    }
+  };
 
   const fetchReport = async () => {
     try {
@@ -77,6 +92,7 @@ const ProgressLaporanKemajuan = () => {
         console.log(report);
       } else {
         setReport({
+          comunity_service_id: service.id,
           summary: "",
           keyword: "",
           substance: "",
@@ -103,6 +119,103 @@ const ProgressLaporanKemajuan = () => {
   };
 
   useEffect(() => {
+    if (reportId) {
+      console.log("Report ID tersedia:", reportId);
+    } else {
+      console.log("Tidak ada report id");
+    }
+  }, [reportId]);
+
+  // const fetchReport = async () => {
+  //   try {
+  //     if (reportId) {
+  //       const response = await getServiceDetail(reportId);
+  //       if (response && response.id) {
+  //         setReport({
+  //           ...response,
+  //           output_progress_report1s: Array.isArray(
+  //             response.output_progress_report1s
+  //           )
+  //             ? response.output_progress_report1s
+  //             : [],
+  //           output_progress_report2s: Array.isArray(
+  //             response.output_progress_report2s
+  //           )
+  //             ? response.output_progress_report2s
+  //             : [],
+  //           output_progress_report3s: Array.isArray(
+  //             response.output_progress_report3s
+  //           )
+  //             ? response.output_progress_report3s
+  //             : [],
+  //           output_progress_report4s: Array.isArray(
+  //             response.output_progress_report4s
+  //           )
+  //             ? response.output_progress_report4s
+  //             : [],
+  //           output_progress_report5s: Array.isArray(
+  //             response.output_progress_report5s
+  //           )
+  //             ? response.output_progress_report5s
+  //             : [],
+  //           output_progress_report6s: Array.isArray(
+  //             response.output_progress_report6s
+  //           )
+  //             ? response.output_progress_report6s
+  //             : [],
+  //           output_progress_report7s: Array.isArray(
+  //             response.output_progress_report7s
+  //           )
+  //             ? response.output_progress_report7s
+  //             : [],
+  //           output_progress_report8s: Array.isArray(
+  //             response.output_progress_report8s
+  //           )
+  //             ? response.output_progress_report8s
+  //             : [],
+  //           output_progress_report9s: Array.isArray(
+  //             response.output_progress_report9s
+  //           )
+  //             ? response.output_progress_report9s
+  //             : [],
+  //           output_progress_report10s: Array.isArray(
+  //             response.output_progress_report10s
+  //           )
+  //             ? response.output_progress_report10s
+  //             : [],
+  //         });
+  //         console.log("Report ID:", response.id);
+  //       } else {
+  //         console.log("Tidak ada data untuk report id:", reportId);
+  //       }
+  //     } else {
+  //       console.log("Tidak ada report id");
+  //       setReport({
+  //         comunity_service_id: service.id,
+  //         summary: "",
+  //         keyword: "",
+  //         substance: "",
+  //         partner_contribution: "",
+  //         budget_use: "",
+  //         output_progress_report1s: [],
+  //         output_progress_report2s: [],
+  //         output_progress_report3s: [],
+  //         // output_progress_report4s: [],
+  //         // // output_progress_report5s: [],
+  //         // // output_progress_report6s: [],
+  //         // // output_progress_report7s: [],
+  //         // // output_progress_report8s: [],
+  //         // // output_progress_report9s: [],
+  //         // // output_progress_report10s: [],
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching report:", error);
+  //     console.log("Tidak ada report id");
+  //   }
+  // };
+
+  useEffect(() => {
     fetchService();
     if (reportId) {
       fetchReport();
@@ -126,9 +239,9 @@ const ProgressLaporanKemajuan = () => {
       case 1:
         return (
           <LaporanKemajuanTab1
-          service={service}
-          data={report} 
-          setData={setReport}
+            service={service}
+            data={report}
+            setData={setReport}
           />
         );
       case 2:
@@ -158,6 +271,7 @@ const ProgressLaporanKemajuan = () => {
         isEdit: true,
         reportId: report.id,
       });
+      console.log(report);
       console.log(response);
       navigate(-1);
     } else {
@@ -169,6 +283,7 @@ const ProgressLaporanKemajuan = () => {
         isEdit: false,
       });
       console.log(response);
+      console.log(report);
       navigate(-1);
     }
   };
@@ -181,7 +296,7 @@ const ProgressLaporanKemajuan = () => {
     <div>
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PROPOSAL PENGABDIAN
+          LAPORAN KEMAJUAN PENGABDIAN
         </h1>
         <div className="container mx-auto">
           <div className="bg-gray-50 shadow-sm rounded-sm p-5">

@@ -1,6 +1,14 @@
 import React from "react";
 
-const LaporanAkhirTab3 = () => {
+const LaporanAkhirTab3 = ({ service, data, setData }) => {
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: files[0],
+    }));
+    console.log(data);
+  };
   return (
     <div>
       <div>
@@ -10,7 +18,10 @@ const LaporanAkhirTab3 = () => {
           </label>
           <input
             type="file"
-            className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
+            name="budget_use"
+            onChange={(e) => handleFileChange(e)}
+            className="border border-gray-300 rounded-lg p-2 w-1/2"
+            id="file-upload"
           />
         </div>
       </div>

@@ -616,8 +616,8 @@ export const addServiceProgressReport = async ({
         item.journal_name
       );
       formData.append(
-        `output_progress_report4s[${index}][issn_essn]`,
-        item.issn_essn
+        `output_progress_report4s[${index}][issn_eissn]`,
+        item.issn_eissn
       );
       formData.append(
         `output_progress_report4s[${index}][indexing_agency]`,
@@ -644,90 +644,111 @@ export const addServiceProgressReport = async ({
         );
       }
     });
-    data.output_progress_report5s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report5s[${index}][status]`,
-        item.status
-      );
-      formData.append(
-        `output_progress_report5s[${index}][type_media]`,
-        item.type_media
-      );
-      formData.append(`output_progress_report5s[${index}][title]`, item.title);
-      formData.append(`output_progress_report5s[${index}][name]`, item.name);
-      if (item.proof_support) {
+    if (data.output_progress_report5) {
+      data.output_progress_report5s.forEach((item, index) => {
         formData.append(
-          `output_progress_report5s[${index}][proof_support]`,
-          item.proof_support
+          `output_progress_report5s[${index}][status]`,
+          item.status
         );
-      }
-    });
-    data.output_progress_report6s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report6s[${index}][status]`,
-        item.status
-      );
-      formData.append(
-        `output_progress_report6s[${index}][improvement_description]`,
-        item.improvement_description
-      );
-      if (item.proof_improvement) {
         formData.append(
-          `output_progress_report6s[${index}][proof_improvement]`,
-          item.proof_improvement
+          `output_progress_report5s[${index}][type_media]`,
+          item.type_media
         );
-      }
-    });
-    data.output_progress_report7s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report7s[${index}][status]`,
-        item.status
-      );
-      formData.append(
-        `output_progress_report7s[${index}][improvement_description]`,
-        item.improvement_description
-      );
-      if (item.proof_improvement) {
         formData.append(
-          `output_progress_report7s[${index}][proof_improvement]`,
-          item.proof_improvement
+          `output_progress_report5s[${index}][title]`,
+          item.title
         );
-      }
-    });
-    data.output_progress_report8s.forEach((item, index) => {
-      if (item.presentation) {
+        formData.append(`output_progress_report5s[${index}][name]`, item.name);
+        if (item.proof_support) {
+          formData.append(
+            `output_progress_report5s[${index}][proof_support]`,
+            item.proof_support
+          );
+        }
+      });
+    } else {
+    }
+
+    if (data.output_progress_report6s) {
+      data.output_progress_report6s.forEach((item, index) => {
         formData.append(
-          `output_progress_report8s[${index}][presentation]`,
-          item.presentation
+          `output_progress_report6s[${index}][status]`,
+          item.status
         );
-      }
-    });
-    data.output_progress_report9s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report9s[${index}][result_description]`,
-        item.result_description
-      );
-      if (item.result_plans) {
         formData.append(
-          `output_progress_report9s[${index}][result_plans]`,
-          item.result_plans
+          `output_progress_report6s[${index}][improvement_description]`,
+          item.improvement_description
         );
-      }
-    });
-    data.output_progress_report10s.forEach((item, index) => {
-      formData.append(`output_progress_report10s[${index}][type]`, item.type);
-      formData.append(
-        `output_progress_report10s[${index}][description]`,
-        item.description
-      );
-      formData.append(`output_progress_report10s[${index}][url]`, item.url);
-      if (item.document) {
+        if (item.proof_improvement) {
+          formData.append(
+            `output_progress_report6s[${index}][proof_improvement]`,
+            item.proof_improvement
+          );
+        }
+      });
+    } else {
+    }
+
+    if (data.output_progress_report7s) {
+      data.output_progress_report7s.forEach((item, index) => {
         formData.append(
-          `output_progress_report10s[${index}][document]`,
-          item.document
+          `output_progress_report7s[${index}][status]`,
+          item.status
         );
-      }
-    });
+        formData.append(
+          `output_progress_report7s[${index}][improvement_description]`,
+          item.improvement_description
+        );
+        if (item.proof_improvement) {
+          formData.append(
+            `output_progress_report7s[${index}][proof_improvement]`,
+            item.proof_improvement
+          );
+        }
+      });
+    } else {
+    }
+
+    if (data.output_progress_report8s) {
+      data.output_progress_report8s.forEach((item, index) => {
+        if (item.presentation) {
+          formData.append(
+            `output_progress_report8s[${index}][presentation]`,
+            item.presentation
+          );
+        }
+      });
+      data.output_progress_report9s.forEach((item, index) => {
+        formData.append(
+          `output_progress_report9s[${index}][result_description]`,
+          item.result_description
+        );
+        if (item.result_plans) {
+          formData.append(
+            `output_progress_report9s[${index}][result_plans]`,
+            item.result_plans
+          );
+        }
+      });
+    } else {
+    }
+
+    if (data.output_progress_report10s) {
+      data.output_progress_report10s.forEach((item, index) => {
+        formData.append(`output_progress_report10s[${index}][type]`, item.type);
+        formData.append(
+          `output_progress_report10s[${index}][description]`,
+          item.description
+        );
+        formData.append(`output_progress_report10s[${index}][url]`, item.url);
+        if (item.document) {
+          formData.append(
+            `output_progress_report10s[${index}][document]`,
+            item.document
+          );
+        }
+      });
+    }
 
     if (isEdit) {
       const response = await axios.post(
@@ -788,9 +809,10 @@ export const getServiceFinalReport = async (reportId) => {
       `${apiUrl}/api/service-final-report/${reportId}`,
       getToken()
     );
-    console.log(response);
+    console.log(response.data);
     return response.data[0];
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };
@@ -864,172 +886,171 @@ export const addServiceFinalReport = async ({
     formData.append("government_local_role", data.government_local_role);
     formData.append("funding_contribution", data.funding_contribution);
 
-    data.output_progress_report1s.forEach((item, index) => {
+    data.output_final_report1s.forEach((item, index) => {
+      formData.append(`output_final_report1s[${index}][status]`, item.status);
       formData.append(
-        `output_progress_report1s[${index}][status]`,
-        item.status
-      );
-      formData.append(
-        `output_progress_report1s[${index}][recognized_sks]`,
+        `output_final_report1s[${index}][recognized_sks]`,
         item.recognized_sks
       );
       formData.append(
-        `output_progress_report1s[${index}][recognized_courses]`,
+        `output_final_report1s[${index}][recognized_courses]`,
         item.recognized_courses
       );
       formData.append(
-        `output_progress_report1s[${index}][proof_recognition]`,
+        `output_final_report1s[${index}][proof_recognition]`,
         item.proof_recognition
       );
     });
-    data.output_progress_report2s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report2s[${index}][status]`,
-        item.status
-      );
+    data.output_final_report2s.forEach((item, index) => {
+      formData.append(`output_final_report2s[${index}][status]`, item.status);
       if (item.poster_documents) {
         formData.append(
-          `output_progress_report2s[${index}][poster_documents]`,
+          `output_final_report2s[${index}][poster_documents]`,
           item.poster_documents
         );
       }
     });
-    data.output_progress_report3s.forEach((item, index) => {
+    data.output_final_report3s.forEach((item, index) => {
+      formData.append(`output_final_report3s[${index}][status]`, item.status);
       formData.append(
-        `output_progress_report3s[${index}][status]`,
-        item.status
-      );
-      formData.append(
-        `output_progress_report3s[${index}][url_video]`,
+        `output_final_report3s[${index}][url_video]`,
         item.url_video
       );
     });
-    data.output_progress_report4s.forEach((item, index) => {
+    data.output_final_report4s.forEach((item, index) => {
       formData.append(
-        `output_progress_report4s[${index}][status_article]`,
+        `output_final_report4s[${index}][status_article]`,
         item.status_article
       );
       formData.append(
-        `output_progress_report4s[${index}][status_writer]`,
+        `output_final_report4s[${index}][status_writer]`,
         item.status_writer
       );
       formData.append(
-        `output_progress_report4s[${index}][journal_name]`,
+        `output_final_report4s[${index}][journal_name]`,
         item.journal_name
       );
       formData.append(
-        `output_progress_report4s[${index}][issn_essn]`,
-        item.issn_essn
+        `output_final_report4s[${index}][issn_eissn]`,
+        item.issn_eissn
       );
       formData.append(
-        `output_progress_report4s[${index}][indexing_agency]`,
+        `output_final_report4s[${index}][indexing_agency]`,
         item.indexing_agency
       );
       formData.append(
-        `output_progress_report4s[${index}][journal_url]`,
+        `output_final_report4s[${index}][journal_url]`,
         item.journal_url
       );
       formData.append(
-        `output_progress_report4s[${index}][title_article]`,
+        `output_final_report4s[${index}][title_article]`,
         item.title_article
       );
       if (item.manuscript_article) {
         formData.append(
-          `output_progress_report4s[${index}][manuscript_article]`,
+          `output_final_report4s[${index}][manuscript_article]`,
           item.manuscript_article
         );
       }
       if (item.proof_submit) {
         formData.append(
-          `output_progress_report4s[${index}][proof_submit]`,
+          `output_final_report4s[${index}][proof_submit]`,
           item.proof_submit
         );
       }
     });
-    data.output_progress_report5s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report5s[${index}][status]`,
-        item.status
-      );
-      formData.append(
-        `output_progress_report5s[${index}][type_media]`,
-        item.type_media
-      );
-      formData.append(`output_progress_report5s[${index}][title]`, item.title);
-      formData.append(`output_progress_report5s[${index}][name]`, item.name);
-      if (item.proof_support) {
+    if (data.output_final_report5s) {
+      data.output_final_report5s.forEach((item, index) => {
+        formData.append(`output_final_report5s[${index}][status]`, item.status);
         formData.append(
-          `output_progress_report5s[${index}][proof_support]`,
-          item.proof_support
+          `output_final_report5s[${index}][type_media]`,
+          item.type_media
         );
-      }
-    });
-    data.output_progress_report6s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report6s[${index}][status]`,
-        item.status
-      );
-      formData.append(
-        `output_progress_report6s[${index}][improvement_description]`,
-        item.improvement_description
-      );
-      if (item.proof_improvement) {
+        formData.append(`output_final_report5s[${index}][title]`, item.title);
+        formData.append(`output_final_report5s[${index}][name]`, item.name);
+        if (item.proof_support) {
+          formData.append(
+            `output_final_report5s[${index}][proof_support]`,
+            item.proof_support
+          );
+        }
+      });
+    }
+
+    if (data.output_final_report6s) {
+      data.output_final_report6s.forEach((item, index) => {
+        formData.append(`output_final_report6s[${index}][status]`, item.status);
         formData.append(
-          `output_progress_report6s[${index}][proof_improvement]`,
-          item.proof_improvement
+          `output_final_report6s[${index}][improvement_description]`,
+          item.improvement_description
         );
-      }
-    });
-    data.output_progress_report7s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report7s[${index}][status]`,
-        item.status
-      );
-      formData.append(
-        `output_progress_report7s[${index}][improvement_description]`,
-        item.improvement_description
-      );
-      if (item.proof_improvement) {
+        if (item.proof_improvement) {
+          formData.append(
+            `output_final_report6s[${index}][proof_improvement]`,
+            item.proof_improvement
+          );
+        }
+      });
+    }
+
+    if (data.output_final_report7s) {
+      data.output_final_report7s.forEach((item, index) => {
+        formData.append(`output_final_report7s[${index}][status]`, item.status);
         formData.append(
-          `output_progress_report7s[${index}][proof_improvement]`,
-          item.proof_improvement
+          `output_final_report7s[${index}][improvement_description]`,
+          item.improvement_description
         );
-      }
-    });
-    data.output_progress_report8s.forEach((item, index) => {
-      if (item.presentation) {
+        if (item.proof_improvement) {
+          formData.append(
+            `output_final_report7s[${index}][proof_improvement]`,
+            item.proof_improvement
+          );
+        }
+      });
+    }
+
+    if (data.output_final_report8s) {
+      data.output_final_report8s.forEach((item, index) => {
+        if (item.presentation) {
+          formData.append(
+            `output_final_report8s[${index}][presentation]`,
+            item.presentation
+          );
+        }
+      });
+    }
+
+    if (data.output_final_report9s) {
+      data.output_final_report9s.forEach((item, index) => {
         formData.append(
-          `output_progress_report8s[${index}][presentation]`,
-          item.presentation
+          `output_final_report9s[${index}][result_description]`,
+          item.result_description
         );
-      }
-    });
-    data.output_progress_report9s.forEach((item, index) => {
-      formData.append(
-        `output_progress_report9s[${index}][result_description]`,
-        item.result_description
-      );
-      if (item.result_plans) {
+        if (item.result_plans) {
+          formData.append(
+            `output_final_report9s[${index}][result_plans]`,
+            item.result_plans
+          );
+        }
+      });
+    }
+
+    if (data.output_final_report10s) {
+      data.output_final_report10s.forEach((item, index) => {
+        formData.append(`output_final_report10s[${index}][type]`, item.type);
         formData.append(
-          `output_progress_report9s[${index}][result_plans]`,
-          item.result_plans
+          `output_final_report10s[${index}][description]`,
+          item.description
         );
-      }
-    });
-    data.output_progress_report10s.forEach((item, index) => {
-      formData.append(`output_progress_report10s[${index}][type]`, item.type);
-      formData.append(
-        `output_progress_report10s[${index}][description]`,
-        item.description
-      );
-      formData.append(`output_progress_report10s[${index}][url]`, item.url);
-      if (item.document) {
-        formData.append(
-          `output_progress_report10s[${index}][document]`,
-          item.document
-        );
-      }
-    });
+        formData.append(`output_final_report10s[${index}][url]`, item.url);
+        if (item.document) {
+          formData.append(
+            `output_final_report10s[${index}][document]`,
+            item.document
+          );
+        }
+      });
+    }
 
     if (isEdit) {
       const response = await axios.post(

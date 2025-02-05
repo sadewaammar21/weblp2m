@@ -10,6 +10,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 // import { useNavigate } from 'react-router-dom';
 
 const DashboardComponent = () => {
@@ -29,55 +30,64 @@ const DashboardComponent = () => {
     {
       title: "Identitas",
       // count: user.name,
-      icon: <FaUser size={24} className="text-violet-800" />,
+      icon: <FaUser size={24} />,
+      count: user.name,
     },
     {
       title: "Artikel Jurnal Internasional Bereputasi",
       count: user.article ?? 0,
-      icon: <FaGlobe size={24} className="text-violet-800" />,
+      icon: <FaGlobe size={24} />,
     },
     {
       title: "Buku",
       count: user.books ?? 0,
-      icon: <FaBook size={24} className="text-violet-800" />,
+      icon: <FaBook size={24} />,
     },
     {
       title: "Scopus H-Index",
       count: user.h_index_scopus ?? 0,
-      icon: <FaChartBar size={24} className="text-violet-800" />,
+      icon: <FaChartBar size={24} />,
     },
     {
       title: "SS 3Yr",
       count: user.ss_3yr_v3 ?? 0,
-      icon: <FaCogs size={24} className="text-violet-800" />,
+      icon: <FaCogs size={24} c />,
     },
     {
       title: "HKI",
       count: user.hki ?? 0,
-      icon: <FaLightbulb size={24} className="text-violet-800" />,
+      icon: <FaLightbulb size={24} />,
     },
     {
       title: "Sinta Skor Overall",
       count: user.ss_overall_v3 ?? 0,
-      icon: <FaChartBar size={24} className="text-violet-800" />,
+      icon: <FaChartBar size={24} />,
     },
     {
       title: "Jumlah Proposal Pengabdian",
       count: user.comunityService ?? 0,
-      icon: <FaClipboardList size={24} className="text-violet-800" />,
+      icon: <FaClipboardList size={24} />,
     },
     {
       title: "Jumlah Proposal Penelitian",
       count: user.research ?? 0,
-      icon: <FaPen size={24} className="text-violet-800" />,
+      icon: <FaPen size={24} />,
     },
   ];
+
+  useEffect(() => {
+    const successMessage = localStorage.getItem("loginSuccess");
+    if (successMessage) {
+      toast.success(successMessage, { position: "top-right" });
+      localStorage.removeItem("loginSuccess"); // Hapus pesan agar tidak muncul terus
+    }
+  }, []);
 
   return (
     <div className="mx-5">
       {/* Dasboard Pengusul */}
       <div>
-        <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
+        <h1 className=" text-h5 text-violet-800 mx-5 my-5">
           DASHBOARD PENGUSUL
         </h1>
       </div>
@@ -96,10 +106,10 @@ const DashboardComponent = () => {
         </div>
       </div> */}
       <div className="relative bg-violet-800 mx-10 p-12 rounded-lg shadow">
-        <h5 className="text-white text-xl pl-11 pt-5">
+        <h5 className=" text-white text-b1 pl-11 pt-5">
           Anda dapat mengajukan usulan{" "}
         </h5>
-        <h5 className="text-white text-xl pl-11 pb-16">
+        <h5 className=" text-white text-b1 pl-11 pb-16">
           terkait dengan layanan berikut :
         </h5>
         <div className="absolute bottom-0 left-0 w-full flex items-center justify-center transform translate-y-1/2">
@@ -108,55 +118,57 @@ const DashboardComponent = () => {
               className="bg-gray-50 hover:bg-gray-200 rounded-md shadow-lg"
               onClick={handlePenelitian}
             >
-              <h2 className="text-violet-800 px-16 py-8 text-lg">Penelitian</h2>
+              <h2 className="text-violet-800 px-16 py-8 text-b1">Penelitian</h2>
             </button>
             <button
               className="bg-gray-50 hover:bg-gray-200 rounded-md shadow-lg"
               onClick={handlePengabdian}
             >
-              <h2 className="text-violet-800 px-16 py-8 text-lg">Pengabdian</h2>
+              <h2 className="text-violet-800 px-16 py-8 text-b1">Pengabdian</h2>
             </button>
           </div>
         </div>
       </div>
 
       {/* Status Usulan Terakhir */}
-      <h1 className="text-xl font-bold text-violet-800 mx-5 my-8">
-        STATUS USULAN
+      <h1 className="text-h5 font-bold text-violet-800 mx-5 my-8">
+        STATUS USULAN TERAKHIR
       </h1>
       <div className="bg-white rounded-lg shadow p-5 m-5">
-        <h3 className="text-lg font-semibold">Usulan Penelitian</h3>
-        <p className="text-gray-600">Sistem Informasi Pariwisata Terpadu</p>
+        <h3 className="text-b1 ">Usulan Penelitian</h3>
+        <p className="text-h5 ">Sistem Informasi Pariwisata Terpadu</p>
         <div className="flex justify-between mt-4">
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-violet-800 text-white flex items-center justify-center">
+          <div className="flex flex-col items-center ">
+            <div className="w-8 h-8 rounded-full bg-violet-800 text-white flex items-center justify-center ">
               ✓
             </div>
-            <p className="text-gray-700">Tahapan Seleksi/Usulan</p>
-            <p className="text-sm text-gray-500">29-08-2024</p>
+            <p className="text-violet-800 text-b1">Tahapan Seleksi/Usulan</p>
+            <p className=" text-neutral-300 text-b1">29-08-2024</p>
           </div>
           <div className="flex flex-col items-center">
             <div className="w-8 h-8 rounded-full bg-gray-300"></div>
-            <p className="text-gray-700">Tahapan Pelaksanaan Kegiatan</p>
-            <p className="text-sm text-gray-500"></p>
+            <p className="text-violet-800 text-b1">
+              Tahapan Pelaksanaan Kegiatan
+            </p>
+            <p className="text-neutral-300 text-b1"></p>
           </div>
           <div className="flex flex-col items-center">
             <div className="w-8 h-8 rounded-full bg-gray-300"></div>
-            <p className="text-gray-700">Tahapan Seleksi Lanjutan</p>
-            <p className="text-sm text-gray-500"></p>
+            <p className="text-violet-800 text-b1">Tahapan Seleksi Lanjutan</p>
+            <p className="text-neutral-300 text-b1"></p>
           </div>
           <div className="flex flex-col items-center">
             <div className="w-8 h-8 rounded-full bg-gray-300"></div>
-            <p className="text-gray-700">Tahapan Pasca Pelaksanaan Kegiatan</p>
-            <p className="text-sm text-gray-500"></p>
+            <p className="text-violet-800 text-b1">
+              Tahapan Pasca Pelaksanaan Kegiatan
+            </p>
+            <p className="text-neutral-300 text-b1"></p>
           </div>
         </div>
       </div>
 
       <div>
-        <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          PROFIL ANDA
-        </h1>
+        <h1 className="text-h5 text-violet-800 mx-5 my-5">PROFIL ANDA</h1>
       </div>
 
       <div className="mx-5 my-5">
@@ -173,29 +185,25 @@ const DashboardComponent = () => {
               </div>
 
               {/* Judul */}
-              <p className="text-violet-800 font-semibold mt-2">
-                {metric.title}
-              </p>
+              <p className="text-neutral-400  text-b1   mt-2">{metric.title}</p>
 
               {/* Jumlah */}
-              <p className="text-3xl font-bold text-violet-800">
-                {metric.count}
-              </p>
+              <p className=" text-neutral-400  text-b1">{metric.count}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className=" bg-white rounded-lg shadow-lg p-5">
+      <div className=" bg-white rounded-lg shadow-lg p-3">
         {/* <h1 className="text-xl font-bold text-violet-800 mb-4">Profil Anda</h1> */}
-        <div className="bg-bluef-50 rounded-lg shadow-lg w-full p-10">
+        <div className="bg-bluef-50 rounded-lg shadow-lg w-full p-2">
           <div className="flex justify-between">
             <div className="mx-5 my-5">
-              <h1 className="text-2xl font-bold text-violet-800 ">
+              <h1 className=" font-poppins text-h5 text-violet-800 ">
                 Yustina Retno Wahyu Utami
               </h1>
-              <h1 className="text-xl font-bold text-violet-800 ">
-                Program Studi Informatika
+              <h1 className="text-b1 my-3 text-violet-800 ">
+                Program Studi: {user.prodi ?? "INFORMATIKA"}
               </h1>
             </div>
             <div>
@@ -210,87 +218,74 @@ const DashboardComponent = () => {
         <div className=" mx-5 my-5 grid grid-cols-2 gap-4">
           {/* Kiri - Informasi Profil */}
           <div className="space-y-2">
-            <div className="text-gray-700 font-semibold">Identitas</div>
-            <div className="bg-gray-100 p-3 rounded-md">
-              <p className="font-semibold text-violet-800">{user.name}</p>
-              <p>{user.prodi ?? "Informatika"}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="font-semibold text-gray-700">
-                NIDN/NIDK:{" "}
-                <span className="text-gray-600">{user.nidn ?? "12345678"}</span>
+            <div className="space-y-5">
+              <p className=" text-b1 text-neutral-400 mb-5">
+                NIDN/NIDK:
+                <br />
+                <span className="text-violet-800 text-b2 ">0020337801</span>
               </p>
-              <p className="font-semibold text-gray-700">
-                Klaster:{" "}
-                <span className="text-gray-600">
-                  {user.cluster ?? "Kelompok PT Madya"}
+              <p className=" text-b1 text-neutral-400 mb-5">
+                Klaster: <br />
+                <span className="text-violet-800 text-b2 ">
+                  Kelompok PT Madya
                 </span>
               </p>
-              <p className="font-semibold text-gray-700">
-                Institusi:{" "}
-                <span className="text-gray-600">
-                  {user.institution ?? "STMIK Sinar Nusantara"}
+              <p className=" text-b1 text-neutral-400 mb-5">
+                Institusi: <br />
+                <span className="text-violet-800 text-b2 ">
+                  STMIK Sinar Nusantara
                 </span>
               </p>
-              <p className="font-semibold text-gray-700">
-                Program Studi:{" "}
-                <span className="text-gray-600">
-                  {user.prodi ?? "Informatika"}
-                </span>
+              <p className=" text-b1 text-neutral-400 mb-5">
+                Program Studi: <br />
+                <span className="text-violet-800 text-b2 ">Informatika</span>
               </p>
-              <p className="font-semibold text-gray-700">
-                Jenjang Pendidikan:{" "}
-                <span className="text-gray-600">
-                  {user.education_level ?? "S2"}
-                </span>
+              <p className=" text-b1 text-neutral-400 mb-5">
+                Jenjang Pendidikan:
+                <br />
+                <span className="text-violet-800 text-b2 ">S2</span>
               </p>
-              <p className="font-semibold text-gray-700">
-                Jabatan Akademik:{" "}
-                <span className="text-gray-600">
-                  {user.position ?? "Lektor"}
-                </span>
+              <p className=" text-b1 text-neutral-400 mb-5">
+                Jabatan Akademik:
+                <br />
+                <span className="text-violet-800 text-b2 ">Lektor</span>
               </p>
             </div>
           </div>
           {/* Kanan - Kontak dan Informasi Tambahan */}
           <div className="space-y-2">
-            <div className="space-y-1">
-              <p className="font-semibold text-gray-700">
-                Tempat Tanggal Lahir:{" "}
-                <span className="text-gray-600">
-                  {user.place_of_birth ?? "Semarang"},{" "}
-                  {user.date_of_birth ?? "23 Maret 1978"}
+            <div className="space-y-5">
+              <p className=" text-b1 text-neutral-400 mb-5">
+                Tempat Tanggal Lahir: <br />
+                <span className="text-violet-800 text-b2 ">
+                  Semarang, 23 Maret 1978
                 </span>
               </p>
-              <p className="font-semibold text-gray-700">
-                No KTP:{" "}
-                <span className="text-gray-600">
-                  {user.nik ?? "33223111111"}
+              <p className=" text-b1 text-neutral-400 mb-5">
+                No KTP:
+                <br />
+                <span className="text-violet-800 text-b2 ">33223111111</span>
+              </p>
+              <p className=" text-b1 text-neutral-400 mb-5">
+                No Telepon:
+                <br />
+                <span className="text-violet-800 text-b2 ">0271-9993333</span>
+              </p>
+              <p className=" text-b1 text-neutral-400 mb-5">
+                No HP:
+                <br />
+                <span className="text-violet-800 text-b2 ">08223332222</span>
+              </p>
+              <p className=" text-b1 text-neutral-400 mb-5">
+                Alamat Surel: <br />
+                <span className="text-violet-800 text-b2 ">
+                  yust.retno@gmail.com
                 </span>
               </p>
-              <p className="font-semibold text-gray-700">
-                No Telepon:{" "}
-                <span className="text-gray-600">
-                  {user.phone ?? "0271-9993333"}
-                </span>
-              </p>
-              <p className="font-semibold text-gray-700">
-                No HP:{" "}
-                <span className="text-gray-600">
-                  {user.phone ?? "08223332222"}
-                </span>
-              </p>
-              <p className="font-semibold text-gray-700">
-                Alamat Surel:{" "}
-                <span className="text-gray-600">
-                  {user.email ?? "yust.retno@gmail.com"}
-                </span>
-              </p>
-              <p className="font-semibold text-gray-700">
-                Alamat:{" "}
-                <span className="text-gray-600">
-                  {user.address ??
-                    "Griya Kelapa Gading No. 6 Blulukan Colomadu"}
+              <p className=" text-b1 text-neutral-400 mb-5">
+                Alamat: <br />
+                <span className="text-violet-800 text-b2 ">
+                  Griya Kelapa Gading No. 6 Blulukan Colomadu
                 </span>
               </p>
             </div>
@@ -299,7 +294,7 @@ const DashboardComponent = () => {
         <hr className="border-gray-300 my-2" />
         <div className="flex justify-end">
           <button
-            className="bg-yellow-500 text-white py-2 px-4 rounded-md"
+            className="bg-yellow-500 text-white py-2 px-4 text-b2 rounded-md"
             onClick={handleEdit}
           >
             Sunting

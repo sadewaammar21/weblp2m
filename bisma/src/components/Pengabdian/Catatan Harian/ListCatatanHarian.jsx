@@ -42,7 +42,7 @@ const ListCatatanHarian = () => {
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENGABDIAN
+          CATATAN HARIAN PENGABDIAN
         </h1>
       </div>
 
