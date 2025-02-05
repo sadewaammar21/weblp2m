@@ -21,22 +21,21 @@ const PenilaianProposal = () => {
   //get researches data
   const user = localStorage.getItem("user");
   const userParse = JSON.parse(user);
+  const fetchData = async () => {
+    try {
+      const result = await axios.get(
+        `${apiUrl}/api/reviewer/${userParse.id}/research`,
+        getToken()
+      );
+      setData(result.data);
+      console.log(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get(
-          // `${apiUrl}/api/reviewer/${userParse.id}/research`, getToken()
-          `${apiUrl}/api/reviewer/3/research`,
-          getToken()
-        );
-        setData(result.data);
-        console.log(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchData();
   }, []);
@@ -189,7 +188,7 @@ const PenilaianProposal = () => {
                           />
                         </button>
                       </td>
-                      <td className="border px-4 py-2 text-center">
+                      <td className={`border px-4 py-2 text-center ${item.status == 4 ? '' : 'hidden'}`}>
                         <button
                           onClick={() => handleAction(item.id)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"

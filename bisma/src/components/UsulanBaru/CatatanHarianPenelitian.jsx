@@ -20,7 +20,7 @@ const UsulanBaruList = () => {
       const result = await getResearch({
         pageSize: 5,
         currentPage: 1,
-        // status: 1,
+        status: 7,
         // year: 2024,
         userId: user.id,
       });

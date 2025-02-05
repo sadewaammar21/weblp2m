@@ -6,6 +6,7 @@ import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import axios from "axios";
+import { getToken } from "../../Features/AuthSlice";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -20,21 +21,20 @@ const MonevPenelitianList = () => {
   //get researches data
   const user = localStorage.getItem("user");
   const userParse = JSON.parse(user);
+  const fetchData = async () => {
+    try {
+      const result = await axios.get(
+        `${apiUrl}/api/reviewer/${userParse.id}/research`, getToken()
+      );
+      setData(result.data);
+      console.log(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get(
-          `${apiUrl}/api/reviewer/${userParse.id}/research`
-        );
-        setData(result.data);
-        console.log(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
   if (loading) return <p>Loading...</p>;
@@ -78,8 +78,8 @@ const MonevPenelitianList = () => {
     navigate("/dashboard-reviewer");
   };
 
-  const handleAction = (x) => {
-    navigate("/review-monev-penelitian");
+  const handleAction = (researchId) => {
+    navigate("/review-monev-penelitian", { state: { id: researchId } });
   };
 
   const options = [
@@ -196,20 +196,6 @@ const MonevPenelitianList = () => {
                       </td>
                     </tr>
                   ))}
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td className="border px-4 py-2 text-center">
-                    <button
-                      onClick={handleAction}
-                      className="bg-bluef-500 text-white px-4 py-2 rounded-md"
-                    >
-                      Review
-                    </button>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>

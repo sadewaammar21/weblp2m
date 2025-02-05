@@ -21,11 +21,7 @@ export const LoginAuth = createAsyncThunk(
           email: user.email,
           password: user.password,
         },
-        {
-          headers: {
-            "x-api-key": process.env.REACT_APP_API_KEY,
-          },
-        }
+        getToken()
       );
       console.log(response);
 
@@ -86,6 +82,7 @@ export const LogOut = createAsyncThunk(
       localStorage.removeItem("currentRole");
       localStorage.removeItem("user");
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("roles");
 
       return response.data; // Pastikan server mengembalikan { message: "Successfully logged out" }
     } catch (error) {

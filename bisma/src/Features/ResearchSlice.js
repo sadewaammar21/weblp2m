@@ -601,7 +601,7 @@ export const addMonevResearch = async (monevData) => {
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return error.message;
   }
 };

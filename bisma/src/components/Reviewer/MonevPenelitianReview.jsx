@@ -1,40 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextAreaCmp from "../TextAreaCmp";
 import ModalMonevPenelitian from "./ModalMonevPenelitian";
 import { FaChevronRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { addMonevResearch, getResearchDetail } from "../../Features/ResearchSlice";
+import TextfieldCmp from "../TextfieldCmp";
  
 const MonevPenelitianReview = () => {
+    const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [komentar, setKomentar] = useState([
-    { id: 1, komentar: "" },
-    { id: 2, komentar: "" },
-    { id: 3, komentar: "" },
-    { id: 4, komentar: "" },
-    { id: 5, komentar: "" },
-    { id: 6, komentar: "" },
-  ]);
+  const [data, setData] = useState({});
+  const [reviewData, setReviewData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const id = location.state.id;
+  console.log(id)
+  const user = JSON.parse(localStorage.getItem("user"));
+  const fetchData = async() =>{
+      try {
+        setLoading(true);
+        const response = await getResearchDetail(id);
+        setData(response.data);
+        console.log(data);
+      } catch (error) {
+        setError(true)
+      }finally{
+        setLoading(false)
+      }
+    }
+  useEffect(() => {
+    fetchData();
+    setReviewData({...reviewData, ['research_id']: id})
+    // return () => console.log(data);
+  }, []);
+  
   const openModal = () => {
     setIsOpen(true);
   };
-
+  
   const closeModal = () => {
     setIsOpen(false);
   };
-  const handleKomentarChange = (id, value) => {
-    setKomentar((prevKomentar) =>
-      prevKomentar.map((item) =>
-        item.id === id ? { ...item, komentar: value } : item
-      )
-    );
+
+  const handleInputChange = () => (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
+    setReviewData((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
   };
+
   const navigate = useNavigate(); // Hook untuk navigasi
-
-  const handleSave = () => {
-    // Tambahkan logika simpan data jika diperlukan
-    navigate("/list-monev-penelitian"); // Navigasi ke halaman target
+  
+  const handleSave = async () => {
+    console.log(reviewData)
+    const response = await addMonevResearch(reviewData);
+    console.log(response.message);
+    navigate(-1);
   };
-
+  
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
   return (
     <div>
       <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
@@ -78,9 +107,7 @@ const MonevPenelitianReview = () => {
                       Judul
                     </td>
                     <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right">
-                      Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa
-                      Inggris Berbasis DIgital Visual Literacy dan Keterampilan
-                      5C untuk Siswa Sekolah Dasar
+                      {data?.title}
                     </td>
                   </tr>
 
@@ -89,7 +116,7 @@ const MonevPenelitianReview = () => {
                       Kelompok Skema
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                      Riset Dasar
+                      {data.scheme.name}
                     </td>
                   </tr>
                   <tr className=" boder border-black border-b-2">
@@ -97,7 +124,7 @@ const MonevPenelitianReview = () => {
                       Ruang Lingkup
                     </td>
                     <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                      Penelitan Dosen Pemula
+                      {data.scope.name}
                     </td>
                   </tr>
 
@@ -106,7 +133,7 @@ const MonevPenelitianReview = () => {
                       Bidang Fokus
                     </td>
                     <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                      Teknologi Informasi dan Komunikasi
+                      {data.research_focus.name}
                     </td>
                   </tr>
                   <tr className=" boder border-black border-b-2">
@@ -114,7 +141,7 @@ const MonevPenelitianReview = () => {
                       Tahun Usulan{" "}
                     </td>
                     <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                      2024
+                      {data?.year}
                     </td>
                   </tr>
                   <tr className=" boder border-black border-b-2">
@@ -122,7 +149,7 @@ const MonevPenelitianReview = () => {
                       Tahun Pelaksanaan
                     </td>
                     <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                      2024
+                      {data?.year}
                     </td>
                   </tr>
                 </tbody>
@@ -137,7 +164,7 @@ const MonevPenelitianReview = () => {
                       Lama Kegiatan
                     </td>
                     <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                      1 Tahun
+                      {data?.duration} Tahun
                     </td>
                   </tr>
                   <tr className=" boder border-black border-b-2">
@@ -145,7 +172,7 @@ const MonevPenelitianReview = () => {
                       Tema Penelitan
                     </td>
                     <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                      Teknologi Subsitusi Bahan Bakar
+                      {data?.research_theme.name}
                     </td>
                   </tr>
                   <tr className=" boder border-black border-b-2">
@@ -153,8 +180,7 @@ const MonevPenelitianReview = () => {
                       Topik Penelitian
                     </td>
                     <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right">
-                      Teknologi untuk data informasi berbagai bentuk kearifan
-                      lokal di Indonesia
+                      {data?.research_topic.name}
                     </td>
                   </tr>
                   <tr className="boder border-black border-b-2">
@@ -162,7 +188,7 @@ const MonevPenelitianReview = () => {
                       Rumpun Ilmu Level 3
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                      Teknik Komputer
+                      {data?.science_cluster3.name}
                     </td>
                   </tr>
 
@@ -171,7 +197,7 @@ const MonevPenelitianReview = () => {
                       Target TKT
                     </td>
                     <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                      2
+                      {data?.tkt_final}
                     </td>
                   </tr>
 
@@ -180,7 +206,7 @@ const MonevPenelitianReview = () => {
                       Profil Sinta Ketua Pengusul
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                      6049857
+                      {user.sinta_id ?? 0}
                     </td>
                   </tr>
                 </tbody>
@@ -211,26 +237,27 @@ const MonevPenelitianReview = () => {
                 </thead>
                 <tbody>
                   {[
-                    "Kemajuan ketercapaian luaran wajib yang dijanjikan",
-                    "Kesesuaian penelitian dengan usulan",
-                    "Potensi keberlanjutan hasil penelitian",
-                    "Level TKT saat ini (monev)",
-                    "Persentase serapan anggaran belanja",
-                    "Realisasi keterlibatan/kontribusi mitra",
+                    {label: "Kemajuan ketercapaian luaran wajib yang dijanjikan", name: "comment1", value: reviewData.comment1},
+                    {label: "Kesesuaian penelitian dengan usulan", name: "comment2", value: reviewData.comment2},
+                    {label: "Potensi keberlanjutan hasil penelitian", name: "comment3", value: reviewData.comment3},
+                    {label: "Level TKT saat ini (monev)", name: "comment4", value: reviewData.comment4},
+                    {label: "Persentase serapan anggaran belanja", name: "comment5", value: reviewData.comment5},
+                    {label: "Realisasi keterlibatan/kontribusi mitra", name: "comment6", value: reviewData.comment6},
                   ].map((komponen, index) => (
                     <tr key={index}>
                       <td className="border border-black px-4 py-2 text-center">
                         {index + 1}
                       </td>
                       <td className="border border-black px-4 py-2 text-left">
-                        {komponen}
+                        {komponen.label}
                       </td>
                       <td className="border border-black px-4 py-2">
                         <textarea
                           className="w-full border rounded p-2"
-                          value={komentar[index].komentar}
-                          onChange={(e) =>
-                            handleKomentarChange(index + 1, e.target.value)
+                          name={komponen.name}
+                          value={komponen.value}
+                          onChange={
+                            handleInputChange()
                           }
                         />
                       </td>
@@ -298,19 +325,37 @@ const MonevPenelitianReview = () => {
                     <td className="border border-gray-300 px-4 py-2">
                       Kualitas dokumen luaran
                     </td>
-                    <td className="border border-gray-300 px-4 py-2"></td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      <TextfieldCmp
+                        value={reviewData.score1}
+                        name="score1"
+                        onChange={handleInputChange()}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td className="border border-gray-300 px-4 py-2">
                       Kesesuaian isi dokumen dengan substansi penelitian
                     </td>
-                    <td className="border border-gray-300 px-4 py-2"></td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      <TextfieldCmp
+                        value={reviewData.score2}
+                        name="score2"
+                        onChange={handleInputChange()}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td className="border border-gray-300 px-4 py-2">
                       Kesesuaian dengan periode pendanaan
                     </td>
-                    <td className="border border-gray-300 px-4 py-2"></td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      <TextfieldCmp
+                        value={reviewData.score3}
+                        name="score3"
+                        onChange={handleInputChange()}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td
@@ -328,7 +373,13 @@ const MonevPenelitianReview = () => {
                     <td className="border border-gray-300 px-4 py-2">
                       Kesesuaian pelaksanaan penelitian dengan usulan
                     </td>
-                    <td className="border border-gray-300 px-4 py-2"></td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      <TextfieldCmp
+                        value={reviewData.score4}
+                        name="score4"
+                        onChange={handleInputChange()}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td className="border border-gray-300 px-4 py-2">
@@ -337,7 +388,13 @@ const MonevPenelitianReview = () => {
                     <td
                       className="border border-gray-300 px-4 py-2"
                       rowSpan={`3`}
-                    ></td>
+                    >
+                      <TextfieldCmp
+                        value={reviewData.score5}
+                        name="score5"
+                        onChange={handleInputChange()}
+                      />
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -346,7 +403,7 @@ const MonevPenelitianReview = () => {
               Catatan Review
             </h1>
             <div>
-              <TextAreaCmp rows={10} placeholder={`fill`} />
+              <TextAreaCmp name='reviewer_note' value={reviewData.reviewer_note} rows={10} placeholder={`fill`} onChange={handleInputChange()}/>
             </div>
             <div className="flex justify-between my-10">
               <button

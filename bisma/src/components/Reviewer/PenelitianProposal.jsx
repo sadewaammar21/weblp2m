@@ -53,6 +53,8 @@ const PenelitianProposal = () => {
   const [reviewData, setReviewData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isUsulanView, setIsUsulanView] = useState(false);
 
   const id = location.state.id;
   const user = JSON.parse(localStorage.getItem("user"));
@@ -76,14 +78,12 @@ const PenelitianProposal = () => {
   };
   useEffect(() => {
     fetchData();
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
-    return () => console.log(data);
   }, []);
-
+  
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
   //step and stuff
-  const [currentStep, setCurrentStep] = React.useState(1);
-  const [isUsulanView, setIsUsulanView] = React.useState(false);
+  
 
   const handleNextStep = () => {
     if (currentStep < steps.length) {
@@ -128,7 +128,7 @@ const PenelitianProposal = () => {
         getToken()
       );
       console.log(response.data);
-      navigate("/review-penilaian-proposal");
+      navigate(-1);
     } catch (error) {
       setError(error.message);
     }

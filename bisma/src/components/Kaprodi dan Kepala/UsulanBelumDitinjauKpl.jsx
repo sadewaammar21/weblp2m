@@ -180,7 +180,6 @@ const UsulanBelumDitinjauKpl = () => {
               </thead>
               <tbody>
                 {data
-                .filter((item) => item.status == 6)
                 .map(
                   (
                     item,
@@ -217,7 +216,7 @@ const UsulanBelumDitinjauKpl = () => {
                         </button>
                       </td>
                       <td className="border border-gray-300 p-2 text-center">
-                        <div className="flex justify-center space-x-2">
+                        <div className={`flex justify-center space-x-2 ${item.status == 5 ? '': 'hidden'}`}>
                       <button
                         onClick={() => openModal(item)}
                         className="bg-bluef-500 text-white px-4 py-2 rounded-md"
