@@ -71,12 +71,12 @@ const IdentitasUsulan = ({ data, setData }) => {
 
   const mapToDropdown = (data, labelKey, valueKey) => {
     if (!Array.isArray(data)) {
-        console.error('Data is not an array:', data);
-        return [];
+      console.error("Data is not an array:", data);
+      return [];
     }
     return data.map((item) => ({
-        label: item[labelKey],
-        value: item[valueKey],
+      label: item[labelKey],
+      value: item[valueKey],
     }));
   };
 
@@ -173,42 +173,45 @@ const IdentitasUsulan = ({ data, setData }) => {
 
   const fetchCluster1 = async () => {
     try {
-        const response = await axios.get(`${apiUrl}/api/service-cluster1`, getToken());
-        const data = Array.isArray(response.data) ? response.data : []; // Validasi array
-        setCluster1(data);
+      const response = await axios.get(
+        `${apiUrl}/api/service-cluster1`,
+        getToken()
+      );
+      const data = Array.isArray(response.data) ? response.data : []; // Validasi array
+      setCluster1(data);
     } catch (error) {
-        console.error('Error fetching cluster1:', error);
-        setCluster1([]);
+      console.error("Error fetching cluster1:", error);
+      setCluster1([]);
     }
-};
+  };
 
-const fetchCluster2 = async ($cluster1) => {
+  const fetchCluster2 = async ($cluster1) => {
     try {
-        const response = await axios.get(
-            `${apiUrl}/api/service-cluster2/${$cluster1}`,
-            getToken()
-        );
-        const data = Array.isArray(response.data) ? response.data : [];
-        setCluster2(data);
+      const response = await axios.get(
+        `${apiUrl}/api/service-cluster2/${$cluster1}`,
+        getToken()
+      );
+      const data = Array.isArray(response.data) ? response.data : [];
+      setCluster2(data);
     } catch (error) {
-        console.error('Error fetching cluster2:', error);
-        setCluster2([]);
+      console.error("Error fetching cluster2:", error);
+      setCluster2([]);
     }
-};
+  };
 
-const fetchCluster3 = async ($cluster2) => {
+  const fetchCluster3 = async ($cluster2) => {
     try {
-        const response = await axios.get(
-            `${apiUrl}/api/service-cluster3/${$cluster2}`,
-            getToken()
-        );
-        const data = Array.isArray(response.data) ? response.data : [];
-        setCluster3(data);
+      const response = await axios.get(
+        `${apiUrl}/api/service-cluster3/${$cluster2}`,
+        getToken()
+      );
+      const data = Array.isArray(response.data) ? response.data : [];
+      setCluster3(data);
     } catch (error) {
-        console.error('Error fetching cluster3:', error);
-        setCluster3([]);
+      console.error("Error fetching cluster3:", error);
+      setCluster3([]);
     }
-};
+  };
   return (
     <div>
       <div>
@@ -407,7 +410,7 @@ const fetchCluster3 = async ($cluster2) => {
         </div>
         <div className="relative overflow-x-auto  my-10">
           <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
-            <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="border border-black text-xs text-black font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-neutral-900">
               <tr className="border border-black">
                 <th className="border border-black px-4 py-2">No</th>
                 <th className="border border-black px-4 py-2">NIDN</th>
@@ -417,15 +420,21 @@ const fetchCluster3 = async ($cluster2) => {
                 <th className="border border-black px-4 py-2">Aksi</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="border border-black text-center text-xs text-black uppercase bg-gray-50 ">
               {data.members.map((item, index) => (
                 <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.id}</td>
-                  <td>{item.pivot.name}</td>
-                  <td>{item.pivot.task}</td>
-                  <td>{item.pivot.status}</td>
-                  <td>action here</td>
+                  <td className="border border-black px-4 py-2">{index + 1}</td>
+                  <td className="border border-black px-4 py-2">{item.id}</td>
+                  <td className="border border-black px-4 py-2">
+                    {item.pivot.name}
+                  </td>
+                  <td className="border border-black px-4 py-2">
+                    {item.pivot.task}
+                  </td>
+                  <td className="border border-black px-4 py-2">
+                    {item.pivot.status}
+                  </td>
+                  <td className="border border-black px-4 py-2">action here</td>
                 </tr>
               ))}
             </tbody>
@@ -457,15 +466,17 @@ const fetchCluster3 = async ($cluster2) => {
                 <th className="border border-black px-4 py-2">Aksi</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="border border-black text-center text-xs text-black uppercase bg-gray-50">
               {data.student_services.map((item, index) => (
                 <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.nim}</td>
-                  <td>{item.name}</td>
-                  <td>{item.prodi}</td>
-                  <td>{item.task}</td>
-                  <td>action here</td>
+                  <td className="border border-black px-4 py-2">{index + 1}</td>
+                  <td className="border border-black px-4 py-2">{item.nim}</td>
+                  <td className="border border-black px-4 py-2">{item.name}</td>
+                  <td className="border border-black px-4 py-2">
+                    {item.prodi}
+                  </td>
+                  <td className="border border-black px-4 py-2">{item.task}</td>
+                  <td className="border border-black px-4 py-2">action here</td>
                 </tr>
               ))}
             </tbody>

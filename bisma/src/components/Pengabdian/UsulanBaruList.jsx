@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { getService, deleteService } from "../../Features/ServiceSlice";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UsulanBaruList = () => {
   const [data, setData] = useState([]);
@@ -10,8 +12,18 @@ const UsulanBaruList = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
+  const location = useLocation();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    if (location.state?.success) {
+      toast.success(location.state.success);
+    }
+    if (location.state?.error) {
+      toast.error(location.state.error);
+    }
+  }, [location]);
 
   const fetchData = async () => {
     try {
@@ -132,33 +144,59 @@ const UsulanBaruList = () => {
         ) : (
           <div className="relative overflow-x-auto">
             <table className="w-full text-sm text-left bg-neutral-20 text-gray-500 border border-gray-300">
-              <thead className="border-b text-xs text-gray-700 uppercase bg-gray-50 text-center">
+              <thead className="border-b text-xs text-neutral-700 uppercase bg-neutral-20 text-center">
                 <tr>
-                  <th className="px-4 py-2">No</th>
-                  <th className="px-4 py-2">Ketua</th>
-                  <th className="px-4 py-2">Judul</th>
-                  <th className="px-4 py-2">Bidang Fokus</th>
-                  <th className="px-4 py-2">Tahun Pelaksanaan</th>
-                  <th className="px-4 py-2">Peran</th>
-                  <th className="px-4 py-2">Status Usulan</th>
-                  <th className="px-4 py-2">Aksi</th>
+                  <th className="border  border-neutral-100 border-[0.5px] px-4 py-2">
+                    No
+                  </th>
+                  <th className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                    Ketua
+                  </th>
+                  <th className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                    Judul
+                  </th>
+                  <th className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                    Bidang Fokus
+                  </th>
+                  <th className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                    Tahun Pelaksanaan
+                  </th>
+                  <th className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                    Peran
+                  </th>
+                  <th className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                    Status Usulan
+                  </th>
+                  <th className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                    Aksi
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((item, index) => (
                   <tr key={item.id} className="border-b text-center">
-                    <td className="px-4 py-2">{index + 1}</td>
-                    <td className="px-4 py-2">{item.user?.name}</td>
-                    <td className="px-4 py-2">{item.title}</td>
-                    <td className="px-4 py-2">
+                    <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                      {index + 1}
+                    </td>
+                    <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                      {item.user?.name}
+                    </td>
+                    <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                      {item.title}
+                    </td>
+                    <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
                       {item.focus_thematic?.name || item.focus_r_i_r_n_s?.name}
                     </td>
-                    <td className="px-4 py-2">{item.year}</td>
-                    <td className="px-4 py-2">
+                    <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                      {item.year}
+                    </td>
+                    <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
                       {user.id === item.user.id ? "Ketua" : "Anggota"}
                     </td>
-                    <td className="px-4 py-2">{item.status}</td>
-                    <td className="px-4 py-2 ">
+                    <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
+                      {item.status?.name}
+                    </td>
+                    <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
                       <div className="inline-block">
                         {renderActionButton(item)}
                       </div>

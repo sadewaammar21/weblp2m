@@ -11,6 +11,7 @@ import DokumenPendukung from "./UsulanBaru/DokumenPendukung";
 import KonfirmasiUsulan from "./UsulanBaru/KonfirmasiUsulan";
 import Footer from "../Footer";
 import { addService } from "../../Features/ServiceSlice";
+import { toast } from "react-toastify";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -119,17 +120,28 @@ const ProgressUsulanBaruPengabdian = () => {
 
     const isSubmit = e.target.name === "ajukan";
     const newStatus = isSubmit ? 2 : undefined;
+    try {
+      const response = await addService({
+        data,
+        isEdit,
+        serviceId: data.id,
+        isSubmit,
+        newStatus,
+      });
 
-    const response = await addService({
-      data,
-      isEdit,
-      serviceId: data.id,
-      isSubmit,
-      newStatus,
-    });
+      navigate("/pengabdian/usulan", {
+        state: {
+          success: "Data pengabdian masyarakat telah berhasil disimpan.",
+        },
+      });
 
-    console.log(response);
-    navigate("/pengabdian/usulan");
+      console.log(response);
+      // navigate("/pengabdian/usulan");
+    } catch (error) {
+      navigate("/pengabdian/usulan", {
+        state: { error: "Gagal menyimpan data. Silakan coba lagi." },
+      });
+    }
   };
 
   const renderStepContent = (step) => {
@@ -159,13 +171,15 @@ const ProgressUsulanBaruPengabdian = () => {
           <ProgressBar currentStep={currentStep} />
           <div className="mt-6">{renderStepContent(currentStep)}</div>
           <div className="flex justify-between my-10">
-            <button
-              onClick={handlePrevStep}
-              disabled={currentStep === 1}
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-            >
-              Previous
-            </button>
+            <div>
+              <button
+                onClick={handlePrevStep}
+                disabled={currentStep === 1}
+                className="px-4 py-2 bg-white text-bluef-500 border b-1 border-bluef-500 rounded"
+              >
+                Kembali
+              </button>
+            </div>
             <button
               onClick={handleNextStep}
               disabled={currentStep === steps.length}

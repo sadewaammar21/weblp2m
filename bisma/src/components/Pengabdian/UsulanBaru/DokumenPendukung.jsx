@@ -84,7 +84,7 @@ const DokumenPendukung = ({ data, setData }) => {
           onClick={openModalMitra}
         >
           <FaPlus className="mr-2" /> {/* Icon tambah */}
-          Tambah Usulan
+          Dookumen Pendukung
         </button>
       </div>
       {/* <PopUpDokumenPendukung
@@ -107,18 +107,20 @@ const DokumenPendukung = ({ data, setData }) => {
               <th className="border border-black px-4 py-2">Aksi</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="border border-black text-center text-xs text-black uppercase bg-gray-50">
             {data.partner.map((item, index) => (
               <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{item.name}</td>
-                <td>{item.email}</td>
-                <td>
+                <td className="border border-black px-4 py-2">{index + 1}</td>
+                <td className="border border-black px-4 py-2">{item.name}</td>
+                <td className="border border-black px-4 py-2">{item.email}</td>
+                <td className="border border-black px-4 py-2">
                   {partnerType.find((type) => type.id === item.partner_type_id)
                     ?.name || "Unknown"}
                 </td>
-                <td>Tahun 1: {item.funding_contribution}</td>
-                <td>some action</td>
+                <td className="border border-black px-4 py-2">
+                  Tahun 1: {item.funding_contribution}
+                </td>
+                <td className="border border-black px-4 py-2">some action</td>
               </tr>
             ))}
           </tbody>
@@ -153,18 +155,20 @@ const DokumenPendukung = ({ data, setData }) => {
               <th className="border border-black px-4 py-2">Aksi</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="border border-black text-center text-xs text-black uppercase bg-gray-50">
             {data.supporting_file.map((item, index) => (
               <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{item.document?.name || "Unknown File"}</td>{" "}
+                <td className="border border-black px-4 py-2">{index + 1}</td>
+                <td className="border border-black px-4 py-2">
+                  {item.document?.name || "Unknown File"}
+                </td>{" "}
                 {/* Display file name */}
-                <td>
+                <td className="border border-black px-4 py-2">
                   {supportingFileType.find(
                     (fileType) => fileType.id === item.type_id
                   )?.name || "Unknown"}
                 </td>
-                <td>some action</td>
+                <td className="border border-black px-4 py-2">some action</td>
               </tr>
             ))}
           </tbody>

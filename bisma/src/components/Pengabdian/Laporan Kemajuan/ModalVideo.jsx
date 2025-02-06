@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp";
 import TextfieldCmp from "../../TextfieldCmp";
@@ -14,20 +14,42 @@ const ModalVideo = ({
   index,
   onSave,
 }) => {
-  const handleDropdownChange = (field, value) => {
-    setData((prevData) => ({
+  const [outputData, setOutputData] = useState({});
+  useEffect(() => {
+    if (data && index >= 0) {
+      setOutputData(data[index]); // Update data modal berdasarkan index
+    }
+  }, [data, index]);
+
+  const handleDropdownChange = (option, fieldName) => {
+    setOutputData((prevData) => ({
       ...prevData,
-      [field]: value,
+      [fieldName]: option.value,
     }));
   };
-  const handleSave = () => {
-    console.log("Data berhasil disimpan");
-    onRequestClose(); // Tutup modal setelah menyimpan
-  };
-  const komponenRekognisi = [
+
+  const StatusVideo = [
     { label: "Tercapai", value: "Tercapai" },
-    { label: "Tidak Tercapai", value: "Tidak_tercapai" },
+    { label: "Tidak Tercapai", value: "Tidak Tercapai" },
   ];
+
+  const handleInputChange = (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
+    setOutputData((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Data berhasil disimpan");
+    onSave(index, outputData);
+    setOutputData({});
+    onRequestClose(); // Close modal after save
+  };
 
   return (
     <Modal
@@ -40,14 +62,15 @@ const ModalVideo = ({
       <h2 className="text-xl font-bold mb-4">
         LUARAN WAJIB VIDEO PROFIL HASIL PROGRAM PENGABDIAN
       </h2>
-      <form>
+      <form onSubmit={handleSave}>
         <div className="mb-4">
           <DropdownCmp
             label={`Status Video Kegiatan`}
-            options={komponenRekognisi}
-            onChange={(option) => {
-              handleDropdownChange("status_rekognisi", option.value);
-            }}
+            options={StatusVideo}
+            value={StatusVideo.find(
+              (option) => option.value === outputData.status
+            )}
+            onChange={(option) => handleDropdownChange(option, "status")}
             placeholder={`Pilih Status Video Kegiatan`}
           />
         </div>
@@ -98,6 +121,9 @@ const ModalVideo = ({
         <div className="mb-4">
           <TextfieldCmp
             label={`Masukkan Link Video Hasil Pengabdian`}
+            value={outputData.url_video}
+            name="url_video"
+            onChange={(e) => handleInputChange(e)}
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
             placeholder="Tuliskan Url Video"
           />

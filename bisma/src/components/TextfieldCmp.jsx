@@ -13,10 +13,7 @@ const TextfieldCmp = ({
   return (
     <div className="mb-4">
       {label && (
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          {" "}
-          {label}{" "}
-        </label>
+        <label className="block text-neutral-500 text-b1 mb-2"> {label} </label>
       )}
       <input
         type={type}
@@ -24,7 +21,7 @@ const TextfieldCmp = ({
         name={name}
         onChange={onChange}
         placeholder={placeholder}
-        className={`text-sm border border-black rounded shadow focus:outline-none focus:shadow-outline ${width} ${height}`} // Gabungkan kelas dengan `width`
+        className={`text-b2 border border-neutral-400 text-neutral-400 rounded shadow focus:outline-none focus:shadow-outline ${width} ${height}`} // Gabungkan kelas dengan `width`
       />
     </div>
   );

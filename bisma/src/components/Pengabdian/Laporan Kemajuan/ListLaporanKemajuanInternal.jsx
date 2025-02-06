@@ -14,7 +14,7 @@ const ListLaporanKemajuanInternal = () => {
   const handleView = (serviceId, report) => {
     console.log(report);
     if (report != null) {
-      navigate("/pengabdian/laporan-kemajuan/baru", {
+      navigate("/pengabdian/laporan-kemajuan/edit", {
         state: { id: serviceId, reportId: report },
       });
     } else {
@@ -55,7 +55,7 @@ const ListLaporanKemajuanInternal = () => {
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENGABDIAN
+          LAPORAN KEMAJUAN PENGABDIAN
         </h1>
       </div>
 
@@ -153,9 +153,7 @@ const ListLaporanKemajuanInternal = () => {
                       onClick={() =>
                         handleView(
                           item.id,
-                          item.progressReport
-                            ? item.progressReport[0].id
-                            : null
+                          item.progressReport ? item.progressReport[0].id : null
                         )
                       }
                       className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"

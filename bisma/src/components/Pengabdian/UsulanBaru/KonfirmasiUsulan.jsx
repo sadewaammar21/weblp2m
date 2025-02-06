@@ -34,7 +34,8 @@ const KonfirmasiUsulan = (data) => {
                   Kelompok Skema
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  Riset Dasar
+                  {data?.scheme_id || "Riset Dasar"}
+                  {console.log(`data dari skema adalah ${data.scheme_id}`)}
                 </td>
               </tr>
 

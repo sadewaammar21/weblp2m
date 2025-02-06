@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp";
 import TextfieldCmp from "../../TextfieldCmp";
@@ -6,10 +6,58 @@ import TextfieldCmp from "../../TextfieldCmp";
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalLuaranWajibInternasional = ({ isOpen, onRequestClose }) => {
-  const handleSave = () => {
+const ModalLuaranWajibInternasional = ({
+  isOpen,
+  onRequestClose,
+  index,
+  data,
+  onSave,
+}) => {
+  const [outputData, setOutputData] = useState({});
+  const statusArticle = [
+    { value: "Submited", label: "Submited" },
+    { value: "Accepted", label: "Accepted" },
+    { value: "Published", label: "Published " },
+    { value: "Draft", label: "Draft" },
+  ];
+
+  const statusAuthor = [
+    { value: "First Author", label: "First Author" },
+    { value: "Co-Author", label: "Co-Author" },
+    { value: "Author", label: "Author" },
+  ];
+
+  const handleDropdownChange = (option, fieldName) => {
+    setOutputData((prevData) => ({
+      ...prevData,
+      [fieldName]: option.value,
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
+    setOutputData((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
+  };
+
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setOutputData((prevData) => ({
+      ...prevData,
+      [name]: files[0],
+    }));
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault(); // Prevent default form submission
     console.log("Data berhasil disimpan");
-    onRequestClose(); // Tutup modal setelah menyimpan
+    onSave(index, outputData);
+    setOutputData({});
+    onRequestClose(); // Close modal after save
   };
 
   return (
@@ -23,57 +71,98 @@ const ModalLuaranWajibInternasional = ({ isOpen, onRequestClose }) => {
       <h2 className="text-xl font-bold mb-4">
         Luaran Wajib Artikel di Jurnal Bereputasi Internasional
       </h2>
-      <form>
+      <form onSubmit={handleSave}>
         {/* Dropdown Status Artikel */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">
             Status Artikel di Jurnal Bereputasi Internasional
           </label>
-          <DropdownCmp options={["Submitted", "Accepted", "Published"]} />
+          <DropdownCmp
+            options={statusArticle}
+            value={statusArticle.find(
+              (option) => option.value === outputData.status_article
+            )}
+            onChange={(option) =>
+              handleDropdownChange(option, "status_article")
+            }
+          />
         </div>
 
         {/* Dropdown Status Penulis */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Status Penulis</label>
-          <DropdownCmp options={["First Author", "Co-Author"]} />
+          <DropdownCmp
+            options={statusAuthor}
+            value={statusAuthor.find(
+              (option) => option.value === outputData.status_writer
+            )}
+            onChange={(option) => handleDropdownChange(option, "status_writer")}
+          />
         </div>
 
         {/* Nama Jurnal */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Nama Jurnal</label>
-          <TextfieldCmp placeholder="Nama Jurnal" />
+          <TextfieldCmp
+            value={outputData.journal_name}
+            name="journal_name"
+            onChange={(e) => handleInputChange(e)}
+            placeholder="Nama Jurnal"
+          />
         </div>
 
         {/* ISSN/EISSN dan Lembaga Pengindeks */}
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-gray-700 mb-2">ISSN/EISSN</label>
-            <TextfieldCmp placeholder="ISSN/EISSN" />
+            <TextfieldCmp
+              value={outputData.issn_eissn}
+              name="issn_eissn"
+              onChange={(e) => handleInputChange(e)}
+              placeholder="ISSN/EISSN"
+            />
           </div>
           <div>
             <label className="block text-gray-700 mb-2">
               Lembaga Pengindeks
             </label>
-            <TextfieldCmp placeholder="Lembaga Pengindeks" />
+            <TextfieldCmp
+              value={outputData.indexing_agency}
+              name="indexing_agency"
+              onChange={(e) => handleInputChange(e)}
+              placeholder="Lembaga Pengindeks"
+            />
           </div>
         </div>
 
         {/* URL Jurnal */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">URL Jurnal</label>
-          <TextfieldCmp placeholder="URL Jurnal" />
+          <TextfieldCmp
+            value={outputData.journal_url}
+            name="journal_url"
+            onChange={(e) => handleInputChange(e)}
+            placeholder="URL Jurnal"
+          />
         </div>
 
         {/* Judul Artikel */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Judul Artikel</label>
-          <TextfieldCmp placeholder="Judul Artikel" />
+          <TextfieldCmp
+            value={outputData.title_article}
+            name="title_article"
+            onChange={(e) => handleInputChange(e)}
+            placeholder="Judul Artikel"
+          />
         </div>
 
         {/* File Upload */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Naskah Artikel</label>
           <input
+            name="manuscript_article"
+            onChange={(e) => handleFileChange(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />
@@ -81,6 +170,8 @@ const ModalLuaranWajibInternasional = ({ isOpen, onRequestClose }) => {
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Bukti Submit</label>
           <input
+            name="proof_submit"
+            onChange={(e) => handleFileChange(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />

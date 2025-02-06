@@ -8,12 +8,30 @@ Modal.setAppElement("#root");
 
 const ModalRekognisi = ({ data, isOpen, onRequestClose, index, onSave }) => {
   const [outputData, setOutputData] = useState({});
+  // useEffect(() => {
+  //   if (data) {
+  //     setOutputData(data[index]);
+  //   }
+  //   console.log(outputData);
+  // }, [data, index]);
+
   useEffect(() => {
-    if (data) {
-      setOutputData(data[index]);
+    if (data && index >= 0) {
+      setOutputData(data[index]); // Update data modal berdasarkan index
     }
   }, [data, index]);
 
+  const statusRekognisi = [
+    { value: "Tercapai", label: "Tercapai" },
+    { value: "Tidak Tercapai", label: "Tidak Tercapai" },
+  ];
+
+  // const handleDropdownChange = (option, fieldName) => {
+  //   setOutputData((prevData) => ({
+  //     ...prevData,
+  //     [fieldName]: option.value,
+  //   }));
+  // };
   const handleDropdownChange = (option, fieldName) => {
     setOutputData((prevData) => ({
       ...prevData,
@@ -21,11 +39,10 @@ const ModalRekognisi = ({ data, isOpen, onRequestClose, index, onSave }) => {
     }));
   };
 
-  const handleFileChange = (event) => {
-    const { name, files } = event.target;
+  const handleFileChange1 = (event) => {
     setOutputData((prevData) => ({
       ...prevData,
-      [name]: files[0],
+      proof_recognition: event.target.files[0],
     }));
   };
 
@@ -39,11 +56,19 @@ const ModalRekognisi = ({ data, isOpen, onRequestClose, index, onSave }) => {
     }));
   };
 
-  const handleSave = () => {
+  // const handleSave = () => {
+  //   console.log("Data berhasil disimpan");
+  //   onSave(index, outputData);
+  //   setOutputData({});
+  //   onRequestClose(); // Tutup modal setelah menyimpan
+  // };
+
+  const handleSave = (e) => {
+    e.preventDefault(); // Prevent default form submission
     console.log("Data berhasil disimpan");
     onSave(index, outputData);
     setOutputData({});
-    onRequestClose(); // Tutup modal setelah menyimpan
+    onRequestClose(); // Close modal after save
   };
 
   return (
@@ -57,14 +82,15 @@ const ModalRekognisi = ({ data, isOpen, onRequestClose, index, onSave }) => {
       <h2 className="text-xl font-bold mb-4">
         Luaran Wajib Artikel di Jurnal Bereputasi Internasional
       </h2>
-      <form>
+      <form onSubmit={handleSave}>
         {/* Dropdown Status Artikel */}
         <div className="mb-4">
           <DropdownCmp
-            label={`Status Rekognisi Mahasiswa`}
-            onChange={(option) => {
-              handleDropdownChange("status_rekognisi", option.value);
-            }}
+            options={statusRekognisi}
+            value={statusRekognisi.find(
+              (option) => option.value === outputData.status
+            )}
+            onChange={(option) => handleDropdownChange(option, "status")}
             placeholder={`Pilih Status Rekognisi`}
           />
         </div>
@@ -89,16 +115,19 @@ const ModalRekognisi = ({ data, isOpen, onRequestClose, index, onSave }) => {
         <div className="mb-4">
           <TextfieldCmp
             label={`Jumlah SKS yang direkognisi (minimal 6 SKS)`}
-            value={outputData.journal_name}
-            name="journal_name"
+            value={outputData.recognized_sks}
+            name="recognized_sks"
             onChange={(e) => handleInputChange(e)}
-            placeholder="Nama Jurnal"
+            placeholder="Sks"
           />
         </div>
         <div className="mb-4">
           <TextfieldCmp
             label={`Mata kuliah yang direkognisi (dipisah dengan tanda ,)`}
             placeholder="Nama Mata Kuliah"
+            value={outputData.recognized_courses}
+            name="recognized_courses"
+            onChange={(e) => handleInputChange(e)}
           />
         </div>
 
@@ -106,6 +135,8 @@ const ModalRekognisi = ({ data, isOpen, onRequestClose, index, onSave }) => {
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Bukti Rekognisi</label>
           <input
+            name="proof_recognition"
+            onChange={(e) => handleFileChange1(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />

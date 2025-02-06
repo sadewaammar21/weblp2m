@@ -235,6 +235,10 @@ function App() {
           element={<LaporanKemajuanPengabdianPage />}
         />
         <Route
+          path="/pengabdian/laporan-kemajuan/edit"
+          element={<LaporanKemajuanPengabdianPage />}
+        />
+        <Route
           path="/pengabdian/laporan-akhir"
           element={<ListLaporanAkhirPengabdianPage />}
         />

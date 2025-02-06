@@ -150,17 +150,17 @@ const RAB = ({ navigate, data, setData }) => {
       {data.budget_plan_service.map((item, index) => (
         <div key={index} className="grid grid-cols-8 gap-x-4">
           <DropdownCmp
-          label="Tahun Ke"
-          options={mapToDropdown(year, "value", "value")}
-          value={mapToDropdown(year, "value", "value").find(
-            (option) => option.value === item.year
-          )}
-          onChange={(option) =>
-            handleBudgetChange(index, "year", option.value)
-          }
-          placeholder="1"
-          width="w-32"
-        />
+            label="Tahun Ke"
+            options={mapToDropdown(year, "value", "value")}
+            value={mapToDropdown(year, "value", "value").find(
+              (option) => option.value === item.year
+            )}
+            onChange={(option) =>
+              handleBudgetChange(index, "year", option.value)
+            }
+            placeholder="1"
+            width="w-32"
+          />
           <DropdownCmp
             label="Kelompok RAB"
             options={mapToDropdown(budgetGroup, "name", "id")}
@@ -190,6 +190,7 @@ const RAB = ({ navigate, data, setData }) => {
             label="Satuan"
             value={item.unit}
             onChange={(e) => handleBudgetChange(index, "unit", e.target.value)}
+            placeholder={0}
           />
           <TextfieldCmp
             label="Volume"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp";
 
@@ -13,19 +13,38 @@ const ModalPoster = ({
   onSave,
   setData,
 }) => {
-  const handleDropdownChange = (field, value) => {
-    setData((prevData) => ({
+  const [outputData, setOutputData] = useState({});
+
+  useEffect(() => {
+    if (data && index >= 0) {
+      setOutputData(data[index]); // Update data modal berdasarkan index
+    }
+  }, [data, index]);
+
+  const handleDropdownChange = (option, fieldName) => {
+    setOutputData((prevData) => ({
       ...prevData,
-      [field]: value,
+      [fieldName]: option.value,
     }));
   };
-  const handleSave = () => {
-    console.log("Data berhasil disimpan");
-    onRequestClose(); // Tutup modal setelah menyimpan
+
+  const handleFileChange1 = (event) => {
+    setOutputData((prevData) => ({
+      ...prevData,
+      poster_documents: event.target.files[0],
+    }));
   };
-  const komponenRekognisi = [
+
+  const handleSave = (e) => {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Data berhasil disimpan");
+    onSave(index, outputData);
+    setOutputData({});
+    onRequestClose(); // Close modal after save
+  };
+  const statusRekognisi = [
     { label: "Tercapai", value: "Tercapai" },
-    { label: "Tidak Tercapai", value: "Tidak_tercapai" },
+    { label: "Tidak Tercapai", value: "Tidak Tercapai" },
   ];
 
   return (
@@ -37,14 +56,15 @@ const ModalPoster = ({
       overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <h2 className="text-xl font-bold mb-4">Luaran Wajib Poster</h2>
-      <form>
+      <form onSubmit={handleSave}>
         <div className="mb-4">
           <DropdownCmp
             label={`Status Poster`}
-            options={komponenRekognisi}
-            onChange={(option) => {
-              handleDropdownChange("status_rekognisi", option.value);
-            }}
+            options={statusRekognisi}
+            value={statusRekognisi.find(
+              (option) => option.value === outputData.status
+            )}
+            onChange={(option) => handleDropdownChange(option, "status")}
             placeholder={`Pilih Status Poster`}
           />
         </div>
@@ -92,6 +112,8 @@ const ModalPoster = ({
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Poster</label>
           <input
+            name="poster_documents"
+            onChange={(e) => handleFileChange1(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />

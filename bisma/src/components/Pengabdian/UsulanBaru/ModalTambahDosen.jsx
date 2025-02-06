@@ -152,7 +152,7 @@ const ModalTambahDosen = ({
         value={memberData.id}
         name="id"
         onChange={handleInputChange}
-        placeholder="Anggota Pengusul"
+        placeholder="Masukan NIDN"
       />
 
       <TextfieldCmp
@@ -160,7 +160,7 @@ const ModalTambahDosen = ({
         value={memberData.name}
         name="pivot.name"
         onChange={handleInputChange}
-        placeholder="Anggota Pengusul"
+        placeholder="Nama Lengkap"
       />
 
       <div className="p-4">
@@ -169,7 +169,7 @@ const ModalTambahDosen = ({
           value={memberData.research_role}
           name="research_role"
           onChange={handleInputChange}
-          placeholder="Anggota Pengusul"
+          placeholder="Peran di Pengabdian"
         />
 
         <TextAreaCmp
@@ -225,17 +225,19 @@ const ModalTambahDosen = ({
           value={memberData.status}
           name="pivot.status"
           onChange={handleInputChange}
-          placeholder="Anggota Pengusul"
+          placeholder="Status di Pengabdian"
         />
       </div>
 
       <div className="flex justify-end space-x-4">
-        <button
-          className="bg-white text-red-500 border border-red-500 px-4 py-2 rounded hover:bg-red-100"
-          onClick={onRequestClose}
-        >
-          Tutup
-        </button>
+        <div>
+          <button
+            className="bg-white text-red-500 border border-red-500 px-4 py-2 rounded hover:bg-red-100"
+            onClick={onRequestClose}
+          >
+            Tutup
+          </button>
+        </div>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           onClick={handleSave}

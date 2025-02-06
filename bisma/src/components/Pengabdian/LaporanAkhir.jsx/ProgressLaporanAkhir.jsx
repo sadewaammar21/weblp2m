@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LaporanAkhirTab1 from "./LaporanAkhirTab1";
 import LaporanAkhirTab2 from "./LaporanAkhirTab2";
 import LaporanAkhirTab3 from "./LaporanAkhirTab3";
 import ListLaporanAkhir from "./ListLaporanAkhir";
+import {
+  addServiceFinalReport,
+  getServiceDetail,
+  getServiceFinalReport,
+} from "../../../Features/ServiceSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const steps = [
   { id: 1, label: "Laporan Akhir" },
@@ -42,8 +48,108 @@ const ProgressBar = ({ currentStep }) => {
 };
 
 const ProgressLaporanAkhir = () => {
-  const [currentStep, setCurrentStep] = React.useState(1);
-  const [isLaporanKemajuan, setIsLaporanKemajuan] = React.useState(false);
+  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isLaporanKemajuan, setIsLaporanKemajuan] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  //data pengabdian
+  const [service, setService] = useState({});
+
+  const location = useLocation();
+  const { id, reportId } = location.state || {};
+  console.log(reportId);
+  const [report, setReport] = useState({});
+
+  const fetchService = async () => {
+    try {
+      const response = await getServiceDetail(id);
+      if (response && response.id) {
+        setService(response);
+        console.log("Service ID:", response.id);
+      } else {
+        console.log("Tidak ada service id");
+      }
+    } catch (error) {
+      console.error("Error fetching service:", error);
+      console.log("Tidak ada service id");
+    }
+  };
+  const fetchReport = async () => {
+    try {
+      if (reportId) {
+        // setLoading(true);
+        const response = await getServiceFinalReport(reportId);
+        setReport(response);
+        console.log(report);
+      } else {
+        setReport({
+          comunity_service_id: service.id,
+          summary: "",
+          keyword: "",
+          partner_contribution: "",
+          target_partners: "",
+          productive_economic_society: "",
+          nonproductive_economic_society: "",
+          number_of_partners: "",
+          partner_education: "",
+          problem_areas: "",
+          distance_partners: "",
+          male_proposing_team: "",
+          female_proposing_team: "",
+          male_partners_team: "",
+          female_partners_team: "",
+          total_students: "",
+          male_student: "",
+          female_student: "",
+          implementation_activities: "",
+          implementation_time: "",
+          program_sustainability: "",
+          production_capacity_before_program: "",
+          production_capacity_after_program: "",
+          turnover_before_program: "",
+          turnover_after_program: "",
+          funding_sources: "",
+          funding_amount: "",
+          partner_role: "",
+          partner_role_active: "",
+          partner_role_passive: "",
+          government_local_role: "",
+          funding_contribution: "",
+          output_final_report1s: [],
+          output_final_report2s: [],
+          output_final_report3s: [],
+          output_final_report4s: [],
+          output_final_report5s: [],
+          output_final_report6s: [],
+          output_final_report7s: [],
+          output_final_report8s: [],
+          output_final_report9s: [],
+          output_final_report10s: [],
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (reportId) {
+      console.log("Report ID tersedia:", reportId);
+    } else {
+      console.log("Tidak ada report id");
+    }
+  }, [reportId]);
+
+  useEffect(() => {
+    fetchService();
+    if (reportId) {
+      fetchReport();
+    }
+  }, [reportId]);
 
   const handleNextStep = () => {
     if (currentStep < steps.length) {
@@ -60,25 +166,70 @@ const ProgressLaporanAkhir = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <LaporanAkhirTab1 />;
+        return (
+          <LaporanAkhirTab1
+            service={service}
+            data={report}
+            setData={setReport}
+          />
+        );
       case 2:
-        return <LaporanAkhirTab2 />;
+        return (
+          <LaporanAkhirTab2
+            service={service}
+            data={report}
+            setData={setReport}
+          />
+        );
       case 3:
-        return <LaporanAkhirTab3 />;
+        return (
+          <LaporanAkhirTab3
+            service={service}
+            data={report}
+            setData={setReport}
+          />
+        );
       default:
         return null;
     }
   };
 
   if (isLaporanKemajuan) {
-    return <ListLaporanAkhir />;
+    return <LaporanAkhirTab3 />;
   }
+
+  const handleSubmit = async (status) => {
+    if (reportId) {
+      setReport((prevReport) => ({ ...prevReport, status: status }));
+      // setReport({ ...report, status: status });
+      console.log(report);
+      const response = await addServiceFinalReport({
+        serviceId: service.id,
+        data: report,
+        isEdit: true,
+        reportId: report.id,
+      });
+      console.log(response);
+      navigate(-1);
+    } else {
+      setReport((prevReport) => ({ ...prevReport, status: status }));
+      // setReport({ ...report, status: status });
+      console.log(report);
+      const response = await addServiceFinalReport({
+        serviceId: service.id,
+        data: report,
+        isEdit: false,
+      });
+      console.log(response);
+      navigate(-1);
+    }
+  };
 
   return (
     <div>
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PROPOSAL PENGABDIAN
+          LAPORAN AKHIR KEGIATAN PENGABDIAN
         </h1>
         <div className="container mx-auto">
           <div className="bg-gray-50 shadow-sm rounded-sm p-5">
@@ -108,9 +259,7 @@ const ProgressLaporanAkhir = () => {
                     Penelitian | Tahun Pelaksanaan 2024
                   </p>
                   <h2 className="text-lg font-bold text-gray-800">
-                    Membangun Kemandirian Ekonomi Desa melalui Implementasi
-                    Sistem Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa
-                    Sinergi Sidowayah
+                    {service.title}
                   </h2>
 
                   <div className="flex mx-1 my-2">
@@ -139,12 +288,26 @@ const ProgressLaporanAkhir = () => {
               >
                 Previous
               </button>
-              <button
-                onClick={handleNextStep}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
-              >
-                Next
-              </button>
+              <div>
+                <button
+                  onClick={handleNextStep}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 3 ? "hidden" : ""}`}
+                >
+                  Next
+                </button>
+                <button
+                  onClick={() => handleSubmit("draft")}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 3 ? "" : "hidden"}`}
+                >
+                  Simpan
+                </button>
+                <button
+                  onClick={() => handleSubmit("submitted")}
+                  className={`px-4 py-2 bg-green-600 text-white rounded ${currentStep === 3 ? "" : "hidden"}`}
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
         </div>
