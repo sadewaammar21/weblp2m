@@ -11,7 +11,7 @@ import DokumenPendukung from "./UsulanBaru/DokumenPendukung";
 import KonfirmasiUsulan from "./UsulanBaru/KonfirmasiUsulan";
 import Footer from "../Footer";
 import { addService } from "../../Features/ServiceSlice";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -115,11 +115,60 @@ const ProgressUsulanBaruPengabdian = () => {
     if (isEdit) fetchData();
   }, [id]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const isSubmit = e.target.name === "ajukan";
+  //   const newStatus = isSubmit ? 2 : undefined;
+  //   try {
+  //     const response = await addService({
+  //       data,
+  //       isEdit,
+  //       serviceId: data.id,
+  //       isSubmit,
+  //       newStatus,
+  //     });
+
+  //     console.log(response);
+  //     console.log("responnya", response?.data?.message || "null");
+
+  //     if (response?.data?.message) {
+  //       toast.success(response?.data?.message); // Menampilkan pesan sukses dari backend
+  //       await new Promise((resolve) => setTimeout(resolve, 1000));
+  //       console.log("", response.message);
+  //       console.log("responnya", response?.data?.message);
+  //     }
+
+  //     navigate("/pengabdian/usulan", {
+  //       state: {
+  //         success:
+  //           response?.data?.message ||
+  //           "Data pengabdian masyarakat telah berhasil disimpan.",
+  //       },
+  //     });
+
+  //     // localStorage.setItem("newService", JSON.stringify(response.data));
+
+  //     // navigate("/pengabdian/usulan");
+  //   } catch (error) {
+  //     const errorMessage =
+  //       error?.response?.data?.message || "Gagal menambahkan layanan!";
+  //     toast.error(errorMessage);
+  //     console.error("Error:", error);
+  //     navigate("/pengabdian/usulan", {
+  //       state: {
+  //         error: errorMessage,
+  //       },
+  //     });
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const isSubmit = e.target.name === "ajukan";
     const newStatus = isSubmit ? 2 : undefined;
+
     try {
       const response = await addService({
         data,
@@ -129,17 +178,22 @@ const ProgressUsulanBaruPengabdian = () => {
         newStatus,
       });
 
-      navigate("/pengabdian/usulan", {
-        state: {
-          success: "Data pengabdian masyarakat telah berhasil disimpan.",
-        },
-      });
+      console.log("Respons dari backend:", response?.data); // Debug response
+      const successMessage = response?.data?.message || "Operasi berhasil.";
 
-      console.log(response);
-      // navigate("/pengabdian/usulan");
-    } catch (error) {
+      toast.success(successMessage);
+
       navigate("/pengabdian/usulan", {
-        state: { error: "Gagal menyimpan data. Silakan coba lagi." },
+        state: { success: successMessage },
+      });
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.message || "Gagal menambahkan layanan!";
+      toast.error(errorMessage);
+      console.error("Error di handleSubmit:", error);
+
+      navigate("/pengabdian/usulan", {
+        state: { error: errorMessage },
       });
     }
   };
@@ -216,6 +270,7 @@ const ProgressUsulanBaruPengabdian = () => {
             )}
           </div>
         </div>
+        <ToastContainer position="top-right" autoClose={3000} />
       </div>
       <Footer />
     </div>

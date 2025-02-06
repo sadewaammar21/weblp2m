@@ -9,6 +9,7 @@ import {
   getServiceFinalReport,
 } from "../../../Features/ServiceSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const steps = [
   { id: 1, label: "Laporan Akhir" },
@@ -199,29 +200,39 @@ const ProgressLaporanAkhir = () => {
   }
 
   const handleSubmit = async (status) => {
-    if (reportId) {
-      setReport((prevReport) => ({ ...prevReport, status: status }));
-      // setReport({ ...report, status: status });
-      console.log(report);
-      const response = await addServiceFinalReport({
-        serviceId: service.id,
-        data: report,
-        isEdit: true,
-        reportId: report.id,
-      });
-      console.log(response);
+    try {
+      if (reportId) {
+        setReport((prevReport) => ({ ...prevReport, status: status }));
+        // setReport({ ...report, status: status });
+        console.log(report);
+        const response = await addServiceFinalReport({
+          serviceId: service.id,
+          data: report,
+          isEdit: true,
+          reportId: report.id,
+        });
+        console.log(response);
+        // navigate(-1);
+      } else {
+        setReport((prevReport) => ({ ...prevReport, status: status }));
+        // setReport({ ...report, status: status });
+        console.log(report);
+        const response = await addServiceFinalReport({
+          serviceId: service.id,
+          data: report,
+          isEdit: false,
+        });
+        console.log(response);
+        navigate(-1);
+      }
       navigate(-1);
-    } else {
-      setReport((prevReport) => ({ ...prevReport, status: status }));
-      // setReport({ ...report, status: status });
-      console.log(report);
-      const response = await addServiceFinalReport({
-        serviceId: service.id,
-        data: report,
-        isEdit: false,
-      });
-      console.log(response);
-      navigate(-1);
+    } catch (error) {
+      console.error("Terjadi kesalahan saat menyimpan laporan:", error);
+
+      // Ambil pesan error jika ada, atau gunakan pesan default
+      const errorMessage = error.response?.message || "Terjadi kesalahan!";
+
+      toast.error(errorMessage);
     }
   };
 

@@ -96,6 +96,7 @@ import UsulanBelumDitinjauKepalaPengabdianPage from "./pages/UsulanBelumDitinjau
 import UsulanDisetujuiKepalaPengabdianPage from "./pages/UsulanDisetujuiKepalaPengabdianPage";
 import UsulanDitolakKepalaPengabdian from "./components/Kaprodi dan Kepala/Pengabdian/UsulanDitolakKepalaPengabdian";
 import UsulanDitolakKepalaPage from "./pages/UsulanDitolakKepalaPage";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const dispatch = useDispatch();
@@ -244,6 +245,10 @@ function App() {
         />
         <Route
           path="/pengabdian/laporan-akhir/baru"
+          element={<ProgresLaporanAkhirIntPage />}
+        />
+        <Route
+          path="/pengabdian/laporan-akhir/edit"
           element={<ProgresLaporanAkhirIntPage />}
         />
         <Route
@@ -475,6 +480,7 @@ function App() {
           element={<UsulanDitolakKepalaPage />}
         />
       </Routes>
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </BrowserRouter>
   );
 }

@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 // import DropdownCmp from "../../components/DropdownCmp";
 // import { getResearch } from "../../Features/ResearchSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getService } from "../../../Features/ServiceSlice";
+import { toast, ToastContainer } from "react-toastify";
 
 const ListLaporanAkhir = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate(); // Hook untuk navigasi
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
 
   const handleView = (serviceId, report) => {
     if (report != null) {
@@ -26,6 +28,14 @@ const ListLaporanAkhir = () => {
   const handleClick = () => {
     navigate("/pengabdian/laporan-akhir"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
+
+  useEffect(() => {
+    if (location.state?.toastMessage) {
+      if (location.state.toastType === "success") {
+        toast.success(location.state.toastMessage);
+      }
+    }
+  }, [location.state]);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const fetchData = async () => {
@@ -160,6 +170,7 @@ const ListLaporanAkhir = () => {
           </table>
         </div>
       </div>
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </div>
   );
 };
