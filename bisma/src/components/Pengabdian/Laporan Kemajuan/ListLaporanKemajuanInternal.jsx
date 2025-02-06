@@ -3,13 +3,16 @@ import React, { useEffect, useState } from "react";
 // import { getResearch } from "../../Features/ResearchSlice";
 import { getService } from "../../../Features/ServiceSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const ListLaporanKemajuanInternal = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate(); // Hook untuk navigasi
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const location = useLocation();
 
   const handleView = (serviceId, report) => {
     console.log(report);
@@ -50,6 +53,15 @@ const ListLaporanKemajuanInternal = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (location.state?.toastMessage) {
+      if (location.state.toastType === "success") {
+        toast.success(location.state.toastMessage);
+      }
+    }
+  }, [location.state]);
+
   return (
     <div className="mx-5">
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
@@ -171,6 +183,7 @@ const ListLaporanKemajuanInternal = () => {
           </table>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

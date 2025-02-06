@@ -265,13 +265,20 @@ export const addService = async ({
             note: "diajukan",
           });
           console.log("Response:", responseStatus);
+
+          if (responseStatus?.data?.success) {
+            return responseStatus.data; // Mengembalikan langsung dari backend
+          }
         }
       }
       console.log(response.data);
+      return response.data;
     }
   } catch (error) {
     console.log(error);
-    return error;
+    // return error;
+
+    return error.response?.data || { success: false, message: error };
   }
 };
 

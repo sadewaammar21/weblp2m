@@ -89,6 +89,7 @@ import UsulanBelumDitinjauKprPage from "./pages/UsulanBelumDitinjauKprPage";
 import UsulanDisetujuiKprPage from "./pages/UsulanDisetujuiKprPage";
 import UsulanDitolakKprPage from "./pages/UsulanDitolakKprPage";
 import DashboardKeplLppmPage from "./pages/DashboardKeplLppmPage";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const dispatch = useDispatch();
@@ -222,6 +223,10 @@ function App() {
         />
         <Route
           path="/pengabdian/laporan-akhir/baru"
+          element={<ProgresLaporanAkhirIntPage />}
+        />
+        <Route
+          path="/pengabdian/laporan-akhir/edit"
           element={<ProgresLaporanAkhirIntPage />}
         />
         <Route
@@ -440,6 +445,7 @@ function App() {
           element={<MonevPengabdianReviewerPage />}
         />
       </Routes>
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </BrowserRouter>
   );
 }

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { getService, deleteService } from "../../Features/ServiceSlice";
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const UsulanBaruList = () => {
   const [data, setData] = useState([]);
@@ -52,8 +52,10 @@ const UsulanBaruList = () => {
     try {
       await deleteService(id);
       fetchData();
+      toast.success("Data berhasil dihapus!");
     } catch (err) {
       console.error(err);
+      toast.error("Gagal menghapus data!");
     }
   };
 
@@ -208,6 +210,7 @@ const UsulanBaruList = () => {
           </div>
         )}
       </div>
+      {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </div>
   );
 };
