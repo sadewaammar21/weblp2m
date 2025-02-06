@@ -1,34 +1,36 @@
 import React, { useState, useEffect } from "react";
-import DropdownCmp from "../DropdownCmp";
-import TextfieldCmp from "../TextfieldCmp";
+import DropdownCmp from "../../DropdownCmp";
+import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaLessThan } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
-import { saveAs } from "file-saver"; // Library for saving files
-import axios from "axios";
-import { getToken } from "../../Features/AuthSlice";
+import { saveAs } from "file-saver";
+import {
+  getResearch,
+  downloadResearchDocument,
+} from "../../../Features/ResearchSlice";
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
-const MonevPengabdianList = () => {
+const UsulanDitolakKepalaPengabdian = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+
+  const handleDropdownChange = (option) => {
+    setSelectedOption(option);
+  };
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  //get researches data
-  const user = localStorage.getItem("user");
-  const userParse = JSON.parse(user);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(
-          `${apiUrl}/api/reviewer/${userParse.id}/comunity-service`, getToken()
-        );
+        const result = await getResearch({ page_size: 5, current_page: 1, status: 8 });
         setData(result.data);
+        console.log(result);
         console.log(data);
+        console.log(typeof data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -38,12 +40,9 @@ const MonevPengabdianList = () => {
 
     fetchData();
   }, []);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-
-  const handleDropdownChange = (option) => {
-    setSelectedOption(option);
-  };
 
   // Fungsi untuk ekspor data ke Excel
   const handleExportExcel = () => {
@@ -63,24 +62,22 @@ const MonevPengabdianList = () => {
     ];
 
     // Membuat worksheet dan workbook
-    // const worksheet = XLSX.utils.aoa_to_sheet(tableData);
-    // const workbook = XLSX.utils.book_new();
-    // XLSX.utils.book_append_sheet(workbook, worksheet, 'Data Usulan Draft');
+    const worksheet = XLSX.utils.aoa_to_sheet(tableData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Usulan Draft");
 
-    // // Menyimpan file Excel
-    // const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    // const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    // saveAs(data, 'UsulanDraftMonitoring.xlsx');
-    console.log(data);
+    // Menyimpan file Excel
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "UsulanDraftMonitoring.xlsx");
   };
 
   // Fungsi untuk kembali ke halaman sebelumnya
   const handleBack = () => {
-    navigate("/dashboard-reviewer");
-  };
-
-  const handleAction = (serviceId) => {
-    navigate("/pengabdian/monev/reviewer", {state: {id: serviceId}});
+    navigate("/dashboard-kepala-lppm");
   };
 
   const options = [
@@ -88,11 +85,10 @@ const MonevPengabdianList = () => {
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
   ];
-
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        MONITORING DAN EVALUASI PENGABDIAN
+        LIST USULAN DITOLAK KEPALA LPPM
       </h1>
 
       <div>
@@ -100,10 +96,13 @@ const MonevPengabdianList = () => {
           <div>
             <button
               onClick={handleBack}
-              className="flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 bg-bluef-500 text-white
-               hover:bg-white hover:text-bluef-500"
+              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
+                "Kembali"
+                  ? "bg-bluef-500 text-white"
+                  : "bg-white text-bluef-500"
+              }`}
             >
-              <FaLessThan className="mr-2" /> {/* Add the arrow icon */}
+              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
               Kembali
             </button>
           </div>
@@ -114,7 +113,7 @@ const MonevPengabdianList = () => {
             <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}
-                className="flex items-center px-2 py-1 bg-cyan-500 text-white rounded-md hover:bg-cyan-600"
+                className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 <img
                   src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
@@ -156,53 +155,46 @@ const MonevPengabdianList = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.data &&
-                  data.data.map((item) => (
-                    <tr key={item.id}>
-                      <td className="border px-4 py-2 text-center">
-                        {item.id}
+                {data
+                  .filter((item) => item.status == 8)
+                  .map((item, index) => (
+                    <tr key={index}>
+                      <td className="border border-gray-300 p-2 text-center">
+                        {index + 1}
                       </td>
-                      <td className="border px-4 py-2">
-                        {item.user.name}
-                        <br />
-                        NIDN: {item.user.nidn}
-                        <br />
-                        Tahun Pelaksanaan: {item.year}
-                        <br />
-                        Lama Kegiatan: {item.duration} Tahun
-                        <br />
-                        Bidang Fokus: {item.focus_thematic.name || item.focus_rirn.name}
+                      <td className="border border-gray-300 p-2">
+                        <p>Ketua: {item.user?.name}</p>
+                        <p>NIDN: {item.user?.nidn}</p>
+                        <p>Tahun Pelaksanaan: {item.year}</p>
+                        <p>Lama Kegiatan: {item.duration}</p>
+                        <p>Bidang Fokus: {item.focus.name}</p>
                       </td>
-                      <td className="border px-4 py-2 text-bluef-500">
-                        {item.title}
-                        <br />
-                        {item.scope.name}
+                      <td className="border border-gray-300 p-2">
+                        <p className="text-blue-600 font-bold">{item.title}</p>
+                        <p className="text-blue-600 font-bold">
+                          {item.scheme.name}
+                        </p>
                       </td>
-                      <td className="border px-4 py-2 items-center">
-                        <button>
-                          <img
-                            src="/assets/icon_pdf_brks.svg"
-                            alt="Action Icon"
-                            className="py-2 w-7 h-auto z-10"
-                          />
-                        </button>
-                      </td>
-                      <td className="border px-4 py-2 text-center">
+                      <td className="border border-gray-300 p-2 text-center">
                         <button
-                          onClick={() => handleAction(item.id)}
-                          className="bg-bluef-500 text-white px-4 py-2 rounded-md"
+                          onClick={() => downloadResearchDocument(item.id)}
+                          className="text-red-600 text-2xl"
                         >
-                          Review
+                          <a
+                            href={`http://localhost:8000/api/research/download/${item.id}`}
+                            target="_blank"
+                          >
+                            📄
+                          </a>
                         </button>
+                      </td>
+                      <td className="border border-gray-300 p-2 text-center">
+                        <p className="text-white bg-red-800 rounded-md p-2">
+                          Ditolak
+                        </p>
                       </td>
                     </tr>
                   ))}
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -212,4 +204,4 @@ const MonevPengabdianList = () => {
   );
 };
 
-export default MonevPengabdianList;
+export default UsulanDitolakKepalaPengabdian;

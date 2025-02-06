@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { updateStatus } from "../../Features/ServiceSlice";
-// import TextfieldCmp from "../../../TextfieldCmp";
+import { updateStatus } from "../../../Features/ServiceSlice";
+import TextfieldCmp from "../../TextfieldCmp";
 
 Modal.setAppElement("#root");
 
@@ -11,7 +11,7 @@ const ModalLaporanBelumDitinjauDitolak = ({ data, isOpen, onRequestClose }) => {
   const handleSubmit = async () => {
     try {
       const response = await updateStatus({
-        serviceId: data.id,
+        researchId: data.id,
         newStatus: 8,
         note: note,
       });

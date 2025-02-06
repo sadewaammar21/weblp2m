@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import {
   updateStatus,
-  setServiceApprovalFunds,
-} from "../../Features/ServiceSlice";
+  setResearchApprovalFunds,
+} from "../../Features/ResearchSlice";
 import TextfieldCmp from "../TextfieldCmp";
 
 Modal.setAppElement("#root");
@@ -12,7 +12,7 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
   const [note, setNote] = useState("");
   const [funds, setFunds] = useState(0);
 
-  const totalBudget = (data?.budgetPlanService || []).reduce(
+  const totalBudget = (data?.budgetPlan || []).reduce(
     (sum, item) => sum + item.total,
     0
   );
@@ -20,13 +20,13 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
   const handleSubmit = async () => {
     try {
       const response = await updateStatus({
-        serviceId: data.id,
+        researchId: data.id,
         newStatus: 6,
         note: note,
       });
       console.log("Response:", response);
-      const setFunds = setServiceApprovalFunds({
-        serviceId: data.id,
+      const setFunds = setResearchApprovalFunds({
+        researchId: data.id,
         approval_funds: funds,
       });
       console.log(setFunds);

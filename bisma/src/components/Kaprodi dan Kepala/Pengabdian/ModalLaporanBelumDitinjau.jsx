@@ -1,28 +1,34 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { updateStatus } from "../../Features/ServiceSlice";
-// import TextfieldCmp from "../../../TextfieldCmp";
+import { setResearchApprovalFunds, updateStatus } from "../../../Features/ResearchSlice";
+import TextfieldCmp from "../../TextfieldCmp";
 
 Modal.setAppElement("#root");
 
-const ModalLaporanBelumDitinjauDitolak = ({ data, isOpen, onRequestClose }) => {
+const ModalLaporanBelumDitinjau = ({
+  data,
+  isOpen,
+  onRequestClose,
+}) => {
   const [note, setNote] = useState("");
+  const [funds, setFunds] = useState(0);
+
+  const totalBudget = (data?.budgetPlan || []).reduce((sum, item) => sum + item.total, 0);
 
   const handleSubmit = async () => {
     try {
-      const response = await updateStatus({
-        serviceId: data.id,
-        newStatus: 8,
-        note: note,
-      });
+      const response = await updateStatus({ researchId: data.id, newStatus: 6, note: note});
       console.log("Response:", response);
-      alert("Status updated successfully!");
+      const setFunds = setResearchApprovalFunds({researchId: data.id, approval_funds: funds})
+      console.log(setFunds);
+      setNote('');
       onRequestClose();
     } catch (error) {
       console.error("Error updating status:", error);
       alert("Failed to update status.");
     }
   };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -32,16 +38,45 @@ const ModalLaporanBelumDitinjauDitolak = ({ data, isOpen, onRequestClose }) => {
     >
       {/* Header */}
       <div className="flex justify-between items-center border-b pb-2 mb-4">
-        <h2 className="text-lg font-bold">DitolaK Usulan</h2>
+        <h2 className="text-lg font-bold">Setujui Usulan</h2>
         <button onClick={onRequestClose} className="text-xl font-bold">
           &times;
         </button>
       </div>
 
       {/* Information Section */}
+      <div className="p-4 bg-violet-100 w-full rounded-md mb-4">
+        <div className="flex">
+          <img
+            src={process.env.PUBLIC_URL + "/assets/information.svg"}
+            alt="logo"
+            className="w-6 h-6 mr-4"
+          />
+          <h2 className="text-md font-bold text-violet-800">Informasi</h2>
+        </div>
+        <div className="flex my-2">
+          <h2 className="text-sm font-medium text-violet-800 mr-1">
+            {" "}
+            Dana Direncanakan Tahun ke-1
+          </h2>
+          <h2 className="text-sm font-bold text-violet-800 mr-1">
+            {" "}
+            Rp. {totalBudget}
+          </h2>
+        </div>
+      </div>
+      <h2 className="text-lg font-bold my-5">Persetujuan Dana</h2>
+      <label htmlFor="comment" className="block text-sm font-semibold mb-2">
+        Masukkan dana yang disetujui oleh kepala LPPM
+      </label>
+      <TextfieldCmp
+        // label={`Masukkan dana yang disetujui oleh kepala LPPM`}
+        onChange={(e) => setFunds(e.target.value)}
+        className="w-full"
+        placeholder="Rp. 10.000.000,00"
+      />
 
-      <h2 className="text-lg font-bold my-5">Ditolak Usulan</h2>
-
+      {/* Comment Section */}
       <div className="mb-4">
         <label htmlFor="comment" className="block text-sm font-semibold mb-2">
           Komentar
@@ -75,4 +110,4 @@ const ModalLaporanBelumDitinjauDitolak = ({ data, isOpen, onRequestClose }) => {
   );
 };
 
-export default ModalLaporanBelumDitinjauDitolak;
+export default ModalLaporanBelumDitinjau;

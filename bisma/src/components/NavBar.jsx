@@ -236,7 +236,7 @@ const NavBar = ({ children }) => {
                   <div className="flex items-center">Dashboard</div>
                   {dropdown === 1 && (
                     <ul
-                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      className="absolute top-full mt-2 left-0 bg-white text-violet-800 shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
                       {parseUser.roles.map((item, index) => (
@@ -438,7 +438,7 @@ const NavBar = ({ children }) => {
                         <Link to="/list-monev-penelitian">Penelitian</Link>
                       </li>
                       <li className="px-4 py-2 hover:bg-violet-800">
-                        <Link to="/monitoring/pengabdian">Pengabdian</Link>
+                        <Link to="/pengabdian/monev">Pengabdian</Link>
                       </li>
                     </ul>
                   )}
@@ -609,27 +609,81 @@ const NavBar = ({ children }) => {
 
                 {/* persetujuan usulan Kepala LPPM*/}
                 <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 5 ? "show" : "hidden"}`}
+                  className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 5 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(8)}
+                  // onMouseLeave={handleDropdownLeave}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/pengabdian.svg"}
-                    alt="pengabdian"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Persetujuan Usulan
+                  <div className="flex items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
+                      alt="kekayaan intelektual"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Persetujuan Usulan
+                    <FaChevronDown className="ml-2" />
+                  </div>
+                  {dropdown === 8 && (
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
+                      <li className="px-4 py-2 hover:bg-violet-800"
+                      onClick={() => navigate("/kaprodi/penelitian/usulan-belum-ditinjau")}
+                      >
+                        <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
+                          Penelitian
+                        </Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800"
+                      onClick={() => navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")}
+                      >
+                        <Link >
+                          Pengabdian
+                        </Link>
+                      </li>
+                      
+                    </ul>
+                  )}
                 </li>
                 {/* persetujuan usulan Kepala LPPM*/}
 
                 {/* kaprodi */}
                 <li
-                  className={`text-white hover:text-gray-300 cursor-pointer flex items-center ${currentRoles == 4 ? "show" : "hidden"}`}
+                  className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 4 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(8)}
+                  // onMouseLeave={handleDropdownLeave}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
-                    alt="laporan"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Persetujuan Usulan
+                  <div className="flex items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
+                      alt="kekayaan intelektual"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Persetujuan Usulan
+                    <FaChevronDown className="ml-2" />
+                  </div>
+                  {dropdown === 8 && (
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
+                      <li className="px-4 py-2 hover:bg-violet-800"
+                      onClick={() => navigate("/kaprodi/penelitian/usulan-belum-ditinjau")}
+                      >
+                        <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
+                          Penelitian
+                        </Link>
+                      </li>
+                      <li className="px-4 py-2 hover:bg-violet-800"
+                      onClick={() => navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")}
+                      >
+                        <Link >
+                          Pengabdian
+                        </Link>
+                      </li>
+                      
+                    </ul>
+                  )}
                 </li>
                 {/* kaprodi */}
 

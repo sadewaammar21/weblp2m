@@ -89,6 +89,13 @@ import UsulanBelumDitinjauKprPage from "./pages/UsulanBelumDitinjauKprPage";
 import UsulanDisetujuiKprPage from "./pages/UsulanDisetujuiKprPage";
 import UsulanDitolakKprPage from "./pages/UsulanDitolakKprPage";
 import DashboardKeplLppmPage from "./pages/DashboardKeplLppmPage";
+import UsulanBelumDitinjauPengabdianKpr from "./pages/UsulanBelumDitinjauPengabdianKpr";
+import UsulanDisetujuiPengabdianKpr from "./pages/UsulanDisetujuiPengabdianKpr";
+import UsulanDitolakPengabdianKpr from "./pages/UsulanDitolakPengabdianKpr";
+import UsulanBelumDitinjauKepalaPengabdianPage from "./pages/UsulanBelumDitinjauKepalaPengabdianPage";
+import UsulanDisetujuiKepalaPengabdianPage from "./pages/UsulanDisetujuiKepalaPengabdianPage";
+import UsulanDitolakKepalaPengabdian from "./components/Kaprodi dan Kepala/Pengabdian/UsulanDitolakKepalaPengabdian";
+import UsulanDitolakKepalaPage from "./pages/UsulanDitolakKepalaPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -115,17 +122,32 @@ function App() {
         />
         {/* kaprodi */}
         <Route
-          path="/kaprodi/usulan-belum-ditinjau"
+          path="/kaprodi/penelitian/usulan-belum-ditinjau"
           element={<UsulanBelumDitinjauKprPage />}
         />
         <Route
-          path="/kaprodi/usulan-disetujui"
+          path="/kaprodi/penelitian/usulan-disetujui"
           element={<UsulanDisetujuiKprPage />}
         />
         <Route
-          path="/kaprodi/usulan-ditolak"
+          path="/kaprodi/penelitian/usulan-ditolak"
           element={<UsulanDitolakKprPage />}
         />
+        {/* pengabdian kaprodi  */}
+        <Route
+          path="/kaprodi/pengabdian/usulan-belum-ditinjau"
+          element={<UsulanBelumDitinjauPengabdianKpr />}
+        />
+        <Route
+          path="/kaprodi/pengabdian/usulan-disetujui"
+          element={<UsulanDisetujuiPengabdianKpr />}
+        />
+        <Route
+          path="/kaprodi/pengabdian/usulan-ditolak"
+          element={<UsulanDitolakPengabdianKpr />}
+        />
+        {/* kaprodi  */}
+
 
         <Route path="/dashboard-kaprodi" element={<DashboardKaprodiPage />} />
         {/* user */}
@@ -434,6 +456,19 @@ function App() {
         <Route
           path="/pengabdian/monev/reviewer"
           element={<MonevPengabdianReviewerPage />}
+        />
+        {/* pengabdian  */}
+        <Route
+          path="/kepala-lppm/pengabdian/usulan-belum-ditinjau"
+          element={<UsulanBelumDitinjauKepalaPengabdianPage />}
+        />
+        <Route
+          path="/kepala-lppm/pengabdian/usulan-disetujui"
+          element={<UsulanDisetujuiKepalaPengabdianPage />}
+        />
+        <Route
+          path="/kepala-lppm/pengabdian/usulan-ditolak"
+          element={<UsulanDitolakKepalaPage />}
         />
       </Routes>
     </BrowserRouter>

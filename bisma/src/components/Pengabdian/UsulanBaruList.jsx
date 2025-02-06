@@ -86,7 +86,7 @@ const UsulanBaruList = () => {
             />
           </button>
           <button
-            onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+            onClick={() => navigate(`/pengabdian/detail/${item.id}`)}
             className=" px-2 py-1 rounded-md text-white"
           >
             <img

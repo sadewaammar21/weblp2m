@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import PenilaianProposal from "./PenilaianProposal";
-import { useNavigate } from "react-router-dom";
+import PenilaianProposalPengabdian from "./PenilaianProposalPengabdian";
+import UsulanBelumDiriview from "./PenilaianProposalPengabdian";
+import { useLocation, useNavigate } from "react-router-dom";
 import PengabdianProposalTab1 from "./PengabdianProposalTab1";
 import PengabdianProposalTab2 from "./PengabdianProposalTab2";
+import axios from "axios";
+import { getToken } from "../../Features/AuthSlice";
+
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const steps = [
   { id: 1, label: "Administrasi" },
@@ -40,24 +46,40 @@ const ProgressBar = ({ currentStep }) => {
 const PengabdianProposal = () => {
   const navigate = useNavigate();
 
-  // Data dummy
-  const dummyData = {
-    title: "Pengembangan Aplikasi Edukasi",
-    year: 2024,
-    duration: 1,
-    focus: "Teknologi Informasi",
-    reviewer_id: 1,
-  };
+   const location = useLocation();
+    const [data, setData] = useState();
+    const [reviewData, setReviewData] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentStep, setCurrentStep] = useState(1);
+    const [isUsulanView, setIsUsulanView] = useState(false);
 
-  const [data, setData] = useState(dummyData);
-  const [reviewData, setReviewData] = useState({
-    reviewer_id: 1, // Dummy reviewer ID
-    comments: "",
-  });
-
-  // Step navigation
-  const [currentStep, setCurrentStep] = useState(1);
-  const [isUsulanView, setIsUsulanView] = useState(false);
+    const id = location.state.id;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/comunity-service/${id}`,
+          getToken()
+        );
+        console.log(response.data);
+        setData({
+          ...data,
+          ...response.data,
+        });
+        setReviewData({ ...reviewData, ["comunity_service_id"]: id });
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    useEffect(() => {
+      fetchData();
+    }, []);
+    
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
   const handleNextStep = () => {
     if (currentStep < steps.length) {
@@ -65,6 +87,7 @@ const PengabdianProposal = () => {
     } else {
       setIsUsulanView(true); // Pindah ke halaman UsulanBelumDiriview
     }
+    setReviewData({ ...reviewData, ["reviewer_id"]: user.id });
   };
 
   const handlePrevStep = () => {
@@ -93,13 +116,22 @@ const PengabdianProposal = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Submit data:", reviewData);
-    navigate("/review-penilaian-proposal");
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/api/comunity-service-reviews`,
+        reviewData,
+        getToken()
+      );
+      console.log(response.data);
+      navigate(-1);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   if (isUsulanView) {
-    return <PenilaianProposal />;
+    return <PenilaianProposalPengabdian />;
   }
 
   return (

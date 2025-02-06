@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import DropdownCmp from "../DropdownCmp";
-import TextfieldCmp from "../TextfieldCmp";
+import DropdownCmp from "../../DropdownCmp";
+import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
 import ModalLaporanBelumDitinjau from "./ModalLaporanBelumDitinjau";
 import ModalLaporanBelumDitinjauDitolak from "./ModalLaporanBelumDitinjauDitolak";
-import {
-  getResearch,
-  downloadResearchDocument,
-} from "../../Features/ResearchSlice";
 // import {
-//   getService,
-//   downloadServiceDocument,
-// } from "../../Features/ServiceSlice";
+//   getResearch,
+//   downloadResearchDocument,
+// } from "../../../Features/ServiceSlice";
+import {
+  getService,
+  downloadServiceDocument,
+} from "../../../Features/ServiceSlice";
 
 const UsulanBelumDitinjauKpr = () => {
   const navigate = useNavigate();
@@ -57,10 +57,10 @@ const UsulanBelumDitinjauKpr = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const result = await getResearch({
+      const result = await getService({
         pageSize: 5,
         currentPage: 1,
-        // status: 5,
+        status: 2,
         prodiId: 5,
       });
       setData(result.data);
@@ -202,7 +202,7 @@ const UsulanBelumDitinjauKpr = () => {
                       <p>NIDN: {item.user?.nidn}</p>
                       <p>Tahun Pelaksanaan: {item.year}</p>
                       <p>Lama Kegiatan: {item.duration}</p>
-                      {/* <p>Bidang Fokus: {item.focus.name}</p> */}
+                      {/* <p>Bidang Fokus: {item.focus_thematic} || {item.focus_rirns}</p> */}
                     </td>
                     <td className="border border-gray-300 p-2">
                       <p className="text-blue-600 font-bold">{item.title}</p>
@@ -212,11 +212,11 @@ const UsulanBelumDitinjauKpr = () => {
                     </td>
                     <td className="border border-gray-300 p-2 text-center">
                       <button
-                        onClick={() => downloadResearchDocument(item.id)}
+                        onClick={() => downloadServiceDocument(item.id)}
                         className="text-red-600 text-2xl"
                       >
                         <a
-                          href={`http://localhost:8000/api/research/download/${item.id}`}
+                          // href={`http://localhost:8000/api/comunity-service/download/${item.id}`}
                           target="_blank"
                         >
                           📄
