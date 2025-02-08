@@ -26,7 +26,7 @@ const ListLaporanAkhir = () => {
   };
 
   const handleClick = () => {
-    navigate("/pengabdian/laporan-akhir"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/pengabdian/laporan-akhir/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   useEffect(() => {

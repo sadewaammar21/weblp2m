@@ -246,6 +246,8 @@ export const addService = async ({
         }
       }
       console.log(response.data);
+      console.log("respon message :", response.data.message);
+      return response.data.message;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/comunity-service`,
@@ -265,14 +267,10 @@ export const addService = async ({
             note: "diajukan",
           });
           console.log("Response:", responseStatus);
-
-          if (responseStatus?.data?.success) {
-            return responseStatus.data; // Mengembalikan langsung dari backend
-          }
         }
       }
-      console.log(response.data);
-      return response.data;
+      console.log(response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);
@@ -287,7 +285,8 @@ export const deleteService = async (id) => {
     `${apiUrl}/api/comunity-service/${id}`,
     getToken()
   );
-  return response.data;
+  console.log("responnya", response.data.message);
+  return response.data.message;
 };
 
 export const updateStatus = async ({ serviceId, newStatus, note }) => {
@@ -301,7 +300,8 @@ export const updateStatus = async ({ serviceId, newStatus, note }) => {
       getToken()
     );
 
-    return response.data;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.error("Error updating status:", error);
     throw error;
@@ -331,7 +331,8 @@ export const updateMemberStatus = async ({ serviceId, userId, status }) => {
       },
       getToken()
     );
-    return response.message;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     return error.message;
   }
@@ -344,7 +345,8 @@ export const addServiceReviewer = async ({ serviceId, data }) => {
       data,
       getToken()
     );
-    return response;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.error(error);
     throw error;
@@ -374,7 +376,8 @@ export const setServiceReportDeadline = async ({ serviceId, data }) => {
       },
       getToken()
     );
-    return response;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.error(error);
     throw error;
@@ -393,7 +396,8 @@ export const setServiceApprovalFunds = async ({
       },
       getToken()
     );
-    return response;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.error(error);
     throw error;
@@ -408,8 +412,8 @@ export const addServiceReview = async (reviewData) => {
       reviewData,
       getToken()
     );
-    console.log(response.data);
-    return response.data;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.log(error.message);
   }
@@ -421,8 +425,8 @@ export const getReviewByService = async (serviceId) => {
       `${apiUrl}/api/comunity-service-reviews/${serviceId}/comunity-service`,
       getToken()
     );
-    console.log(response);
-    return response;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.log(error);
   }
@@ -446,8 +450,8 @@ export const getServiceLogbooks = async ({
         current_page: currentPage,
       },
     });
-    console.log(response.data);
-    return response.data;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     throw error;
   }
@@ -502,14 +506,16 @@ export const addServiceLogbook = async ({
         formData,
         getToken()
       );
-      console.log(response);
+      console.log("responnya", response.data.message);
+      return response.data.message;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/logbook-service`,
         formData,
         getToken()
       );
-      console.log(response);
+      console.log("responnya", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);
@@ -523,7 +529,8 @@ export const deleteServiceLogbook = async (id) => {
       `${apiUrl}/api/logbook-service/${id}`,
       getToken()
     );
-    console.log(response);
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     throw error;
   }
@@ -763,7 +770,9 @@ export const addServiceProgressReport = async ({
         formData,
         getToken()
       );
-      return response.data;
+      console.log(response);
+      console.log("responnya", response.data.message);
+      return response.data.message;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/service-progress-report`,
@@ -771,7 +780,8 @@ export const addServiceProgressReport = async ({
         getToken()
       );
       console.log(response);
-      return response.data;
+      console.log("responnya", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);
@@ -801,8 +811,8 @@ export const addMonevService = async (monevData) => {
       monevData,
       getToken()
     );
-    console.log(response.data);
-    return response.data;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.log(error);
     return error.message;
@@ -1065,7 +1075,9 @@ export const addServiceFinalReport = async ({
         formData,
         getToken()
       );
-      return response.data;
+      console.log(response);
+      console.log("responnya", response.data.message);
+      return response.data.message;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/service-final-report`,
@@ -1073,7 +1085,8 @@ export const addServiceFinalReport = async ({
         getToken()
       );
       console.log(response);
-      return response.data;
+      console.log("responnya", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);

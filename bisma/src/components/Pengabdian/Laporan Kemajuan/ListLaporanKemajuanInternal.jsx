@@ -55,12 +55,12 @@ const ListLaporanKemajuanInternal = () => {
   }, []);
 
   useEffect(() => {
-    if (location.state?.toastMessage) {
-      if (location.state.toastType === "success") {
-        toast.success(location.state.toastMessage);
-      }
+    const successMessage = localStorage.getItem("successMessage");
+    if (successMessage) {
+      toast.success(successMessage);
+      localStorage.removeItem("successMessage"); // Hapus setelah ditampilkan
     }
-  }, [location.state]);
+  }, []);
 
   return (
     <div className="mx-5">

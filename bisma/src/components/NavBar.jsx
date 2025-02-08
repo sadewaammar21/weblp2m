@@ -450,7 +450,7 @@ const NavBar = ({ children }) => {
                       <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/list-monev-penelitian">Penelitian</Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/pengabdian/monev">Pengabdian</Link>
                       </li>
                     </ul>
@@ -640,21 +640,24 @@ const NavBar = ({ children }) => {
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
-                      <li className="px-4 py-2 hover:bg-violet-800"
-                      onClick={() => navigate("/kaprodi/penelitian/usulan-belum-ditinjau")}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800"
+                        onClick={() =>
+                          navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
+                        }
                       >
                         <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
                           Penelitian
                         </Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800"
-                      onClick={() => navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800"
+                        onClick={() =>
+                          navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
+                        }
                       >
-                        <Link >
-                          Pengabdian
-                        </Link>
+                        <Link>Pengabdian</Link>
                       </li>
-                      
                     </ul>
                   )}
                 </li>
@@ -680,21 +683,24 @@ const NavBar = ({ children }) => {
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
-                      <li className="px-4 py-2 hover:bg-violet-800"
-                      onClick={() => navigate("/kaprodi/penelitian/usulan-belum-ditinjau")}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800"
+                        onClick={() =>
+                          navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
+                        }
                       >
                         <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
                           Penelitian
                         </Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800"
-                      onClick={() => navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800"
+                        onClick={() =>
+                          navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
+                        }
                       >
-                        <Link >
-                          Pengabdian
-                        </Link>
+                        <Link>Pengabdian</Link>
                       </li>
-                      
                     </ul>
                   )}
                 </li>

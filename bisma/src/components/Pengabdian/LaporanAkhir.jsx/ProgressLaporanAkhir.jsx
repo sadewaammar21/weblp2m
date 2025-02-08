@@ -212,6 +212,15 @@ const ProgressLaporanAkhir = () => {
           reportId: report.id,
         });
         console.log(response);
+        console.log("Response:", response);
+        if (response) {
+          toast.success(response || "Laporan Akhir telah disimpan.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+        navigate("/pengabdian/laporan-akhir");
         // navigate(-1);
       } else {
         setReport((prevReport) => ({ ...prevReport, status: status }));
@@ -223,9 +232,17 @@ const ProgressLaporanAkhir = () => {
           isEdit: false,
         });
         console.log(response);
-        navigate(-1);
+        // navigate(-1);
+        if (response) {
+          toast.success(response || "Laporan Akhir telah disimpan.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+        navigate("/pengabdian/laporan-akhir");
       }
-      navigate(-1);
+      // navigate(-1);
     } catch (error) {
       console.error("Terjadi kesalahan saat menyimpan laporan:", error);
 
