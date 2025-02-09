@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import DropdownCmp from "../DropdownCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import ModalPeriodeKegiatanOPT from "./ModalPeriodeKegiatanOPT";
 import { deletePeriod, getAllPeriods } from "../../Features/OperatorSlice";
 
 const PeriodeKegiatanListOPT = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [periods, setPeriods] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const fetchPeriods = async() => {
+  const fetchPeriods = async () => {
     try {
       setLoading(true);
       const response = await getAllPeriods();
@@ -22,13 +22,13 @@ const PeriodeKegiatanListOPT = () => {
       console.log(periods);
     } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       setLoading(false);
     }
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     fetchPeriods();
-  },[]);
+  }, []);
 
   const openModalView = () => {
     setIsOpen(true);
@@ -52,16 +52,16 @@ const PeriodeKegiatanListOPT = () => {
     navigate("/monitoring/penenelitian/periode-kegiatan");
   };
 
-  const handleDelete = async(id) => {
+  const handleDelete = async (id) => {
     const response = await deletePeriod(id);
     console.log(response);
     fetchPeriods();
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
-  if(loading){
-    return <p>Loading...</p>
-  }
-  
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       {/* Judul Halaman */}
@@ -70,12 +70,13 @@ const PeriodeKegiatanListOPT = () => {
       </h1>
 
       {/* Tombol Kembali */}
-      <div className="flex justify-end border-b max-w-6xl mb">
+      <div className="flex justify-end border-b max-w-[1430px]">
         <button
           onClick={handleBack}
-          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white"
+          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+            hover:bg-white hover:text-bluef-500"
         >
-          <FaArrowLeft className="mr-2" /> {/* Ikon panah kiri */}
+          <FaLessThan className="mr-2" />
           Kembali
         </button>
       </div>
@@ -112,11 +113,11 @@ const PeriodeKegiatanListOPT = () => {
               Rekap Usulan
             </h1>
             <button
-                        className="bg-bluef-500 text-white px-4 py-2 rounded-md"
-                        onClick={openModalView}
-                      >
-                        Tambah Periode Kegiatan
-                      </button>
+              className="bg-bluef-500 text-white px-4 py-2 rounded-md"
+              onClick={openModalView}
+            >
+              Tambah Periode Kegiatan
+            </button>
           </div>
           {/* Tabel */}
           <div className="overflow-x-auto mx-5 my-10">
@@ -133,7 +134,9 @@ const PeriodeKegiatanListOPT = () => {
               <tbody>
                 {periods.map((item, index) => (
                   <tr key={index}>
-                    <td className="border px-4 py-2 text-center">{index+1}</td>
+                    <td className="border px-4 py-2 text-center">
+                      {index + 1}
+                    </td>
                     <td className="border px-4 py-2 text-bluef-500">
                       {item.type}
                     </td>
@@ -149,7 +152,10 @@ const PeriodeKegiatanListOPT = () => {
                       </span>
                     </td>
                     <td className="border px-4 py-2 text-center">
-                      <button className="text-white bg-red-700 p-2 rounded-md" onClick={() => handleDelete(item.id)}>
+                      <button
+                        className="text-white bg-red-700 p-2 rounded-md"
+                        onClick={() => handleDelete(item.id)}
+                      >
                         Delete
                       </button>
                     </td>

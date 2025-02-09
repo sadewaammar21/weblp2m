@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
-import TextfieldCmp from "../TextfieldCmp"; 
+import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
@@ -24,7 +24,8 @@ const MonevPenelitianList = () => {
   const fetchData = async () => {
     try {
       const result = await axios.get(
-        `${apiUrl}/api/reviewer/${userParse.id}/research`, getToken()
+        `${apiUrl}/api/reviewer/${userParse.id}/research`,
+        getToken()
       );
       setData(result.data);
       console.log(data);
@@ -95,17 +96,15 @@ const MonevPenelitianList = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className="flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 bg-bluef-500 text-white
-               hover:bg-white hover:text-bluef-500"
-            >
-              <FaLessThan className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+              hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">

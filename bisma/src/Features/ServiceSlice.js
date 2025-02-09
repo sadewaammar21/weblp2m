@@ -285,8 +285,7 @@ export const deleteService = async (id) => {
     `${apiUrl}/api/comunity-service/${id}`,
     getToken()
   );
-  console.log("responnya", response.data.message);
-  return response.data.message;
+  return response.data;
 };
 
 export const updateStatus = async ({ serviceId, newStatus, note }) => {
@@ -300,7 +299,7 @@ export const updateStatus = async ({ serviceId, newStatus, note }) => {
       getToken()
     );
 
-    console.log("responnya", response.data.message);
+    console.log("respon message :", response.data.message);
     return response.data.message;
   } catch (error) {
     console.error("Error updating status:", error);
@@ -331,7 +330,7 @@ export const updateMemberStatus = async ({ serviceId, userId, status }) => {
       },
       getToken()
     );
-    console.log("responnya", response.data.message);
+    console.log("respon message :", response.data.message);
     return response.data.message;
   } catch (error) {
     return error.message;
@@ -345,7 +344,7 @@ export const addServiceReviewer = async ({ serviceId, data }) => {
       data,
       getToken()
     );
-    console.log("responnya", response.data.message);
+    console.log("respon message :", response.data.message);
     return response.data.message;
   } catch (error) {
     console.error(error);
@@ -376,8 +375,7 @@ export const setServiceReportDeadline = async ({ serviceId, data }) => {
       },
       getToken()
     );
-    console.log("responnya", response.data.message);
-    return response.data.message;
+    return response;
   } catch (error) {
     console.error(error);
     throw error;
@@ -396,7 +394,7 @@ export const setServiceApprovalFunds = async ({
       },
       getToken()
     );
-    console.log("responnya", response.data.message);
+    console.log("respon message :", response.data.message);
     return response.data.message;
   } catch (error) {
     console.error(error);
@@ -412,7 +410,8 @@ export const addServiceReview = async (reviewData) => {
       reviewData,
       getToken()
     );
-    console.log("responnya", response.data.message);
+    console.log(response.data);
+    console.log("respon message :", response.data.message);
     return response.data.message;
   } catch (error) {
     console.log(error.message);
@@ -425,7 +424,8 @@ export const getReviewByService = async (serviceId) => {
       `${apiUrl}/api/comunity-service-reviews/${serviceId}/comunity-service`,
       getToken()
     );
-    console.log("responnya", response.data.message);
+    console.log(response);
+    console.log("respon message :", response.data.message);
     return response.data.message;
   } catch (error) {
     console.log(error);
@@ -450,8 +450,8 @@ export const getServiceLogbooks = async ({
         current_page: currentPage,
       },
     });
-    console.log("responnya", response.data.message);
-    return response.data.message;
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -463,7 +463,7 @@ export const getDetailServiceLogbook = async (id) => {
       `${apiUrl}/api/logbook-service/${id}`,
       getToken()
     );
-    console.log(response.data);
+    console.log(response);
     return response.data;
   } catch (error) {
     throw error;

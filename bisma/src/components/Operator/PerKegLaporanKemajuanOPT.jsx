@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import ModalPerKegLaporanKemajuan from "./ModalPerKegLaporanKemjauan";
@@ -12,7 +12,7 @@ const PerKegLaporanKemajuanOPT = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,7 +32,6 @@ const PerKegLaporanKemajuanOPT = () => {
     }
   };
   useEffect(() => {
-
     fetchData();
   }, []);
 
@@ -40,7 +39,7 @@ const PerKegLaporanKemajuanOPT = () => {
   if (error) return <p>Error: {error}</p>;
 
   const openModalView = (id) => {
-    setSelectedItem(id)
+    setSelectedItem(id);
     setIsOpen(true);
   };
 
@@ -84,12 +83,13 @@ const PerKegLaporanKemajuanOPT = () => {
       </h1>
 
       {/* Tombol Kembali */}
-      <div className="flex justify-end border-b max-w-6xl mb">
+      <div className="flex justify-end border-b max-w-[1430px]">
         <button
           onClick={handleBack}
-          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white"
+          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+      hover:bg-white hover:text-bluef-500"
         >
-          <FaArrowLeft className="mr-2" /> {/* Ikon panah kiri */}
+          <FaLessThan className="mr-2" />
           Kembali
         </button>
       </div>

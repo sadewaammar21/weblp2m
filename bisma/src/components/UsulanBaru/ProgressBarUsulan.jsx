@@ -120,9 +120,11 @@ const ProgressBarUsulan = () => {
           isSubmit: true,
           newStatus: 2,
         });
-        console.log(response);
-        // toast.success(response.message);
-        navigate("/penelitian/usulan");
+        console.log("Response dari addService:", response);
+
+        setTimeout(() => {
+          toast.success(response || "Berhasil!");
+        }, 100);
       } catch (error) {
         // toast.error("Terjadi Kesalahan Ketika Mengirim Data.");
       }
@@ -135,11 +137,17 @@ const ProgressBarUsulan = () => {
           isSubmit: false,
           // newStatus: 2,
         });
-        console.log(response);
-        // toast.success(response.message);
+        console.log("Response dari addService:", response);
+
+        setTimeout(() => {
+          toast.success(response || "Berhasil!");
+        }, 100);
         navigate("/penelitian/usulan");
       } catch (error) {
-        // toast.error("Terjadi Kesalahan Ketika Mengirim Data.");
+        toast.error(
+          error.response?.data?.message ||
+            "Terjadi Kesalahan Ketika Mengirim Data."
+        );
       }
     }
   };

@@ -8,6 +8,7 @@ import {
   getResearchFinalReport,
 } from "../../Features/ResearchSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const steps = [
   { id: 1, label: "Laporran Akhir" },
@@ -129,28 +130,74 @@ const LaporanAkhirProgress = () => {
     return <LaporanAkhirTab2 />;
   }
 
+  // const handleSubmit = async (status) => {
+  //   if (reportId) {
+  //     setReport((prevReport) => ({ ...prevReport, status: status }));
+  //     console.log(report);
+  //     const response = await addResearchFinalReport({
+  //       researchId: research.id,
+  //       data: report,
+  //       isEdit: true,
+  //       reportId: report.id,
+  //     });
+  //     console.log(response);
+  //     navigate(-1);
+  //   } else {
+  //     setReport((prevReport) => ({ ...prevReport, status: status }));
+  //     console.log(report);
+  //     const response = await addResearchFinalReport({
+  //       researchId: research.id,
+  //       data: report,
+  //       isEdit: false,
+  //     });
+  //     console.log(response);
+  //     navigate(-1);
+  //   }
+  // };
   const handleSubmit = async (status) => {
-    if (reportId) {
-      setReport((prevReport) => ({ ...prevReport, status: status }));
-      console.log(report);
-      const response = await addResearchFinalReport({
-        researchId: research.id,
-        data: report,
-        isEdit: true,
-        reportId: report.id,
-      });
-      console.log(response);
-      navigate(-1);
-    } else {
-      setReport((prevReport) => ({ ...prevReport, status: status }));
-      console.log(report);
-      const response = await addResearchFinalReport({
-        researchId: research.id,
-        data: report,
-        isEdit: false,
-      });
-      console.log(response);
-      navigate(-1);
+    try {
+      if (reportId) {
+        setReport((prevReport) => ({ ...prevReport, status: status }));
+        console.log(report);
+        const response = await addResearchFinalReport({
+          researchId: research.id,
+          data: report,
+          isEdit: true,
+          reportId: report.id,
+        });
+        console.log(response);
+        console.log("Response:", response);
+        if (response) {
+          toast.success(response || "Laporan Akhir telah diubah.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        navigate(-1);
+      } else {
+        setReport((prevReport) => ({ ...prevReport, status: status }));
+        console.log(report);
+        const response = await addResearchFinalReport({
+          researchId: research.id,
+          data: report,
+          isEdit: false,
+        });
+        console.log(response);
+        console.log("Response:", response);
+        if (response) {
+          toast.success(response || "Laporan Akhir telah disimpan.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        navigate(-1);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+
+      // Ambil pesan error dari response jika ada
+      const errorMessage = error?.message || "Terjadi kesalahan!";
+      toast.error(errorMessage);
     }
   };
 
@@ -202,6 +249,7 @@ const LaporanAkhirProgress = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

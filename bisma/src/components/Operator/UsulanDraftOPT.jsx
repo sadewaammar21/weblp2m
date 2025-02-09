@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
-import { downloadResearchDocument, getResearch } from "../../Features/ResearchSlice";
+import {
+  downloadResearchDocument,
+  getResearch,
+} from "../../Features/ResearchSlice";
 
 const UsulanDraftOPT = () => {
   const navigate = useNavigate();
@@ -35,10 +38,9 @@ const UsulanDraftOPT = () => {
     fetchData();
   }, []);
 
-  useEffect(()=>{
-        console.log(data);
-
-  }, [])
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
@@ -97,27 +99,22 @@ const UsulanDraftOPT = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
-                "Kembali"
-                  ? "bg-bluef-500 text-white"
-                  : "bg-white text-bluef-500"
-              }`}
-            >
-              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+      hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
           <div className="flex justify-between mx-5 ">
             <div className="mx-2 my-2">
               <button
-                onClick={()=>handleExportExcel(data)}
+                onClick={() => handleExportExcel(data)}
                 className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
                 <img

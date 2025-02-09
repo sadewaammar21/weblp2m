@@ -5,6 +5,7 @@ import {
   setResearchApprovalFunds,
 } from "../../Features/ResearchSlice";
 import TextfieldCmp from "../TextfieldCmp";
+import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
@@ -30,11 +31,20 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
         approval_funds: funds,
       });
       console.log(setFunds);
+      if (response) {
+        toast.success(response);
+      } else {
+        toast.success("Catatan harian berhasil ditambahkan!");
+      }
       setNote("");
       onRequestClose();
     } catch (error) {
       console.error("Error updating status:", error);
       alert("Failed to update status.");
+      const errorMessage =
+        error.response?.data?.message || "Terjadi kesalahan!";
+
+      toast.error(errorMessage);
     }
   };
 

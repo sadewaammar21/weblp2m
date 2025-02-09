@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { updateStatus } from "../../../Features/ServiceSlice";
 import TextfieldCmp from "../../TextfieldCmp";
+import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
@@ -17,10 +18,21 @@ const ModalLaporanBelumDitinjauDitolak = ({ data, isOpen, onRequestClose }) => {
       });
       console.log("Response:", response);
       alert("Status updated successfully!");
+      if (response) {
+        toast.success(response); // ✅ Tampilkan notifikasi sukses
+      } else {
+        toast.success("Catatan harian berhasil ditambahkan!");
+      }
       onRequestClose();
     } catch (error) {
       console.error("Error updating status:", error);
       alert("Failed to update status.");
+      console.error("Gagal menyimpan catatan harian:", error);
+
+      const errorMessage =
+        error.response?.data?.message || "Terjadi kesalahan!";
+
+      toast.error(errorMessage);
     }
   };
   return (

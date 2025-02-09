@@ -25,7 +25,8 @@ const MonevPengabdianList = () => {
     const fetchData = async () => {
       try {
         const result = await axios.get(
-          `${apiUrl}/api/reviewer/${userParse.id}/comunity-service`, getToken()
+          `${apiUrl}/api/reviewer/${userParse.id}/comunity-service`,
+          getToken()
         );
         setData(result.data);
         console.log(data);
@@ -80,7 +81,7 @@ const MonevPengabdianList = () => {
   };
 
   const handleAction = (serviceId) => {
-    navigate("/pengabdian/monev/reviewer", {state: {id: serviceId}});
+    navigate("/pengabdian/monev/reviewer", { state: { id: serviceId } });
   };
 
   const options = [
@@ -96,17 +97,15 @@ const MonevPengabdianList = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className="flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 bg-bluef-500 text-white
-               hover:bg-white hover:text-bluef-500"
-            >
-              <FaLessThan className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+              hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
@@ -171,7 +170,8 @@ const MonevPengabdianList = () => {
                         <br />
                         Lama Kegiatan: {item.duration} Tahun
                         <br />
-                        Bidang Fokus: {item.focus_thematic.name || item.focus_rirn.name}
+                        Bidang Fokus:{" "}
+                        {item.focus_thematic.name || item.focus_rirn.name}
                       </td>
                       <td className="border px-4 py-2 text-bluef-500">
                         {item.title}
