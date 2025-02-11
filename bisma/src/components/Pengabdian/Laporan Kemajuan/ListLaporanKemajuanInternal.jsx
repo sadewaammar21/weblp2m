@@ -33,24 +33,24 @@ const ListLaporanKemajuanInternal = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getService({
-          pageSize: 5,
-          currentPage: 1,
-          // status: 1,
-          // year: 2024,
-          userId: user.id,
-        });
-        setData(result.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const result = await getService({
+        pageSize: 5,
+        currentPage: 1,
+        // status: 1,
+        // year: 2024,
+        userId: user.id,
+      });
+      setData(result.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -165,7 +165,9 @@ const ListLaporanKemajuanInternal = () => {
                       onClick={() =>
                         handleView(
                           item.id,
-                          item.progressReport ? item.progressReport[0].id : null
+                          item.serviceProgressReport[0]
+                            ? item.serviceProgressReport[0].id
+                            : null
                         )
                       }
                       className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"

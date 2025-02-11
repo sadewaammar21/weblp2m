@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp";
 import TextfieldCmp from "../../TextfieldCmp";
@@ -7,48 +7,21 @@ import TextAreaCmp from "../../TextAreaCmp";
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalLuaranPdf = ({
-  isOpen,
-  onRequestClose,
-  data,
-  setData,
-  index,
-  onSave,
-}) => {
-  const [outputData, setOutputData] = useState({});
-
-  const handleFileChange = (event) => {
-    const { name, files } = event.target;
-    setOutputData((prevData) => ({
+const ModalLuaranPdf = ({ isOpen, onRequestClose, data, setData }) => {
+  const handleDropdownChange = (field, value) => {
+    setData((prevData) => ({
       ...prevData,
-      [name]: files[0],
+      [field]: value,
     }));
   };
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setOutputData(data[index]);
-  //   }
-  // }, [data, index]);
-
-  useEffect(() => {
-    if (data && index >= 0) {
-      setOutputData(data[index]); // Update data modal berdasarkan index
-    }
-  }, [data, index]);
-
-  const handleSave = (e) => {
-    e.preventDefault(); // Prevent default form submission
+  const handleSave = () => {
     console.log("Data berhasil disimpan");
-    onSave(index, outputData);
-    setOutputData({});
-    onRequestClose(); // Close modal after save
+    onRequestClose(); // Tutup modal setelah menyimpan
   };
-
-  const handleInputChange = (e) => {
-    const inputName = e.target.name;
-    const inputValue = e.target.value;
-  };
+  const komponenRekognisi = [
+    { label: "Tercapai", value: "Tercapai" },
+    { label: "Tidak Tercapai", value: "Tidak_tercapai" },
+  ];
 
   return (
     <Modal
@@ -59,13 +32,10 @@ const ModalLuaranPdf = ({
       overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <h2 className="text-xl font-bold mb-4">PDF Hasil Pelaksanaan</h2>
-      <form onSubmit={handleSave}>
+      <form>
         <TextAreaCmp
           label={`Uraian Jenis Hasil Pelaksanaan`}
           placeholder={`Uraian Jenis Hasil Pelaksanaan`}
-          value={outputData.result_description}
-          name="result_description"
-          onChange={(e) => handleInputChange(e)}
           rows={5}
         />
 
@@ -75,10 +45,8 @@ const ModalLuaranPdf = ({
             Rencana Hasil Pelaksanaan
           </label>
           <input
-            name="result_plans"
-            onChange={(e) => handleFileChange(e)}
-            className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
             type="file"
+            className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />
         </div>
 

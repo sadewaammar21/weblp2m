@@ -14,6 +14,7 @@ const ListLaporanAkhir = () => {
   const location = useLocation();
 
   const handleView = (serviceId, report) => {
+    console.log(report);
     if (report != null) {
       navigate("/pengabdian/laporan-akhir/edit", {
         state: { id: serviceId, reportId: report },
