@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp";
 import TextAreaCmp from "../../TextAreaCmp";
@@ -7,55 +7,18 @@ import TextfieldCmp from "../../TextfieldCmp";
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalLuaranTambahan = ({
-  isOpen,
-  onRequestClose,
-  data,
-  setData,
-  index,
-  onSave,
-}) => {
-  const [outputData, setOutputData] = useState({});
-
-  const handleDropdownChange = (option, fieldName) => {
-    setOutputData((prevData) => ({
+const ModalLuaranTambahan = ({ isOpen, onRequestClose, data, setData }) => {
+  const handleDropdownChange = (field, value) => {
+    setData((prevData) => ({
       ...prevData,
-      [fieldName]: option.value,
+      [field]: value,
     }));
   };
-
-  const handleInputChange = (e) => {
-    const inputName = e.target.name;
-    const inputValue = e.target.value;
-
-    setOutputData((prevData) => ({
-      ...prevData,
-      [inputName]: inputValue,
-    }));
-  };
-
-  const handleFileChange = (event) => {
-    const { name, files } = event.target;
-    setOutputData((prevData) => ({
-      ...prevData,
-      [name]: files[0],
-    }));
-  };
-
-  useEffect(() => {
-    if (data && index >= 0) {
-      setOutputData(data[index]); // Update data modal berdasarkan index
-    }
-  }, [data, index]);
-
-  const handleSave = (e) => {
-    e.preventDefault(); // Prevent default form submission
+  const handleSave = () => {
     console.log("Data berhasil disimpan");
-    onSave(index, outputData);
-    setOutputData({});
-    onRequestClose(); // Close modal after save
+    onRequestClose(); // Tutup modal setelah menyimpan
   };
-  const statusTambahan = [
+  const komponenRekognisi = [
     { label: "HKI", value: "hak-cipta" },
     { label: "Buku ber-ISBN", value: "buku_ber-ISBN" },
     { label: "Publikasi Internasional", value: "publikasi_internasional" },
@@ -72,15 +35,14 @@ const ModalLuaranTambahan = ({
       <h2 className="text-xl font-bold mb-4">
         Luaran Wajib Peningkatan Keterampilan
       </h2>
-      <form onSubmit={handleSave}>
+      <form>
         <div className="mb-4">
           <DropdownCmp
             label={`Status Artikel di Jurnal Bereputasi Internasional`}
-            options={statusTambahan}
-            value={statusTambahan.find(
-              (option) => option.value === outputData.type
-            )}
-            onChange={(option) => handleDropdownChange(option, "type")}
+            options={komponenRekognisi}
+            onChange={(option) => {
+              handleDropdownChange("status_rekognisi", option.value);
+            }}
             placeholder={`Pilih Status Peningkatan Keterampilan`}
           />
         </div>
@@ -89,17 +51,11 @@ const ModalLuaranTambahan = ({
             Komentar
           </label>
           <TextAreaCmp
-            value={outputData.description}
-            name="description"
-            onChange={(e) => handleInputChange(e)}
             placeholder={`uraian peningkatan level secara kuantitatif dan bukti yang diklaim`}
             rows={4}
           />
           <div className="mb-4">
             <TextfieldCmp
-              value={outputData.url}
-              name="url"
-              onChange={(e) => handleInputChange(e)}
               label={`URL`}
               className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
               placeholder="URL"
@@ -110,8 +66,6 @@ const ModalLuaranTambahan = ({
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Poster</label>
           <input
-            name="document"
-            onChange={(e) => handleFileChange(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />

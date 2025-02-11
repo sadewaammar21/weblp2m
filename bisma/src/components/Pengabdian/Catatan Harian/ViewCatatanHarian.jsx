@@ -9,6 +9,7 @@ import {
   getServiceDetail,
 } from "../../../Features/ServiceSlice";
 import PopUpEditCatatanHarian from "./PopUpEditCatatanHarian";
+import { ToastContainer } from "react-toastify";
 
 const ViewCatatanHarian = () => {
   const { id } = useParams();
@@ -30,7 +31,6 @@ const ViewCatatanHarian = () => {
   const openModalEdit = (id) => {
     setLogbookId(id);
     setIsOpenEdit(true);
-   
   };
 
   const closeModalEdit = () => {
@@ -178,7 +178,7 @@ const ViewCatatanHarian = () => {
                         {item.activity_description}
                       </td>
                       <td className="border border-black px-4 py-2 align-middle">
-                        {item.percentage}
+                        {item.percentage}%
                       </td>
                       <td className="border border-black px-4 py-2 align-middle"></td>
                       <td className="border border-black px-4 py-2 align-middle">
@@ -212,7 +212,6 @@ const ViewCatatanHarian = () => {
                       </td>
                     </tr>
                   ))}
-
                 </tbody>
               </table>
             </div>
@@ -229,6 +228,7 @@ const ViewCatatanHarian = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

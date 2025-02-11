@@ -2,19 +2,23 @@ import React, { useState, useEffect } from "react";
 import DropdownCmp from "../../DropdownCmp";
 import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaLessThan } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaPlus,
+  FaCcMastercard,
+  FaLessThan,
+} from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
-// import { downloadResearchDocument, getResearch } from";
-import {
-  downloadResearchDocument,
-  getResearch,
-} from "../../../Features/ResearchSlice";
+import { getResearch } from "../../../Features/ResearchSlice";
 
-const UsulanDraftOPT = () => {
+const PengelolaReview = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  const [tasul, setTasul] = useState("");
+  const [tapel, setTapel] = useState("");
+  const [Tahapan, setTahapan] = useState("");
   const [data, setData] = useState([]);
 
   //get data from db
@@ -24,8 +28,9 @@ const UsulanDraftOPT = () => {
         const result = await getResearch({
           pageSize: 10,
           currentPage: 1,
-          // status: 1,
+          status: 3,
           year: 2025,
+          // userId: 2,
         });
         setData(result.data);
         console.log(data);
@@ -39,10 +44,6 @@ const UsulanDraftOPT = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, []);
-
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
@@ -52,7 +53,7 @@ const UsulanDraftOPT = () => {
   //   };
 
   // Fungsi untuk ekspor data ke Excel
-  const handleExportExcel = (dataExport) => {
+  const handleExportExcel = () => {
     const tableData = [
       ["No", "Pengusul", "Skema", "Judul", "Berkas"],
       [
@@ -69,7 +70,7 @@ const UsulanDraftOPT = () => {
     ];
 
     // Membuat worksheet dan workbook
-    const worksheet = XLSX.utils.json_to_sheet(dataExport);
+    const worksheet = XLSX.utils.aoa_to_sheet(tableData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Data Usulan Draft");
 
@@ -84,7 +85,17 @@ const UsulanDraftOPT = () => {
 
   // Fungsi untuk kembali ke halaman sebelumnya
   const handleBack = () => {
-    navigate("/monitoring-usulan-reguler");
+    navigate("/dashboard-operator");
+  };
+
+  const handleplus = () => {
+    navigate("/monitoring/pengabdian/pengelola-review-sbr1");
+  };
+
+  const handleReview = (itemId) => {
+    navigate("/monitoring/pengabdian/pengelola-review-sbr2", {
+      state: { id: itemId },
+    });
   };
 
   const options = [
@@ -96,7 +107,7 @@ const UsulanDraftOPT = () => {
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        LIST USULAN DRAFT MONITORING
+        Penugasan Review
       </h1>
 
       <div>
@@ -111,12 +122,38 @@ const UsulanDraftOPT = () => {
           </button>
         </div>
 
-        <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
-          <div className="flex justify-between mx-5 ">
+        <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md ">
+          <div className="grid grid-cols-3 gap-4 mx-10">
+            <DropdownCmp
+              label="Tahun Usulan"
+              options={options}
+              selectedOption={tasul}
+              onChange={(value) => setTasul(value)}
+              name="skema"
+              placeholder="Pilih Tahun"
+            />
+            <DropdownCmp
+              label="Tahun Pelaksanaan"
+              options={options}
+              selectedOption={tasul}
+              onChange={(value) => setTasul(value)}
+              name="skema"
+              placeholder="Pilih Tahun Pelaksanaan"
+            />
+            <DropdownCmp
+              label="Tahapan"
+              options={options}
+              selectedOption={tasul}
+              onChange={(value) => setTasul(value)}
+              name="skema"
+              placeholder="Pilih Tahapan"
+            />
+          </div>
+          <div className="flex mx-5 ">
             <div className="mx-2 my-2">
               <button
-                onClick={() => handleExportExcel(data)}
-                className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
+                onClick={handleExportExcel}
+                className="flex items-center px-2 py-1 bg-cyan-800 text-white rounded-md hover:bg-cyan-600"
               >
                 <img
                   src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
@@ -127,14 +164,13 @@ const UsulanDraftOPT = () => {
               </button>
             </div>
             <div className="mx-2 my-2">
-              <DropdownCmp
-                options={options}
-                selectedOption={selectedOption}
-                onChange={(e) => handleDropdownChange(e.target.value)}
-                placeholder="Jumlah Baris"
-                className=" border border-black "
-                controlClassName="bg-white text-black"
-              />
+              <button
+                onClick={handleplus}
+                className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
+              >
+                <FaPlus size={15} />
+                Beban Reviewer
+              </button>
             </div>
           </div>
           <div className="mx-5 my-5">
@@ -154,12 +190,12 @@ const UsulanDraftOPT = () => {
                   <th className="border px-4 py-2">Pengusul</th>
                   <th className="border px-4 py-2">Skema</th>
                   <th className="border px-4 py-2">Judul</th>
-                  <th className="border px-4 py-2">Berkas</th>
+                  <th className="border px-4 py-2">Reviewer</th>
                 </tr>
               </thead>
               <tbody>
                 {data
-                  .filter((item) => item.status > 1)
+                  .filter((item) => item.status !== 1)
                   .map(
                     (
                       item,
@@ -181,22 +217,18 @@ const UsulanDraftOPT = () => {
                             {item.scheme.name}
                           </p>
                         </td>
-                        <td className="border border-gray-300 p-2">
+                        <td className="border border-gray-300 p-2 text-center">
                           <p className="text-blue-600 font-bold">
                             {item.title}
                           </p>
                         </td>
                         <td className="border border-gray-300 p-2 text-center">
                           <button
-                            onClick={() => downloadResearchDocument(item.id)}
-                            className="text-red-600 text-2xl"
+                            onClick={() => handleReview(item.id)}
+                            className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
                           >
-                            <a
-                              href={`http://localhost:8000/api/research/download/${item.id}`}
-                              target="_blank"
-                            >
-                              📄
-                            </a>
+                            2
+                            <FaCcMastercard size={15} />
                           </button>
                         </td>
                       </tr>
@@ -211,4 +243,4 @@ const UsulanDraftOPT = () => {
   );
 };
 
-export default UsulanDraftOPT;
+export default PengelolaReview;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import DropdownCmp from "../DropdownCmp";
-import SearchInput from "../SearchInput";
-import TextfieldCmp from "../TextfieldCmp";
+import DropdownCmp from "../../DropdownCmp";
+import SearchInput from "../../SearchInput";
+import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaPlus } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
@@ -98,7 +98,7 @@ const SBRPelaksanaan1 = () => {
         <div className="flex justify-end border-b max-w-6xl">
           <button
             onClick={handleBack}
-            className="flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 bg-bluef-500 text-white"
+            className="flex items-center px-4 py-2 rounded-md border border-1 border-blue-500 bg-blue-500 text-white"
           >
             <FaArrowLeft className="mr-2" />
             Kembali
@@ -125,7 +125,7 @@ const SBRPelaksanaan1 = () => {
               placeholder="10"
             />
           </div>
-          <div className="flex mx-5 ">
+          <div className="flex mx-5 my-3 ">
             <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}

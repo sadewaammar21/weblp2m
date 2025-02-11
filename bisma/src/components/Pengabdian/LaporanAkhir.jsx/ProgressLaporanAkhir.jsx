@@ -117,16 +117,16 @@ const ProgressLaporanAkhir = () => {
           partner_role_passive: "",
           government_local_role: "",
           funding_contribution: "",
-          output_final_report1s: [],
-          output_final_report2s: [],
-          output_final_report3s: [],
-          output_final_report4s: [],
-          output_final_report5s: [],
-          output_final_report6s: [],
-          output_final_report7s: [],
-          output_final_report8s: [],
-          output_final_report9s: [],
-          output_final_report10s: [],
+          outputs1: [],
+          outputs2: [],
+          outputs3: [],
+          outputs4: [],
+          outputs5: [],
+          outputs6: [],
+          outputs7: [],
+          outputs8: [],
+          outputs9: [],
+          outputs10: [],
         });
         setLoading(false);
       }
@@ -212,6 +212,15 @@ const ProgressLaporanAkhir = () => {
           reportId: report.id,
         });
         console.log(response);
+        console.log("Response:", response);
+        if (response) {
+          toast.success(response || "Laporan Akhir telah disimpan.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+        navigate("/pengabdian/laporan-akhir");
         // navigate(-1);
       } else {
         setReport((prevReport) => ({ ...prevReport, status: status }));
@@ -223,9 +232,17 @@ const ProgressLaporanAkhir = () => {
           isEdit: false,
         });
         console.log(response);
-        navigate(-1);
+        // navigate(-1);
+        if (response) {
+          toast.success(response || "Laporan Akhir telah disimpan.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+        navigate("/pengabdian/laporan-akhir");
       }
-      navigate(-1);
+      // navigate(-1);
     } catch (error) {
       console.error("Terjadi kesalahan saat menyimpan laporan:", error);
 

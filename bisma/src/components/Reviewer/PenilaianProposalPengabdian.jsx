@@ -35,7 +35,6 @@ const PenilaianProposalPengabdian = () => {
     }
   };
   useEffect(() => {
-
     fetchData();
   }, []);
   if (loading) return <p>Loading...</p>;
@@ -81,7 +80,9 @@ const PenilaianProposalPengabdian = () => {
 
   const handleAction = (serviceId) => {
     console.log("Navigating to view page...");
-    navigate("/review/penilaian-proposal-pengabdian/view", { state: { id: serviceId } });
+    navigate("/review/penilaian-proposal-pengabdian/view", {
+      state: { id: serviceId },
+    });
   };
 
   const options = [
@@ -97,17 +98,15 @@ const PenilaianProposalPengabdian = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className="flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 bg-bluef-500 text-white
-               hover:bg-white hover:text-bluef-500"
-            >
-              <FaLessThan className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+              hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
@@ -172,7 +171,8 @@ const PenilaianProposalPengabdian = () => {
                         <br />
                         Lama Kegiatan: {item.duration} Tahun
                         <br />
-                        Bidang Fokus: {item.focus_thematic.name || item.focus_r_i_r_n_s.name}
+                        Bidang Fokus:{" "}
+                        {item.focus_thematic.name || item.focus_r_i_r_n_s.name}
                       </td>
                       <td className="border px-4 py-2 text-bluef-500">
                         Judul: {item.title}
@@ -188,7 +188,9 @@ const PenilaianProposalPengabdian = () => {
                           />
                         </button>
                       </td>
-                      <td className={`border px-4 py-2 text-center ${item.status == 3 ? '' : 'hidden'}`}>
+                      <td
+                        className={`border px-4 py-2 text-center ${item.status == 3 ? "" : "hidden"}`}
+                      >
                         <button
                           onClick={() => handleAction(item.id)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"

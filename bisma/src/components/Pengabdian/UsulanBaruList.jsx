@@ -196,7 +196,7 @@ const UsulanBaruList = () => {
                       {user.id === item.user.id ? "Ketua" : "Anggota"}
                     </td>
                     <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
-                      {item.status?.name}
+                      {item.status}
                     </td>
                     <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
                       <div className="inline-block">

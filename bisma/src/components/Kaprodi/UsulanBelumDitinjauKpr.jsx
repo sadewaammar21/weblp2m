@@ -11,6 +11,7 @@ import {
   getResearch,
   downloadResearchDocument,
 } from "../../Features/ResearchSlice";
+import { ToastContainer } from "react-toastify";
 // import {
 //   getService,
 //   downloadServiceDocument,
@@ -264,6 +265,7 @@ const UsulanBelumDitinjauKpr = () => {
         isOpen={isTolak}
         onRequestClose={closeModalDitolak}
       />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

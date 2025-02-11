@@ -1,18 +1,34 @@
 import React, { useState } from "react";
 import DropdownCmp from "../DropdownCmp";
+import SearchInput from "../SearchInput";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaLessThan } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaPlus,
+  FaCcMastercard,
+  FaTrash,
+  FaEdit,
+} from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
 
-const UsulanDisetujiOPT = () => {
+const ReviewerEksternal = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
+  const [tasul, setTasul] = useState("");
+  const [tapel, setTapel] = useState("");
+  const [Tahapan, setTahapan] = useState("");
+  const [nidn, setNidn] = useState("");
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
+  };
+
+  const handleSearch = () => {
+    console.log("Search for:", nidn);
+    // Add search logic here
   };
 
   //   const handleInputChange = (setter) => (e) => {
@@ -55,35 +71,75 @@ const UsulanDisetujiOPT = () => {
     navigate("/monitoring-usulan-reguler");
   };
 
+  const handleReviewerInt = () => {
+    navigate("/monitoring-pengelola-review-internal");
+  };
+
+  const handleReviewEks = () => {
+    navigate("/monitoring-pengelola-review-eksternal");
+  };
+  const handleDelete = () => {
+    navigate("/monitoring-usulan-reguler");
+  };
+
   const options = [
     { label: "Option 1", value: "1" },
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
   ];
+
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        LIST USULAN DRAFT MONITORING
+        Penugasan Reviewer Eksternal
+      </h1>
+      <h1 className="text-sm font-sans mb-4">
+        Seleberan Beban Review-Pelaksanaan
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-[1430px]">
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
-      hover:bg-white hover:text-bluef-500"
-          >
-            <FaLessThan className="mr-2" />
-            Kembali
-          </button>
+        <div className="flex justify-end border-b max-w-6xl">
+          <div>
+            <button
+              onClick={handleBack}
+              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
+                "Kembali"
+                  ? "bg-bluef-500 text-white"
+                  : "bg-white text-bluef-500"
+              }`}
+            >
+              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
+              Kembali
+            </button>
+          </div>
         </div>
 
-        <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
-          <div className="flex justify-between mx-5 ">
+        <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md ">
+          <div className="grid grid-cols-2 gap-4 mx-10">
+            <div>
+              <SearchInput
+                label="NIDN"
+                placeholder="select NIDN"
+                value={nidn}
+                onChange={(e) => setNidn(e.target.value)}
+                onSearch={handleSearch}
+                color={`bg-bluef-500`}
+              />
+            </div>
+            <DropdownCmp
+              label="Tahun Usulan"
+              options={options}
+              selectedOption={tasul}
+              onChange={(value) => setTasul(value)}
+              name="skema"
+              placeholder="Pilih Tahun"
+            />
+          </div>
+          <div className="flex mx-5 ">
             <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}
-                className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="flex items-center px-2 py-1 bg-cyan-500 text-white rounded-md hover:bg-cyan-600"
               >
                 <img
                   src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
@@ -94,14 +150,13 @@ const UsulanDisetujiOPT = () => {
               </button>
             </div>
             <div className="mx-2 my-2">
-              <DropdownCmp
-                options={options}
-                selectedOption={selectedOption}
-                onChange={(e) => handleDropdownChange(e.target.value)}
-                placeholder="Jumlah Baris"
-                className=" border border-black "
-                controlClassName="bg-white text-black"
-              />
+              <button
+                onClick={handleExportExcel}
+                className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
+              >
+                <FaPlus size={15} />
+                Beban Reviewer
+              </button>
             </div>
           </div>
           <div className="mx-5 my-5">
@@ -115,44 +170,32 @@ const UsulanDisetujiOPT = () => {
           {/* Tabel */}
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500 border border-black">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+              <thead className="text-xs text-center  text-gray-700 uppercase bg-gray-100">
                 <tr>
                   <th className="border px-4 py-2">No</th>
-                  <th className="border px-4 py-2">Pengusul</th>
-                  <th className="border px-4 py-2">Skema</th>
-                  <th className="border px-4 py-2">Judul</th>
-                  <th className="border px-4 py-2">Berkas</th>
+                  <th className="border px-4 py-2">Reviewer</th>
+                  <th className="border px-4 py-2">Kompetensi</th>
+                  <th className="border px-4 py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td className="border px-4 py-2 text-center">1</td>
                   <td className="border px-4 py-2">
-                    Ketua: SRI HARJANTO
+                    Sri Siswanti S.Kom, M.Kom
                     <br />
-                    NIDN: 0626016803
-                    <br />
-                    Tahun Pelaksanaan: 2024
-                    <br />
-                    Lama Kegiatan: 1 Tahun
-                    <br />
-                    Bidang Fokus: Teknologi Informasi dan Komunikasi
-                  </td>
-                  <td className="border px-4 py-2">
-                    Penelitian Dasar - Penelitian Dosen Pemula
-                  </td>
-                  <td className="border px-4 py-2">
-                    Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris
-                    Berbasis Digital Visual Literacy dan Keterampilan 5C untuk
-                    Siswa Sekolah Dasar
+                    STMIK Sinar Nusantara Surakarta
                   </td>
                   <td className="border px-4 py-2 text-center">
-                    <button>
-                      <img
-                        src="/assets/icon_pdf_brks.svg"
-                        alt="Action Icon"
-                        className="py-2 w-7 h-auto z-10"
-                      />
+                    Bidang Ilmu Komputer
+                  </td>
+                  <td className="items-center border px-4 py-2 text-center">
+                    <button
+                      onClick={handleExportExcel}
+                      className="flex items-center text-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-cyan-600"
+                    >
+                      <FaEdit />
+                      Tugaskan
                     </button>
                   </td>
                 </tr>
@@ -165,4 +208,4 @@ const UsulanDisetujiOPT = () => {
   );
 };
 
-export default UsulanDisetujiOPT;
+export default ReviewerEksternal;

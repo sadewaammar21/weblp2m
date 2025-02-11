@@ -14,6 +14,7 @@ const ListLaporanAkhir = () => {
   const location = useLocation();
 
   const handleView = (serviceId, report) => {
+    console.log(report);
     if (report != null) {
       navigate("/pengabdian/laporan-akhir/edit", {
         state: { id: serviceId, reportId: report },
@@ -26,7 +27,7 @@ const ListLaporanAkhir = () => {
   };
 
   const handleClick = () => {
-    navigate("/pengabdian/laporan-akhir"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    navigate("/pengabdian/laporan-akhir/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   useEffect(() => {

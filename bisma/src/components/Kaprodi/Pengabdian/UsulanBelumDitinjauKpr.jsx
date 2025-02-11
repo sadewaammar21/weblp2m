@@ -15,6 +15,7 @@ import {
   getService,
   downloadServiceDocument,
 } from "../../../Features/ServiceSlice";
+import { ToastContainer } from "react-toastify";
 
 const UsulanBelumDitinjauKpr = () => {
   const navigate = useNavigate();
@@ -256,6 +257,7 @@ const UsulanBelumDitinjauKpr = () => {
         isOpen={isTolak}
         onRequestClose={closeModalDitolak}
       />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

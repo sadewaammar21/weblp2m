@@ -28,43 +28,103 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
   const [isOpenLuaranTambahan, setIsOpenTambahan] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
-  const [outputIndexpr1, setOutputIndexpr1] = useState(0);
+  const [outputs1, setOutputs1] = useState(0);
   const handleOutputDatapr1 = (index, outputData) => {
-    const updatedOutput = Array.isArray(data.output_final_report1s)
-      ? [...data.output_final_report1s]
+    const updatedOutput = Array.isArray(data.outputs1)
+      ? [...data.outputs1]
       : [];
     updatedOutput[index] = outputData;
-    setData({ ...data, output_final_report1s: updatedOutput });
+    setData({ ...data, outputs1: updatedOutput });
     console.log(data);
   };
 
-  const [outputIndexpr2, setOutputIndexpr2] = useState(0);
+  const [outputs2, setOutputs2] = useState(0);
   const handleOutputDatapr2 = (index, outputData) => {
-    const updatedOutput = Array.isArray(data.output_final_report2s)
-      ? [...data.output_final_report2s]
+    const updatedOutput = Array.isArray(data.outputs2)
+      ? [...data.outputs2]
       : [];
     updatedOutput[index] = outputData;
-    setData({ ...data, output_final_report2s: updatedOutput });
+    setData({ ...data, outputs2: updatedOutput });
     console.log(data);
   };
 
-  const [outputIndexpr3, setOutputIndexpr3] = useState(0);
+  const [outputs3, setOutputs3] = useState(0);
   const handleOutputDatapr3 = (index, outputData) => {
-    const updatedOutput = Array.isArray(data.output_final_report3s)
-      ? [...data.output_final_report3s]
+    const updatedOutput = Array.isArray(data.outputs3)
+      ? [...data.outputs3]
       : [];
     updatedOutput[index] = outputData;
-    setData({ ...data, output_final_report3s: updatedOutput });
+    setData({ ...data, outputs3: updatedOutput });
     console.log(data);
   };
 
-  const [outputIndexpr4, setOutputIndexpr4] = useState(0);
+  const [outputs4, setOutputs4] = useState(0);
   const handleOutputDatapr4 = (index, outputData) => {
-    const updatedOutput = Array.isArray(data.output_final_report4s)
-      ? [...data.output_final_report4s]
+    const updatedOutput = Array.isArray(data.outputs4)
+      ? [...data.outputs4]
       : [];
     updatedOutput[index] = outputData;
-    setData({ ...data, output_final_report4s: updatedOutput });
+    setData({ ...data, outputs4: updatedOutput });
+    console.log(data);
+  };
+
+  const [outputs5, setOutputs5] = useState(0);
+  const handleOutputDatapr5 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.outputs5)
+      ? [...data.outputs5]
+      : [];
+    updatedOutput[index] = outputData;
+    setData({ ...data, outputs5: updatedOutput });
+    console.log(data);
+  };
+
+  const [outputs6, setOutputs6] = useState(0);
+  const handleOutputDatapr6 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.outputs6)
+      ? [...data.outputs6]
+      : [];
+    updatedOutput[index] = outputData;
+    setData({ ...data, outputs6: updatedOutput });
+    console.log(data);
+  };
+
+  const [outputs7, setOutputs7] = useState(0);
+  const handleOutputDatapr7 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.outputs7)
+      ? [...data.outputs7]
+      : [];
+    updatedOutput[index] = outputData;
+    setData({ ...data, outputs7: updatedOutput });
+    console.log(data);
+  };
+
+  const [outputs8, setOutputs8] = useState(0);
+  const handleOutputDatapr8 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.outputs8)
+      ? [...data.outputs8]
+      : [];
+    updatedOutput[index] = outputData;
+    setData({ ...data, outputs8: updatedOutput });
+    console.log(data);
+  };
+
+  const [outputs9, setOutputs9] = useState(0);
+  const handleOutputDatapr9 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.outputs9)
+      ? [...data.outputs9]
+      : [];
+    updatedOutput[index] = outputData;
+    setData({ ...data, outputs9: updatedOutput });
+    console.log(data);
+  };
+
+  const [outputs10, setOutputs10] = useState(0);
+  const handleOutputDatapr10 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.outputs10)
+      ? [...data.outputs10]
+      : [];
+    updatedOutput[index] = outputData;
+    setData({ ...data, outputs10: updatedOutput });
     console.log(data);
   };
 
@@ -74,7 +134,43 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
 
   const openModalRekognisi = (index) => {
     setIsOpenRekognisi(true);
-    setOutputIndexpr1(index);
+    setOutputs1(index);
+  };
+
+  const openModalPoster = (index) => {
+    setIsOpenPoster(true);
+    setOutputs2(index);
+  };
+
+  const openModalVideo = (index) => {
+    setIsOpenVideo(true);
+    setOutputs3(index);
+  };
+
+  const openModalArtikel = (index) => {
+    setIsOpenArtikel(true);
+    setOutputs4(index);
+  };
+
+  const openModalElektronik = (index) => {
+    setIsOpenElektronik(true);
+    setOutputs5(index);
+  };
+
+  const openModalKetrampilan = (index) => {
+    setIsOpenRekKetrampilan(true);
+    setOutputs6(index);
+    // setOutputIndex6(index);
+  };
+
+  const openModalKemampuan = (index) => {
+    setIsOpenKemampuan(true);
+    setOutputs7(index);
+  };
+
+  const openModalPPT = (index) => {
+    setIsOpenPPT(true);
+    setOutputs8(index);
   };
 
   const closeModalRekognisi = () => {
@@ -82,14 +178,14 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
     // handleOutputDatapr1();
   };
 
-  const openModalVideo = (index) => {
-    setIsOpenVideo(true);
-    setOutputIndexpr3(index);
+  const openModalPdf = (index) => {
+    setIsOpenPdfHasil(true);
+    setOutputs9(index);
   };
 
-  const openModalPoster = (index) => {
-    setIsOpenPoster(true);
-    setOutputIndexpr2(index);
+  const openModalLuaranTambahan = (index) => {
+    setIsOpenTambahan(true);
+    setOutputs10(index);
   };
 
   const closeModalPoster = () => {
@@ -99,57 +195,29 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
   const closeModalVideo = () => {
     setIsOpenVideo(false);
   };
-  const openModalArtikel = (index) => {
-    setIsOpenArtikel(true);
-    setOutputIndexpr4(index);
-  };
 
   const closeModalArtikel = () => {
     setIsOpenArtikel(false);
   };
-  // const openModalElektronik = (index) => {
-  //   setIsOpenElektronik(true);
-  //   setOutputIndex5(index);
-  // };
 
   const closeModalElektronik = () => {
     setIsOpenElektronik(false);
-  };
-  const openModalKetrampilan = (index) => {
-    setIsOpenRekKetrampilan(true);
-    // setOutputIndex6(index);
   };
 
   const closeModalKetrampilan = () => {
     setIsOpenRekKetrampilan(false);
   };
-  const openModalKemampuan = (index) => {
-    setIsOpenKemampuan(true);
-    // setOutputIndex7(index);
-  };
 
   const closeModalKemampuan = () => {
     setIsOpenKemampuan(false);
-  };
-  const openModalPPT = (index) => {
-    setIsOpenPPT(true);
-    // setOutputIndex8(index);
   };
 
   const closeModalPPT = () => {
     setIsOpenPPT(false);
   };
-  const openModalPdf = (index) => {
-    setIsOpenPdfHasil(true);
-    // setOutputIndex9(index);
-  };
 
   const closeModalPDF = () => {
     setIsOpenPdfHasil(false);
-  };
-  const openModalLuaranTambahan = (index) => {
-    setIsOpenTambahan(true);
-    // setOutputIndex10(index);
   };
 
   const closeModalLuaranTambahan = () => {
@@ -182,50 +250,74 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
   return (
     <div>
       <ModalRekognisi
-        data={data.output_final_report1s} // Mengambil data berdasarkan index
+        data={data.outputs1} // Mengambil data berdasarkan index
         isOpen={isOpenRekognisi}
-        index={outputIndexpr1}
+        index={outputs1}
         onRequestClose={closeModalRekognisi}
         onSave={handleOutputDatapr1}
       />
       <ModalPoster
         isOpen={isOpenPoster}
         onRequestClose={closeModalPoster}
-        index={outputIndexpr2}
+        index={outputs2}
         onSave={handleOutputDatapr2}
-        data={data.output_final_report2s}
+        data={data.outputs2}
       />
       <ModalVideo
         isOpen={isOpenVideo}
-        index={outputIndexpr3}
+        index={outputs3}
         onSave={handleOutputDatapr3}
         onRequestClose={closeModalVideo}
-        data={data.output_final_report3s}
+        data={data.outputs3}
       />
       <ModalLuaranWajibInternasional
         isOpen={isOpenArtikel}
         onRequestClose={closeModalArtikel}
-        index={outputIndexpr4}
+        index={outputs4}
         onSave={handleOutputDatapr4}
-        data={data.output_final_report4s}
+        data={data.outputs4}
       />
       <ModalLuaranElektronik
         isOpen={isOpenElektronik}
         onRequestClose={closeModalElektronik}
+        index={outputs5}
+        onSave={handleOutputDatapr5}
+        data={data.outputs5}
       />
       <ModalLuaranKetrampilan
         isOpen={isOpenKetrampilan}
         onRequestClose={closeModalKetrampilan}
+        index={outputs6}
+        onSave={handleOutputDatapr6}
+        data={data.outputs6}
       />
       <ModalLuaranKemampuan
         isOpen={isOpenKemampuan}
         onRequestClose={closeModalKemampuan}
+        index={outputs7}
+        onSave={handleOutputDatapr7}
+        data={data.outputs7}
       />
-      <ModalLuaranPpt isOpen={isOpennPPT} onRequestClose={closeModalPPT} />
-      <ModalLuaranPdf isOpen={isOpenPdfHasil} onRequestClose={closeModalPDF} />
+      <ModalLuaranPpt
+        isOpen={isOpennPPT}
+        onRequestClose={closeModalPPT}
+        index={outputs8}
+        onSave={handleOutputDatapr8}
+        data={data.outputs8}
+      />
+      <ModalLuaranPdf
+        isOpen={isOpenPdfHasil}
+        onRequestClose={closeModalPDF}
+        index={outputs9}
+        onSave={handleOutputDatapr9}
+        data={data.outputs9}
+      />
       <ModalLuaranTambahan
         isOpen={isOpenLuaranTambahan}
         onRequestClose={closeModalLuaranTambahan}
+        index={outputs10}
+        onSave={handleOutputDatapr10}
+        data={data.outputs10}
       />
 
       <div>
@@ -333,7 +425,7 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
             <tr>
               <th className="border border-black px-4 py-2 align-middle">No</th>
               <th className="border border-black px-4 py-2 align-middle">
-                Judul
+                Jenis Luaran
               </th>
               <th className="border border-black px-4 py-2 align-middle">
                 Status Status Saat ini
@@ -347,14 +439,14 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
             </tr>
           </thead>
           <tbody className="text-black">
-            {console.log(service?.output_media)}
-            {(service?.output_media || []).map((item, index) => (
+            {console.log(data?.outputs1)}
+            {(data?.outputs1 || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {1}
                 </td>
-                <td className="border border-black px-4 py-2 align-middle">
-                  {item.description}
+                <td className="border border-black px-4 py-2 text-left">
+                  Rekognisi mahasiswa menjadi bagian MBKM minimal 6 (enam) SKS
                 </td>
                 <td className="border border-black px-4 py-2 align-middle">
                   Tercapai
@@ -376,14 +468,14 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
                 </td>
               </tr>
             ))}
-            {console.log(service?.output_publication)}
-            {(service?.output_publication || []).map((item, index) => (
+            {console.log(data?.outputs2)}
+            {(data?.outputs2 || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {2}
                 </td>
-                <td className="border border-black px-4 py-2 align-middle">
-                  {item.description}
+                <td className="border border-black px-4 py-2 text-left">
+                  Poster
                 </td>
                 <td className="border border-black px-4 py-2 align-middle">
                   Tercapai
@@ -405,14 +497,14 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
                 </td>
               </tr>
             ))}
-            {console.log(service?.output_video)}
-            {(service?.output_video || []).map((item, index) => (
+            {console.log(data?.outputs3)}
+            {(data?.outputs3 || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {3}
                 </td>
-                <td className="border border-black px-4 py-2 align-middle">
-                  {item.description}
+                <td className="border border-black px-4 py-2 text-left">
+                  Video kegiatan
                 </td>
                 <td className="border border-black px-4 py-2 align-middle">
                   Tercapai
@@ -434,20 +526,20 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
                 </td>
               </tr>
             ))}
-            {console.log(service?.output_media)}
-            {(service?.output_media || []).map((item, index) => (
+            {console.log(data?.outputs4)}
+            {(data?.outputs4 || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {4}
                 </td>
-                <td className="border border-black px-4 py-2 align-middle">
-                  {item.description}
+                <td className="border border-black px-4 py-2 text-left">
+                  Artikel ilmiah pada jurnal terindeks SINTA
                 </td>
                 <td className="border border-black px-4 py-2 align-middle">
                   Tercapai
                 </td>
                 <td className="border border-black px-4 py-2 align-middle">
-                  {item.status}
+                  {item.status_article}
                 </td>
                 <td className="border border-black px-4 py-2 align-middle">
                   <button
@@ -463,22 +555,109 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
                 </td>
               </tr>
             ))}
+            {console.log(data?.outputs5)}
+            {(data?.outputs5 || []).map((item, index) => (
+              <tr key={index}>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {5}
+                </td>
+                <td className="border border-black px-4 py-2 text-left">
+                  Elektronik
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  Tercapai
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.status_article}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    onClick={() => openModalElektronik(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="Aksi"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {console.log(data?.outputs6)}
+            {(data?.outputs6 || []).map((item, index) => (
+              <tr key={index}>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {6}
+                </td>
+                <td className="border border-black px-4 py-2 text-left">
+                  Peningkatan Keterampilan
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  Tercapai
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.status_article}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    onClick={() => openModalKetrampilan(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="Aksi"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {console.log(data?.outputs7)}
+            {(data?.outputs7 || []).map((item, index) => (
+              <tr key={index}>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {7}
+                </td>
+                <td className="border border-black px-4 py-2 text-left">
+                  Peningkatan Kemampuan Manajemen
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  Tercapai
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.status_article}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    onClick={() => openModalKemampuan(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="Aksi"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
-      {/* <div>
+      <div>
         <h1 className="text-lg font-bold font-sans text-violet-800">
           Presentasi Pelaksanaan Pengabdian kepada Masyarakat
         </h1>
-      </div> */}
-      {/* Tabel */}
-      {/* <div className="relative overflow-x-auto my-10">
+      </div>
+      {/* Tabel Pelaksanaan*/}
+      <div className="relative overflow-x-auto my-10">
         <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
           <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th className="border border-black px-4 py-2 align-middle">No</th>
               <th className="border border-black px-4 py-2 align-middle">
-                Judul
+                Jenis Presentasi
               </th>
               <th className="border border-black px-4 py-2 align-middle">
                 Aksi
@@ -486,24 +665,30 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-black px-4 py-2 align-middle">1</td>
-              <td className="border border-black px-4 py-2 break-words text-left">
-                Presentasi Power Point
-              </td>
-              <td className="border border-black px-4 py-2 align-middle">
-                <button
-                  onClick={openModalPPT}
-                  className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-                    alt="penelitian"
-                    className="w-7 h-7 mr-2"
-                  />
-                </button>
-              </td>
-            </tr>
+            {console.log(data?.outputs8)}
+            {(data?.outputs8 || []).map((item, index) => (
+              <tr>
+                <td className="border border-black px-4 py-2 align-middle">
+                  1
+                </td>
+                <td className="border border-black px-4 py-2 break-words text-left">
+                  Presentasi Power Point
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    // onClick={openModalPPT}
+                    onClick={() => openModalPPT(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="penelitian"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -511,15 +696,15 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
         <h1 className="text-lg font-bold font-sans text-violet-800">
           Rencana Hasil Pelaksanaan
         </h1>
-      </div> */}
-      {/* Tabel */}
-      {/* <div className="relative overflow-x-auto my-10">
+      </div>
+      {/* Tabel Pelakasanaan*/}
+      <div className="relative overflow-x-auto my-10">
         <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
           <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th className="border border-black px-4 py-2 align-middle">No</th>
               <th className="border border-black px-4 py-2 align-middle">
-                Judul
+                Jenis Hasil Pelakasanaan
               </th>
               <th className="border border-black px-4 py-2 align-middle">
                 Aksi
@@ -527,24 +712,29 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-black px-4 py-2 align-middle">1</td>
-              <td className="border border-black px-4 py-2 break-words text-left">
-                PDF Hasil Pelaksanaan
-              </td>
-              <td className="border border-black px-4 py-2 align-middle">
-                <button
-                  onClick={openModalPdf}
-                  className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-                    alt="penelitian"
-                    className="w-7 h-7 mr-2"
-                  />
-                </button>
-              </td>
-            </tr>
+            {console.log(data?.outputs9)}
+            {(data?.outputs9 || []).map((item, index) => (
+              <tr>
+                <td className="border border-black px-4 py-2 align-middle">
+                  1
+                </td>
+                <td className="border border-black px-4 py-2 break-words text-left">
+                  PDF Hasil Pelaksanaan
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    onClick={() => openModalPdf(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="penelitian"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -552,9 +742,9 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
         <h1 className="text-lg font-bold font-sans text-violet-800">
           Luaran Tambahan
         </h1>
-      </div> */}
-      {/* Tabel */}
-      {/* <div className="relative overflow-x-auto my-10">
+      </div>
+      {/* Tabel Tambahan*/}
+      <div className="relative overflow-x-auto my-10">
         <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
           <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
@@ -567,26 +757,29 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-black px-4 py-2 break-words text-left">
-                Luaran Tambahan
-              </td>
-              <td className="border border-black px-4 py-2 align-middle">
-                <button
-                  onClick={openModalLuaranTambahan}
-                  className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-                    alt="penelitian"
-                    className="w-7 h-7 mr-2"
-                  />
-                </button>
-              </td>
-            </tr>
+            {console.log(data?.outputs10)}
+            {(data?.outputs10 || []).map((item, index) => (
+              <tr>
+                <td className="border border-black px-4 py-2 break-words text-left">
+                  Luaran Tambahan
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    onClick={() => openModalLuaranTambahan(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="penelitian"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
-      </div> */}
+      </div>
     </div>
   );
 };

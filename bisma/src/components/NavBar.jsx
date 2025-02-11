@@ -450,7 +450,7 @@ const NavBar = ({ children }) => {
                       <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/list-monev-penelitian">Penelitian</Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/pengabdian/monev">Pengabdian</Link>
                       </li>
                     </ul>
@@ -551,7 +551,7 @@ const NavBar = ({ children }) => {
                               </Link>
                             </li>
                             <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
-                              <Link to="/monitoring/penenelitian/periode-kegiatan/">
+                              <Link to="/monitoring/pengabdian/periode-kegiatan">
                                 <div className="flex items-center justify-between">
                                   Periode Kegiatan
                                 </div>
@@ -604,7 +604,7 @@ const NavBar = ({ children }) => {
                 </li>
 
                 {/* pengelolaan reviewer */}
-                <li
+                {/* <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 3 ? "show" : "hidden"}`}
                 >
                   <Link to="/monitoring-pengelola-review">
@@ -617,13 +617,45 @@ const NavBar = ({ children }) => {
                       Pengelola Review
                     </div>
                   </Link>
+                </li> */}
+
+                <li
+                  className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 3 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(8)}
+                  // onMouseLeave={handleDropdownLeave}
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
+                      alt="laporan"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Pengelola Review
+                  </div>
+                  {dropdown === 8 && (
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                        <Link to="/monitoring-pengelola-review">
+                          Penelitian
+                        </Link>
+                      </li>
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                        <Link to="/monitoring/pengabdian/pengelola-review">
+                          Pengabdian
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
                 {/* Operator */}
 
                 {/* persetujuan usulan Kepala LPPM*/}
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 5 ? "show" : "hidden"}`}
-                  onMouseEnter={() => handleDropdownEnter(8)}
+                  onMouseEnter={() => handleDropdownEnter(9)}
                   // onMouseLeave={handleDropdownLeave}
                 >
                   <div className="flex items-center">
@@ -635,26 +667,29 @@ const NavBar = ({ children }) => {
                     Persetujuan Usulan
                     <FaChevronDown className="ml-2" />
                   </div>
-                  {dropdown === 8 && (
+                  {dropdown === 9 && (
                     <ul
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
-                      <li className="px-4 py-2 hover:bg-violet-800"
-                      onClick={() => navigate("/kaprodi/penelitian/usulan-belum-ditinjau")}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800"
+                        onClick={() =>
+                          navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
+                        }
                       >
                         <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
                           Penelitian
                         </Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800"
-                      onClick={() => navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800"
+                        onClick={() =>
+                          navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
+                        }
                       >
-                        <Link >
-                          Pengabdian
-                        </Link>
+                        <Link>Pengabdian</Link>
                       </li>
-                      
                     </ul>
                   )}
                 </li>
@@ -663,7 +698,7 @@ const NavBar = ({ children }) => {
                 {/* kaprodi */}
                 <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 4 ? "show" : "hidden"}`}
-                  onMouseEnter={() => handleDropdownEnter(8)}
+                  onMouseEnter={() => handleDropdownEnter(10)}
                   // onMouseLeave={handleDropdownLeave}
                 >
                   <div className="flex items-center">
@@ -675,26 +710,29 @@ const NavBar = ({ children }) => {
                     Persetujuan Usulan
                     <FaChevronDown className="ml-2" />
                   </div>
-                  {dropdown === 8 && (
+                  {dropdown === 10 && (
                     <ul
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
-                      <li className="px-4 py-2 hover:bg-violet-800"
-                      onClick={() => navigate("/kaprodi/penelitian/usulan-belum-ditinjau")}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800"
+                        onClick={() =>
+                          navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
+                        }
                       >
                         <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
                           Penelitian
                         </Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800"
-                      onClick={() => navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")}
+                      <li
+                        className="px-4 py-2 hover:bg-violet-800"
+                        onClick={() =>
+                          navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
+                        }
                       >
-                        <Link >
-                          Pengabdian
-                        </Link>
+                        <Link>Pengabdian</Link>
                       </li>
-                      
                     </ul>
                   )}
                 </li>

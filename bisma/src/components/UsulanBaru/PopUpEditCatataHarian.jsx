@@ -1,29 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
-import { FaCalendarAlt, FaPlus } from 'react-icons/fa';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'; // Import gaya bawaan dari react-datepicker
-import { id } from 'date-fns/locale'; // Impor locale bahasa Indonesia
-import { getDetailLogbook } from '../../Features/ResearchSlice';
+import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
+import { FaCalendarAlt, FaPlus } from "react-icons/fa";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // Import gaya bawaan dari react-datepicker
+import { id } from "date-fns/locale"; // Impor locale bahasa Indonesia
+import { getDetailLogbook } from "../../Features/ResearchSlice";
 import { addLogbook } from "../../Features/ResearchSlice";
+import { toast } from "react-toastify";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const PopUpEditCatatanHarian = ({ isOpen, onRequestClose, logbookId }) => {
-  const [logbook, setLogbook] = useState({type: 'research'});
+  const [logbook, setLogbook] = useState({ type: "research" });
 
   const fetchLogbooks = async () => {
     const response = await getDetailLogbook(logbookId);
-    console.log(response.data)
-    setLogbook({...logbook, ...response});
-    setLogbook({...logbook, type: 'research'});
+    console.log(response.data);
+    setLogbook({ ...logbook, ...response });
+    setLogbook({ ...logbook, type: "research" });
     console.log(logbook);
-  }
+  };
   useEffect(() => {
-    if(isOpen){
+    if (isOpen) {
       fetchLogbooks();
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const handleInputChange = (e) => {
     const inputName = e.target.name;
@@ -45,16 +46,33 @@ const PopUpEditCatatanHarian = ({ isOpen, onRequestClose, logbookId }) => {
   };
 
   const handleSubmit = () => {
-    const response = addLogbook({
-      id: logbook.id,
-      dateActivity: logbook.date_activity,
-      activityDescription: logbook.activity_description,
-      percentage: logbook.percentage,
-      document: logbook.document,
-    });
-    console.log(response);
-    setLogbook({type: 'research'})
-    onRequestClose();
+    try {
+      const response = addLogbook({
+        id: logbook.id,
+        dateActivity: logbook.date_activity,
+        activityDescription: logbook.activity_description,
+        percentage: logbook.percentage,
+        document: logbook.document,
+      });
+      console.log("Response:", response);
+
+      // Cek apakah response memiliki pesan sukses
+      if (response) {
+        toast.success(response); // ✅ Tampilkan notifikasi sukses
+      } else {
+        toast.success("Catatan harian berhasil ditambahkan!");
+      }
+      console.log(response);
+      setLogbook({ type: "research" });
+      onRequestClose();
+    } catch (error) {
+      console.error("Gagal menyimpan catatan harian:", error);
+
+      const errorMessage =
+        error.response?.data?.message || "Terjadi kesalahan!";
+
+      toast.error(errorMessage);
+    }
   };
 
   return (
@@ -68,7 +86,12 @@ const PopUpEditCatatanHarian = ({ isOpen, onRequestClose, logbookId }) => {
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-2 mb-4">
           <h2 className="text-lg font-bold">Catatan Harian - Form</h2>
-          <button className="text-gray-500 hover:text-gray-800" onClick={onRequestClose}>&times;</button>
+          <button
+            className="text-gray-500 hover:text-gray-800"
+            onClick={onRequestClose}
+          >
+            &times;
+          </button>
         </div>
 
         {/* Form Content */}

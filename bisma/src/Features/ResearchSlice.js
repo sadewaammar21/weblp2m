@@ -194,6 +194,8 @@ export const addResearch = async ({
         }
       }
       console.log(response.data);
+      console.log("respon message :", response.data.message);
+      return response.data.message;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/research`,
@@ -216,6 +218,8 @@ export const addResearch = async ({
         }
       }
       console.log(response.data);
+      console.log("respon message :", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);
@@ -244,7 +248,8 @@ export const updateStatus = async ({ researchId, newStatus, note }) => {
     );
 
     console.log(response.data);
-    return response.data;
+    console.log("respon message :", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.error("Error updating status:", error);
     throw error;
@@ -290,7 +295,8 @@ export const updateMemberStatus = async ({ researchId, userId, status }) => {
       },
       getToken()
     );
-    return response.message;
+    console.log("respon message :", response.data.message);
+    return response.data.message;
   } catch (error) {
     return error.message;
   }
@@ -303,7 +309,8 @@ export const addResearchReviewer = async ({ researchId, data }) => {
       data,
       getToken()
     );
-    return response;
+    console.log("respon message :", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.error(error);
     throw error;
@@ -533,7 +540,8 @@ export const addResearchProgressReport = async ({
         formData,
         getToken()
       );
-      return response.data;
+      console.log("responnya", response.data.message);
+      return response.data.message;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/progress-report`,
@@ -541,7 +549,8 @@ export const addResearchProgressReport = async ({
         getToken()
       );
       console.log(response);
-      return response.data;
+      console.log("responnya", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);
@@ -599,7 +608,8 @@ export const addMonevResearch = async (monevData) => {
       getToken()
     );
     console.log(response.data);
-    return response.data;
+    console.log("responnya", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.log(error);
     return error.message;
@@ -699,7 +709,9 @@ export const addResearchFinalReport = async ({
         formData,
         getToken()
       );
-      return response.data;
+      console.log(response);
+      console.log("responnya", response.data.message);
+      return response.data.message;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/research-final-report`,
@@ -707,7 +719,8 @@ export const addResearchFinalReport = async ({
         getToken()
       );
       console.log(response);
-      return response.data;
+      console.log("responnya", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);

@@ -29,37 +29,37 @@ const UsulanRegulerPengabdian = () => {
     {
       title: "Usulan Draft",
       count: "Rapek",
-      icon: <FaFileAlt size={24} className="text-violet-800" />,
+      icon: <FaFileAlt size={24} />,
       path: "/monitoring/pengabdian/usulan-draft",
     },
     {
       title: "Usulan Dikirim",
       count: 0,
-      icon: <FaRegBookmark size={24} className="text-violet-800" />,
+      icon: <FaRegBookmark size={24} />,
       path: "/monitoring/pengabdian/usulan-dikirm",
     },
     {
       title: "Usulan Belum Ditinjau",
       count: 0,
-      icon: <FaHdd size={24} className="text-violet-800" />,
+      icon: <FaHdd size={24} />,
       path: "/monitoring/pengabdian/belum-ditinjau-review",
     },
     {
       title: "Usulan Disetujui",
       count: 0,
-      icon: <FaBullseye size={24} className="text-violet-800" />,
+      icon: <FaBullseye size={24} />,
       path: "/monitoring/pengabdian/usulan-disetujui",
     },
     {
       title: "Usulan Ditolak",
       count: 0,
-      icon: <FaChartBar size={24} className="text-violet-800" />,
+      icon: <FaChartBar size={24} />,
       path: "/monitoring/pengabdian/usulan-ditolak",
     },
     {
       title: "Hasil Review",
       count: 0,
-      icon: <FaRecycle size={24} className="text-violet-800" />,
+      icon: <FaRecycle size={24} />,
       path: "/monitoring/pengabdian/hasil-review",
     },
   ];
@@ -120,7 +120,10 @@ const UsulanRegulerPengabdian = () => {
             onClick={() => navigate(metric.path)} // Navigasi ke halaman tertentu
             className="bg-gray-100 rounded-lg shadow-lg p-5 flex flex-col items-center text-center cursor-pointer hover:bg-gray-200"
           >
-            {metric.icon}
+            <div className="bg-violet-800 rounded-full p-4 flex items-center justify-center mb-3">
+              {/* Pastikan ikon memiliki ukuran sesuai */}
+              <div className="text-white w-6 h-6">{metric.icon}</div>
+            </div>
             <p className="text-violet-800 font-semibold mt-2">{metric.title}</p>
             <p className="text-3xl font-bold text-violet-800">{metric.count}</p>
           </div>

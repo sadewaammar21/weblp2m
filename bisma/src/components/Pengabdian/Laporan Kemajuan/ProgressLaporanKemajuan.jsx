@@ -99,16 +99,16 @@ const ProgressLaporanKemajuan = () => {
           substance: "",
           partner_contribution: "",
           budget_use: "",
-          output_progress_report1s: [],
-          output_progress_report2s: [],
-          output_progress_report3s: [],
-          output_progress_report4s: [],
-          output_progress_report5s: [],
-          output_progress_report6s: [],
-          output_progress_report7s: [],
-          output_progress_report8s: [],
-          output_progress_report9s: [],
-          output_progress_report10s: [],
+          outputs1: [],
+          outputs2: [],
+          outputs3: [],
+          outputs4: [],
+          outputs5: [],
+          outputs6: [],
+          outputs7: [],
+          outputs8: [],
+          outputs9: [],
+          outputs10: [],
         });
         setLoading(false);
       }
@@ -173,103 +173,63 @@ const ProgressLaporanKemajuan = () => {
   //   return <ListLaporanKemajuanInternal />;
   // }
 
-  // const handleSubmit = async (status) => {
-  //   try {
-  //     if (reportId) {
-  //       setReport({ ...report, status: status });
-  //       // console.log(report)
-  //       const response = await addServiceProgressReport({
-  //         serviceId: service.id,
-  //         data: report,
-  //         isEdit: true,
-  //         reportId: report.id,
-  //       });
-  //       console.log(report);
-  //       console.log(response);
-
-  //       console.log("Response:", response);
-
-  //       if (response?.data?.message) {
-  //         toast.success(
-  //           response.data.message || "Laporan Kemajuan telah disimpan."
-  //         );
-  //         await new Promise((resolve) => setTimeout(resolve, 1000)); // Delay agar toast muncul sebelum navigasi
-  //       }
-
-  //       navigate(-1);
-  //     } else {
-  //       setReport({ ...report, status: status });
-  //       // console.log(report)
-  //       const response = await addServiceProgressReport({
-  //         serviceId: service.id,
-  //         data: report,
-  //         isEdit: false,
-  //       });
-  //       console.log(response);
-  //       console.log(report);
-
-  //       if (response?.data?.message) {
-  //         toast.success(
-  //           response.data.message || "Laporan Kemajuan telah disimpan."
-  //         );
-  //         await new Promise((resolve) => setTimeout(resolve, 1000)); // Delay agar toast muncul sebelum navigasi
-  //       }
-  //       navigate(-1);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-
-  //     // Ambil pesan error dari response jika ada
-  //     const errorMessage = error?.message || "Terjadi kesalahan!";
-  //     toast.error(errorMessage);
-  //   }
-  // };
   const handleSubmit = async (status) => {
     try {
-      // Perbarui status di state terlebih dahulu
-      const updatedReport = { ...report, status };
-      setReport(updatedReport);
-
-      let response;
-
       if (reportId) {
-        // Mode Edit
-        response = await addServiceProgressReport({
+        setReport({ ...report, status: status });
+        // console.log(report)
+        const response = await addServiceProgressReport({
           serviceId: service.id,
-          data: updatedReport,
+          data: report,
           isEdit: true,
           reportId: report.id,
         });
+        console.log(report);
+        console.log(response);
+
+        console.log("Response:", response);
+
+        // if (response) {
+        //   toast.success(response || "Laporan Kemajuan telah disimpan.");
+        //   await new Promise((resolve) => setTimeout(resolve, 1000)); // Delay agar toast muncul sebelum navigasi
+        // }
+        // console.log("Response dari addService:", response);
+
+        if (response) {
+          toast.success(response || "Laporan Kemajuan telah disimpan.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+        navigate("/pengabdian/laporan-kemajuan");
+
+        // navigate(-1);
       } else {
-        // Mode Tambah Baru
-        response = await addServiceProgressReport({
+        setReport({ ...report, status: status });
+        // console.log(report)
+        const response = await addServiceProgressReport({
           serviceId: service.id,
-          data: updatedReport,
+          data: report,
           isEdit: false,
         });
-      }
+        console.log(response);
+        console.log(report);
 
-      console.log("Response dari server:", response);
+        if (response) {
+          toast.success(response || "Laporan Kemajuan telah disimpan.");
 
-      // Cek apakah response memiliki message
-      if (response.message) {
-        // Navigasi ke halaman laporan kemajuan dengan pesan sukses
-        navigate("/pengabdian/laporan-kemajuan", {
-          state: {
-            toastMessage:
-              response.message || "Laporan Kemajuan telah disimpan.",
-            toastType: "success",
-          },
-        });
-      } else {
-        throw new Error("Response tidak memiliki pesan.");
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+        navigate("/pengabdian/laporan-kemajuan");
       }
     } catch (error) {
-      console.error("Terjadi kesalahan saat menyimpan laporan:", error);
+      console.error("Error:", error);
 
-      // Ambil pesan error jika ada, atau gunakan pesan default
-      const errorMessage = error.response?.message || "Terjadi kesalahan!";
-
+      // Ambil pesan error dari response jika ada
+      const errorMessage = error?.message || "Terjadi kesalahan!";
       toast.error(errorMessage);
     }
   };

@@ -36,7 +36,6 @@ const PenilaianProposal = () => {
     }
   };
   useEffect(() => {
-
     fetchData();
   }, []);
   if (loading) return <p>Loading...</p>;
@@ -97,17 +96,15 @@ const PenilaianProposal = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className="flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 bg-bluef-500 text-white
-               hover:bg-white hover:text-bluef-500"
-            >
-              <FaLessThan className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+      hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
@@ -188,7 +185,9 @@ const PenilaianProposal = () => {
                           />
                         </button>
                       </td>
-                      <td className={`border px-4 py-2 text-center ${item.status == 4 ? '' : 'hidden'}`}>
+                      <td
+                        className={`border px-4 py-2 text-center ${item.status == 4 ? "" : "hidden"}`}
+                      >
                         <button
                           onClick={() => handleAction(item.id)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"

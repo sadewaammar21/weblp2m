@@ -3,7 +3,12 @@ import { FaArrowLeft, FaPen, FaPlus } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import PopUpTambahCatatanHarian from "./PopUpTambahCatatanHarian";
 import PopUpEditCatatanHarian from "./PopUpEditCatataHarian";
-import { deleteLogbook, getLogbooks, getResearchDetail } from "../../Features/ResearchSlice";
+import {
+  deleteLogbook,
+  getLogbooks,
+  getResearchDetail,
+} from "../../Features/ResearchSlice";
+import { ToastContainer } from "react-toastify";
 
 const ViewCatatanHarianpnt = () => {
   const { id } = useParams();
@@ -37,7 +42,7 @@ const ViewCatatanHarianpnt = () => {
     navigate("/catatan-harian");
   };
 
-  const fetchResearch = async() => {
+  const fetchResearch = async () => {
     try {
       const response = await getResearchDetail(id);
       setResearch(response.data);
@@ -45,25 +50,30 @@ const ViewCatatanHarianpnt = () => {
     } catch (error) {
       throw error;
     }
-  }
-  const user = JSON.parse(localStorage.getItem('user'));
+  };
+  const user = JSON.parse(localStorage.getItem("user"));
   const fetchLogbooks = async () => {
     try {
-      const response = await getLogbooks({user_id: user.id, id: id, pageSize: 10, currentPage: 1});
+      const response = await getLogbooks({
+        user_id: user.id,
+        id: id,
+        pageSize: 10,
+        currentPage: 1,
+      });
       setLogbook(response.data);
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
+  };
   useEffect(() => {
     fetchResearch();
     fetchLogbooks();
-  }, [id])
+  }, [id]);
 
   const handleDelete = (id) => {
     deleteLogbook(id);
     fetchLogbooks();
-  }
+  };
 
   return (
     <div className="mx-10 my-10">
@@ -72,9 +82,7 @@ const ViewCatatanHarianpnt = () => {
 
         {/* Content */}
         <div>
-          <h2 className="text-lg font-bold text-gray-800">
-            {research.title}
-          </h2>
+          <h2 className="text-lg font-bold text-gray-800">{research.title}</h2>
           <p className="text-sm text-gray-600 mt-1">
             Penelitian Fundamental - Reguler Penelitian Kompetitif Nasional -
             Reguler | Thn Usulan 2024 | Thn. Pelaksanaan 2024
@@ -159,7 +167,7 @@ const ViewCatatanHarianpnt = () => {
                   {logbook.map((item, index) => (
                     <tr key={index}>
                       <td className="border border-black px-4 py-2 align-middle">
-                        {index+1}
+                        {index + 1}
                       </td>
                       <td className="border border-black px-4 py-2 align-middle">
                         {item.date_activity}
@@ -185,16 +193,19 @@ const ViewCatatanHarianpnt = () => {
                               className="w-7 h-7"
                             />
                           </button>
-                          <button className="flex items-center px-2 py-1 rounded-md" onClick={() => handleDelete(item.id)}>
+                          <button
+                            className="flex items-center px-2 py-1 rounded-md"
+                            onClick={() => handleDelete(item.id)}
+                          >
                             <img
                               src={
-                                process.env.PUBLIC_URL + "/assets/act_remove.svg"
+                                process.env.PUBLIC_URL +
+                                "/assets/act_remove.svg"
                               }
                               alt="remove"
                               className="w-7 h-7"
                             />
                           </button>
-                          
                         </div>
                       </td>
                     </tr>
@@ -208,13 +219,14 @@ const ViewCatatanHarianpnt = () => {
               id={id}
             />
             <PopUpEditCatatanHarian
-                            isOpen={isOpenEdit}
-                            onRequestClose={closeModalEdit}
-                            logbookId={logbookId}
-                          />
+              isOpen={isOpenEdit}
+              onRequestClose={closeModalEdit}
+              logbookId={logbookId}
+            />
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import {
   setServiceApprovalFunds,
 } from "../../../Features/ServiceSlice";
 import TextfieldCmp from "../../TextfieldCmp";
+import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
@@ -31,10 +32,24 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
       // });
       // console.log(setFunds);
       // setNote("");
+      console.log("Response:", response);
+
+      // Cek apakah response memiliki pesan sukses
+      if (response) {
+        toast.success(response);
+      } else {
+        toast.success("Catatan harian berhasil ditambahkan!");
+      }
       onRequestClose();
     } catch (error) {
       console.error("Error updating status:", error);
       alert("Failed to update status.");
+      console.error("Gagal menyimpan catatan harian:", error);
+
+      const errorMessage =
+        error.response?.data?.message || "Terjadi kesalahan!";
+
+      toast.error(errorMessage);
     }
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import ModalPerKegLaporanAkhir from "./ModalPerKegLaporanAkhir";
@@ -13,30 +13,29 @@ const PerKegLaporanAkhirOPT = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [selectedItem, setSelectedItem] = useState("");
-  
-    const fetchData = async () => {
-      try {
-        const result = await getResearch({ page_size: 5, current_page: 1 });
-        setData(result.data);
-        console.log(result);
-        console.log(data);
-        console.log(typeof data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    useEffect(() => {
-  
-      fetchData();
-    }, []);
-  
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedItem, setSelectedItem] = useState("");
+
+  const fetchData = async () => {
+    try {
+      const result = await getResearch({ page_size: 5, current_page: 1 });
+      setData(result.data);
+      console.log(result);
+      console.log(data);
+      console.log(typeof data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   const openModalView = (id) => {
     setSelectedItem(id);
@@ -45,7 +44,7 @@ const PerKegLaporanAkhirOPT = () => {
 
   const closeModalView = () => {
     setIsOpen(false);
-    fetchData()
+    fetchData();
   };
 
   const handleDropdownChange = (option) => {
@@ -92,12 +91,13 @@ const PerKegLaporanAkhirOPT = () => {
       </h1>
 
       {/* Tombol Kembali */}
-      <div className="flex justify-end border-b max-w-6xl mb">
+      <div className="flex justify-end border-b max-w-[1430px]">
         <button
           onClick={handleBack}
-          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white"
+          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+            hover:bg-white hover:text-bluef-500"
         >
-          <FaArrowLeft className="mr-2" /> {/* Ikon panah kiri */}
+          <FaLessThan className="mr-2" />
           Kembali
         </button>
       </div>

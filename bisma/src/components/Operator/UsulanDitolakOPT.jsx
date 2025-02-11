@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
 
@@ -68,12 +68,13 @@ const UsulanDitolakOPT = () => {
       </h1>
 
       {/* Tombol Kembali */}
-      <div className="flex justify-end border-b max-w-6xl ">
+      <div className="flex justify-end border-b max-w-[1430px]">
         <button
           onClick={handleBack}
-          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white"
+          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+      hover:bg-white hover:text-bluef-500"
         >
-          <FaArrowLeft className="mr-2" /> {/* Ikon panah kiri */}
+          <FaLessThan className="mr-2" />
           Kembali
         </button>
       </div>

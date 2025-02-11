@@ -90,29 +90,57 @@ const ProgressUsulanBaruPengabdian = () => {
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
+    console.log(data);
   };
 
   const handlePrevStep = () => {
     setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.get(
+  //         `${apiUrl}/api/comunity-service/${id}`,
+  //         getToken()
+  //       );
+  //       setData((prev) => ({ ...prev, ...response.data }));
+  //     } catch (error) {
+  //       setError(true);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   if (isEdit) fetchData();
+  // }, [id]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        const response = await axios.get(
-          `${apiUrl}/api/comunity-service/${id}`,
-          getToken()
-        );
-        setData((prev) => ({ ...prev, ...response.data }));
+        if (id) {
+          setLoading(true);
+          const response = await axios.get(
+            `${apiUrl}/api/comunity-service/${id}`,
+            getToken()
+          );
+          console.log(response.data);
+          setData({
+            ...data,
+            ...response.data,
+          });
+        } else {
+          setLoading(false);
+        }
       } catch (error) {
-        setError(true);
+        setLoading(false);
       } finally {
         setLoading(false);
       }
     };
-
     if (isEdit) fetchData();
+    console.log(data);
   }, [id]);
 
   // const handleSubmit = async (e) => {
@@ -165,37 +193,60 @@ const ProgressUsulanBaruPengabdian = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const isSubmit = e.target.name === "ajukan";
-    const newStatus = isSubmit ? 2 : undefined;
-
     try {
       const response = await addService({
-        data,
-        isEdit,
+        data: data,
+        isEdit: isEdit,
         serviceId: data.id,
-        isSubmit,
-        newStatus,
+        isSubmit: e.target.name === "ajukan",
+        newStatus: e.target.name === "ajukan" ? 2 : undefined,
       });
 
-      console.log("Respons dari backend:", response?.data); // Debug response
-      const successMessage = response?.data?.message || "Operasi berhasil.";
+      console.log("Response dari addService:", response);
 
-      toast.success(successMessage);
+      setTimeout(() => {
+        toast.success(response || "Berhasil!");
+      }, 100);
 
-      navigate("/pengabdian/usulan", {
-        state: { success: successMessage },
-      });
+      navigate("/pengabdian/usulan");
     } catch (error) {
-      const errorMessage =
-        error?.response?.data?.message || "Gagal menambahkan layanan!";
-      toast.error(errorMessage);
-      console.error("Error di handleSubmit:", error);
-
-      navigate("/pengabdian/usulan", {
-        state: { error: errorMessage },
-      });
+      console.log("Error Response:", error.response);
+      toast.error(
+        error.response?.data?.message ||
+          "Terjadi Kesalahan Ketika Mengirim Data."
+      );
     }
+
+    // const isSubmit = e.target.name === "ajukan";
+    // const newStatus = isSubmit ? 2 : undefined;
+
+    // try {
+    //   const response = await addService({
+    //     data,
+    //     isEdit,
+    //     serviceId: data.id,
+    //     isSubmit,
+    //     newStatus,
+    //   });
+
+    //   console.log("Respons dari backend:", response); // Debugging
+    //   console.log("Respons message dari backend:", response.data.message);
+    //   const successMessage = response.data.message || "Operasi berhasil.";
+    //   toast.success(successMessage);
+
+    //   navigate("/pengabdian/usulan", {
+    //     state: { success: successMessage },
+    //   });
+    // } catch (error) {
+    //   const errorMessage =
+    //     error?.response?.data?.message || "Gagal menambahkan layanan!";
+    //   toast.error(errorMessage);
+    //   console.error("Error di handleSubmit:", error);
+
+    //   navigate("/pengabdian/usulan", {
+    //     state: { error: errorMessage },
+    //   });
+    // }
   };
 
   const renderStepContent = (step) => {
