@@ -97,6 +97,10 @@ import UsulanDisetujuiKepalaPengabdianPage from "./pages/UsulanDisetujuiKepalaPe
 import UsulanDitolakKepalaPengabdian from "./components/Kaprodi dan Kepala/Pengabdian/UsulanDitolakKepalaPengabdian";
 import UsulanDitolakKepalaPage from "./pages/UsulanDitolakKepalaPage";
 import { ToastContainer } from "react-toastify";
+import PengelolaReviewPengadianPage from "./pages/PengelolaReviewPengadianPage";
+import PengelolaReviewPengabdianSBR1Page from "./pages/PengelolaReviewPengabdianSBR1Page";
+import PengelolaReviewPengabdianSBR2Page from "./pages/PengelolaReviewPengabdianSBR2Page";
+import PengelolaReviewPengabdianInternal from "./pages/PengelolaReviewPengabdianInternal";
 
 function App() {
   const dispatch = useDispatch();
@@ -148,7 +152,6 @@ function App() {
           element={<UsulanDitolakPengabdianKpr />}
         />
         {/* kaprodi  */}
-
 
         <Route path="/dashboard-kaprodi" element={<DashboardKaprodiPage />} />
         {/* user */}
@@ -218,7 +221,10 @@ function App() {
           path="/pengabdian/usulan/edit/:id"
           element={<ProgressUsulanBaruPengabdianPage />}
         />
-        <Route path="/detail-pengabdian" element={<DetailPengabdianPage />} />
+        <Route
+          path="/pengabdian/detail/:id"
+          element={<DetailPengabdianPage />}
+        />
         <Route
           path="/pengabdian/perbaikan"
           element={<PerbaikanUsulanListPage />}
@@ -382,6 +388,28 @@ function App() {
           element={<PerKegLaporanAkhirPengabdianOptPage />}
         />
         {/* penugasan reviewer */}
+        {/* pengabdian */}
+        <Route
+          path="/monitoring/pengabdian/pengelola-review"
+          element={<PengelolaReviewPengadianPage />}
+        />
+        <Route
+          path="/monitoring/pengabdian/pengelola-review-sbr1"
+          element={<PengelolaReviewPengabdianSBR1Page />}
+        />
+        <Route
+          path="/monitoring/pengabdian/pengelola-review-sbr2"
+          element={<PengelolaReviewPengabdianSBR2Page />}
+        />
+        <Route
+          path="/monitoring/pengabdian/pengelola-review-internal"
+          element={<PengelolaReviewPengabdianInternal />}
+        />
+        <Route
+          path="/monitoring/pengabdian/pengelola-review-eksternal"
+          // element={< />}
+        />
+        {/* penelitian */}
         <Route
           path="/monitoring-pengelola-review"
           element={<PengelolaReviewPage />}

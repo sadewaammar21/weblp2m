@@ -1,38 +1,53 @@
-import React, { useState } from "react";
-import DropdownCmp from "../DropdownCmp";
-import SearchInput from "../SearchInput";
-import TextfieldCmp from "../TextfieldCmp";
+import React, { useState, useEffect } from "react";
+import DropdownCmp from "../../DropdownCmp";
+import SearchInput from "../../SearchInput";
+import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaPlus } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaPlus,
+  FaCcMastercard,
+  FaTrash,
+  FaEdit,
+} from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
+import { getToken } from "../../../Features/AuthSlice";
+import axios from "axios";
+const apiUrl = process.env.REACT_APP_API_URL;
 
-const SBRPelaksanaan1 = () => {
+const ReviewerInternal = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [tasul, setTasul] = useState("");
+  const [tapel, setTapel] = useState("");
+  const [Tahapan, setTahapan] = useState("");
   const [nidn, setNidn] = useState("");
+  const [reviewers, setReviewers] = useState([]);
+
+  const fetchUsers = async () => {
+    const response = await axios.get(`${apiUrl}/api/users/roles/2`, getToken());
+    setReviewers(response.data);
+    console.log(response.data);
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const handleDropdownChange = (option) => {
-    if (option) {
-      setSelectedOption(option);
-    } else {
-      console.warn("Dropdown option is null or undefined");
-    }
+    setSelectedOption(option);
   };
 
   const handleSearch = () => {
     console.log("Search for:", nidn);
-    if (!nidn) {
-      console.warn("NIDN is empty or invalid");
-    }
     // Add search logic here
   };
 
-  const handlePlus = () => {
-    navigate("/monitoring-pengelola-review-internal");
-  };
+  //   const handleInputChange = (setter) => (e) => {
+  //     setter(e.target.value);
+  //   };
+
   // Fungsi untuk ekspor data ke Excel
   const handleExportExcel = () => {
     const tableData = [
@@ -69,26 +84,27 @@ const SBRPelaksanaan1 = () => {
     navigate("/monitoring-usulan-reguler");
   };
 
-  const options = [
-    { label: "2023", value: "2023" },
-    { label: "2024", value: "2024" },
-    { label: "2025", value: "2025" },
-  ];
+  const handleReviewerInt = () => {
+    navigate("/monitoring-pengelola-review-internal");
+  };
 
-  const tableData = [
-    {
-      id: 1,
-      reviewer: "Sri Siswanti S.Kom, M.Kom",
-      kompetensi: 1,
-      beban: "1 skema",
-      institusi: "STMIK Sinar Nusantara Surakarta",
-    },
+  const handleReviewEks = () => {
+    navigate("/monitoring-pengelola-review-eksternal");
+  };
+  const handleDelete = () => {
+    navigate("/monitoring-usulan-reguler");
+  };
+
+  const options = [
+    { label: "Option 1", value: "1" },
+    { label: "Option 2", value: "2" },
+    { label: "Option 3", value: "3" },
   ];
 
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        Penugasan Review
+        Penugasan Reviewer Internal
       </h1>
       <h1 className="text-sm font-sans mb-4">
         Seleberan Beban Review-Pelaksanaan
@@ -96,13 +112,19 @@ const SBRPelaksanaan1 = () => {
 
       <div>
         <div className="flex justify-end border-b max-w-6xl">
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 bg-bluef-500 text-white"
-          >
-            <FaArrowLeft className="mr-2" />
-            Kembali
-          </button>
+          <div>
+            <button
+              onClick={handleBack}
+              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
+                "Kembali"
+                  ? "bg-bluef-500 text-white"
+                  : "bg-white text-bluef-500"
+              }`}
+            >
+              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
+              Kembali
+            </button>
+          </div>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md ">
@@ -118,18 +140,19 @@ const SBRPelaksanaan1 = () => {
               />
             </div>
             <DropdownCmp
+              label="Tahun Usulan"
               options={options}
               selectedOption={tasul}
               onChange={(value) => setTasul(value)}
               name="skema"
-              placeholder="10"
+              placeholder="Pilih Tahun"
             />
           </div>
           <div className="flex mx-5 ">
             <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}
-                className="flex items-center px-2 py-1 bg-cyan-800 text-white rounded-md hover:bg-green-600"
+                className="flex items-center px-2 py-1 bg-cyan-500 text-white rounded-md hover:bg-cyan-600"
               >
                 <img
                   src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
@@ -139,64 +162,56 @@ const SBRPelaksanaan1 = () => {
                 Excel
               </button>
             </div>
-            {/* <div className="mx-2 my-2">
+            <div className="mx-2 my-2">
               <button
-                onClick={handlePlus}
+                onClick={handleExportExcel}
                 className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
               >
                 <FaPlus size={15} />
                 Beban Reviewer
               </button>
-            </div> */}
-            {/* <DropdownCmp
-              label="Tahun Usulan"
-              options={options}
-              selectedOption={tasul}
-              onChange={(value) => setTasul(value)}
-              name="tasul"
-              placeholder="Pilih Tahun"
-            /> */}
+            </div>
           </div>
-
-          {/* <div className="mx-5 my-5">
+          <div className="mx-5 my-5">
             <TextfieldCmp
               value={judul}
               onChange={(e) => setJudul(e.target.value)}
               placeholder="Cari Berdasarkan Judul"
               width="w-64 p-2"
             />
-          </div> */}
-
+          </div>
           {/* Tabel */}
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500 border border-black">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+              <thead className="text-xs text-center  text-gray-700 uppercase bg-gray-100">
                 <tr>
                   <th className="border px-4 py-2">No</th>
                   <th className="border px-4 py-2">Reviewer</th>
                   <th className="border px-4 py-2">Kompetensi</th>
-                  <th className="border px-4 py-2">Beban</th>
+                  <th className="border px-4 py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {tableData.map((item, index) => (
-                  <tr key={item.id}>
-                    <td className="border px-4 py-2 text-center">
-                      {index + 1}
-                    </td>
-                    <td className="border px-4 py-2">
-                      {item.reviewer}
-                      <br />
-                      {item.institusi}
-                    </td>
-                    <td className="border px-4 py-2 text-center">
-                      {item.kompetensi}
-                    </td>
-                    <td className="border px-4 py-2 text-center">
-                      {item.beban}
-                    </td>
-                  </tr>
-                ))}
+                <tr>
+                  <td className="border px-4 py-2 text-center">1</td>
+                  <td className="border px-4 py-2">
+                    Sri Siswanti S.Kom, M.Kom
+                    <br />
+                    STMIK Sinar Nusantara Surakarta
+                  </td>
+                  <td className="border px-4 py-2 text-center">
+                    Bidang Ilmu Komputer
+                  </td>
+                  <td className="items-center border px-4 py-2 text-center">
+                    <button
+                      onClick={handleExportExcel}
+                      className="flex items-center text-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-cyan-600"
+                    >
+                      <FaEdit />
+                      Tugaskan
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -206,4 +221,4 @@ const SBRPelaksanaan1 = () => {
   );
 };
 
-export default SBRPelaksanaan1;
+export default ReviewerInternal;

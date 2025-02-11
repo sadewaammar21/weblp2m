@@ -38,7 +38,7 @@ export const getServiceDetail = async (id) => {
       getToken()
     );
     console.log(response);
-    return response.data;
+    return response;
   } catch (error) {
     throw error;
   }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import DropdownCmp from "../DropdownCmp";
-import TextfieldCmp from "../TextfieldCmp";
+import DropdownCmp from "../../DropdownCmp";
+import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
 import {
   FaArrowLeft,
@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
-import { getResearch } from "../../Features/ResearchSlice";
+import { getResearch } from "../../../Features/ResearchSlice";
 
 const PengelolaReview = () => {
   const navigate = useNavigate();
@@ -89,11 +89,13 @@ const PengelolaReview = () => {
   };
 
   const handleplus = () => {
-    navigate("/monitoring-pengelola-review-sbr1");
+    navigate("/monitoring/pengabdian/pengelola-review-sbr1");
   };
 
   const handleReview = (itemId) => {
-    navigate("/monitoring-pengelola-review-sbr2", { state: { id: itemId } });
+    navigate("/monitoring/pengabdian/pengelola-review-sbr2", {
+      state: { id: itemId },
+    });
   };
 
   const options = [
@@ -151,7 +153,7 @@ const PengelolaReview = () => {
             <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}
-                className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="flex items-center px-2 py-1 bg-cyan-800 text-white rounded-md hover:bg-cyan-600"
               >
                 <img
                   src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}

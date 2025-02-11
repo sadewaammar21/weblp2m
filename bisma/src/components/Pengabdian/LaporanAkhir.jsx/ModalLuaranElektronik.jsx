@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp";
 import TextfieldCmp from "../../TextfieldCmp";
@@ -6,9 +6,50 @@ import TextfieldCmp from "../../TextfieldCmp";
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalLuaranElektronik = ({ isOpen, onRequestClose }) => {
-  const handleSave = () => {
+const ModalLuaranElektronik = ({
+  isOpen,
+  onRequestClose,
+  index,
+  data,
+  onSave,
+}) => {
+  const [outputData, setOutputData] = useState({});
+
+  const statusElektronik = [
+    { value: "Terbit", label: "Terbit" },
+    { value: "Tidak Terbit", label: "Tidak Terbit" },
+  ];
+
+  const handleDropdownChange = (option, fieldName) => {
+    setOutputData((prevData) => ({
+      ...prevData,
+      [fieldName]: option.value,
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
+    setOutputData((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
+  };
+
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setOutputData((prevData) => ({
+      ...prevData,
+      [name]: files[0],
+    }));
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault(); // Prevent default form submission
     console.log("Data berhasil disimpan");
+    onSave(index, outputData);
+    setOutputData({});
     onRequestClose(); // Tutup modal setelah menyimpan
   };
 
@@ -21,11 +62,17 @@ const ModalLuaranElektronik = ({ isOpen, onRequestClose }) => {
       overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <h2 className="text-xl font-bold mb-4">Luaran Wajib Elektronik</h2>
-      <form>
+      <form onSubmit={handleSave}>
         {/* Dropdown Status Artikel */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Status Elektronik</label>
-          <DropdownCmp options={["Terbit", "Tidak Terbit"]} />
+          <DropdownCmp
+            options={statusElektronik}
+            value={statusElektronik.find(
+              (option) => option.value === outputData.status
+            )}
+            onChange={(option) => handleDropdownChange(option, "status")}
+          />
         </div>
 
         {/* Dropdown Status Penulis */}

@@ -90,29 +90,57 @@ const ProgressUsulanBaruPengabdian = () => {
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
+    console.log(data);
   };
 
   const handlePrevStep = () => {
     setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.get(
+  //         `${apiUrl}/api/comunity-service/${id}`,
+  //         getToken()
+  //       );
+  //       setData((prev) => ({ ...prev, ...response.data }));
+  //     } catch (error) {
+  //       setError(true);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   if (isEdit) fetchData();
+  // }, [id]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        const response = await axios.get(
-          `${apiUrl}/api/comunity-service/${id}`,
-          getToken()
-        );
-        setData((prev) => ({ ...prev, ...response.data }));
+        if (id) {
+          setLoading(true);
+          const response = await axios.get(
+            `${apiUrl}/api/comunity-service/${id}`,
+            getToken()
+          );
+          console.log(response.data);
+          setData({
+            ...data,
+            ...response.data,
+          });
+        } else {
+          setLoading(false);
+        }
       } catch (error) {
-        setError(true);
+        setLoading(false);
       } finally {
         setLoading(false);
       }
     };
-
     if (isEdit) fetchData();
+    console.log(data);
   }, [id]);
 
   // const handleSubmit = async (e) => {

@@ -437,9 +437,7 @@ const LaporanKemajuanTab1 = ({ service, data, setData }) => {
             </tr>
           </thead>
           <tbody className="text-black">
-            {console.log(
-              `Datanya adalah : ${service?.output_progress_report1s}`
-            )}
+            {console.log(`Datanya adalah : ${service?.outputs1}`)}
             {(service?.output_progress_report1s || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
