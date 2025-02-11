@@ -151,7 +151,7 @@ const PengelolaReview = () => {
             <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}
-                className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="flex items-center px-2 py-1 bg-cyan-800 text-white rounded-md hover:bg-cyan-600"
               >
                 <img
                   src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
