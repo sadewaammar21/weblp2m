@@ -33,24 +33,24 @@ const ListLaporanKemajuanInternal = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const fetchData = async () => {
-    try {
-      const result = await getService({
-        pageSize: 5,
-        currentPage: 1,
-        // status: 1,
-        // year: 2024,
-        userId: user.id,
-      });
-      setData(result.data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getService({
+          pageSize: 5,
+          currentPage: 1,
+          // status: 1,
+          // year: 2024,
+          userId: user.id,
+        });
+        setData(result.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, []);
 
