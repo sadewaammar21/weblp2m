@@ -1,25 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import DropdownCmp from "../../DropdownCmp";
 import TextAreaCmp from "../../TextAreaCmp";
 import { getReviewByService } from '../../../Features/ServiceSlice';
+// import axios from 'axios'
+// import { getToken } from '../../Features/AuthSlice'
 
-const PerbaikanSubstansi = ({ navigate }) => {
-  const [selectedOption, setSelectedOption] = useState("");
+const PerbaikanSubstansi = ({ service, setService }) => {
+  const [selectedOption, setSelectedOption] = useState('');
   const [review,setReview] = useState([]);
   
   const fetchReview = async(id) => {
     const response = await getReviewByService(id);
+    console.log(response.data);
     setReview(response.data);
   } 
+  
   // const fetchSubstance = async() =>{
   //   const response = await axios.get(`${apiUrl}/api/substance`, getToken());
   //   setSubstance(response.data);
   // }
-  // useEffect(()=> {
-  //   setSelectedFile(research.substance)
-  //   fetchReview(research.id)
-  //   fetchSubstance()
-  // },[research.id])
+  useEffect(()=> {
+    setSelectedFile(service.substance_document)
+    fetchReview(service.id)
+    // fetchSubstance()
+  },[service.id])
 
   // const handleDropdownChange = (option, fieldName) => {
   //   setResearch((prevData) => ({
@@ -39,7 +43,10 @@ const PerbaikanSubstansi = ({ navigate }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setService((prevData) => ({
+      ...prevData,
+      substance: event.target.files[0],
+    }));
   };
 
   const options = [
@@ -49,7 +56,7 @@ const PerbaikanSubstansi = ({ navigate }) => {
   ];
 
   const handleClick = () => {
-    navigate("#"); // Arahkan ke halaman 'usulan-baru-penelitian'
+    // navigate("#"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
   const handleInputChange = (setter) => (e) => {
@@ -103,13 +110,6 @@ const PerbaikanSubstansi = ({ navigate }) => {
               File yang dipilih: {selectedFile.name}
             </p>
           )}
-
-        {/* Menampilkan nama file yang dipilih */}
-        {selectedFile && (
-            <p className="mt-2 text-gray-600">
-        File yang dipilih: {selectedFile.name}
-        </p>
-        )}
         </div>
         </div>
       <div>
@@ -127,7 +127,7 @@ const PerbaikanSubstansi = ({ navigate }) => {
                 {review.map((item, index) => (
                   <tr key={index}>
                       <td>{index+1}</td>
-                      <td>{item.reviewer.name}</td>
+                      <td>{item.reviewer?.name}</td>
                       <td>{item.notes}</td>
                   </tr>
                 ))}

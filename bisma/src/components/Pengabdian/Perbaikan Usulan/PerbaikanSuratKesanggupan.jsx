@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const PerbaikanSuratKesanggupan = () => {
+const PerbaikanSuratKesanggupan = ({service, setService}) => {
   const [selectedFile, setSelectedFile] = useState(null);
+     useEffect(()=> {
+       setSelectedFile(service.letter_of_intent)
+     })
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setService((prevData) => ({
+      ...prevData,
+      letter_of_intent: event.target.files[0],
+    }));
   };
   return (
     <div>
@@ -24,58 +30,61 @@ const PerbaikanSuratKesanggupan = () => {
           <div className="my-2 flex">
             <h2 className="text-sm font-medium text-violet-800 mr-1">
               {" "}
-              Dokumen Surat Kesanggupan Penelitian
+              Dokumen Surat Kesanggupan Pengabdian Masyarakat
             </h2>
             {/* <h2 className='text-md font-bold text-violet-800'> Rp. 10.000.000</h2> */}
           </div>
         </div>
       </div>
-      <div className="my-10 mx-5">
+      <div className='my-10 mx-5'>
         {/* Label dan Link untuk Unduh Template */}
         <div className="flex space-x-2 mb-2">
-          <label className="font-medium text-gray-700">
+        <label className="font-medium text-gray-700">
             Unggah Substansi Laporan *
-          </label>
-          <a
-            href={
-              process.env.PUBLIC_URL +
-              "/assets/Isian Substansi Proposal - LPPM SINUS.docx"
-            }
-            className="text-blue-600 hover:underline flex items-center"
-          >
-            <img
-              src={process.env.PUBLIC_URL + "/assets/download.svg"}
-              alt="logo"
-              className="w-5 h-5 mr-2"
-            />
-            Unduh Template
-          </a>
+        </label>
+        <a
+        href={process.env.PUBLIC_URL + "/assets/Isian Substansi Proposal - LPPM SINUS.docx"}
+        className="text-blue-600 hover:underline flex items-center"
+        >
+        <img
+        src={process.env.PUBLIC_URL + "/assets/download.svg"}
+        alt="logo"
+        className="w-5 h-5 mr-2"
+        />
+        Unduh Template
+        </a>
         </div>
 
         {/* Label untuk Download Isian Substansi */}
         <div className="flex justify-between items-center">
-          <label className="font-medium text-bluef-400">
+        <label className="font-medium text-bluef-400">
             Download Isian Substansi Revisi Proposal Penelitian
-          </label>
-          {/* Tombol Unggah Ulang */}
+        </label>
+        {/* Tombol Unggah Ulang */}
         </div>
-        <div className="">
-          <button
-            onClick={handleFileChange}
-            className="bg-oranges-600 text-white px-4 py-2 rounded-md hover:bg-orange-700"
-          >
-            Unggah Ulang
-          </button>
-        </div>
+
+        <input
+            type="file"
+            onChange={handleFileChange}
+            className="border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
+            id="file-upload"
+          />
+
+          {/* Menampilkan nama file yang dipilih */}
+          {selectedFile && (
+            <p className="mt-2 text-gray-600">
+              File yang dipilih: {selectedFile.name}
+            </p>
+          )}
 
         {/* Menampilkan nama file yang dipilih */}
         {selectedFile && (
-          <p className="mt-2 text-gray-600">
-            File yang dipilih: {selectedFile.name}
-          </p>
+            <p className="mt-2 text-gray-600">
+        File yang dipilih: {selectedFile.name}
+        </p>
         )}
-      </div>
-    </div>
+        </div>
+        </div>
   );
 };
 

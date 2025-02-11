@@ -76,8 +76,8 @@ export const addService = async ({
   formData.append("leader_name", data.leader_name);
   formData.append("leader_task", data.leader_task);
   formData.append("status", 1);
-  // formData.append("approval_funds", data.approval_funds);
-  // formData.append("letter_of_intent", data.letter_of_intent);
+  formData.append("approval_funds", data.approval_funds);
+  formData.append("letter_of_intent", data.letter_of_intent);
 
   if (data.substance_document) {
     formData.append("substance_document", data.substance_document);
@@ -421,7 +421,7 @@ export const addServiceReview = async (reviewData) => {
 export const getReviewByService = async (serviceId) => {
   try {
     const response = await axios.get(
-      `${apiUrl}/api/comunity-service-reviews/${serviceId}/comunity-service`,
+      `${apiUrl}/api/comunity-service-reviews/${serviceId}/comunity-services`,
       getToken()
     );
     console.log(response);
@@ -431,6 +431,8 @@ export const getReviewByService = async (serviceId) => {
     console.log(error);
   }
 };
+
+
 
 //service logbook
 export const getServiceLogbooks = async ({

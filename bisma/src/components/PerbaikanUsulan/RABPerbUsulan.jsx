@@ -140,7 +140,6 @@ const RABPerbUsulan = ({ research, setResearch }) => {
             Tambah
           </button>
         </div>
-        <div></div>
       </div>
       {research.budget_plan.map((item, index) => (
         <div className="grid grid-cols-8 gap-x-4">
@@ -181,13 +180,13 @@ const RABPerbUsulan = ({ research, setResearch }) => {
             label="Item"
             value={item.item}
             onChange={(e) => handleBudgetChange(index, "item", e.target.value)}
-            width="w-64" // Custom width untuk text input
+            // width="w-64" // Custom width untuk text input
           />
           <TextfieldCmp
             label="Satuan"
             value={item.unit}
             onChange={(e) => handleBudgetChange(index, "unit", e.target.value)}
-            width="w-20" // Custom width untuk text input
+            // width="w-20" // Custom width untuk text input
           />
           <TextfieldCmp
             label="Volume"
@@ -195,7 +194,7 @@ const RABPerbUsulan = ({ research, setResearch }) => {
             onChange={(e) =>
               handleBudgetChange(index, "volume", e.target.value)
             }
-            width="w-20" // Custom width untuk text input
+            // width="w-20" // Custom width untuk text input
           />
           <TextfieldCmp
             label="Harga Satuan"
@@ -203,13 +202,13 @@ const RABPerbUsulan = ({ research, setResearch }) => {
             onChange={(e) =>
               handleBudgetChange(index, "price_unit", e.target.value)
             }
-            width="w-full" // Lebar penuh untuk text input
+            // width="w-full" // Lebar penuh untuk text input
           />
           <TextfieldCmp
             label="Total"
             value={item.total}
             onChange={(e) => handleBudgetChange(index, "total", e.target.value)}
-            width="w-full" // Lebar penuh untuk text input
+            // width="w-full" // Lebar penuh untuk text input
           />
         </div>
       ))}

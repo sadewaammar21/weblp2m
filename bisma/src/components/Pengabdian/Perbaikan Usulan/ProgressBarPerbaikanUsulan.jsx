@@ -49,7 +49,7 @@ const ProgressBarPerbaikanUsulan = () => {
 
   const fetchServiceDetail = async () => {
       const response = await getServiceDetail(id);
-      setService(response);
+      setService(response.data);
       console.log(service);
     };
     useEffect(() => {
