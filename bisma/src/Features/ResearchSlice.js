@@ -76,7 +76,7 @@ export const addResearch = async ({
   formData.append("leader_name", data.leader_name);
   formData.append("leader_task", data.leader_task);
   formData.append("substance_id", data.substance_id);
-  formData.append("status", 1);
+  formData.append("status", newStatus ? newStatus : 1);
   formData.append("approval_funds", data.approval_funds);
   formData.append("letter_of_intent", data.letter_of_intent);
 
@@ -194,6 +194,8 @@ export const addResearch = async ({
         }
       }
       console.log(response.data);
+      console.log("respon message :", response.data.message);
+      return response.data.message;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/research`,
@@ -216,6 +218,8 @@ export const addResearch = async ({
         }
       }
       console.log(response.data);
+      console.log("respon message :", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);
@@ -244,7 +248,8 @@ export const updateStatus = async ({ researchId, newStatus, note }) => {
     );
 
     console.log(response.data);
-    return response.data;
+    console.log("respon message :", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.error("Error updating status:", error);
     throw error;
@@ -290,7 +295,8 @@ export const updateMemberStatus = async ({ researchId, userId, status }) => {
       },
       getToken()
     );
-    return response.message;
+    console.log("respon message :", response.data.message);
+    return response.data.message;
   } catch (error) {
     return error.message;
   }
@@ -303,7 +309,8 @@ export const addResearchReviewer = async ({ researchId, data }) => {
       data,
       getToken()
     );
-    return response;
+    console.log("respon message :", response.data.message);
+    return response.data.message;
   } catch (error) {
     console.error(error);
     throw error;
@@ -555,7 +562,8 @@ export const addResearchProgressReport = async ({
         });
       }
       console.log(response);
-      return response.data;
+      console.log("responnya", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);
@@ -733,7 +741,8 @@ export const addResearchFinalReport = async ({
         getToken()
       );
       console.log(response);
-      return response.data;
+      console.log("responnya", response.data.message);
+      return response.data.message;
     }
   } catch (error) {
     console.log(error);

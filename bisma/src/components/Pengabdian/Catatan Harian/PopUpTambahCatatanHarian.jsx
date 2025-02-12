@@ -6,6 +6,7 @@ import TextAreaCmp from "../../TextAreaCmp";
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import { addServiceLogbook } from "../../../Features/ServiceSlice";
 import DropdownCmp from "../../DropdownCmp";
+import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
@@ -52,29 +53,76 @@ const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
     console.log(logbook.group_budget);
   };
 
-  const handleSubmit = () => {
-    const response = addServiceLogbook({
-      id: logbook.id,
-      dateActivity: logbook.date_activity,
-      groupBudget: logbook.group_budget,
-      nominal: logbook.nominal,
-      fileNumber: logbook.file_number,
-      activityDescription: logbook.activity_description,
-      percentage: logbook.percentage,
-      document: logbook.document,
-    });
-    console.log(response);
-    console.log(logbook);
-    setLogbook({
-      id: id,
-      date_activity: "",
-      group_budget: "",
-      nominal: "",
-      file_number: "",
-      activity_description: "",
-      percentage: 0,
-    });
-    onRequestClose();
+  // const handleSubmit = () => {
+  //   const response = addServiceLogbook({
+  //     id: logbook.id,
+  //     dateActivity: logbook.date_activity,
+  //     groupBudget: logbook.group_budget,
+  //     nominal: logbook.nominal,
+  //     fileNumber: logbook.file_number,
+  //     activityDescription: logbook.activity_description,
+  //     percentage: logbook.percentage,
+  //     document: logbook.document,
+  //   });
+  //   console.log(response);
+  //   console.log(logbook);
+  //   setLogbook({
+  //     id: id,
+  //     date_activity: "",
+  //     group_budget: "",
+  //     nominal: "",
+  //     file_number: "",
+  //     activity_description: "",
+  //     percentage: 0,
+  //   });
+  //   onRequestClose();
+  // };
+  // Pastikan Toastify diimpor
+
+  const handleSubmit = async () => {
+    try {
+      const response = await addServiceLogbook({
+        id: logbook.id,
+        dateActivity: logbook.date_activity,
+        groupBudget: logbook.group_budget,
+        nominal: logbook.nominal,
+        fileNumber: logbook.file_number,
+        activityDescription: logbook.activity_description,
+        percentage: logbook.percentage,
+        document: logbook.document,
+      });
+
+      console.log("Response:", response);
+
+      if (response) {
+        // Tampilkan toast sukses
+        toast.success(response);
+      } else {
+        toast.success("Catatan harian berhasil ditambahkan!");
+      }
+
+      // Reset form setelah submit
+      setLogbook({
+        id: id,
+        date_activity: "",
+        group_budget: "",
+        nominal: "",
+        file_number: "",
+        activity_description: "",
+        percentage: 0,
+      });
+
+      // Tutup modal
+      onRequestClose();
+    } catch (error) {
+      console.error("Gagal menyimpan catatan harian:", error);
+
+      const errorMessage =
+        error.response?.data?.message || "Terjadi kesalahan!";
+
+      // Tampilkan toast error
+      toast.error(errorMessage);
+    }
   };
 
   return (
@@ -129,7 +177,7 @@ const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
               </button> */}
               <input
                 type="file"
-                onChange={(e)=>handleFileChange(e)}
+                onChange={(e) => handleFileChange(e)}
                 className="border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
                 id="file-upload"
               />
@@ -150,8 +198,10 @@ const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
             <DropdownCmp
               width="w-full"
               options={kelompokBiaya}
-              value={kelompokBiaya.find((option) => option.value === logbook.group_budget)}
-              onChange={(option) => handleGroupBudget(option.value)} 
+              value={kelompokBiaya.find(
+                (option) => option.value === logbook.group_budget
+              )}
+              onChange={(option) => handleGroupBudget(option.value)}
             />
           </div>
 
@@ -161,13 +211,13 @@ const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
               Nominal
             </label>
             <input
-            name="nominal"
-            value={logbook.nominal}
-            onChange={(e) => handleInputChange(e)}
-            type="text"
-            placeholder="Text Field"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-             />
+              name="nominal"
+              value={logbook.nominal}
+              onChange={(e) => handleInputChange(e)}
+              type="text"
+              placeholder="Text Field"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Nomor Berkas
             </label>

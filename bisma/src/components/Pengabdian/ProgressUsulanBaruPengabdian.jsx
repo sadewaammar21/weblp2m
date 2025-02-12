@@ -11,6 +11,7 @@ import DokumenPendukung from "./UsulanBaru/DokumenPendukung";
 import KonfirmasiUsulan from "./UsulanBaru/KonfirmasiUsulan";
 import Footer from "../Footer";
 import { addService } from "../../Features/ServiceSlice";
+import { toast, ToastContainer } from "react-toastify";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -89,47 +90,163 @@ const ProgressUsulanBaruPengabdian = () => {
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
+    console.log(data);
   };
 
   const handlePrevStep = () => {
     setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.get(
+  //         `${apiUrl}/api/comunity-service/${id}`,
+  //         getToken()
+  //       );
+  //       setData((prev) => ({ ...prev, ...response.data }));
+  //     } catch (error) {
+  //       setError(true);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   if (isEdit) fetchData();
+  // }, [id]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        const response = await axios.get(
-          `${apiUrl}/api/comunity-service/${id}`,
-          getToken()
-        );
-        setData((prev) => ({ ...prev, ...response.data }));
+        if (id) {
+          setLoading(true);
+          const response = await axios.get(
+            `${apiUrl}/api/comunity-service/${id}`,
+            getToken()
+          );
+          console.log(response.data);
+          setData({
+            ...data,
+            ...response.data,
+          });
+        } else {
+          setLoading(false);
+        }
       } catch (error) {
-        setError(true);
+        setLoading(false);
       } finally {
         setLoading(false);
       }
     };
-
     if (isEdit) fetchData();
+    console.log(data);
   }, [id]);
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const isSubmit = e.target.name === "ajukan";
+  //   const newStatus = isSubmit ? 2 : undefined;
+  //   try {
+  //     const response = await addService({
+  //       data,
+  //       isEdit,
+  //       serviceId: data.id,
+  //       isSubmit,
+  //       newStatus,
+  //     });
+
+  //     console.log(response);
+  //     console.log("responnya", response?.data?.message || "null");
+
+  //     if (response?.data?.message) {
+  //       toast.success(response?.data?.message); // Menampilkan pesan sukses dari backend
+  //       await new Promise((resolve) => setTimeout(resolve, 1000));
+  //       console.log("", response.message);
+  //       console.log("responnya", response?.data?.message);
+  //     }
+
+  //     navigate("/pengabdian/usulan", {
+  //       state: {
+  //         success:
+  //           response?.data?.message ||
+  //           "Data pengabdian masyarakat telah berhasil disimpan.",
+  //       },
+  //     });
+
+  //     // localStorage.setItem("newService", JSON.stringify(response.data));
+
+  //     // navigate("/pengabdian/usulan");
+  //   } catch (error) {
+  //     const errorMessage =
+  //       error?.response?.data?.message || "Gagal menambahkan layanan!";
+  //     toast.error(errorMessage);
+  //     console.error("Error:", error);
+  //     navigate("/pengabdian/usulan", {
+  //       state: {
+  //         error: errorMessage,
+  //       },
+  //     });
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await addService({
+        data: data,
+        isEdit: isEdit,
+        serviceId: data.id,
+        isSubmit: e.target.name === "ajukan",
+        newStatus: e.target.name === "ajukan" ? 2 : undefined,
+      });
 
-    const isSubmit = e.target.name === "ajukan";
-    const newStatus = isSubmit ? 2 : undefined;
+      console.log("Response dari addService:", response);
 
-    const response = await addService({
-      data,
-      isEdit,
-      serviceId: data.id,
-      isSubmit,
-      newStatus,
-    });
+      setTimeout(() => {
+        toast.success(response || "Berhasil!");
+      }, 100);
 
-    console.log(response);
-    navigate("/pengabdian/usulan");
+      navigate("/pengabdian/usulan");
+    } catch (error) {
+      console.log("Error Response:", error.response);
+      toast.error(
+        error.response?.data?.message ||
+          "Terjadi Kesalahan Ketika Mengirim Data."
+      );
+    }
+
+    // const isSubmit = e.target.name === "ajukan";
+    // const newStatus = isSubmit ? 2 : undefined;
+
+    // try {
+    //   const response = await addService({
+    //     data,
+    //     isEdit,
+    //     serviceId: data.id,
+    //     isSubmit,
+    //     newStatus,
+    //   });
+
+    //   console.log("Respons dari backend:", response); // Debugging
+    //   console.log("Respons message dari backend:", response.data.message);
+    //   const successMessage = response.data.message || "Operasi berhasil.";
+    //   toast.success(successMessage);
+
+    //   navigate("/pengabdian/usulan", {
+    //     state: { success: successMessage },
+    //   });
+    // } catch (error) {
+    //   const errorMessage =
+    //     error?.response?.data?.message || "Gagal menambahkan layanan!";
+    //   toast.error(errorMessage);
+    //   console.error("Error di handleSubmit:", error);
+
+    //   navigate("/pengabdian/usulan", {
+    //     state: { error: errorMessage },
+    //   });
+    // }
   };
 
   const renderStepContent = (step) => {
@@ -159,13 +276,15 @@ const ProgressUsulanBaruPengabdian = () => {
           <ProgressBar currentStep={currentStep} />
           <div className="mt-6">{renderStepContent(currentStep)}</div>
           <div className="flex justify-between my-10">
-            <button
-              onClick={handlePrevStep}
-              disabled={currentStep === 1}
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-            >
-              Previous
-            </button>
+            <div>
+              <button
+                onClick={handlePrevStep}
+                disabled={currentStep === 1}
+                className="px-4 py-2 bg-white text-bluef-500 border b-1 border-bluef-500 rounded"
+              >
+                Kembali
+              </button>
+            </div>
             <button
               onClick={handleNextStep}
               disabled={currentStep === steps.length}
@@ -202,6 +321,7 @@ const ProgressUsulanBaruPengabdian = () => {
             )}
           </div>
         </div>
+        <ToastContainer position="top-right" autoClose={3000} />
       </div>
       <Footer />
     </div>

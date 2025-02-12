@@ -3,7 +3,7 @@ import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { getToken, LogOut, reset } from "../Features/AuthSlice";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MdLogout, MdErrorOutline } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 const NavBar = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isSuccess, message } = useSelector((state) => state.auth);
 
   const [dropdown, setDropdown] = useState(null);
   const [subDropdown, setSubDropdown] = useState(false);
@@ -102,11 +103,23 @@ const NavBar = ({ children }) => {
     }
   }, []);
 
-  const logout = () => {
-    dispatch(LogOut());
-    dispatch(reset());
-    navigate("/");
-    toast.success("Successfully logged out");
+  // const logout = () => {
+  //   dispatch(LogOut());
+  //   dispatch(reset());
+  //   navigate("/");
+  //   toast.success("Successfully logged out");
+  // };
+
+  const logout = async () => {
+    try {
+      const response = await dispatch(LogOut()).unwrap(); // Ambil response dari logout
+      dispatch(reset());
+
+      localStorage.setItem("logoutMessage", response.message); // Simpan pesan dari server
+      navigate("/");
+    } catch (error) {
+      toast.error("Logout failed", { position: "top-right" });
+    }
   };
 
   //menu dropdown hover dashboard untuk beralih role
@@ -136,15 +149,30 @@ const NavBar = ({ children }) => {
       Dosen: "/dashboard",
       Operator: "/dashboard-operator",
       Reviewer: "/dashboard-reviewer",
-      KepalaLPPM: "/dashboard-kepala-lppm",
+      "Kepala LPPM": "/dashboard-kepala-lppm",
       Kaprodi: "/dashboard-kaprodi",
     };
 
     // Cari role berdasarkan id
     const selectedRole = parseUser.roles.find((role) => role.id === id);
 
+    console.log("Selected Role:", selectedRole); // Debugging
+    // Cari role berdasarkan id
+    // const selectedRole = parseUser.roles.find((role) => role.id === id);
+
+    //   if (selectedRole) {
+    //     const targetPath = roleMapping[selectedRole.name] || "/dashboard"; // Default ke "/dashboard" jika role tidak ditemukan
+    //     localStorage.setItem("currentRole", id);
+    //     navigate(targetPath);
+    //     window.location.reload();
+    //   }
+    // };
+
     if (selectedRole) {
-      const targetPath = roleMapping[selectedRole.name] || "/dashboard"; // Default ke "/dashboard" jika role tidak ditemukan
+      const targetPath = roleMapping[selectedRole.name] || "/dashboard";
+
+      console.log("Navigating to:", targetPath); // Debugging
+
       localStorage.setItem("currentRole", id);
       navigate(targetPath);
       window.location.reload();
@@ -160,7 +188,7 @@ const NavBar = ({ children }) => {
         </p>
         <div className="flex justify-center space-x-4 mt-4">
           <button
-            className="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600"
+            className="px-2 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600"
             onClick={() => {
               logout();
               closeToast();
@@ -169,7 +197,7 @@ const NavBar = ({ children }) => {
             Yes
           </button>
           <button
-            className="px-4 py-2 bg-gray-300 text-black font-semibold rounded hover:bg-gray-400"
+            className="px-2 py-2 bg-gray-300 text-black font-semibold rounded hover:bg-gray-400"
             onClick={closeToast}
           >
             No
@@ -236,13 +264,13 @@ const NavBar = ({ children }) => {
                   <div className="flex items-center">Dashboard</div>
                   {dropdown === 1 && (
                     <ul
-                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      className="absolute top-full mt-2 left-0 bg-white text-violet-800 shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
                       {parseUser.roles.map((item, index) => (
                         <li
                           key={index}
-                          className="px-4 py-2  hover:bg-violet-800 relative"
+                          className="px-2 py-2 text-violet-800  hover:bg-violet-800 hover:text-white relative"
                           onClick={() => handleRoleChanges(item.id)}
                         >
                           Dashboard {item.name}
@@ -264,7 +292,7 @@ const NavBar = ({ children }) => {
                   />
                   <div className="flex items-center">
                     Penelitian
-                    <FaChevronDown className="ml-2" />
+                    <FaChevronDown className="ml-5" />
                   </div>
                   {dropdown === 2 && (
                     <ul
@@ -272,35 +300,35 @@ const NavBar = ({ children }) => {
                       ref={dropdownRef}
                     >
                       <li
-                        className="px-4 py-2  hover:bg-violet-800 relative"
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white relative"
                         onMouseEnter={handleSubDropdownEnter}
                         onMouseLeave={handleSubDropdownLeave}
                       >
                         <div className="flex items-center justify-between">
                           Penelitian Internal
-                          <FaChevronRight className="w-4 h-4" />
+                          <FaChevronRight className=" w-4 h-4" />
                         </div>
                         {subDropdown && (
                           <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/penelitian/usulan">Usulan Baru</Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/penelitian/perbaikan">
                                 Perbaikan Usulan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/penelitian/laporan-kemajuan">
                                 Laporan Kemajuan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/penelitian/laporan-akhir">
                                 Laporan Akhir
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/penelitian/catatan-harian">
                                 Catatan Harian
                               </Link>
@@ -308,7 +336,7 @@ const NavBar = ({ children }) => {
                           </ul>
                         )}
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         Penelitian Eksternal
                       </li>
                     </ul>
@@ -335,7 +363,7 @@ const NavBar = ({ children }) => {
                       ref={dropdownRef}
                     >
                       <li
-                        className="px-4 py-2  hover:bg-violet-800 relative"
+                        className="px-2 py-2  text-violet-800   hover:bg-violet-800 hover:text-white relative"
                         onMouseEnter={handleSubDropdownEnter}
                         onMouseLeave={handleSubDropdownLeave}
                       >
@@ -345,25 +373,25 @@ const NavBar = ({ children }) => {
                         </div>
                         {subDropdown && (
                           <ul className="absolute top-0 text-black left-full ml-1 w-48 bg-gray-50">
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/pengabdian/usulan">Usulan Baru</Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/pengabdian/perbaikan">
                                 Perbaikan Usulan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/pengabdian/laporan-kemajuan">
                                 Laporan Kemajuan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/pengabdian/laporan-akhir">
                                 Laporan Akhir
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800 flex items-center">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white flex items-center">
                               <Link to="/pengabdian/catatan-harian">
                                 Catatan Harian
                               </Link>
@@ -371,7 +399,7 @@ const NavBar = ({ children }) => {
                           </ul>
                         )}
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         Penelitian Eksternal
                       </li>
                     </ul>
@@ -401,10 +429,10 @@ const NavBar = ({ children }) => {
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/review-penilaian-proposal">Penelitian</Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/review/penilaian-proposal-pengabdian">
                           Pengabdian
                         </Link>
@@ -434,11 +462,11 @@ const NavBar = ({ children }) => {
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/list-monev-penelitian">Penelitian</Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
-                        <Link to="/monitoring/pengabdian">Pengabdian</Link>
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                        <Link to="/pengabdian/monev">Pengabdian</Link>
                       </li>
                     </ul>
                   )}
@@ -462,7 +490,7 @@ const NavBar = ({ children }) => {
                     >
                       {/* Penelitian */}
                       <li
-                        className="px-4 py-2 hover:bg-violet-800 relative"
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white relative"
                         onMouseEnter={() =>
                           handleSubDropdownEnters("penelitian")
                         }
@@ -479,22 +507,22 @@ const NavBar = ({ children }) => {
                             className="absolute top-0 left-full ml-1 w-48 bg-gray-50"
                             ref={dropdownRef}
                           >
-                            <li className="px-4 py-2 hover:bg-violet-800">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring-usulan-reguler">
                                 Monitoring Usulan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring-perbaikan-usulan-penelitian">
                                 Perbaikan Usulan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring-usulan-reguler-hasil-review">
                                 Hasil Review
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring/penelitian/periode-kegiatan">
                                 Periode Kegiatan
                               </Link>
@@ -505,7 +533,7 @@ const NavBar = ({ children }) => {
 
                       {/* Pengabdian */}
                       <li
-                        className="px-4 py-2 hover:bg-violet-800 relative"
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white relative"
                         onMouseEnter={() =>
                           handleSubDropdownEnters("pengabdian")
                         }
@@ -522,23 +550,23 @@ const NavBar = ({ children }) => {
                             className="absolute top-0 left-full ml-1 w-48 bg-gray-50"
                             ref={dropdownRef}
                           >
-                            <li className="px-4 py-2 hover:bg-violet-800">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring/pengabdian/usulan-reguler">
                                 Monitoring Usulan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring-perbaikan-usulan-pengabdian">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                              <Link to="/monitoring/pengabdian/perbaikan-usulan">
                                 Perbaikan Usulan
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring/pengabdian/hasil-review">
                                 Hasil Review
                               </Link>
                             </li>
-                            <li className="px-4 py-2 hover:bg-violet-800">
-                              <Link to="/monitoring/penenelitian/periode-kegiatan/">
+                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                              <Link to="/monitoring/pengabdian/periode-kegiatan">
                                 <div className="flex items-center justify-between">
                                   Periode Kegiatan
                                 </div>
@@ -571,17 +599,17 @@ const NavBar = ({ children }) => {
                       className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
                       ref={dropdownRef}
                     >
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/monitoring/data-pendukung/edit-profil-lembaga">
                           Edit Profil Lembaga
                         </Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/monitoring/data-pendukung/profil-user-list">
                           Edit Profil User
                         </Link>
                       </li>
-                      <li className="px-4 py-2 hover:bg-violet-800">
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                         <Link to="/monitoring/data-pendukung/reset-password-user">
                           Reset Password User
                         </Link>
@@ -591,7 +619,7 @@ const NavBar = ({ children }) => {
                 </li>
 
                 {/* pengelolaan reviewer */}
-                <li
+                {/* <li
                   className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 3 ? "show" : "hidden"}`}
                 >
                   <Link to="/monitoring-pengelola-review">
@@ -604,32 +632,124 @@ const NavBar = ({ children }) => {
                       Pengelola Review
                     </div>
                   </Link>
+                </li> */}
+
+                <li
+                  className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 3 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(8)}
+                  // onMouseLeave={handleDropdownLeave}
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
+                      alt="laporan"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Pengelola Review
+                  </div>
+                  {dropdown === 8 && (
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                        <Link to="/monitoring-pengelola-review">
+                          Penelitian
+                        </Link>
+                      </li>
+                      <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                        <Link to="/monitoring/pengabdian/pengelola-review">
+                          Pengabdian
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
                 {/* Operator */}
 
                 {/* persetujuan usulan Kepala LPPM*/}
                 <li
-                  className={`text-white hover:text-gray-300 cursor-pointer relative flex items-center ${currentRoles == 5 ? "show" : "hidden"}`}
+                  className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 5 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(9)}
+                  // onMouseLeave={handleDropdownLeave}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/pengabdian.svg"}
-                    alt="pengabdian"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Persetujuan Usulan
+                  <div className="flex items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
+                      alt="kekayaan intelektual"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Persetujuan Usulan
+                    <FaChevronDown className="ml-2" />
+                  </div>
+                  {dropdown === 9 && (
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
+                      <li
+                        className=" px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
+                        onClick={() =>
+                          navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
+                        }
+                      >
+                        <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
+                          Penelitian
+                        </Link>
+                      </li>
+                      <li
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
+                        onClick={() =>
+                          navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
+                        }
+                      >
+                        <Link>Pengabdian</Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
                 {/* persetujuan usulan Kepala LPPM*/}
 
                 {/* kaprodi */}
                 <li
-                  className={`text-white hover:text-gray-300 cursor-pointer flex items-center ${currentRoles == 4 ? "show" : "hidden"}`}
+                  className={`text-white hover:text-gray-300 cursor-pointer relative ${currentRoles == 4 ? "show" : "hidden"}`}
+                  onMouseEnter={() => handleDropdownEnter(10)}
+                  // onMouseLeave={handleDropdownLeave}
                 >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/laporan.svg"}
-                    alt="laporan"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Persetujuan Usulan
+                  <div className="flex items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/kkyint.svg"}
+                      alt="kekayaan intelektual"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Persetujuan Usulan
+                    <FaChevronDown className="ml-2" />
+                  </div>
+                  {dropdown === 10 && (
+                    <ul
+                      className="absolute top-full mt-2 left-0 bg-white text-black shadow-md w-48 z-10"
+                      ref={dropdownRef}
+                    >
+                      <li
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
+                        onClick={() =>
+                          navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
+                        }
+                      >
+                        <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
+                          Penelitian
+                        </Link>
+                      </li>
+                      <li
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
+                        onClick={() =>
+                          navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
+                        }
+                      >
+                        <Link>Pengabdian</Link>
+                      </li>
+                    </ul>
+                  )}
                 </li>
                 {/* kaprodi */}
 

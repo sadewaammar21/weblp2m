@@ -2,23 +2,40 @@
 import React, { useState, useEffect } from "react";
 // import { FaPlus, FaPen } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
-// import { getToken } from "../../Features/AuthSlice";
-// import { Link } from "react-router-dom";
-// import { getResearch } from '../../Features/ResearchSlice';
+import { getToken } from "../../../Features/AuthSlice";
+import { Link } from "react-router-dom";
+import { getService } from '../../../Features/ServiceSlice';
 
 const ListPerUsPengabdian = () => {
+  const [service, setService] = useState([]);
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/pengabdian/perbaikan/:id"); // Arahkan ke halaman 'usulan-baru-penelitian'
+  const handleClick = (id) => {
+    navigate(`/pengabdian/perbaikan/${id}`); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
+
+   const user = JSON.parse(localStorage.getItem('user'));
+    const fetchService = async() => {
+      const response = await getService({
+        pageSize: 10, 
+        currentPage: 1, 
+        status: 6, 
+        // year: , 
+        userId: user.id
+      });
+      setService(response.data);
+    }
+    useEffect(()=> {
+      fetchService()
+    }, []);
+  
 
   return (
     <div className="mx-5">
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENGABDIAN
+          PERBAIKAN USULAN PENGABDIAN
         </h1>
       </div>
 
@@ -40,24 +57,26 @@ const ListPerUsPengabdian = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Coba</td>
-                <td>Penelitian dan Pengabdian</td>
-                <td>2024</td>
-                <td>-</td>
-                <td>2024</td>
-                <td>Perbaikan</td>
-                <td>
-                  <button onClick={handleClick}>
-                    <img
-                      src="/assets/edit_perusl.svg"
-                      alt="Action Icon"
-                      className="py-2 w-10 h-auto z-10"
-                    />
-                  </button>
-                </td>
-              </tr>
+                {service.map((item, index) => (
+                  <tr key={index}>
+                      <td>{index+1}</td>
+                      <td>{item.scheme.name}</td>
+                      <td>{item.title}</td>
+                      <td>{item.year}</td>
+                      <td>{item.approved_funds}</td>
+                      <td>2024</td>
+                      <td>{item.status}</td>
+                      <td>
+                              <button onClick={() => handleClick(item.id)}>
+                                  <img 
+                                      src="/assets/edit_perusl.svg"
+                                      alt="Action Icon"
+                                      className="py-2 w-10 h-auto z-10"
+                                  />
+                              </button>
+                      </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

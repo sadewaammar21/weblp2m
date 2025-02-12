@@ -59,8 +59,7 @@ const PengabdianProposalTab1 = ({ data, review, setReview }) => {
                   Judul Proposal
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                  {data?.title ||
-                    "Membangun Kemandirian Ekonomi Desa melalui Implementasi Sistem Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa Sinergi Sidowayah"}
+                  {data?.title}
                 </td>
               </tr>
 
@@ -85,7 +84,7 @@ const PengabdianProposalTab1 = ({ data, review, setReview }) => {
               <tr className="bg-gray-50 boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Bidang Fokus</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  {data?.research_focus?.name || "Bidang Fokus Placeholder"}
+                  {data?.focus_thematic?.name || data?.focus_rirn?.name}
                 </td>
               </tr>
 
@@ -118,25 +117,25 @@ const PengabdianProposalTab1 = ({ data, review, setReview }) => {
                   Lama Kegiatan
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data?.duration || 0} Tahun
+                  {data?.duration} Tahun
                 </td>
               </tr>
 
               <tr className="bg-gray-50 boder border-black border-b-2">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-sans">
-                  Tema Penelitian
+                  Rumpun Ilmu Level 1
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                  {data?.research_theme?.name || "Tema Placeholder"}
+                  {data?.cluster_lv1?.name}
                 </td>
               </tr>
 
               <tr className="bg-gray-50 boder border-black border-b-2">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-sans">
-                  Topik Penelitian
+                  Rumpun Ilmu Level 2
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                  {data?.research_topic?.name || "Topik Placeholder"}
+                  {data?.cluster_lv2?.name}
                 </td>
               </tr>
 
@@ -145,14 +144,16 @@ const PengabdianProposalTab1 = ({ data, review, setReview }) => {
                   Rumpun Ilmu Level 3
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data?.science_cluster3?.name || "Rumpun Placeholder"}
+                  {data?.cluster_lv3?.name}
                 </td>
               </tr>
 
               <tr className="bg-gray-50 boder border-black border-b-2">
-                <td className="px-6 py-4 text-sm font-sans ">Target TKT</td>
-                <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  {data?.tkt_final || "TKT Placeholder"}
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-sans">
+                  Kategori
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
+                  {data?.category?.name || "Kelompok Skema Placeholder"}
                 </td>
               </tr>
 

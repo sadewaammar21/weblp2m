@@ -17,27 +17,31 @@ const PenilaianProposalPengabdian = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [jmlBaris, setJmlBaris] = useState(null);
 
-  //get researches data
+  const jumlahBarisOptions = [
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "15", value: "15" },
+  ];
+
   const user = localStorage.getItem("user");
   const userParse = JSON.parse(user);
+  const fetchData = async () => {
+    try {
+      const result = await axios.get(
+        `${apiUrl}/api/reviewer/${userParse.id}/comunity-service`,
+        getToken()
+      );
+      setData(result.data);
+      console.log(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get(
-          // `${apiUrl}/api/reviewer/${userParse.id}/research`, getToken()
-          `${apiUrl}/api/reviewer/3/research`,
-          getToken()
-        );
-        setData(result.data);
-        console.log(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
   if (loading) return <p>Loading...</p>;
@@ -81,9 +85,11 @@ const PenilaianProposalPengabdian = () => {
     navigate("/dashboard-reviewer");
   };
 
-  const handleAction = () => {
+  const handleAction = (serviceId) => {
     console.log("Navigating to view page...");
-    navigate("/review/penilaian-proposal-pengabdian/view");
+    navigate("/review/penilaian-proposal-pengabdian/view", {
+      state: { id: serviceId },
+    });
   };
 
   const options = [
@@ -99,17 +105,15 @@ const PenilaianProposalPengabdian = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className="flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 bg-bluef-500 text-white
-               hover:bg-white hover:text-bluef-500"
-            >
-              <FaLessThan className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+              hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
@@ -129,12 +133,15 @@ const PenilaianProposalPengabdian = () => {
             </div>
             <div className="mx-2 my-2">
               <DropdownCmp
-                options={options}
-                selectedOption={selectedOption}
-                onChange={(e) => handleDropdownChange(e.target.value)}
+                label="Jumlah Baris *"
+                options={jumlahBarisOptions}
+                selectedOption={jumlahBarisOptions.find(
+                  (opt) => opt.value === jmlBaris
+                )}
+                onChange={(selected) => setJmlBaris(selected.value)}
                 placeholder="Jumlah Baris"
-                className=" border border-black "
-                controlClassName="bg-white text-black"
+                className="w-72 border border-black" // Panjang dropdown
+                controlClassName="bg-neutral-30 text-black"
               />
             </div>
           </div>
@@ -160,10 +167,10 @@ const PenilaianProposalPengabdian = () => {
               </thead>
               <tbody>
                 {data.data &&
-                  data.data.map((item) => (
+                  data.data.map((item, index) => (
                     <tr key={item.id}>
                       <td className="border px-4 py-2 text-center">
-                        {item.id}
+                        {index + 1}
                       </td>
                       <td className="border px-4 py-2">
                         {item.user.name}
@@ -174,12 +181,13 @@ const PenilaianProposalPengabdian = () => {
                         <br />
                         Lama Kegiatan: {item.duration} Tahun
                         <br />
-                        Bidang Fokus: {item.research_focus.name}
+                        Bidang Fokus:{" "}
+                        {item.focus_thematic.name || item.focus_r_i_r_n_s.name}
                       </td>
                       <td className="border px-4 py-2 text-bluef-500">
-                        {item.title}
+                        Judul: {item.title}
                         <br />
-                        {item.scope.name}
+                        Ruang Lingkup: {item.scope.name}
                       </td>
                       <td className="border px-4 py-2 items-center">
                         <button>
@@ -190,9 +198,11 @@ const PenilaianProposalPengabdian = () => {
                           />
                         </button>
                       </td>
-                      <td className="border px-4 py-2 text-center">
+                      <td
+                        className={`border px-4 py-2 text-center ${item.status == 3 ? "" : "hidden"}`}
+                      >
                         <button
-                          onClick={handleAction}
+                          onClick={() => handleAction(item.id)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"
                         >
                           Review
@@ -200,16 +210,6 @@ const PenilaianProposalPengabdian = () => {
                       </td>
                     </tr>
                   ))}
-                <tr>
-                  <td className="border px-4 py-2 text-center">
-                    <button
-                      onClick={handleAction}
-                      className="bg-bluef-500 text-white px-4 py-2 rounded-md"
-                    >
-                      Review
-                    </button>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>

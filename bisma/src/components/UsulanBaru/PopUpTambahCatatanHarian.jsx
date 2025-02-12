@@ -5,6 +5,7 @@ import TextfieldCmp from "../TextfieldCmp";
 import TextAreaCmp from "../TextAreaCmp";
 import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import { addLogbook } from "../../Features/ResearchSlice";
+import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
@@ -37,22 +38,40 @@ const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
   };
 
   const handleSubmit = () => {
-    const response = addLogbook({
-      id: logbook.id,
-      dateActivity: logbook.date_activity,
-      activityDescription: logbook.activity_description,
-      percentage: logbook.percentage,
-      document: logbook.document,
-    });
-    console.log(response);
-    setLogbook({
-    type: "research",
-    id: id,
-    date_activity: "",
-    activity_description: "",
-    percentage: 0,
-  })
-    onRequestClose();
+    try {
+      const response = addLogbook({
+        id: logbook.id,
+        dateActivity: logbook.date_activity,
+        activityDescription: logbook.activity_description,
+        percentage: logbook.percentage,
+        document: logbook.document,
+      });
+      console.log("Response:", response);
+
+      if (response) {
+        // Tampilkan toast sukses
+        toast.success(response);
+      } else {
+        toast.success("Catatan harian berhasil ditambahkan!");
+      }
+      console.log(response);
+      setLogbook({
+        type: "research",
+        id: id,
+        date_activity: "",
+        activity_description: "",
+        percentage: 0,
+      });
+      onRequestClose();
+    } catch (error) {
+      console.error("Gagal menyimpan catatan harian:", error);
+
+      const errorMessage =
+        error.response?.data?.message || "Terjadi kesalahan!";
+
+      // Tampilkan toast error
+      toast.error(errorMessage);
+    }
   };
 
   return (
@@ -66,7 +85,12 @@ const PopUpTambahCatatanHarian = ({ isOpen, onRequestClose, id }) => {
         {/* Header */}
         <div className="flex justify-between items-center border-b pb-2 mb-4">
           <h2 className="text-lg font-bold">Catatan Harian - Form</h2>
-          <button className="text-gray-500 hover:text-gray-800" onClick={onRequestClose}>&times;</button>
+          <button
+            className="text-gray-500 hover:text-gray-800"
+            onClick={onRequestClose}
+          >
+            &times;
+          </button>
         </div>
 
         {/* Form Content */}

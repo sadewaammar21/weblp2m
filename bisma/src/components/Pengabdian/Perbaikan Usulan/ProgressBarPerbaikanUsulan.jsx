@@ -1,9 +1,12 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import PerbaikanSubstansi from "./PerbaikanSubstansi";
 import PerbaikanRancanganAnggaranBi from "./PerbaikanRancanganAnggaranBi";
 import ListPerUsPengabdian from "./ListPerUsPengabdian";
 import PerbaikanSuratKesanggupan from "./PerbaikanSuratKesanggupan";
 import KonfirmasiPerUslPengabdian from "./KonfirmasiPerUslPengabdian";
+import { getServiceDetail, addService } from "../../../Features/ServiceSlice";
 
 const steps = [
   { id: 1, label: "Substansi" },
@@ -39,7 +42,48 @@ const ProgressBar = ({ currentStep }) => {
 };
 
 const ProgressBarPerbaikanUsulan = () => {
-  const [currentStep, setCurrentStep] = React.useState(1);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [service, setService] = useState({});
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const fetchServiceDetail = async () => {
+      const response = await getServiceDetail(id);
+      setService({
+        ...response.data,
+        cluster_lv1: response.data.cluster_lv1.id,
+        cluster_lv2: response.data.cluster_lv2.id,
+        cluster_lv3: response.data.cluster_lv3.id});
+      console.log(service);
+    };
+    useEffect(() => {
+      fetchServiceDetail();
+    }, []);
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (e.target.name === "ajukan") {
+        const response = await addService({
+          data: service,
+          isEdit: true,
+          serviceId: service.id,
+          isSubmit: true,
+          newStatus: 7,
+        });
+        console.log(response);
+        navigate(-1);
+      } else {
+        const response = await addService({
+          data: service,
+          isEdit: true,
+          serviceId: service.id,
+          isSubmit: false,
+          newStatus: 7,
+        });
+        console.log(response);
+        navigate(-1);
+      }
+    };
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
@@ -52,15 +96,15 @@ const ProgressBarPerbaikanUsulan = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <PerbaikanSubstansi />;
+        return <PerbaikanSubstansi service={service} setService={setService}/>;
       case 2:
-        return <PerbaikanRancanganAnggaranBi />;
+        return <PerbaikanRancanganAnggaranBi service={service} setService={setService} />;
       case 3:
-        return <PerbaikanSuratKesanggupan />;
+        return <PerbaikanSuratKesanggupan service={service} setService={setService} />;
       case 4:
-        return <KonfirmasiPerUslPengabdian />;
+        return <KonfirmasiPerUslPengabdian service={service} setService={setService} />;
       default:
-        return <ListPerUsPengabdian />;
+        return <ListPerUsPengabdian service={service} setService={setService} />;
     }
   };
 
@@ -68,7 +112,7 @@ const ProgressBarPerbaikanUsulan = () => {
     <div>
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          PERBAIKAN USULAN PENELITIAN
+          PERBAIKAN USULAN PENGABDIAN
         </h1>
         <div className="container mx-auto">
           <div className="bg-gray-50 shadow-sm  rounded-sm  p-5 ">
@@ -85,9 +129,7 @@ const ProgressBarPerbaikanUsulan = () => {
               {/* Content */}
               <div>
                 <h2 className="text-lg font-bold text-gray-800">
-                  Membangun Kemandirian Ekonomi Desa melalui Implementasi Sistem
-                  Manajemen Pelaporan Keuangan Terintegrasi di BUMDesa Sinergi
-                  Sidowayah
+                  {service.title}
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
                   Penelitian Fundamental - Reguler Penelitian Kompetitif
@@ -113,6 +155,25 @@ const ProgressBarPerbaikanUsulan = () => {
               >
                 Next
               </button>
+              <div
+                className={`${currentStep === steps.length ? "" : "hidden"}`}
+              >
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  disabled={currentStep < steps.length}
+                  className={`px-4 py-2 bg-blue-600 text-white rounded mx-5 ${currentStep === steps.length ? "" : "hidden"}`}
+                >
+                  Submit
+                </button>
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  name="ajukan"
+                  disabled={currentStep < steps.length}
+                  className={`px-4 py-2 bg-green-600 text-white rounded  ${currentStep === steps.length ? "" : "hidden"}`}
+                >
+                  Ajukan
+                </button>
+              </div>
             </div>
           </div>
         </div>

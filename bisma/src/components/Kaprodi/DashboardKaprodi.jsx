@@ -14,10 +14,36 @@ const DashboardKaprodi = () => {
   const navigate = useNavigate();
 
   const [selectedOption, setSelectedOption] = useState("");
+  const [year, setYear] = useState(null);
+  const [startYear, setStartYear] = useState(null);
+  const [prohibs, setProhibs] = useState(null);
+  const [jenisKegiatan, setJenisKegiatan] = useState(null);
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
+
+  const optionsJenisKegiatan = [
+    { label: "Penelitian", value: "Penelitian" },
+    { label: "Pengabdian", value: "Pengabdian" },
+  ];
+
+  const Years = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+
+  const startYears = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+
+  const ProHib = [
+    {
+      label: "Penelitian Kompetitif Nasional",
+      value: "Penelitian Kompetitif Nasional",
+    },
+  ];
 
   const options = [
     { label: "Option 1", value: "1" },
@@ -29,19 +55,19 @@ const DashboardKaprodi = () => {
     {
       title: "Usulan Belum Ditinjau",
       count: 0,
-      icon: <FaHdd size={24} className="text-violet-800" />,
+      icon: <FaHdd size={24} />,
       path: "/kaprodi/usulan-belum-ditinjau",
     },
     {
       title: "Usulan Disetujui",
       count: 1,
-      icon: <FaBullseye size={24} className="text-violet-800" />,
+      icon: <FaBullseye size={24} />,
       path: "/kaprodi/usulan-disetujui",
     },
     {
       title: "Usulan Ditolak",
       count: 0,
-      icon: <FaChartBar size={24} className="text-violet-800" />,
+      icon: <FaChartBar size={24} />,
       path: "/kaprodi/usulan-ditolak",
     },
   ];
@@ -49,28 +75,27 @@ const DashboardKaprodi = () => {
   return (
     <div className="mx-10 my-10">
       <div>
-        <h2 className="text-violet-800 font-bold text-lg mb-4">
+        <h2 className="text-violet-800 font-bold text-h5 mb-4">
           DASHBOARD KAPRODI
         </h2>
       </div>
       <div className="flex justify-end items-start space-x-5">
         <DropdownCmp
           label="Program Hibah *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="Penelitian Kompetitif Nasional"
-          className="w-72 border border-black " // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          options={ProHib}
+          selectedOption={ProHib.find((opt) => opt.value === prohibs)}
+          onChange={(selected) => setProhibs(selected.value)}
+          placeholder="Pilih Program Hibah"
+          className="w-72 border border-black"
         />
         <DropdownCmp
           label="Jenis Kegiatan *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="Penelitian"
-          className="w-72 border border-black" // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          options={optionsJenisKegiatan}
+          selectedOption={optionsJenisKegiatan.find(
+            (opt) => opt.value === jenisKegiatan
+          )}
+          onChange={(selected) => setProhibs(selected.value)}
+          className="w-72 border border-black"
         />
       </div>
 
@@ -78,21 +103,19 @@ const DashboardKaprodi = () => {
       <div className="flex justify-end items-start space-x-5 my-5">
         <DropdownCmp
           label="Tahun Usulan *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="2023"
-          className="w-72 border border-black" // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          options={Years}
+          selectedOption={Years.find((opt) => opt.value === year)}
+          onChange={(selected) => setYear(selected.value)}
+          placeholder="Pilih Tahun Usulan"
+          className="w-72 border border-black"
         />
         <DropdownCmp
           label="Tahun Pelaksanaan *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="2024"
-          className="w-72 border border-black" // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          options={startYears}
+          selectedOption={startYears.find((opt) => opt.value === startYear)}
+          onChange={(selected) => setStartYear(selected.value)}
+          placeholder="Pilih Tahun Pelaksanaan"
+          className="w-72 border border-black"
         />
       </div>
       <div className="grid grid-cols-3 gap-4 my-10">
@@ -102,7 +125,10 @@ const DashboardKaprodi = () => {
             onClick={() => navigate(metric.path)} // Navigasi ke halaman tertentu
             className="bg-gray-100 rounded-lg shadow-lg p-5 flex flex-col items-center text-center cursor-pointer hover:bg-gray-200"
           >
-            {metric.icon}
+            <div className="bg-violet-800 rounded-full p-4 flex items-center justify-center mb-3">
+              {/* Pastikan ikon memiliki ukuran sesuai */}
+              <div className="text-white w-6 h-6">{metric.icon}</div>
+            </div>
             <p className="text-violet-800 font-semibold mt-2">{metric.title}</p>
             <p className="text-3xl font-bold text-violet-800">{metric.count}</p>
           </div>

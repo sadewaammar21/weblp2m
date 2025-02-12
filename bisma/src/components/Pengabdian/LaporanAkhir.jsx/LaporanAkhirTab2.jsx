@@ -1,39 +1,132 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextfieldCmp from "../../TextfieldCmp";
 import TextAreaCmp from "../../TextAreaCmp";
 
-const LaporanAkhirTab2 = () => {
-  const [formData, setFormData] = useState({
-    mitraSasaran: "",
-    statusSocialMitra: "",
-    masyarakatEkonomiProduktif: "",
-    masyarakatEkonominonProduktif: "",
-    jumlahMitra: "",
-    pendidikanMitra: "",
-    bidangPermasalahan: "",
-    jaraKeMitra: "",
-    jenisKelaminTimPengusul: "",
-    jenisKelaminTimMitra: "",
-    metodePelaksanaanKegiatan: "",
-    keberlanjutanProgram: "",
-    peranMitradalamKegiatan: "",
-    peranPemerintahDaerah: "",
-  });
+const LaporanAkhirTab2 = ({ data, setData }) => {
+  // const [mitraSasaran, setMitraSasaran] = useState("");
+  // const [masyarakatEP, setMasyarakatEP] = useState("");
+  // const [masyarakatENP, setMasyarakatENP] = useState("");
+  // const [pendidikanMitra, setpendidikanMitra] = useState("");
+  // const [BidangPM, setBidangPM] = useState("");
+  // const [jaraKeMitra, setJarakKeMitra] = useState("");
+  // const [metodePelaksanaanKegiatan, setMetodePelaksanaanKegiatan] =
+  //   useState("");
+  // const [keberlanjutanProgram, setKeberlanjutanProgram] = useState("");
+  // const [peranMitraDalamKegiatan, setperanMitraDalamKegiatana] = useState("");
+  // const [peranPemerintahDaerah, setperanPemerintahDaerah] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const mitraSasaran = [
+    {
+      value: "Masyarakat Ekonnomi Produktif",
+      name: "Masyarakat Ekonnomi Produktif",
+    },
+    {
+      value: "Masyarakat Ekonnomi non Produktif",
+      name: "Masyarakat Ekonnomi non Produktif",
+    },
+  ];
+
+  const masyarakatEP = [
+    { value: "Pengusaha Mitra/UMKM", name: "Pengusaha Mitra/UMKM" },
+    { value: "Anggota Koperasi", name: "Anggota Koperasi" },
+    { value: "Kelompok Petani", name: "Kelompok Petani" },
+    {
+      value: "Kelompok Industri Rumah Tangga",
+      name: "Kelompok Industri Rumah Tangga",
+    },
+    { value: "Tidak Ada", name: "Tidak Ada" },
+  ];
+
+  const masyarakatENP = [
+    {
+      value: "Kelompok Pendidikan (PAUD, SD, SMP, SMA/SMK/Pesantren)",
+      name: "Kelompok Pendidikan (PAUD, SD, SMP, SMA/SMK/Pesantren)",
+    },
+    { value: "Kelompok PKK/Karang Taruna", name: "Kelompok PKK/Karang Taruna" },
+    { value: "Puskesmas/Posyandu", name: "Puskesmas/Posyandu" },
+    { value: "Tidak Ada", name: "Tidak Ada" },
+  ];
+
+  const pendidikanMitra = [
+    { value: "S3", name: "S3" },
+    { value: "S2", name: "S2" },
+    { value: "S1", name: "S1" },
+    { value: "Diploma", name: "Diploma" },
+    { value: "SMA", name: "SMA" },
+    { value: "SMP", name: "SMP" },
+    { value: "SD", name: "SD" },
+    { value: "Tidak Berpendidikan", name: "Tidak Berpendidikan" },
+  ];
+
+  const BidangPM = [
+    { value: "Teknologi", name: "Teknologi" },
+    { value: "Manajemen", name: "Manajemen" },
+    { value: "Sosial Ekonomi", name: "Sosial Ekonomi" },
+    { value: "Hukum", name: "Hukum" },
+    { value: "Keamanan", name: "Keamanan" },
+  ];
+
+  const jaraKeMitra = [
+    { value: "<50 KM", name: "<50 KM" },
+    { value: "50-100 KM", name: "50-100 KM" },
+    { value: "101-200 KM", name: "101-200 KM" },
+    { value: ">200 KM (Beda Provinsi)", name: ">200 KM (Beda Provinsi)" },
+  ];
+
+  const metodePelaksanaanKegiatan = [
+    { value: "Penyuluhan", name: "Penyuluhan" },
+    { value: "Pendampingan", name: "Pendampingan" },
+    { value: "Pendidikan", name: "Pendidikan" },
+    { value: "Demplot/Percontohan", name: "Demplot/Percontohan" },
+    { value: "Rancang Bangun", name: "Rancang Bangun" },
+    { value: "Pelatihan", name: "Pelatihan" },
+  ];
+
+  const keberlanjutanProgram = [
+    { value: "Berlanjut", name: "Berlanjut" },
+    { value: "Berhenti", name: "Berhenti" },
+  ];
+
+  const peranMitraDalamKegiatan = [
+    { value: "Objek Kegiatan", name: "Objek Kegiatan" },
+    { value: "Subjek Kegiatan", name: "Subjek Kegiatan" },
+  ];
+
+  const peranPemerintahDaerah = [
+    { value: "Dukungan Dana", name: "Dukungan Dana" },
+    { value: "Dukungan Kebijakan", name: "Dukungan Kebijakan" },
+    {
+      value: "Dukungan Pelaksanaan Kegiatan",
+      name: "Dukungan Pelaksanaan Kegiatan",
+    },
+  ];
+
+  useEffect(() => {
+    console.log("Report data:", data); // Debugging the report data
+  }, [data]);
+
+  const handleInputChange = () => (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
+    setData((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
   };
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setFormData((prev) => {
-      const bidangPermasalahan = checked
-        ? [...prev.bidangPermasalahan, value]
-        : prev.bidangPermasalahan.filter((item) => item !== value);
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: files[0],
+    }));
+    console.log(data);
+  };
 
-      return { ...prev, bidangPermasalahan };
-    });
+  const handleResponseChange = (name, value) => {
+    setData({ ...data, [name]: value });
+    console.log(data);
   };
 
   return (
@@ -44,32 +137,21 @@ const LaporanAkhirTab2 = () => {
           <label className="font-semibold text-lg">1. Mitra Sasaran</label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.mitraSasaran === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Masyarakat Ekonomi Produktif
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi non produktif"
-              checked={formData.mitraSasaran === "ekonomi non produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Masyarakat Ekonomi non Produktif
-            </span>
-          </label>
+          {mitraSasaran.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="target_partners" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.target_partners === item.value}
+                onChange={(e) =>
+                  handleResponseChange("target_partners", e.target.value)
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
 
@@ -82,69 +164,24 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Pengusaha Mitra/UMKM
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi non produktif"
-              checked={formData.mitraSasaran === "ekonomi non produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Anggota Koperasi
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Kelompok Petani
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Kelompok Industri Rumah Tangga
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Tidak Ada</span>
-          </label>
+          {masyarakatEP.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="productive_economic_society" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.productive_economic_society === item.value}
+                onChange={(e) =>
+                  handleResponseChange(
+                    "productive_economic_society",
+                    e.target.value
+                  )
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -154,56 +191,24 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Kelompok Pendidikan (PAUD, SD, SMP, SMA/SMK/Pesantren)
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi non produktif"
-              checked={formData.mitraSasaran === "ekonomi non produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Kelompok PKK/Karang Taruna
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Puskesmas/Posyandu
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Tidak Ada</span>
-          </label>
+          {masyarakatENP.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="nonproductive_economic_society" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.nonproductive_economic_society === item.value}
+                onChange={(e) =>
+                  handleResponseChange(
+                    "nonproductive_economic_society",
+                    e.target.value
+                  )
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
 
@@ -215,7 +220,13 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.number_of_partners}
+            name="number_of_partners"
+            onChange={handleInputChange()}
+            width="30"
+            placeholder={`0`}
+          />
         </div>
       </div>
 
@@ -225,96 +236,21 @@ const LaporanAkhirTab2 = () => {
           <label className="font-semibold text-lg">4. Pendidikan Mitra</label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">S3</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi non produktif"
-              checked={formData.mitraSasaran === "ekonomi non produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">S2</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">S1</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Diploma</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">SMA</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">SMP</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">SD</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Tidak Berpendidikan
-            </span>
-          </label>
+          {pendidikanMitra.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="partner_education" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.partner_education === item.value}
+                onChange={(e) =>
+                  handleResponseChange("partner_education", e.target.value)
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
 
@@ -326,63 +262,21 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Teknologi</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi non produktif"
-              checked={formData.mitraSasaran === "ekonomi non produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Manajemen</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Social Ekonomi
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Hukum</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Keamanan</span>
-          </label>
+          {BidangPM.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="problem_areas" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.problem_areas === item.value}
+                onChange={(e) =>
+                  handleResponseChange("problem_areas", e.target.value)
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
 
@@ -392,52 +286,21 @@ const LaporanAkhirTab2 = () => {
           <label className="font-semibold text-lg">6. Jarak Ke Mitra</label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">{`< 50 KM`}</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi non produktif"
-              checked={formData.mitraSasaran === "ekonomi non produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">50 - 100 KM</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">101 - 200 KM</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              {`> 200 KM (beda provinsi)`}
-            </span>
-          </label>
+          {jaraKeMitra.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="distance_partners" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.distance_partners === item.value}
+                onChange={(e) =>
+                  handleResponseChange("distance_partners", e.target.value)
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
       {/* Jenis Kelamin Tim Pengusul */}
@@ -449,13 +312,25 @@ const LaporanAkhirTab2 = () => {
           <label className="font-semibold text-lg">- Laki-laki</label>
         </div>
         <div className="mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.male_proposing_team}
+            name="male_proposing_team"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
         <div>
           <label className="font-semibold text-lg">- Perempuan</label>
         </div>
         <div className="mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.female_proposing_team}
+            name="female_proposing_team"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
       </div>
       {/* Jenis Kelamin Tim Mitra */}
@@ -467,13 +342,25 @@ const LaporanAkhirTab2 = () => {
           <label className="font-semibold text-lg">- Laki-laki</label>
         </div>
         <div className="mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.male_partners_team}
+            name="male_partners_team"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
         <div>
           <label className="font-semibold text-lg">- Perempuan</label>
         </div>
         <div className="mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            width="30"
+            value={data.female_partners_team}
+            name="female_partners_team"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -481,7 +368,13 @@ const LaporanAkhirTab2 = () => {
           <label className="font-semibold text-lg">9. Jumlah Mahasiswa</label>
         </div>
         <div className="mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.total_students}
+            name="total_students"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
       </div>
       <label className="font-semibold text-lg">
@@ -492,13 +385,25 @@ const LaporanAkhirTab2 = () => {
           <label className="font-semibold text-lg">- Laki-laki</label>
         </div>
         <div className="mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.male_student}
+            name="male_student"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
         <div>
           <label className="font-semibold text-lg">- Perempuan</label>
         </div>
         <div className="mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.female_student}
+            name="female_student"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -508,76 +413,24 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Penyuluhan</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi non produktif"
-              checked={formData.mitraSasaran === "ekonomi non produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Pendampingan</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Pendidikan</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Demplot/Percontohan
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Rancang Bangun
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Pelatihan</span>
-          </label>
+          {metodePelaksanaanKegiatan.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="implementation_activities" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.implementation_activities === item.value}
+                onChange={(e) =>
+                  handleResponseChange(
+                    "implementation_activities",
+                    e.target.value
+                  )
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -587,39 +440,38 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="flex mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.implementation_time}
+            name="implementation_time"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
           <span className="mx-2">Bulan</span>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
         <div>
           <label className="font-semibold text-lg">
-            13. Metode Pelaksanaan Kegiatan
+            13. Keberlanjutan Program
           </label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Berhenti</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Berlanjut</span>
-          </label>
+          {keberlanjutanProgram.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="program_sustainability" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.program_sustainability === item.value}
+                onChange={(e) =>
+                  handleResponseChange("program_sustainability", e.target.value)
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -629,7 +481,13 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="flex mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.production_capacity_before_program}
+            name="production_capacity_before_program"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -639,7 +497,13 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="flex mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.production_capacity_after_program}
+            name="production_capacity_after_program"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -649,7 +513,13 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="flex mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.turnover_before_program}
+            name="turnover_before_program"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -659,7 +529,13 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="flex mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.turnover_after_program}
+            name="turnover_after_program"
+            onChange={handleInputChange()}
+            placeholder={`0`}
+            width="30"
+          />
         </div>
       </div>
       <label className="font-semibold text-lg">
@@ -671,6 +547,9 @@ const LaporanAkhirTab2 = () => {
         </div>
         <div className="flex mt-2 space-y-2">
           <TextfieldCmp
+            value={data.funding_sources}
+            name="funding_sources"
+            onChange={handleInputChange()}
             placeholder={`Direktorat Riset, Teknologi, dan Pengabdian kepada masyarakat`}
           />
         </div>
@@ -680,7 +559,13 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="flex mt-2 space-y-2">
-          <TextfieldCmp width="30" placeholder={`10.000.000`} />
+          <TextfieldCmp
+            value={data.funding_amount}
+            name="funding_amount"
+            onChange={handleInputChange()}
+            width="30"
+            placeholder={`10.000.000`}
+          />
         </div>
       </div>
       <label className="font-semibold text-xl">B. Sumber Pendanaan</label>
@@ -691,32 +576,21 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Objek Kegiatan
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Subjek Kegiatan
-            </span>
-          </label>
+          {peranMitraDalamKegiatan.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="partner_role" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.partner_role === item.value}
+                onChange={(e) =>
+                  handleResponseChange("partner_role", e.target.value)
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
       <label className="font-semibold text-lg">
@@ -729,7 +603,13 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="">
-          <TextAreaCmp placeholder={``} rows={4} />
+          <TextAreaCmp
+            placeholder={`Aktif`}
+            rows={4}
+            value={data.partner_role_active}
+            name="partner_role_active"
+            onChange={handleInputChange()}
+          />
         </div>
         <div>
           <label className="font-semibold text-lg">
@@ -737,7 +617,14 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="">
-          <TextAreaCmp placeholder={``} rows={4} width="w-full" />
+          <TextAreaCmp
+            placeholder={`Pasif`}
+            value={data.partner_role_passive}
+            name="partner_role_passive"
+            onChange={handleInputChange()}
+            rows={4}
+            width="w-full"
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -747,43 +634,21 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="mt-2 space-y-2">
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">Dukungan Dana</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Dukungan Kebijakan
-            </span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <input
-              type="radio"
-              name="mitraSasaran"
-              value="ekonomi produktif"
-              checked={formData.statusSocialMitra === "ekonomi produktif"}
-              onChange={handleChange}
-              className="form-radio text-purple-600"
-            />
-            <span className="break-words whitespace-normal">
-              Dukungan Pelaksanaan Kegiatan
-            </span>
-          </label>
+          {peranPemerintahDaerah.map((item) => (
+            <label key={item.value} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="government_local_role" // Semua radio harus memiliki nama yang sama
+                value={item.value} // Pastikan value sesuai dengan item yang dipilih
+                checked={data.government_local_role === item.value}
+                onChange={(e) =>
+                  handleResponseChange("government_local_role", e.target.value)
+                }
+                className="form-radio text-purple-600"
+              />
+              <span className="break-words whitespace-normal">{item.name}</span>
+            </label>
+          ))}
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-4">
@@ -793,7 +658,13 @@ const LaporanAkhirTab2 = () => {
           </label>
         </div>
         <div className="flex mt-2 space-y-2">
-          <TextfieldCmp width="30" />
+          <TextfieldCmp
+            value={data.funding_contribution}
+            name="funding_contribution"
+            onChange={handleInputChange()}
+            placeholder={`10.0000`}
+            width="30"
+          />
         </div>
       </div>
     </div>

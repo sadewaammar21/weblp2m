@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaPlus, FaCcMastercard } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaPlus,
+  FaCcMastercard,
+  FaLessThan,
+} from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 import { getResearch } from "../../Features/ResearchSlice";
@@ -15,6 +20,9 @@ const PengelolaReview = () => {
   const [tapel, setTapel] = useState("");
   const [Tahapan, setTahapan] = useState("");
   const [data, setData] = useState([]);
+  const [year, setYear] = useState(null);
+  const [startYear, setStartYear] = useState(null);
+  const [tahapan, setThpn] = useState(null);
 
   //get data from db
   useEffect(() => {
@@ -96,6 +104,18 @@ const PengelolaReview = () => {
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
   ];
+  const startYears = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+  const Years = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+  const Tahapans = [
+    { label: "Tahapan 1", value: "Tahapan 1" },
+    { label: "Tahapan 2", value: "Tahapan 2" },
+  ];
 
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
@@ -104,54 +124,49 @@ const PengelolaReview = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
-                "Kembali"
-                  ? "bg-bluef-500 text-white"
-                  : "bg-white text-bluef-500"
-              }`}
-            >
-              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+              hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md ">
           <div className="grid grid-cols-3 gap-4 mx-10">
             <DropdownCmp
-              label="Tahun Usulan"
-              options={options}
-              selectedOption={tasul}
-              onChange={(value) => setTasul(value)}
-              name="skema"
-              placeholder="Pilih Tahun"
+              label="Tahun Usulan *"
+              options={Years}
+              selectedOption={Years.find((opt) => opt.value === year)}
+              onChange={(selected) => setYear(selected.value)}
+              placeholder="Pilih Tahun Usulan"
+              className="w-72 border border-black"
             />
             <DropdownCmp
-              label="Tahun Usulan"
-              options={options}
-              selectedOption={tasul}
-              onChange={(value) => setTasul(value)}
-              name="skema"
-              placeholder="Pilih Tahun"
+              label="Tahun Pelaksanaan *"
+              options={startYears}
+              selectedOption={startYears.find((opt) => opt.value === startYear)}
+              onChange={(selected) => setStartYear(selected.value)}
+              placeholder="Pilih Tahun Pelaksanaan"
+              className="w-72 border border-black"
             />
             <DropdownCmp
-              label="Tahun Usulan"
+              label="Tahapan"
               options={options}
               selectedOption={tasul}
               onChange={(value) => setTasul(value)}
               name="skema"
-              placeholder="Pilih Tahun"
+              placeholder="Pilih Tahapan"
             />
           </div>
           <div className="flex mx-5 ">
             <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}
-                className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="flex items-center px-2 py-1 bg-cyan-800 text-white rounded-md hover:bg-cyan-600"
               >
                 <img
                   src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}

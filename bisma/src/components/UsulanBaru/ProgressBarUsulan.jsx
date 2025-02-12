@@ -41,7 +41,9 @@ const ProgressBar = ({ currentStep }) => {
             </div>
           </div>
           {/* Step label */}
-          <div className="text-center mt-2 text-sm">{step.label}</div>
+          <div className="text-center mt-2 text-b1 text-neutral-400">
+            {step.label}
+          </div>
         </div>
       ))}
     </div>
@@ -118,9 +120,11 @@ const ProgressBarUsulan = () => {
           isSubmit: true,
           newStatus: 2,
         });
-        console.log(response);
-        // toast.success(response.message);
-        navigate("/penelitian/usulan");
+        console.log("Response dari addService:", response);
+
+        setTimeout(() => {
+          toast.success(response || "Berhasil!");
+        }, 100);
       } catch (error) {
         // toast.error("Terjadi Kesalahan Ketika Mengirim Data.");
       }
@@ -133,11 +137,17 @@ const ProgressBarUsulan = () => {
           isSubmit: false,
           // newStatus: 2,
         });
-        console.log(response);
-        // toast.success(response.message);
+        console.log("Response dari addService:", response);
+
+        setTimeout(() => {
+          toast.success(response || "Berhasil!");
+        }, 100);
         navigate("/penelitian/usulan");
       } catch (error) {
-        // toast.error("Terjadi Kesalahan Ketika Mengirim Data.");
+        toast.error(
+          error.response?.data?.message ||
+            "Terjadi Kesalahan Ketika Mengirim Data."
+        );
       }
     }
   };
@@ -171,9 +181,7 @@ const ProgressBarUsulan = () => {
   return (
     <div>
       <div>
-        <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENELITIAN
-        </h1>
+        <h1 className="text-h5 text-violet-800 mx-5 my-5">USULAN PENELITIAN</h1>
         <div className="container mx-auto">
           <div className="bg-gray-50 shadow-sm  rounded-sm  p-5 ">
             <ProgressBar currentStep={currentStep} />

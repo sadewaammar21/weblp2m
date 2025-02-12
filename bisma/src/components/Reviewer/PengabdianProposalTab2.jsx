@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import TextAreaCmp from "../TextAreaCmp";
 
 const PengabdianProposalTab2 = ({ data, review, setReview }) => {
   const [isVisible, setIsVisible] = useState(true);
@@ -11,6 +12,16 @@ const PengabdianProposalTab2 = ({ data, review, setReview }) => {
   const handleClicktes = () => {
     console.log(data);
   };
+
+  const handleInputChange = () => (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
+    setReview((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
+  }; 
 
   return (
     <div className="p-6">
@@ -44,75 +55,75 @@ const PengabdianProposalTab2 = ({ data, review, setReview }) => {
           <tbody>
             {[
               {
-                id: "indicator_1",
+                id: "substance_score_1",
                 text: " Penjelasan kondisi eksisting mitra seperti profil, potensi masyarakat dan wilayah",
               },
               {
-                id: "indicator_2",
+                id: "substance_score_2",
                 text: " Ketajaman analisis situasi permasalahan mitra sasaran",
               },
               {
-                id: "indicator_3",
+                id: "substance_score_3",
                 text: "Rumusan masalah prioritas minimal 2 bidang permasalahan",
               },
               {
-                id: "indicator_4",
+                id: "substance_score_4",
                 text: "Kesesuaian solusi dengan permasalahan mitra",
               },
               {
-                id: "indicator_5",
+                id: "substance_score_5",
                 text: "Metode dan rencana kegiatan yang ditawarkan",
               },
               {
-                id: "indicator_6",
+                id: "substance_score_6",
                 text: "Pelaksanaan pengabdian dan metode penyelesaian masalah",
               },
               {
-                id: "indicator_7",
+                id: "substance_score_7",
                 text: "Partisipasi mitra sasaran",
               },
               {
-                id: "indicator_8",
+                id: "substance_score_8",
                 text: "Kesesuaian penugasan, kompetensi tim pelaksana dan mahasiswa",
               },
               {
-                id: "indicator_9",
+                id: "substance_score_9",
                 text: "Kualitas Ipteks yang ditawarkan (hasil  penelitian)",
               },
               {
-                id: "indicator_10",
+                id: "substance_score_10",
                 text: "Implementasi/Penerapan Teknologi dan Inovasi menggambarkan spesifikasi, ukuran, kebermanfaatan,  kegunaan disertakan narasi",
               },
               {
-                id: "indicator_11",
+                id: "substance_score_11",
                 text: "Kewajaran tahapan target capaian luaran wajib dan penyelesaiannya",
               },
               {
-                id: "indicator_12",
+                id: "substance_score_12",
                 text: "Kesesuaian jadwal",
               },
               {
-                id: "indicator_13",
+                id: "substance_score_13",
                 text: "Rencana Anggaran Biaya",
               },
               {
-                id: "indicator_14",
+                id: "substance_score_14",
                 text: "Penjelasan Rencana Peningkatan level keberdayaan mitra sesuai permasalahan yang  dihadapi",
               },
               {
-                id: "indicator_15",
+                id: "substance_score_15",
                 text: "Satu artikel ilmiah yang dipublikasikan melalui jurnal terakreditasi SINTA",
               },
               {
-                id: "indicator_16",
+                id: "substance_score_16",
                 text: "Satu artikel pada media massa cetak/elektronik",
               },
               {
-                id: "indicator_17",
+                id: "substance_score_17",
                 text: "Video Kegiatan",
               },
               {
-                id: "indicator_18",
+                id: "substance_score_18",
                 text: "Rekognisi SKS",
               },
             ].map((item, index) => (
@@ -162,6 +173,16 @@ const PengabdianProposalTab2 = ({ data, review, setReview }) => {
           </tbody>
         </table>
       </div>
+      <h2 className="text-xl font-bold text-violet-800 mb-4">
+        Catatan Usulan Pengabdian
+      </h2>
+      <TextAreaCmp
+        name="notes"
+        value={review.notes}
+        onChange={handleInputChange()}
+        placeholder="Fill"
+        rows={10}
+      />
     </div>
   );
 };

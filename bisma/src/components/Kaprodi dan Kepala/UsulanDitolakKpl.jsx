@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
 import {
@@ -26,7 +26,11 @@ const UsulanDitolakKpl = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getResearch({ page_size: 5, current_page: 1, status: 8 });
+        const result = await getResearch({
+          page_size: 5,
+          current_page: 1,
+          status: 8,
+        });
         setData(result.data);
         console.log(result);
         console.log(data);
@@ -92,20 +96,15 @@ const UsulanDitolakKpl = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
-                "Kembali"
-                  ? "bg-bluef-500 text-white"
-                  : "bg-white text-bluef-500"
-              }`}
-            >
-              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="w-full flex justify-end border-b max-w-[1150px] mx-auto">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white 
+    hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">

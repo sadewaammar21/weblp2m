@@ -1,6 +1,7 @@
 import React from "react";
 
-const KonfirmasiUsulan = (data) => {
+const KonfirmasiUsulan = ({ data }) => {
+  console.log("Data di dalam KonfirmasiUsulan:", data);
   return (
     <div className="px-10">
       <div className="">
@@ -34,7 +35,8 @@ const KonfirmasiUsulan = (data) => {
                   Kelompok Skema
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  Riset Dasar
+                  {data.scheme.name || "Riset Dasar"}
+                  {console.log(`data dari skema adalah ${data.scheme.name}`)}
                 </td>
               </tr>
 
@@ -43,14 +45,14 @@ const KonfirmasiUsulan = (data) => {
                   Ruang Lingkup
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  Penelitian Kompetitif Nasional- Penelitian Fundamental-Reguler
+                  {data.scope.name}
                 </td>
               </tr>
 
               <tr className=" boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Bidang Fokus</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  Energi
+                  {data.focus_thematic?.name || data.focus_r_i_r_n_s?.name}
                 </td>
               </tr>
             </tbody>
@@ -73,7 +75,7 @@ const KonfirmasiUsulan = (data) => {
                   Lama Kegiatan
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {/* {data?.duration} Tahun */}1 tahun
+                  {data?.duration} Tahun
                 </td>
               </tr>
 
@@ -82,7 +84,7 @@ const KonfirmasiUsulan = (data) => {
                   Tahun Pertama Usulan
                 </td>
                 <td className="px-6 py-4 whitespace-normal break-words text-sm font-bold text-right max-w-md">
-                  2023
+                  {data.year}
                 </td>
               </tr>
 
@@ -91,7 +93,7 @@ const KonfirmasiUsulan = (data) => {
                   URL Profil Sinta Ketua Pengusul
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  6049857
+                  {data.user.sinta_id}
                 </td>
               </tr>
             </tbody>
@@ -122,12 +124,35 @@ const KonfirmasiUsulan = (data) => {
             <tr className="border border-black">
               <th className="border border-black px-4 py-2">NIDN</th>
               <th className="border border-black px-4 py-2">Nama Anggota</th>
-              <th className="border border-black px-4 py-2">Peram</th>
+              <th className="border border-black px-4 py-2">Peran</th>
               <th className="border border-black px-4 py-2">Urain Tugas</th>
               <th className="border border-black px-4 py-2">Status</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {data.members &&
+              data.members.map((item, index) => (
+                <tr key={index}>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2 text-neutral-500">
+                    {item.id}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2 text-neutral-500">
+                    {item.name}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2 text-neutral-500">
+                    {item.id_prodi}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2 text-neutral-500">
+                    {item.pivot.task}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-2 py-2">
+                    <div className="bg-cyan-700 px-2 py-2 rounded-xl text-neutral-10">
+                      {item.pivot.status}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
 
@@ -153,7 +178,34 @@ const KonfirmasiUsulan = (data) => {
               <th className="border border-black px-4 py-2">Uraian Tugas</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {data.student_services &&
+              data.student_services.map((item, index) => (
+                <tr key={index} className="text-neutral-500">
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {index + 1}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.nim}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.name}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.email}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.prodi}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.task}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.role}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
       <div className="mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md ">
@@ -184,7 +236,88 @@ const KonfirmasiUsulan = (data) => {
               <th className="border border-black px-4 py-2">Keterangan</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {data.output_media &&
+              data.output_media.map((item, index) => (
+                <tr key={index} className="text-neutral-500">
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {new Date(item.created_at).getFullYear()}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_category_output}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_type_output}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.status}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.description}
+                  </td>
+                </tr>
+              ))}
+            {data.output_partner &&
+              data.output_media.map((item, index) => (
+                <tr key={index} className="text-neutral-500">
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {new Date(item.created_at).getFullYear()}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_category_output}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_type_output}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.status}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.description}
+                  </td>
+                </tr>
+              ))}
+            {data.output_publication &&
+              data.output_media.map((item, index) => (
+                <tr key={index} className="text-neutral-500">
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {new Date(item.created_at).getFullYear()}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_category_output}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_type_output}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.status}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.description}
+                  </td>
+                </tr>
+              ))}
+            {data.output_video &&
+              data.output_media.map((item, index) => (
+                <tr key={index} className="text-neutral-500">
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {new Date(item.created_at).getFullYear()}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_category_output}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_type_output}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.status}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.description}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
 
@@ -200,7 +333,7 @@ const KonfirmasiUsulan = (data) => {
       <div className="">
         <h2 className="mb-2 text-md font-bold text-violet-800">
           {" "}
-          Total RAB 2 Tahun Rp.0,00
+          {/* Total RAB {data.duration} Tahun Rp.{data.budget_plan_service} */}
         </h2>
       </div>
       <div className="">
@@ -219,17 +352,44 @@ const KonfirmasiUsulan = (data) => {
               <th className="border border-black px-4 py-2">Total</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {data.budget_plan_service &&
+              data.budget_plan_service.map((item, index) => (
+                <tr key={index} className="text-neutral-500">
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_group_budget}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.id_component_budget}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.item}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.unit}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.price_unit}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.volume}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.total}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <h2 className="mb-2 text-md font-bold text-violet-800">
           {" "}
           Total Anggaran
         </h2>
         <h2 className="mb-2 text-md font-bold text-violet-800"> Rp.0,00</h2>
-      </div>
-      <div className="">
+      </div> */}
+      {/* <div className="">
         <h2 className="text-sm font-sans text-violet-800"> Tahun 2</h2>
       </div>
       <div className="relative overflow-x-auto  my-2">
@@ -254,14 +414,11 @@ const KonfirmasiUsulan = (data) => {
           Total Anggaran
         </h2>
         <h2 className="mb-2 text-md font-bold text-violet-800"> Rp.0,00</h2>
-      </div>
+      </div> */}
 
       <div className="mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md ">
         <div className="">
-          <h2 className="text-md font-bold text-violet-800">
-            {" "}
-            Rencana Angggaran Biaya
-          </h2>
+          <h2 className="text-md font-bold text-violet-800"> Mitra</h2>
         </div>
       </div>
       <div className="relative overflow-x-auto  my-2">
@@ -269,27 +426,62 @@ const KonfirmasiUsulan = (data) => {
           <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="border border-black">
               <th className="border border-black px-4 py-2">Nama Mitra</th>
-              <th className="border border-black px-4 py-2">Instunsi</th>
-              <th className="border border-black px-4 py-2">Alamat Instunsi</th>
-              <th className="border border-black px-4 py-2">Negara </th>
-              <th className="border border-black px-4 py-2">Surel</th>
+              <th className="border border-black px-4 py-2">
+                Alamat Institusi
+              </th>
+              <th className="border border-black px-4 py-2">Provinsi </th>
+              <th className="border border-black px-4 py-2">Surel </th>
               <th className="border border-black px-4 py-2">
                 Surat Kesanggupan
               </th>
-              <th className="border border-black px-4 py-2">Dana th 1</th>
-              <th className="border border-black px-4 py-2">Dana th 2</th>
-              <th className="border border-black px-4 py-2">Dana th 3</th>
+              <th className="border border-black px-4 py-2">Dana</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {data.partner &&
+              data.partner.map((item, index) => (
+                <tr key={index} className="text-neutral-500">
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.name}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.city} {item.province}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {" "}
+                    {item.province}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.email}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => {
+                        console.log("Downloading:", item.document);
+                        // handleDownloadPdf(item.document);
+                      }}
+                    >
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + "/assets/icon_pdf_brks.svg"
+                        }
+                        alt="user"
+                        className="w-10 h-10"
+                      />
+                    </button>
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.funding_contribution}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
       <div className="mt-10 mb-10 p-4 bg-violet-100 w-full rounded-md ">
         <div className="">
-          <h2 className="text-md font-bold text-violet-800">
-            {" "}
-            Identitas Pengusul Ketua
-          </h2>
+          <h2 className="text-md font-bold text-violet-800"> File Pendukung</h2>
         </div>
       </div>
       <div className="relative overflow-x-auto  my-2">
@@ -300,7 +492,19 @@ const KonfirmasiUsulan = (data) => {
               <th className="border border-black px-4 py-2">File Pendukung</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {data.supporting_file &&
+              data.supporting_file.map((item, index) => (
+                <tr key={index} className="text-neutral-500">
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.type_id}
+                  </td>
+                  <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
+                    {item.document}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
     </div>

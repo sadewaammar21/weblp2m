@@ -22,7 +22,7 @@ const TextAreaCmp = ({
         onChange={onChange}
         placeholder={placeholder}
         rows={rows}
-        className="border border-gray-300 rounded-md w-full px-3 py-2 text-gray-700 focus:outline-none focus:border-indigo-500"
+        className="border text-b2 border-neutral-400 text-neutral-400 rounded shadow focus:outline-none focus:shadow-outline  w-full px-3 py-2   focus:border-indigo-500"
       />
     </div>
   );

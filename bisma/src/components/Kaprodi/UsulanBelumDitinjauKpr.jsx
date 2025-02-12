@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
 import ModalLaporanBelumDitinjau from "./ModalLaporanBelumDitinjau";
 import ModalLaporanBelumDitinjauDitolak from "./ModalLaporanBelumDitinjauDitolak";
-// import {
-//   getResearch,
-//   downloadResearchDocument,
-// } from "../../Features/ResearchSlice";
 import {
-  getService,
-  downloadServiceDocument,
-} from "../../Features/ServiceSlice";
+  getResearch,
+  downloadResearchDocument,
+} from "../../Features/ResearchSlice";
+import { ToastContainer } from "react-toastify";
+// import {
+//   getService,
+//   downloadServiceDocument,
+// } from "../../Features/ServiceSlice";
 
 const UsulanBelumDitinjauKpr = () => {
   const navigate = useNavigate();
@@ -37,13 +38,19 @@ const UsulanBelumDitinjauKpr = () => {
   };
   const openModal = (item) => {
     console.log(item);
-    setSelectedData(item);
+    // setSelectedData(item);
     setIsOpen(true);
   };
 
   const closeModal = () => {
     setIsOpen(false);
     fetchData();
+  };
+
+  const handleModal = (accepted, status) => {
+    setIsAccepted(accepted);
+    setStatus(status);
+    openModal();
   };
 
   const [data, setData] = useState([]);
@@ -57,10 +64,10 @@ const UsulanBelumDitinjauKpr = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const result = await getService({
+      const result = await getResearch({
         pageSize: 5,
         currentPage: 1,
-        // status: 5,
+        status: 2,
         prodiId: 5,
       });
       setData(result.data);
@@ -129,20 +136,15 @@ const UsulanBelumDitinjauKpr = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
-                "Kembali"
-                  ? "bg-bluef-500 text-white"
-                  : "bg-white text-bluef-500"
-              }`}
-            >
-              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="w-full flex justify-end border-b max-w-[1150px] mx-auto">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white 
+    hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
@@ -212,11 +214,11 @@ const UsulanBelumDitinjauKpr = () => {
                     </td>
                     <td className="border border-gray-300 p-2 text-center">
                       <button
-                        onClick={() => downloadServiceDocument(item.id)}
+                        onClick={() => downloadResearchDocument(item.id)}
                         className="text-red-600 text-2xl"
                       >
                         <a
-                          href={`http://localhost:8000/api/comunity-service/download/${item.id}`}
+                          href={`http://localhost:8000/api/research/download/${item.id}`}
                           target="_blank"
                         >
                           📄
@@ -226,18 +228,25 @@ const UsulanBelumDitinjauKpr = () => {
                     <td className="border border-gray-300 p-2 text-center">
                       <div className="flex justify-center space-x-2">
                         <button
-                          onClick={() => openModal(item)}
+                          onClick={() => handleModal(true, 3)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"
                         >
                           Disetujui
                         </button>
                         <button
-                          onClick={() => openModalDitolak(item)}
+                          onClick={() => handleModal(false, 8)}
                           className="bg-reds-500 text-white px-4 py-2 rounded-md"
                         >
                           Ditolak
                         </button>
                       </div>
+                      <ModalLaporanBelumDitinjau
+                        data={selectedData}
+                        isOpen={isOpen}
+                        onRequestClose={closeModal}
+                        seriviceId={item.id}
+                        isAccepted={isAccepted}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -246,16 +255,12 @@ const UsulanBelumDitinjauKpr = () => {
           </div>
         </div>
       </div>
-      <ModalLaporanBelumDitinjau
-        data={selectedData}
-        isOpen={isOpen}
-        onRequestClose={closeModal}
-      />
       <ModalLaporanBelumDitinjauDitolak
         data={selectedData}
         isOpen={isTolak}
         onRequestClose={closeModalDitolak}
       />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

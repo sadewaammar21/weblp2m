@@ -42,7 +42,7 @@ const ListCatatanHarian = () => {
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENGABDIAN
+          CATATAN HARIAN PENGABDIAN
         </h1>
       </div>
 
@@ -124,25 +124,6 @@ const ListCatatanHarian = () => {
                   </td>
                 </tr>
               ))}
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className="border border-black px-4 py-2 align-middle">
-                  <button
-                    onClick={handleView}
-                    className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
-                  >
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
-                      alt="penelitian"
-                      className="w-7 h-7 mr-2"
-                    />
-                  </button>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>

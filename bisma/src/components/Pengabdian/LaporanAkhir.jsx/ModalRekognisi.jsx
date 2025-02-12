@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import DropdownCmp from "../../DropdownCmp"; // Komponen Dropdown yang Anda buat
 import TextfieldCmp from "../../TextfieldCmp"; // Komponen TextField yang Anda buat
@@ -6,17 +6,54 @@ import TextfieldCmp from "../../TextfieldCmp"; // Komponen TextField yang Anda b
 // Set root element untuk React Modal
 Modal.setAppElement("#root");
 
-const ModalRekognisi = ({ isOpen, onRequestClose, data, setData }) => {
-  const handleDropdownChange = (field, value) => {
-    setData((prevData) => ({
+const ModalRekognisi = ({
+  isOpen,
+  onRequestClose,
+  data,
+  setData,
+  index,
+  onSave,
+}) => {
+  const [outputData, setOutputData] = useState({});
+
+  useEffect(() => {
+    if (data && index >= 0) {
+      setOutputData(data[index]); // Update data modal berdasarkan index
+    }
+  }, [data, index]);
+
+  const handleDropdownChange = (option, fieldName) => {
+    setOutputData((prevData) => ({
       ...prevData,
-      [field]: value,
+      [fieldName]: option.value,
     }));
   };
-  const handleSave = () => {
-    console.log("Data berhasil disimpan");
-    onRequestClose(); // Tutup modal setelah menyimpan
+
+  const handleFileChange1 = (event) => {
+    setOutputData((prevData) => ({
+      ...prevData,
+      proof_recognition: event.target.files[0],
+    }));
   };
+
+  const handleInputChange = (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+
+    setOutputData((prevData) => ({
+      ...prevData,
+      [inputName]: inputValue,
+    }));
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Data berhasil disimpan");
+    onSave(index, outputData);
+    setOutputData({});
+    onRequestClose(); // Close modal after save
+  };
+
   const komponenRekognisi = [
     { label: "Tercapai", value: "Tercapai" },
     { label: "Tidak Tercapai", value: "Tidak_tercapai" },
@@ -33,15 +70,15 @@ const ModalRekognisi = ({ isOpen, onRequestClose, data, setData }) => {
       <h2 className="text-xl font-bold mb-4">
         Luaran Wajib Artikel di Jurnal Bereputasi Internasional
       </h2>
-      <form>
+      <form onSubmit={handleSave}>
         {/* Dropdown Status Artikel */}
         <div className="mb-4">
           <DropdownCmp
-            label={`Status Rekognisi Mahasiswa`}
             options={komponenRekognisi}
-            onChange={(option) => {
-              handleDropdownChange("status_rekognisi", option.value);
-            }}
+            value={komponenRekognisi.find(
+              (option) => option.value === outputData.status
+            )}
+            onChange={(option) => handleDropdownChange(option, "status")}
             placeholder={`Pilih Status Rekognisi`}
           />
         </div>
@@ -66,13 +103,19 @@ const ModalRekognisi = ({ isOpen, onRequestClose, data, setData }) => {
         <div className="mb-4">
           <TextfieldCmp
             label={`Jumlah SKS yang direkognisi (minimal 6 SKS)`}
-            placeholder="nomor"
+            value={outputData.recognized_sks}
+            name="recognized_sks"
+            onChange={(e) => handleInputChange(e)}
+            placeholder="Sks"
           />
         </div>
         <div className="mb-4">
           <TextfieldCmp
             label={`Mata kuliah yang direkognisi (dipisah dengan tanda ,)`}
             placeholder="Nama Mata Kuliah"
+            value={outputData.recognized_courses}
+            name="recognized_courses"
+            onChange={(e) => handleInputChange(e)}
           />
         </div>
 
@@ -80,6 +123,8 @@ const ModalRekognisi = ({ isOpen, onRequestClose, data, setData }) => {
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Bukti Rekognisi</label>
           <input
+            name="proof_recognition"
+            onChange={(e) => handleFileChange1(e)}
             type="file"
             className="block w-full text-sm text-gray-500 border border-gray-300 rounded-lg"
           />

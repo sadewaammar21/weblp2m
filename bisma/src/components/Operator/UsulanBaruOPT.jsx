@@ -18,9 +18,10 @@ const UsulanBaruOPT = () => {
         { label: 'Option 3', value: '3' },
       ];
 
+    const user = JSON.parse(localStorage.getItem("user"));
       
     const metrics = [
-        { title: 'Usulan Draft',count: "Rapek", icon: <FaFileAlt size={24} className="text-violet-800" /> },
+        { title: 'Usulan Draft',count: 1, icon: <FaFileAlt size={24} className="text-violet-800" /> },
         { title: 'Usulan Dikirim', count: 0, icon: <FaRegBookmark size={24} className="text-violet-800" /> },
         { title: 'Usulan Belum Ditinjau', count: 0, icon: <FaHdd size={24} className="text-violet-800" /> },
         { title: 'Usulan Disetujui', count: 0, icon: <FaBullseye size={24} className="text-violet-800" /> },

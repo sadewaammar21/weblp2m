@@ -10,6 +10,7 @@ import {
   getResearchProgressReport,
 } from "../../Features/ResearchSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const steps = [
   { id: 1, label: "Laporan Kemajuan" },
@@ -85,6 +86,14 @@ const LaporanKemajuanTab = () => {
   };
 
   useEffect(() => {
+    if (reportId) {
+      console.log("Report ID tersedia:", reportId);
+    } else {
+      console.log("Tidak ada report id");
+    }
+  }, [reportId]);
+
+  useEffect(() => {
     fetchResearch();
     if (reportId) {
       fetchReport();
@@ -132,27 +141,46 @@ const LaporanKemajuanTab = () => {
   }
 
   const handleSubmit = async (status) => {
-    if (reportId) {
-      setReport({ ...report, status: status });
-      // console.log(report)
-      const response = await addResearchProgressReport({
-        researchId: research.id,
-        data: report,
-        isEdit: true,
-        reportId: report.id,
-      });
-      console.log(response);
-      navigate(-1);
-    } else {
-      setReport({ ...report, status: status });
-      // console.log(report)
-      const response = await addResearchProgressReport({
-        researchId: research.id,
-        data: report,
-        isEdit: false,
-      });
-      console.log(response);
-      navigate(-1);
+    try {
+      if (reportId) {
+        setReport({ ...report, status: status });
+        // console.log(report)
+        const response = await addResearchProgressReport({
+          researchId: research.id,
+          data: report,
+          isEdit: true,
+          reportId: report.id,
+        });
+        console.log(response);
+        if (response) {
+          toast.success(response || "Laporan Kemajuan telah diubah.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        navigate(-1);
+      } else {
+        setReport({ ...report, status: status });
+        // console.log(report)
+        const response = await addResearchProgressReport({
+          researchId: research.id,
+          data: report,
+          isEdit: false,
+        });
+        if (response) {
+          toast.success(response || "Laporan Kemajuan telah disimpan.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        navigate(-1);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+
+      // Ambil pesan error dari response jika ada
+      const errorMessage = error?.message || "Terjadi kesalahan!";
+      toast.error(errorMessage);
     }
   };
 

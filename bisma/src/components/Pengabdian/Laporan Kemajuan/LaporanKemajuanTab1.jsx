@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextAreaCmp from "../../TextAreaCmp";
 import TextfieldCmp from "../../TextfieldCmp";
 import { FaDownload } from "react-icons/fa";
@@ -14,7 +14,7 @@ import ModalLuaranPdf from "./ModalLuaranPdf";
 import ModalLuaranTambahan from "./ModalLuaranTambahan";
 // import ModalEditLapKemajuanTab1 from "./ModalEditLapKemajuanTab1";
 
-const LaporanKemajuanTab1 = ({service, data, setData}) => {
+const LaporanKemajuanTab1 = ({ service, data, setData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isOpenRekognisi, setIsOpenRekognisi] = useState(false);
   const [isOpenPoster, setIsOpenPoster] = useState(false);
@@ -27,276 +27,202 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
   const [isOpenPdfHasil, setIsOpenPdfHasil] = useState(false);
   const [isOpenLuaranTambahan, setIsOpenTambahan] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [activeModal, setActiveModal] = useState({ type: null, index: null });
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
-  const tableRows = [
-    {
-      no: 1,
-      title: "Rekognisi mahasiswa menjadi bagian MBKM minimal 6 (enam) SKS ",
-      target: "Tercapai",
-      saatini: "Tercapai",
-      actionIcon: "/assets/act_edit.svg",
-      onEdit: () => {
-        console.log(
-          "Editing row with title:",
-          "Artikel di Jurnal Bereputasi-Buplikasi_Jurnal"
-        );
-        openModalRekognisi();
-      },
-    },
-    {
-      no: 2,
-      title: "Poster",
-      actionIcon: "/assets/act_edit.svg",
-      target: "Tercapai",
-      saatini: "Tercapai",
-      onEdit: () => {
-        console.log("Editing row with title:", "Laporan Akhir Penelitian");
-        openModalPoster();
-      },
-    },
-    {
-      no: 3,
-      title: "Video kegiatan",
-      actionIcon: "/assets/act_edit.svg",
-      target: "Tercapai",
-      saatini: "Tercapai",
-      onEdit: () => {
-        console.log("Editing row with title:", "Laporan Akhir Penelitian");
-        openModalVideo();
-      },
-    },
-    {
-      no: 4,
-      title: "Artikel ilmiah pada jurnal terindeks SINTA",
-      actionIcon: "/assets/act_edit.svg",
-      target: "Published",
-      saatini: "Published",
-      onEdit: () => {
-        console.log("Editing row with title:", "Laporan Akhir Penelitian");
-        openModalArtikel();
-      },
-    },
-    {
-      no: 5,
-      title: "Elektronik",
-      actionIcon: "/assets/act_edit.svg",
-      target: "Terbit",
-      saatini: "Terbit",
-      onEdit: () => {
-        console.log("Editing row with title:", "Laporan Akhir Penelitian");
-        openModalElektronik();
-      },
-    },
-    {
-      no: 6,
-      title: "Peningkatan Keterampilan",
-      actionIcon: "/assets/act_edit.svg",
-      target: "Tercapai",
-      saatini: "Tercapai",
-      onEdit: () => {
-        console.log("Editing row with title:", "Laporan Akhir Penelitian");
-        openModalKetrampilan();
-      },
-    },
-    {
-      no: 7,
-      title: "Peningkatan Kemampuan Manajemen",
-      actionIcon: "/assets/act_edit.svg",
-      target: "Tercapai",
-      saatini: "Tercapai",
-      onEdit: () => {
-        console.log("Editing row with title:", "Laporan Akhir Penelitian");
-        openModalKemampuan();
-      },
-    },
-  ];
+  const statusTarget = [{ Status: "Tercapai" }];
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
 
-  const openModalRekognisi = () => {
+  const openModalRekognisi = (index) => {
     setIsOpenRekognisi(true);
+    setOutputIndexpr1(index);
   };
 
   const closeModalRekognisi = () => {
     setIsOpenRekognisi(false);
+    // handleOutputDatapr1();
   };
 
-  const openModalPoster = () => {
+  const openModalPoster = (index) => {
     setIsOpenPoster(true);
+    setOutputIndexpr2(index);
   };
 
   const closeModalPoster = () => {
     setIsOpenPoster(false);
   };
 
-  const openModalVideo = () => {
+  const openModalVideo = (index) => {
     setIsOpenVideo(true);
+    setOutputIndexpr3(index);
   };
 
   const closeModalVideo = () => {
     setIsOpenVideo(false);
   };
-  const openModalArtikel = () => {
+  const openModalArtikel = (index) => {
     setIsOpenArtikel(true);
+    setOutputIndexpr4(index);
   };
 
   const closeModalArtikel = () => {
     setIsOpenArtikel(false);
   };
-  const openModalElektronik = () => {
-    setIsOpenElektronik(true);
-  };
+  // const openModalElektronik = (index) => {
+  //   setIsOpenElektronik(true);
+  //   setOutputIndex5(index);
+  // };
 
-  const closeModalElektronik = () => {
-    setIsOpenElektronik(false);
-  };
-  const openModalKetrampilan = () => {
-    setIsOpenRekKetrampilan(true);
-  };
+  // const closeModalElektronik = () => {
+  //   setIsOpenElektronik(false);
+  // };
+  // const openModalKetrampilan = (index) => {
+  //   setIsOpenRekKetrampilan(true);
+  //   // setOutputIndex6(index);
+  // };
 
-  const closeModalKetrampilan = () => {
-    setIsOpenRekKetrampilan(false);
-  };
-  const openModalKemampuan = () => {
-    setIsOpenKemampuan(true);
-  };
+  // const closeModalKetrampilan = () => {
+  //   setIsOpenRekKetrampilan(false);
+  // };
+  // const openModalKemampuan = (index) => {
+  //   setIsOpenKemampuan(true);
+  //   // setOutputIndex7(index);
+  // };
 
-  const closeModalKemampuan = () => {
-    setIsOpenKemampuan(false);
-  };
-  const openModalPPT = () => {
-    setIsOpenPPT(true);
-  };
+  // const closeModalKemampuan = () => {
+  //   setIsOpenKemampuan(false);
+  // };
+  // const openModalPPT = (index) => {
+  //   setIsOpenPPT(true);
+  //   setOutputIndexpr8(index);
+  // };
 
-  const closeModalPPT = () => {
-    setIsOpenPPT(false);
-  };
-  const openModalPdf = () => {
-    setIsOpenPdfHasil(true);
-  };
+  // const closeModalPPT = () => {
+  //   setIsOpenPPT(false);
+  // };
+  // const openModalPdf = (index) => {
+  //   setIsOpenPdfHasil(true);
+  //   setOutputIndexpr9(index);
+  // };
 
-  const closeModalPDF = () => {
-    setIsOpenPdfHasil(false);
-  };
-  const openModalLuaranTambahan = () => {
-    setIsOpenTambahan(true);
-  };
+  // const closeModalPDF = () => {
+  //   setIsOpenPdfHasil(false);
+  // };
+  // const openModalLuaranTambahan = (index) => {
+  //   setIsOpenTambahan(true);
+  //   setOutputIndexpr10(index);
+  // };
 
-  const closeModalLuaranTambahan = () => {
-    setIsOpenTambahan(false);
-  };
+  // const closeModalLuaranTambahan = () => {
+  //   setIsOpenTambahan(false);
+  // };
 
-  //1
-  const [outputIndex1, setOutputIndex1] = useState(0);
-  const handleOutputData1 = (index, outputData1) => {
-    const updatedOutput1 = Array.isArray(data.output_progress_report1s)
+  // const handleOutputDatapr1 = (index, outputData) => {
+  //   const updateOutputData = Array.isArray(data.output_progress_report1s)
+  //     ? [...data.output_progress_report1s]
+  //     : [];
+
+  //   updateOutputData[index] = outputData;
+
+  //   // Debug dengan forEach
+  //   updateOutputData.forEach((item, idx) => {
+  //     console.log(`Updated Index: ${idx}, Value:`, item);
+  //   });
+
+  //   setData({ ...data, output_progress_report1s: updateOutputData });
+  // };
+
+  // const handleOutputDatapr1 = (index, outputData) => {
+  //   if (Array.isArray(data.output_progress_report1s)) {
+  //     const updateOutputData = [...data.output_progress_report1s];
+  //     updateOutputData[index] = outputData;
+  //     setData({ ...data, output_progress_report1s: updateOutputData });
+  //     console.log(data);
+  //   } else {
+  //     console.error(
+  //       "data.output_progress_report1s is not an array:",
+  //       data.output_progress_report1s
+  //     );
+  //   }
+  // };
+
+  useEffect(() => {
+    console.log("Report data:", data); // Debugging the report data
+  }, [data]);
+
+  const [outputIndexpr1, setOutputIndexpr1] = useState(0);
+  const handleOutputDatapr1 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.output_progress_report1s)
       ? [...data.output_progress_report1s]
       : [];
-    updatedOutput1[index] = outputData1;
-    setData({ ...data, output_progress_report1s: updatedOutput1 });
+    updatedOutput[index] = outputData;
+    setData({ ...data, output_progress_report1s: updatedOutput });
     console.log(data);
   };
 
-  //2
-  const [outputIndex2, setOutputIndex2] = useState(0);
-  const handleOutputData2 = (index, outputData2) => {
-    const updatedOutput2 = Array.isArray(data.output_progress_report2s)
+  const [outputIndexpr2, setOutputIndexpr2] = useState(0);
+  const handleOutputDatapr2 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.output_progress_report2s)
       ? [...data.output_progress_report2s]
       : [];
-    updatedOutput2[index] = outputData2;
-    setData({ ...data, output_progress_report1s: updatedOutput2 });
+    updatedOutput[index] = outputData;
+    setData({ ...data, output_progress_report2s: updatedOutput });
     console.log(data);
   };
 
-  //3
-  const [outputIndex3, setOutputIndex3] = useState(0);
-  const handleOutputData3 = (index, outputData3) => {
-    const updatedOutput3 = Array.isArray(data.output_progress_report3s)
+  const [outputIndexpr3, setOutputIndexpr3] = useState(0);
+  const handleOutputDatapr3 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.output_progress_report3s)
       ? [...data.output_progress_report3s]
       : [];
-    updatedOutput3[index] = outputData3;
-    setData({ ...data, output_progress_report3s: updatedOutput3 });
+    updatedOutput[index] = outputData;
+    setData({ ...data, output_progress_report3s: updatedOutput });
     console.log(data);
   };
 
-  //4
-  const [outputIndex4, setOutputIndex4] = useState(0);
-  const handleOutputData4 = (index, outputData4) => {
-    const updatedOutput4 = Array.isArray(data.output_progress_report4s)
+  const [outputIndexpr4, setOutputIndexpr4] = useState(0);
+
+  const handleOutputDatapr4 = (index, outputData) => {
+    const updatedOutput = Array.isArray(data.output_progress_report4s)
       ? [...data.output_progress_report4s]
       : [];
-    updatedOutput4[index] = outputData4;
-    setData({ ...data, output_progress_report4s: updatedOutput4 });
+    updatedOutput[index] = outputData;
+    setData({ ...data, output_progress_report4s: updatedOutput });
     console.log(data);
   };
 
-  //5
-  const [outputIndex5, setOutputIndex5] = useState(0);
-  const handleOutputData5 = (index, outputData5) => {
-    const updatedOutput5 = Array.isArray(data.output_progress_report5s)
-      ? [...data.output_progress_report5s]
-      : [];
-    updatedOutput5[index] = outputData5;
-    setData({ ...data, output_progress_report5s: updatedOutput5 });
-    console.log(data);
-  };
+  // const [outputIndexpr8, setOutputIndexpr8] = useState(0);
+  // const handleOutputDatapr8 = (index, outputData) => {
+  //   const updateOutputData = Array.isArray(data.output_progress_report8s)
+  //     ? [data.output_progress_report8s]
+  //     : [];
+  //   updateOutputData[index] = outputData;
+  //   setData({ ...data, output_progress_report8s: updateOutputData });
+  //   console.log(data);
+  // };
 
-  //6
-  const [outputIndex6, setOutputIndex6] = useState(0);
-  const handleOutputData6 = (index, outputData6) => {
-    const updatedOutput6 = Array.isArray(data.output_progress_report6s)
-      ? [...data.output_progress_report6s]
-      : [];
-    updatedOutput6[index] = outputData6;
-    setData({ ...data, output_progress_report6s: updatedOutput6 });
-    console.log(data);
-  };
+  // const [outputIndexpr9, setOutputIndexpr9] = useState(0);
+  // const handleOutputDatapr9 = (index, outputData) => {
+  //   const updateOutputData = Array.isArray(data.output_progress_report9s)
+  //     ? [data.output_progress_report9s]
+  //     : [];
+  //   updateOutputData[index] = outputData;
+  //   setData({ ...data, output_progress_report9s: updateOutputData });
+  //   console.log(data);
+  // };
 
-  //7
-  const [outputIndex7, setOutputIndex7] = useState(0);
-  const handleOutputData7 = (index, outputData7) => {
-    const updatedOutput7 = Array.isArray(data.output_progress_report7s)
-      ? [...data.output_progress_report7s]
-      : [];
-    updatedOutput7[index] = outputData7;
-    setData({ ...data, output_progress_report7s: updatedOutput7 });
-    console.log(data);
-  };
-
-  //8
-  const [outputIndex8, setOutputIndex8] = useState(0);
-  const handleOutputData8 = (index, outputData8) => {
-    const updatedOutput8 = Array.isArray(data.output_progress_report8s)
-      ? [...data.output_progress_report8s]
-      : [];
-    updatedOutput8[index] = outputData8;
-    setData({ ...data, output_progress_report8s: updatedOutput8 });
-    console.log(data);
-  };
-
-  //9
-  const [outputIndex9, setOutputIndex9] = useState(0);
-  const handleOutputData9 = (index, outputData9) => {
-    const updatedOutput9 = Array.isArray(data.output_progress_report9s)
-      ? [...data.output_progress_report9s]
-      : [];
-    updatedOutput9[index] = outputData9;
-    setData({ ...data, output_progress_report9s: updatedOutput9 });
-    console.log(data);
-  };
-
-  //10
-  const [outputIndex10, setOutputIndex10] = useState(0);
-  const handleOutputData10 = (index, outputData10) => {
-    const updatedOutput10 = Array.isArray(data.output_progress_report10s)
-      ? [...data.output_progress_report10s]
-      : [];
-    updatedOutput10[index] = outputData10;
-    setData({ ...data, output_progress_report10s: updatedOutput10 });
-    console.log(data);
-  };
+  // const [outputIndexpr10, setOutputIndexpr10] = useState(0);
+  // const handleOutputDatapr10 = (index, outputData) => {
+  //   const updateOutputData = Array.isArray(data.output_progress_report10s)
+  //     ? [data.output_progress_report10s]
+  //     : [];
+  //   updateOutputData[index] = outputData;
+  //   setData({ ...data, output_progress_report10s: updateOutputData });
+  //   console.log(data);
+  // };
 
   const handleInputChange = () => (e) => {
     const inputName = e.target.name;
@@ -319,77 +245,89 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
   return (
     <div>
       <ModalRekognisi
-        data={data.outputData1}
+        data={data.output_progress_report1s} // Mengambil data berdasarkan index
         isOpen={isOpenRekognisi}
+        index={outputIndexpr1}
         onRequestClose={closeModalRekognisi}
-        index={outputIndex1}
-        onSave={handleOutputData1}
+        onSave={handleOutputDatapr1}
       />
       <ModalPoster
         isOpen={isOpenPoster}
         onRequestClose={closeModalPoster}
-        index={outputIndex2}
-        onSave={handleOutputData2}
+        index={outputIndexpr2}
+        onSave={handleOutputDatapr2}
+        data={data.output_progress_report2s}
       />
       <ModalVideo
         isOpen={isOpenVideo}
-        index={outputIndex3}
-        onSave={handleOutputData3}
+        index={outputIndexpr3}
+        onSave={handleOutputDatapr3}
         onRequestClose={closeModalVideo}
+        data={data.output_progress_report3s}
       />
       <ModalLuaranWajibInternasional
         isOpen={isOpenArtikel}
         onRequestClose={closeModalArtikel}
-        index={outputIndex4}
-        onSave={handleOutputData4}
+        index={outputIndexpr4}
+        onSave={handleOutputDatapr4}
+        data={data.output_progress_report4s}
       />
-      <ModalLuaranElektronik
+      {/* <ModalLuaranElektronik
         isOpen={isOpenElektronik}
         onRequestClose={closeModalElektronik}
         index={outputIndex5}
-        onSave={handleOutputData5}
+        onSave={(index, outputData) =>
+          handleOutputData("output_progress_report5s", index, outputData)
+        }
       />
       <ModalLuaranKetrampilan
         isOpen={isOpenKetrampilan}
         onRequestClose={closeModalKetrampilan}
         index={outputIndex6}
-        onSave={handleOutputData6}
+        onSave={(index, outputData) =>
+          handleOutputData("output_progress_report6s", index, outputData)
+        }
       />
       <ModalLuaranKemampuan
         isOpen={isOpenKemampuan}
         onRequestClose={closeModalKemampuan}
         index={outputIndex7}
-        onSave={handleOutputData7}
-      />
-      <ModalLuaranPpt
+        onSave={(index, outputData) =>
+          handleOutputData("output_progress_report7s", index, outputData)
+        } */}
+      {/* /> */}
+      {/* <ModalLuaranPpt
         isOpen={isOpennPPT}
-        onRequestClose={closeModalPPT}
-        index={outputIndex8}
-        onSave={handleOutputData8}
+        onRequestClose={() => closeModalPPT()}
+        index={outputIndexpr8}
+        onSave={handleOutputDatapr8}
+        data={data.output_progress_report8s}
       />
       <ModalLuaranPdf
         isOpen={isOpenPdfHasil}
-        onRequestClose={closeModalPDF}
-        index={outputIndex9}
-        onSave={handleOutputData4}
+        onRequestClose={() => closeModalPDF()}
+        index={outputIndexpr9}
+        onSave={handleOutputDatapr9}
+        data={data.output_progress_report9s}
       />
       <ModalLuaranTambahan
         isOpen={isOpenLuaranTambahan}
-        onRequestClose={closeModalLuaranTambahan}
-        index={outputIndex10}
-        onSave={handleOutputData1}
-      />
+        onRequestClose={() => closeModalLuaranTambahan()}
+        index={outputIndexpr10}
+        onSave={handleOutputDatapr10}
+        data={data.output_progress_report10s}
+      /> */}
 
       <div>
         {/* <ModalEditLapKemajuanTab1 isOpen={isOpen} onRequestClose={closeModal} /> */}
         <label className="text-lg font-bold font-sans text-gray-800">
           Ringkasan
         </label>
-        {/* <h2 className="text-md font-sans text-gray-800 my-5">
-        Tuliskan secara ringkas latar belakang penlitian, tujuan dan tahapan
+        <h2 className="text-md font-sans text-gray-800 my-5">
+          Tuliskan secara ringkas latar belakang penlitian, tujuan dan tahapan
           metode, luaran yang ditargetkan, dan hasil yang diperoleh sesuai
           dengan tahun pelaksanaan
-        </h2> */}
+        </h2>
         <TextAreaCmp
           value={data.summary}
           name="summary"
@@ -460,6 +398,7 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
             {/* Input file */}
             <input
               type="file"
+              name="partner_contribution"
               onChange={handleFileChange}
               className="border border-gray-300 rounded-lg p-2 w-1/2"
               id="file-upload"
@@ -484,13 +423,13 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
             <tr>
               <th className="border border-black px-4 py-2 align-middle">No</th>
               <th className="border border-black px-4 py-2 align-middle">
+                Judul
+              </th>
+              <th className="border border-black px-4 py-2 align-middle">
                 Status Target
               </th>
               <th className="border border-black px-4 py-2 align-middle">
                 Status Status Saat ini
-              </th>
-              <th className="border border-black px-4 py-2 align-middle">
-                Judul
               </th>
               <th className="border border-black px-4 py-2 align-middle">
                 Aksi
@@ -498,27 +437,115 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
             </tr>
           </thead>
           <tbody className="text-black">
-            {tableRows.map((row, index) => (
+            {console.log(`Datanya adalah : ${data?.output_progress_report1s}`)}
+            {(data?.output_progress_report1s || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
-                  {row.no}
+                  {1}
                 </td>
-                <td className="border border-black px-4 py-2 break-words text-left">
-                  {row.title}
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.id_category_output}
                 </td>
-                <td className="border border-black px-4 py-2 break-words text-left">
-                  {row.target}
+                <td className="border border-black px-4 py-2 align-middle">
+                  Tercapai
                 </td>
-                <td className="border border-black px-4 py-2 break-words text-left">
-                  {row.saatini}
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.status}
                 </td>
                 <td className="border border-black px-4 py-2 align-middle">
                   <button
-                    onClick={row.onEdit}
+                    onClick={() => openModalRekognisi(index)}
                     className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
                   >
                     <img
-                      src={process.env.PUBLIC_URL + row.actionIcon}
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="Aksi"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {console.log(data?.output_progress_report2s)}
+            {(data?.output_progress_report2s || []).map((item, index) => (
+              <tr key={index}>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {1}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.id_category_output}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  Tercapai
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.status}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    onClick={() => openModalPoster(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="Aksi"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {console.log(data?.output_progress_report3s)}
+            {(data?.output_progress_report3s || []).map((item, index) => (
+              <tr key={index}>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {2}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.id_category_output}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  Tercapai
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.status}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    onClick={() => openModalVideo(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
+                      alt="Aksi"
+                      className="w-7 h-7 mr-2"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {console.log(data?.output_progress_report4s)}
+            {(data?.output_progress_report4s || []).map((item, index) => (
+              <tr key={index}>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {3}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.id_category_output}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  Tercapai
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  {item.status_article}
+                </td>
+                <td className="border border-black px-4 py-2 align-middle">
+                  <button
+                    onClick={() => openModalArtikel(index)}
+                    className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/act_edit.svg"}
                       alt="Aksi"
                       className="w-7 h-7 mr-2"
                     />
@@ -529,13 +556,13 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
           </tbody>
         </table>
       </div>
-      <div>
+      {/* <div>
         <h1 className="text-lg font-bold font-sans text-violet-800">
           Presentasi Pelaksanaan Pengabdian kepada Masyarakat
         </h1>
-      </div>
+      </div> */}
       {/* Tabel */}
-      <div className="relative overflow-x-auto my-10">
+      {/* <div className="relative overflow-x-auto my-10">
         <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
           <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
@@ -556,7 +583,7 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
               </td>
               <td className="border border-black px-4 py-2 align-middle">
                 <button
-                  onClick={openModalPPT}
+                  onClick={(index) => openModalPPT(index)}
                   className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
                 >
                   <img
@@ -573,10 +600,10 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
       <div>
         <h1 className="text-lg font-bold font-sans text-violet-800">
           Rencana Hasil Pelaksanaan
-        </h1>
-      </div>
+        </h1> */}
+      {/* </div> */}
       {/* Tabel */}
-      <div className="relative overflow-x-auto my-10">
+      {/* <div className="relative overflow-x-auto my-10">
         <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
           <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
@@ -597,7 +624,7 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
               </td>
               <td className="border border-black px-4 py-2 align-middle">
                 <button
-                  onClick={openModalPdf}
+                  onClick={(index) => openModalPdf(index)}
                   className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
                 >
                   <img
@@ -610,14 +637,14 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
             </tr>
           </tbody>
         </table>
-      </div>
-      <div>
+      </div> */}
+      {/* <div>
         <h1 className="text-lg font-bold font-sans text-violet-800">
           Luaran Tambahan
         </h1>
-      </div>
+      </div> */}
       {/* Tabel */}
-      <div className="relative overflow-x-auto my-10">
+      {/* <div className="relative overflow-x-auto my-10">
         <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 border border-gray-300">
           <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
@@ -630,14 +657,13 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
             </tr>
           </thead>
           <tbody>
-          {(service?.output || []).map((item, index) => (
-            <tr key={index}>
+            <tr>
               <td className="border border-black px-4 py-2 break-words text-left">
-              {item.description}
+                LuaranTambahan
               </td>
               <td className="border border-black px-4 py-2 align-middle">
                 <button
-                  onClick={()=>openModalLuaranTambahan(index)}
+                  onClick={(index) => openModalLuaranTambahan(index)}
                   className=" items-center px-2 py-1 rounded-md hover:text-cyan-500"
                 >
                   <img
@@ -648,10 +674,9 @@ const LaporanKemajuanTab1 = ({service, data, setData}) => {
                 </button>
               </td>
             </tr>
-          ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 };

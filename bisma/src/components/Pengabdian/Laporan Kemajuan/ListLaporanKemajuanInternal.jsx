@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 // import { getResearch } from "../../Features/ResearchSlice";
 import { getService } from "../../../Features/ServiceSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const ListLaporanKemajuanInternal = () => {
   const [data, setData] = useState([]);
@@ -11,10 +12,12 @@ const ListLaporanKemajuanInternal = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const location = useLocation();
+
   const handleView = (serviceId, report) => {
     console.log(report);
     if (report != null) {
-      navigate("/pengabdian/laporan-kemajuan/baru", {
+      navigate("/pengabdian/laporan-kemajuan/edit", {
         state: { id: serviceId, reportId: report },
       });
     } else {
@@ -50,12 +53,21 @@ const ListLaporanKemajuanInternal = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const successMessage = localStorage.getItem("successMessage");
+    if (successMessage) {
+      toast.success(successMessage);
+      localStorage.removeItem("successMessage"); // Hapus setelah ditampilkan
+    }
+  }, []);
+
   return (
     <div className="mx-5">
       {/* Bagian Usulan Penelitian tidak dimasukkan ke dalam card */}
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PENGABDIAN
+          LAPORAN KEMAJUAN PENGABDIAN
         </h1>
       </div>
 
@@ -153,8 +165,8 @@ const ListLaporanKemajuanInternal = () => {
                       onClick={() =>
                         handleView(
                           item.id,
-                          item.progressReport
-                            ? item.progressReport[0].id
+                          item.serviceProgressReport[0]
+                            ? item.serviceProgressReport[0].id
                             : null
                         )
                       }
@@ -173,6 +185,7 @@ const ListLaporanKemajuanInternal = () => {
           </table>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

@@ -79,21 +79,33 @@ const UsulanBaruList = () => {
         <div>
           <button
             onClick={() => navigate(`/penelitian/usulan/edit/${item.id}`)}
-            className={`bg-blue-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+            className={` px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
           >
-            edit
+            <img
+              src={process.env.PUBLIC_URL + "/assets/edit_perusl.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
           </button>
           <button
             onClick={() => navigate(`/penelitian/detail/${item.id}`)}
-            className="bg-blue-500 px-2 py-1 rounded-md text-white"
+            className=" px-2 py-1 rounded-md text-white"
           >
-            detail
+            <img
+              src={process.env.PUBLIC_URL + "/assets/detail.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
           </button>
           <button
             onClick={() => handleDelete(item.id)}
-            className={`bg-red-500 px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+            className={` px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
           >
-            delete
+            <img
+              src={process.env.PUBLIC_URL + "/assets/remove.svg"}
+              alt="logo"
+              className="w-7 h-7 mr-2"
+            />
           </button>
         </div>
       );
@@ -169,7 +181,7 @@ const UsulanBaruList = () => {
               </button>
               <input
                 type="text"
-                className="text-sm w-full border border-black"
+                className="text-sm w-full border border-neutral-100"
                 value=""
                 onChange={``}
                 placeholder="2024"
@@ -182,30 +194,48 @@ const UsulanBaruList = () => {
         <div className="relative overflow-x-auto  my-10">
           <table className="w-full text-sm text-center bg-neutral-20 text-gray-500 dark:text-gray-400 border border-gray-300 ">
             <thead className="border border-gray-300 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr className="border border-black">
-                <th className="border border-black px-4 py-2">No</th>
-                <th className="border border-black px-4 py-2">Ketua</th>
-                <th className="border border-black px-4 py-2">Judul</th>
-                <th className="border border-black px-4 py-2">Bidang Fokus</th>
-                <th className="border border-black px-4 py-2">
+              <tr className="border border-neutral-100">
+                <th className="border  border-neutral-100 px-4 py-2">No</th>
+                <th className="border border-neutral-100 px-4 py-2">Ketua</th>
+                <th className="border border-neutral-100 px-4 py-2">Judul</th>
+                <th className="border border-neutral-100 px-4 py-2">
+                  Bidang Fokus
+                </th>
+                <th className="border border-neutral-100 px-4 py-2">
                   Tahun Pelaksanaan
                 </th>
-                <th className="border border-black px-4 py-2">Peran</th>
-                <th className="border border-black px-4 py-2">Status Usulan</th>
-                <th className="border border-black px-4 py-2">Aksi</th>
+                <th className="border border-neutral-100 px-4 py-2">Peran</th>
+                <th className="border border-neutral-100 px-4 py-2">
+                  Status Usulan
+                </th>
+                <th className="border border-neutral-100 px-4 py-2">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {data.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.user?.name}</td>
-                  <td>{item.title}</td>
-                  <td>{item.focus.name}</td>
-                  <td>{item.year}</td>
-                  <td>{user.id === item.user.id ? "Ketua" : "Anggota"}</td>
-                  <td>{item.status}</td>
-                  <td className="flex space-x-2 justify-center">
+                <tr key={index} className="border-b text-center text-b3">
+                  <td className="border border-neutral-100 px-4 py-2">
+                    {index + 1}
+                  </td>
+                  <td className="border border-neutral-100 px-4 py-2">
+                    {item.user?.name}
+                  </td>
+                  <td className="border border-neutral-100 px-4 py-2">
+                    {item.title}
+                  </td>
+                  <td className="border border-neutral-100 px-4 py-2">
+                    {item.focus.name}
+                  </td>
+                  <td className="border border-neutral-100 px-4 py-2">
+                    {item.year}
+                  </td>
+                  <td className="border border-neutral-100 px-4 py-2">
+                    {user.id === item.user.id ? "Ketua" : "Anggota"}
+                  </td>
+                  <td className="border border-neutral-100 px-4 py-2">
+                    {item.status}
+                  </td>
+                  <td className="flex space-x-2 justify-center border border-neutral-100 px-4 py-2">
                     {renderActionButton(item)}
                   </td>
                 </tr>

@@ -57,23 +57,65 @@ const LoginForm = () => {
 
   //   dispatch(reset());
   // }, [user, isSuccess, isError, message, dispatch, navigate]);
+  // useEffect(() => {
+  //   if (isError) {
+  //     toast.error(message); // Menampilkan pesan error dari Redux state
+  //   }
+
+  //   if (isSuccess && user) {
+  //     const userRoles = user?.roles || [];
+  //     if (userRoles.length > 0) {
+  //       handleNavigation(userRoles);
+  //     } else {
+  //       toast.error("Role pengguna tidak ditemukan. Hubungi admin.");
+  //       navigate("/error");
+  //     }
+  //   }
+
+  //   dispatch(reset());
+  // }, [user, isSuccess, isError, message, dispatch, navigate]);
+
   useEffect(() => {
     if (isError) {
-      toast.error(message); // Menampilkan pesan error dari Redux state
+      if (typeof message === "object") {
+        // Jika response berupa objek (misal: { email: [...] })
+        Object.values(message).forEach((msgArray) => {
+          if (Array.isArray(msgArray)) {
+            msgArray.forEach((msg) => toast.error(msg));
+          } else {
+            toast.error(msgArray);
+          }
+        });
+      } else {
+        toast.error(message);
+      }
     }
 
     if (isSuccess && user) {
-      const userRoles = user?.roles || [];
-      if (userRoles.length > 0) {
-        handleNavigation(userRoles);
-      } else {
-        toast.error("Role pengguna tidak ditemukan. Hubungi admin.");
-        navigate("/error");
-      }
+      // Simpan pesan sukses login ke localStorage
+      localStorage.setItem("loginSuccess", "Login berhasil! Selamat datang.");
+
+      setTimeout(() => {
+        const userRoles = user?.roles || [];
+        if (userRoles.length > 0) {
+          handleNavigation(userRoles);
+        } else {
+          toast.error("Role pengguna tidak ditemukan. Hubungi admin.");
+          navigate("/error");
+        }
+      });
     }
 
     dispatch(reset());
   }, [user, isSuccess, isError, message, dispatch, navigate]);
+
+  useEffect(() => {
+    const logoutMessage = localStorage.getItem("logoutMessage");
+    if (logoutMessage) {
+      toast.success(logoutMessage); // Menampilkan pesan logout
+      localStorage.removeItem("logoutMessage"); // Hapus agar tidak muncul lagi
+    }
+  }, []);
 
   const Auth = (e) => {
     e.preventDefault();
@@ -208,7 +250,7 @@ const LoginForm = () => {
       {/* Toast Container */}
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={1000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

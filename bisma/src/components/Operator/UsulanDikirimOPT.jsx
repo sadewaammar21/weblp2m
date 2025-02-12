@@ -1,126 +1,138 @@
-import React, { useState } from 'react';
-import DropdownCmp from '../DropdownCmp';
-import TextfieldCmp from '../TextfieldCmp';
-import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
-import * as XLSX from 'xlsx'; // Library for Excel
-import { saveAs } from 'file-saver';
+import React, { useState } from "react";
+import DropdownCmp from "../DropdownCmp";
+import TextfieldCmp from "../TextfieldCmp";
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
+import * as XLSX from "xlsx"; // Library for Excel
+import { saveAs } from "file-saver";
 
 const UsulanDikirimOPT = () => {
-    const navigate = useNavigate();
-  const [judul, setJudul] = useState('');
-  const [selectedOption, setSelectedOption] = useState('');
+  const navigate = useNavigate();
+  const [judul, setJudul] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
 
-//   const handleInputChange = (setter) => (e) => {
-//     setter(e.target.value);
-//   };
+  //   const handleInputChange = (setter) => (e) => {
+  //     setter(e.target.value);
+  //   };
 
   // Fungsi untuk ekspor data ke Excel
   const handleExportExcel = () => {
     const tableData = [
-      ['No', 'Pengusul', 'Skema', 'Judul', 'Berkas'],
+      ["No", "Pengusul", "Skema", "Judul", "Berkas"],
       [
-        '1',
+        "1",
         `Ketua: SRI HARJANTO
         NIDN: 0626016803
         Tahun Pelaksanaan: 2024
         Lama Kegiatan: 1 Tahun
         Bidang Fokus: Teknologi Informasi dan Komunikasi`,
-        'Penelitian Dasar - Penelitian Dosen Pemula',
-        'Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa Sekolah Dasar',
-        '-',
+        "Penelitian Dasar - Penelitian Dosen Pemula",
+        "Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa Sekolah Dasar",
+        "-",
       ],
     ];
 
     // Membuat worksheet dan workbook
     const worksheet = XLSX.utils.aoa_to_sheet(tableData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data Usulan Draft');
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Usulan Draft");
 
     // Menyimpan file Excel
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
-    saveAs(data, 'UsulanDraftMonitoring.xlsx');
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "UsulanDraftMonitoring.xlsx");
   };
 
   // Fungsi untuk kembali ke halaman sebelumnya
   const handleBack = () => {
-    navigate('/monitoring-usulan-reguler');
+    navigate("/monitoring-usulan-reguler");
   };
 
   const options = [
-    { label: 'Option 1', value: '1' },
-    { label: 'Option 2', value: '2' },
-    { label: 'Option 3', value: '3' },
+    { label: "Option 1", value: "1" },
+    { label: "Option 2", value: "2" },
+    { label: "Option 3", value: "3" },
+  ];
+
+  const [jmlBaris, setJmlBaris] = useState(null);
+  const jumlahBarisOptions = [
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "15", value: "15" },
   ];
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
-    {/* Judul Halaman */}
-    <h1 className="text-xl font-bold text-violet-800 mb-4">
-      LIST USULAN DIKIRIM MONITORING
-    </h1>
-  
-    {/* Tombol Kembali */}
-    <div className="flex justify-end border-b max-w-6xl ">
-      <button
-        onClick={handleBack}
-        className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white"
-      >
-        <FaArrowLeft className="mr-2" /> {/* Ikon panah kiri */}
-        Kembali
-      </button>
-    </div>
-  
-    {/* Kontainer Utama */}
-    <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
-      {/* Header dengan Tombol Ekspor dan Dropdown */}
-      <div className="flex justify-between mx-5 py-4">
-        {/* Tombol Ekspor ke Excel */}
-        <div className="mx-2">
-          <button
-            onClick={handleExportExcel}
-            className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
-          >
-            <img
-              src={process.env.PUBLIC_URL + '/assets/icon_excel.svg'}
-              alt="penelitian"
-              className="w-5 h-5 mr-2"
+      {/* Judul Halaman */}
+      <h1 className="text-xl font-bold text-violet-800 mb-4">
+        LIST USULAN DIKIRIM MONITORING
+      </h1>
+
+      {/* Tombol Kembali */}
+      <div className="flex justify-end border-b max-w-[1430px]">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+      hover:bg-white hover:text-bluef-500"
+        >
+          <FaLessThan className="mr-2" />
+          Kembali
+        </button>
+      </div>
+
+      {/* Kontainer Utama */}
+      <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
+        {/* Header dengan Tombol Ekspor dan Dropdown */}
+        <div className="flex justify-between mx-5 py-4">
+          {/* Tombol Ekspor ke Excel */}
+          <div className="mx-2">
+            <button
+              onClick={handleExportExcel}
+              className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
+            >
+              <img
+                src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
+                alt="penelitian"
+                className="w-5 h-5 mr-2"
+              />
+              Excel
+            </button>
+          </div>
+
+          {/* Dropdown */}
+          <div className="mx-2">
+            <DropdownCmp
+              label="Jumlah Baris *"
+              options={jumlahBarisOptions}
+              selectedOption={jumlahBarisOptions.find(
+                (opt) => opt.value === jmlBaris
+              )}
+              onChange={(selected) => setJmlBaris(selected.value)}
+              placeholder="Penelitian"
+              className="w-72 border border-black" // Panjang dropdown
+              controlClassName="bg-neutral-30 text-black"
             />
-            Excel
-          </button>
+          </div>
         </div>
-  
-        {/* Dropdown */}
-        <div className="mx-2">
-          <DropdownCmp
-            options={options}
-            selectedOption={selectedOption}
-            onChange={(e) => handleDropdownChange(e.target.value)}
-            placeholder="Jumlah Baris"
-            className="border border-black"
-            controlClassName="bg-white text-black"
+
+        {/* Input Pencarian */}
+        <div className="mx-5 my-5">
+          <TextfieldCmp
+            value={judul}
+            onChange={(e) => setJudul(e.target.value)}
+            placeholder="Cari Berdasarkan Judul"
+            width="w-64 p-2"
           />
         </div>
       </div>
-  
-      {/* Input Pencarian */}
-      <div className="mx-5 my-5">
-        <TextfieldCmp
-          value={judul}
-          onChange={(e) => setJudul(e.target.value)}
-          placeholder="Cari Berdasarkan Judul"
-          width="w-64 p-2"
-        />
-      </div>
     </div>
-  </div>
-  
-    
-  )
-}
+  );
+};
 
-export default UsulanDikirimOPT
+export default UsulanDikirimOPT;

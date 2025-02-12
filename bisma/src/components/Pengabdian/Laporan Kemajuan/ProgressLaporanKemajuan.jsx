@@ -8,6 +8,7 @@ import {
   getServiceDetail,
   getServiceProgressReport,
 } from "../../../Features/ServiceSlice";
+import { toast, ToastContainer } from "react-toastify";
 
 const steps = [
   { id: 1, label: "Laporan Kemajuan" },
@@ -59,15 +60,27 @@ const ProgressLaporanKemajuan = () => {
   //data pengabdian
   const [service, setService] = useState({});
 
+  // const fetchService = async () => {
+  //   try {
+  //     const response = await getServiceDetail(id);
+  //     setService(response);
+  //     console.log(service);
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
+
   const fetchService = async () => {
-      try {
-        const response = await getServiceDetail(id);
-        setService(response);
-        console.log(service);
-      } catch (error) {
-        throw error;
-      }
-    };
+    try {
+      const response = await getServiceDetail(id);
+      setService(response.data);
+      console.log("Service ID:", response.data.id);
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching service:", error);
+      console.log("Tidak ada service id");
+    }
+  };
 
   const fetchReport = async () => {
     try {
@@ -77,6 +90,7 @@ const ProgressLaporanKemajuan = () => {
         console.log(report);
       } else {
         setReport({
+          comunity_service_id: service.id,
           summary: "",
           keyword: "",
           substance: "",
@@ -86,12 +100,12 @@ const ProgressLaporanKemajuan = () => {
           output_progress_report2s: [],
           output_progress_report3s: [],
           output_progress_report4s: [],
-          output_progress_report5s: [],
-          output_progress_report6s: [],
-          output_progress_report7s: [],
-          output_progress_report8s: [],
-          output_progress_report9s: [],
-          output_progress_report10s: [],
+          // output_progress_report5s: [],
+          // output_progress_report6s: [],
+          // output_progress_report7s: [],
+          // output_progress_report8s: [],
+          // output_progress_report9s: [],
+          // output_progress_report10s: [],
         });
         setLoading(false);
       }
@@ -101,6 +115,14 @@ const ProgressLaporanKemajuan = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (reportId) {
+      console.log("Report ID tersedia:", reportId);
+    } else {
+      console.log("Tidak ada report id");
+    }
+  }, [reportId]);
 
   useEffect(() => {
     fetchService();
@@ -126,9 +148,9 @@ const ProgressLaporanKemajuan = () => {
       case 1:
         return (
           <LaporanKemajuanTab1
-          service={service}
-          data={report} 
-          setData={setReport}
+            service={service}
+            data={report}
+            setData={setReport}
           />
         );
       case 2:
@@ -140,36 +162,121 @@ const ProgressLaporanKemajuan = () => {
           />
         );
       default:
-        return null;
+        return <ListLaporanKemajuanInternal />;
     }
   };
 
-  if (isLaporanKemajuan) {
-    return <ListLaporanKemajuanInternal />;
-  }
+  // if (isLaporanKemajuan) {
+  //   return <ListLaporanKemajuanInternal />;
+  // }
 
+  // const handleSubmit = async (status) => {
+  //   try {
+  //     if (reportId) {
+  //       setReport({ ...report, status: status });
+  //       // console.log(report)
+  //       const response = await addServiceProgressReport({
+  //         serviceId: service.id,
+  //         data: report,
+  //         isEdit: true,
+  //         reportId: report.id,
+  //       });
+  //       console.log(report);
+  //       console.log(response);
+
+  //       console.log("Response:", response);
+
+  //       // if (response) {
+  //       //   toast.success(response || "Laporan Kemajuan telah disimpan.");
+  //       //   await new Promise((resolve) => setTimeout(resolve, 1000)); // Delay agar toast muncul sebelum navigasi
+  //       // }
+  //       // console.log("Response dari addService:", response);
+
+  //       if (response && response.success) {
+  //         // Pastikan response valid sebelum navigasi
+  //         toast.success(response.message || "Laporan Kemajuan telah disimpan.");
+
+  //         // Tunggu 1 detik agar toast muncul sebelum navigasi
+  //         await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  //         navigate("/pengabdian/laporan-kemajuan");
+  //       }
+
+  //       // navigate("/pengabdian/laporan-kemajuan");
+
+  //       // navigate(-1);
+  //     } else {
+  //       setReport({ ...report, status: status });
+  //       // console.log(report)
+  //       const response = await addServiceProgressReport({
+  //         serviceId: service.id,
+  //         data: report,
+  //         isEdit: false,
+  //       });
+  //       console.log(response);
+  //       console.log(report);
+
+  //       if (response && response.success) {
+  //         // Pastikan response valid sebelum navigasi
+  //         toast.success(response.message || "Laporan Kemajuan telah disimpan.");
+
+  //         // Tunggu 1 detik agar toast muncul sebelum navigasi
+  //         await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  //         navigate("/pengabdian/laporan-kemajuan");
+  //       }
+
+  //       // navigate("/pengabdian/laporan-kemajuan");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+
+  //     // Ambil pesan error dari response jika ada
+  //     const errorMessage = error?.message || "Terjadi kesalahan!";
+  //     toast.error(errorMessage);
+  //   }
+  // };
   const handleSubmit = async (status) => {
-    if (reportId) {
-      setReport({ ...report, status: status });
-      // console.log(report)
-      const response = await addServiceProgressReport({
-        serviceId: service.id,
-        data: report,
-        isEdit: true,
-        reportId: report.id,
-      });
-      console.log(response);
-      navigate(-1);
-    } else {
-      setReport({ ...report, status: status });
-      // console.log(report)
-      const response = await addServiceProgressReport({
-        serviceId: service.id,
-        data: report,
-        isEdit: false,
-      });
-      console.log(response);
-      navigate(-1);
+    try {
+      if (reportId) {
+        setReport({ ...report, status: status });
+        // console.log(report)
+        const response = await addServiceProgressReport({
+          serviceId: service.id,
+          data: report,
+          isEdit: true,
+          reportId: report.id,
+        });
+        console.log(response);
+        if (response) {
+          toast.success(response || "Laporan Kemajuan telah diubah.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        navigate(-1);
+      } else {
+        setReport({ ...report, status: status });
+        // console.log(report)
+        const response = await addServiceProgressReport({
+          serviceId: service.id,
+          data: report,
+          isEdit: false,
+        });
+        if (response) {
+          toast.success(response || "Laporan Kemajuan telah disimpan.");
+
+          // Tunggu 1 detik agar toast muncul sebelum navigasi
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        navigate(-1);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+
+      // Ambil pesan error dari response jika ada
+      const errorMessage = error?.message || "Terjadi kesalahan!";
+      toast.error(errorMessage);
     }
   };
 
@@ -181,7 +288,7 @@ const ProgressLaporanKemajuan = () => {
     <div>
       <div>
         <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-          USULAN PROPOSAL PENGABDIAN
+          LAPORAN KEMAJUAN PENGABDIAN
         </h1>
         <div className="container mx-auto">
           <div className="bg-gray-50 shadow-sm rounded-sm p-5">
@@ -264,6 +371,7 @@ const ProgressLaporanKemajuan = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

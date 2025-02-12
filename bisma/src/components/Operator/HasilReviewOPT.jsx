@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DropdownCmp from "../DropdownCmp";
 import TextfieldCmp from "../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
 
@@ -14,7 +14,12 @@ const HasilReviewOPT = () => {
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
-
+  const [jmlBaris, setJmlBaris] = useState(null);
+  const jumlahBarisOptions = [
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "15", value: "15" },
+  ];
   //   const handleInputChange = (setter) => (e) => {
   //     setter(e.target.value);
   //   };
@@ -66,20 +71,15 @@ const HasilReviewOPT = () => {
       <h1 className="text-xl font-bold text-violet-800 mb-4">HASIL REVIEW</h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
-                "Kembali"
-                  ? "bg-bluef-500 text-white"
-                  : "bg-white text-bluef-500"
-              }`}
-            >
-              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+              hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
@@ -99,12 +99,15 @@ const HasilReviewOPT = () => {
             </div>
             <div className="mx-2 my-2">
               <DropdownCmp
-                options={options}
-                selectedOption={selectedOption}
-                onChange={(e) => handleDropdownChange(e.target.value)}
+                label="Jumlah Baris *"
+                options={jumlahBarisOptions}
+                selectedOption={jumlahBarisOptions.find(
+                  (opt) => opt.value === jmlBaris
+                )}
+                onChange={(selected) => setJmlBaris(selected.value)}
                 placeholder="Jumlah Baris"
-                className=" border border-black "
-                controlClassName="bg-white text-black"
+                className="w-72 border border-black" // Panjang dropdown
+                controlClassName="bg-neutral-30 text-black"
               />
             </div>
           </div>

@@ -1,0 +1,257 @@
+import React, { useState, useEffect } from "react";
+import DropdownCmp from "../../DropdownCmp";
+import TextfieldCmp from "../../TextfieldCmp";
+import { useNavigate } from "react-router-dom";
+import {
+  FaArrowLeft,
+  FaPlus,
+  FaCcMastercard,
+  FaLessThan,
+} from "react-icons/fa";
+import * as XLSX from "xlsx"; // Library for Excel
+import { saveAs } from "file-saver"; // Library for saving files
+import { getService } from "../../../Features/ServiceSlice";
+
+const PengelolaReview = () => {
+  const navigate = useNavigate();
+  const [judul, setJudul] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
+  const [tasul, setTasul] = useState("");
+  const [tapel, setTapel] = useState("");
+  const [Tahapan, setTahapan] = useState("");
+  const [data, setData] = useState([]);
+  const [year, setYear] = useState(null);
+  const [startYear, setStartYear] = useState(null);
+
+  //get data from db
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getService({
+          pageSize: 10,
+          currentPage: 1,
+          status: 3,
+          year: 2025,
+          // userId: 2,
+        });
+        setData(result.data);
+        console.log(data);
+      } catch (err) {
+        // setError(err.message);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleDropdownChange = (option) => {
+    setSelectedOption(option);
+  };
+
+  //   const handleInputChange = (setter) => (e) => {
+  //     setter(e.target.value);
+  //   };
+
+  // Fungsi untuk ekspor data ke Excel
+  const handleExportExcel = () => {
+    const tableData = [
+      ["No", "Pengusul", "Skema", "Judul", "Berkas"],
+      [
+        "1",
+        `Ketua: SRI HARJANTO
+        NIDN: 0626016803
+        Tahun Pelaksanaan: 2024
+        Lama Kegiatan: 1 Tahun
+        Bidang Fokus: Teknologi Informasi dan Komunikasi`,
+        "Penelitian Dasar - Penelitian Dosen Pemula",
+        "Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa Sekolah Dasar",
+        "-",
+      ],
+    ];
+
+    // Membuat worksheet dan workbook
+    const worksheet = XLSX.utils.aoa_to_sheet(tableData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Usulan Draft");
+
+    // Menyimpan file Excel
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "UsulanDraftMonitoring.xlsx");
+  };
+
+  const startYears = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+  const Years = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+
+  // Fungsi untuk kembali ke halaman sebelumnya
+  const handleBack = () => {
+    navigate("/dashboard-operator");
+  };
+
+  const handleplus = () => {
+    navigate("/monitoring/pengabdian/pengelola-review-sbr1");
+  };
+
+  const handleReview = (itemId) => {
+    navigate("/monitoring/pengabdian/pengelola-review-sbr2", {
+      state: { id: itemId },
+    });
+  };
+
+  const options = [
+    { label: "Option 1", value: "1" },
+    { label: "Option 2", value: "2" },
+    { label: "Option 3", value: "3" },
+  ];
+
+  return (
+    <div className="min-h-screen p-5 mx-10 my-5">
+      <h1 className="text-xl font-bold text-violet-800 mb-4">
+        Penugasan Review
+      </h1>
+
+      <div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+              hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
+        </div>
+
+        <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md ">
+          <div className="grid grid-cols-3 gap-4 mx-10">
+            <DropdownCmp
+              label="Tahun Usulan *"
+              options={Years}
+              selectedOption={Years.find((opt) => opt.value === year)}
+              onChange={(selected) => setYear(selected.value)}
+              placeholder="Pilih Tahun Usulan"
+              className="w-72 border border-black"
+            />
+            <DropdownCmp
+              label="Tahun Pelaksanaan *"
+              options={startYears}
+              selectedOption={startYears.find((opt) => opt.value === startYear)}
+              onChange={(selected) => setStartYear(selected.value)}
+              placeholder="Pilih Tahun Pelaksanaan"
+              className="w-72 border border-black"
+            />
+            <DropdownCmp
+              label="Tahapan"
+              options={options}
+              selectedOption={tasul}
+              onChange={(value) => setTasul(value)}
+              name="skema"
+              placeholder="Pilih Tahapan"
+            />
+          </div>
+          <div className="flex mx-5 ">
+            <div className="mx-2 my-2">
+              <button
+                onClick={handleExportExcel}
+                className="flex items-center px-2 py-1 bg-cyan-800 text-white rounded-md hover:bg-cyan-600"
+              >
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/icon_excel.svg"}
+                  alt="penelitian"
+                  className="w-5 h-5 mr-2"
+                />
+                Excel
+              </button>
+            </div>
+            <div className="mx-2 my-2">
+              <button
+                onClick={handleplus}
+                className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
+              >
+                <FaPlus size={15} />
+                Beban Reviewer
+              </button>
+            </div>
+          </div>
+          <div className="mx-5 my-5">
+            <TextfieldCmp
+              value={judul}
+              onChange={(e) => setJudul(e.target.value)}
+              placeholder="Cari Berdasarkan Judul"
+              width="w-64 p-2"
+            />
+          </div>
+          {/* Tabel */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left text-gray-500 border border-black">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+                <tr>
+                  <th className="border px-4 py-2">No</th>
+                  <th className="border px-4 py-2">Pengusul</th>
+                  <th className="border px-4 py-2">Skema</th>
+                  <th className="border px-4 py-2">Judul</th>
+                  <th className="border px-4 py-2">Reviewer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data
+                  .filter((item) => item.status !== 1)
+                  .map(
+                    (
+                      item,
+                      index //here
+                    ) => (
+                      <tr key={index}>
+                        <td className="border border-gray-300 p-2 text-center">
+                          {index + 1}
+                        </td>
+                        <td className="border border-gray-300 p-2">
+                          <p>Ketua: {item.user?.name}</p>
+                          <p>NIDN: {item.user?.nidn}</p>
+                          <p>Tahun Pelaksanaan: {item.year}</p>
+                          <p>Lama Kegiatan: {item.duration}</p>
+                          <p>Bidang Fokus: {item.focus_thematic.name || item.focus_rirn.name}</p>
+                        </td>
+                        <td className="border border-gray-300 p-2">
+                          <p className="text-blue-600 font-bold">
+                            {item.scheme.name}
+                          </p>
+                        </td>
+                        <td className="border border-gray-300 p-2 text-center">
+                          <p className="text-blue-600 font-bold">
+                            {item.title}
+                          </p>
+                        </td>
+                        <td className="border border-gray-300 p-2 text-center">
+                          <button
+                            onClick={() => handleReview(item.id)}
+                            className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
+                          >
+                            2
+                            <FaCcMastercard size={15} />
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PengelolaReview;
