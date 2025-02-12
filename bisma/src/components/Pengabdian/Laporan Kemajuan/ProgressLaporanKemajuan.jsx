@@ -73,12 +73,9 @@ const ProgressLaporanKemajuan = () => {
   const fetchService = async () => {
     try {
       const response = await getServiceDetail(id);
-      if (response && response.data.id) {
-        setService(response);
-        console.log("Service ID:", response.data.id);
-      } else {
-        console.log("Tidak ada service id");
-      }
+      setService(response.data);
+      console.log("Service ID:", response.data.id);
+      console.log(response);
     } catch (error) {
       console.error("Error fetching service:", error);
       console.log("Tidak ada service id");
