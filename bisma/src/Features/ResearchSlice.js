@@ -533,6 +533,13 @@ export const addResearchProgressReport = async ({
         formData,
         getToken()
       );
+      if (data.status === "submitted") {
+        updateStatus({
+          researchId: researchId,
+          newStatus: 11,
+          note: "laporan kemajuan disubmit",
+        });
+      }
       return response.data;
     } else {
       const response = await axios.post(
@@ -540,6 +547,13 @@ export const addResearchProgressReport = async ({
         formData,
         getToken()
       );
+      if (data.status === "submitted") {
+        updateStatus({
+          researchId: researchId,
+          newStatus: 11,
+          note: "laporan kemajuan disubmit",
+        });
+      }
       console.log(response);
       return response.data;
     }
@@ -599,6 +613,11 @@ export const addMonevResearch = async (monevData) => {
       getToken()
     );
     console.log(response.data);
+    updateStatus({
+      researchId: monevData.research_id,
+      newStatus: 12,
+      note: "monev telah disubmit",
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -699,6 +718,13 @@ export const addResearchFinalReport = async ({
         formData,
         getToken()
       );
+      if (data.status === "submitted") {
+        updateMemberStatus({
+          researchId: researchId,
+          newStatus: 13,
+          note: "selesai cuy",
+        });
+      }
       return response.data;
     } else {
       const response = await axios.post(

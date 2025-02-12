@@ -29,7 +29,7 @@ const LaporanAkhirList = () => {
         const result = await getResearch({
           pageSize: 5,
           currentPage: 1,
-          status: 11,
+          status: 12,
           // year: 2025,
           userId: user.id,
         });
