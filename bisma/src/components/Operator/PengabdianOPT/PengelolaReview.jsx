@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver"; // Library for saving files
-import { getResearch } from "../../../Features/ResearchSlice";
+import { getService } from "../../../Features/ServiceSlice";
 
 const PengelolaReview = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const PengelolaReview = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getResearch({
+        const result = await getService({
           pageSize: 10,
           currentPage: 1,
           status: 3,
@@ -210,7 +210,7 @@ const PengelolaReview = () => {
                           <p>NIDN: {item.user?.nidn}</p>
                           <p>Tahun Pelaksanaan: {item.year}</p>
                           <p>Lama Kegiatan: {item.duration}</p>
-                          <p>Bidang Fokus: {item.focus.name}</p>
+                          <p>Bidang Fokus: {item.focus_thematic.name || item.focus_rirn.name}</p>
                         </td>
                         <td className="border border-gray-300 p-2">
                           <p className="text-blue-600 font-bold">

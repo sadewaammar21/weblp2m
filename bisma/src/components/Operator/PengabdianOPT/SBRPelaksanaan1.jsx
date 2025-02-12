@@ -66,7 +66,7 @@ const SBRPelaksanaan1 = () => {
 
   // Fungsi untuk kembali ke halaman sebelumnya
   const handleBack = () => {
-    navigate("/monitoring-usulan-reguler");
+    navigate("/monitoring/pengabdian/pengelola-review");
   };
 
   const options = [

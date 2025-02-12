@@ -9,7 +9,7 @@ import { saveAs } from "file-saver"; // Library for saving files
 import { getToken } from "../../../Features/AuthSlice";
 import axios from "axios";
 import ModalReviewerInternal from "./ModalReviewerInternal";
-import { updateStatus } from "../../../Features/ResearchSlice";
+import { updateStatus } from "../../../Features/ServiceSlice";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const SBRPelaksanaan2 = () => {
@@ -58,7 +58,7 @@ const SBRPelaksanaan2 = () => {
   //get research data
   const fetchData = async () => {
     const response = await axios.get(
-      `${apiUrl}/api/research/${location.state.id}`,
+      `${apiUrl}/api/comunity-service/${location.state.id}`,
       getToken()
     );
     console.log(response.data);
@@ -97,7 +97,7 @@ const SBRPelaksanaan2 = () => {
     try {
       const reviewers = reviewer.map((reviewer) => reviewer.id);
       const response = await axios.post(
-        `${apiUrl}/api/research/${id}/reviewers`,
+        `${apiUrl}/api/comunity-service/${id}/reviewers`,
         {
           reviewers: reviewers,
         },
@@ -105,7 +105,7 @@ const SBRPelaksanaan2 = () => {
       );
       console.log(response);
       updateStatus({
-        researchId: id,
+        serviceId: id,
         newStatus: 4,
         note: "reviewer ditugaskan",
       });

@@ -76,7 +76,7 @@ export const addResearch = async ({
   formData.append("leader_name", data.leader_name);
   formData.append("leader_task", data.leader_task);
   formData.append("substance_id", data.substance_id);
-  formData.append("status", 1);
+  formData.append("status", newStatus? newStatus:1);
   formData.append("approval_funds", data.approval_funds);
   formData.append("letter_of_intent", data.letter_of_intent);
 

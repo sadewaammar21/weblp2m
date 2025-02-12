@@ -49,7 +49,11 @@ const ProgressBarPerbaikanUsulan = () => {
 
   const fetchServiceDetail = async () => {
       const response = await getServiceDetail(id);
-      setService(response.data);
+      setService({
+        ...response.data,
+        cluster_lv1: response.data.cluster_lv1.id,
+        cluster_lv2: response.data.cluster_lv2.id,
+        cluster_lv3: response.data.cluster_lv3.id});
       console.log(service);
     };
     useEffect(() => {
