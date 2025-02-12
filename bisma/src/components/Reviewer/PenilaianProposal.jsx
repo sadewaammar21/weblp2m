@@ -17,6 +17,13 @@ const PenilaianProposal = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [jmlBaris, setJmlBaris] = useState(null);
+
+  const jumlahBarisOptions = [
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "15", value: "15" },
+  ];
 
   //get researches data
   const user = localStorage.getItem("user");
@@ -124,12 +131,15 @@ const PenilaianProposal = () => {
             </div>
             <div className="mx-2 my-2">
               <DropdownCmp
-                options={options}
-                selectedOption={selectedOption}
-                onChange={(e) => handleDropdownChange(e.target.value)}
+                label="Jumlah Baris *"
+                options={jumlahBarisOptions}
+                selectedOption={jumlahBarisOptions.find(
+                  (opt) => opt.value === jmlBaris
+                )}
+                onChange={(selected) => setJmlBaris(selected.value)}
                 placeholder="Jumlah Baris"
-                className=" border border-black "
-                controlClassName="bg-white text-black"
+                className="w-72 border border-black" // Panjang dropdown
+                controlClassName="bg-neutral-30 text-black"
               />
             </div>
           </div>

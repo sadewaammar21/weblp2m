@@ -60,6 +60,13 @@ const UsulanDikirimOPT = () => {
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
   ];
+
+  const [jmlBaris, setJmlBaris] = useState(null);
+  const jumlahBarisOptions = [
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "15", value: "15" },
+  ];
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       {/* Judul Halaman */}
@@ -101,12 +108,15 @@ const UsulanDikirimOPT = () => {
           {/* Dropdown */}
           <div className="mx-2">
             <DropdownCmp
-              options={options}
-              selectedOption={selectedOption}
-              onChange={(e) => handleDropdownChange(e.target.value)}
-              placeholder="Jumlah Baris"
-              className="border border-black"
-              controlClassName="bg-white text-black"
+              label="Jumlah Baris *"
+              options={jumlahBarisOptions}
+              selectedOption={jumlahBarisOptions.find(
+                (opt) => opt.value === jmlBaris
+              )}
+              onChange={(selected) => setJmlBaris(selected.value)}
+              placeholder="Penelitian"
+              className="w-72 border border-black" // Panjang dropdown
+              controlClassName="bg-neutral-30 text-black"
             />
           </div>
         </div>

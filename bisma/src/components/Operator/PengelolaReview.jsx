@@ -20,6 +20,9 @@ const PengelolaReview = () => {
   const [tapel, setTapel] = useState("");
   const [Tahapan, setTahapan] = useState("");
   const [data, setData] = useState([]);
+  const [year, setYear] = useState(null);
+  const [startYear, setStartYear] = useState(null);
+  const [tahapan, setThpn] = useState(null);
 
   //get data from db
   useEffect(() => {
@@ -101,6 +104,18 @@ const PengelolaReview = () => {
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
   ];
+  const startYears = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+  const Years = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+  const Tahapans = [
+    { label: "Tahapan 1", value: "Tahapan 1" },
+    { label: "Tahapan 2", value: "Tahapan 2" },
+  ];
 
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
@@ -123,20 +138,20 @@ const PengelolaReview = () => {
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md ">
           <div className="grid grid-cols-3 gap-4 mx-10">
             <DropdownCmp
-              label="Tahun Usulan"
-              options={options}
-              selectedOption={tasul}
-              onChange={(value) => setTasul(value)}
-              name="skema"
-              placeholder="Pilih Tahun"
+              label="Tahun Usulan *"
+              options={Years}
+              selectedOption={Years.find((opt) => opt.value === year)}
+              onChange={(selected) => setYear(selected.value)}
+              placeholder="Pilih Tahun Usulan"
+              className="w-72 border border-black"
             />
             <DropdownCmp
-              label="Tahun Pelaksanaan"
-              options={options}
-              selectedOption={tasul}
-              onChange={(value) => setTasul(value)}
-              name="skema"
+              label="Tahun Pelaksanaan *"
+              options={startYears}
+              selectedOption={startYears.find((opt) => opt.value === startYear)}
+              onChange={(selected) => setStartYear(selected.value)}
               placeholder="Pilih Tahun Pelaksanaan"
+              className="w-72 border border-black"
             />
             <DropdownCmp
               label="Tahapan"

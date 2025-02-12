@@ -556,7 +556,7 @@ const NavBar = ({ children }) => {
                               </Link>
                             </li>
                             <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
-                              <Link to="/monitoring-perbaikan-usulan-pengabdian">
+                              <Link to="/monitoring/pengabdian/perbaikan-usulan">
                                 Perbaikan Usulan
                               </Link>
                             </li>

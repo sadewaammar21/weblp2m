@@ -14,12 +14,33 @@ const DashboardReviewerCmp = () => {
   const navigate = useNavigate();
 
   const [selectedOption, setSelectedOption] = useState("");
+  const [year, setYear] = useState(null);
+  const [startYear, setStartYear] = useState(null);
+  const [prohibs, setProhibs] = useState(null);
   const [jenisKegiatan, setJenisKegiatan] = useState("Penelitian");
 
   const optionsJenisKegiatan = [
     { label: "Penelitian", value: "Penelitian" },
     { label: "Pengabdian", value: "Pengabdian" },
   ];
+
+  const Years = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+
+  const startYears = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+
+  const ProHib = [
+    {
+      label: "Penelitian Kompetitif Nasional",
+      value: "Penelitian Kompetitif Nasional",
+    },
+  ];
+
   const metriks =
     jenisKegiatan === "Penelitian"
       ? [
@@ -114,12 +135,11 @@ const DashboardReviewerCmp = () => {
       <div className="flex justify-end items-start space-x-5">
         <DropdownCmp
           label="Program Hibah *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="Penelitian Kompetitif Nasional"
-          className="w-72 border border-black " // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          options={ProHib}
+          selectedOption={ProHib.find((opt) => opt.value === prohibs)}
+          onChange={(selected) => setProhibs(selected.value)}
+          placeholder="Pilih Program Hibah"
+          className="w-72 border border-black"
         />
         <DropdownCmp
           label="Jenis Kegiatan *"
@@ -134,21 +154,19 @@ const DashboardReviewerCmp = () => {
       <div className="flex justify-end items-start space-x-5 my-5">
         <DropdownCmp
           label="Tahun Usulan *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="2023"
-          className="w-72 border border-black" // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          options={Years}
+          selectedOption={Years.find((opt) => opt.value === year)}
+          onChange={(selected) => setYear(selected.value)}
+          placeholder="Pilih Tahun Usulan"
+          className="w-72 border border-black"
         />
         <DropdownCmp
           label="Tahun Pelaksanaan *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="2024"
-          className="w-72 border border-black" // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          options={startYears}
+          selectedOption={startYears.find((opt) => opt.value === startYear)}
+          onChange={(selected) => setStartYear(selected.value)}
+          placeholder="Pilih Tahun Pelaksanaan"
+          className="w-72 border border-black"
         />
       </div>
       <div className="grid grid-cols-3 gap-4 my-10">

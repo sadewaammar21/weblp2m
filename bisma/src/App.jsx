@@ -102,6 +102,7 @@ import PengelolaReviewPengabdianSBR1Page from "./pages/PengelolaReviewPengabdian
 import PengelolaReviewPengabdianSBR2Page from "./pages/PengelolaReviewPengabdianSBR2Page";
 import PengelolaReviewPengabdianInternal from "./pages/PengelolaReviewPengabdianInternal";
 import KepalaLPPMDashboardPage from "./pages/KepalaLPPMDashboardPage";
+import PerbaikanUsulanPengabdianPage from "./pages/PerbaikanUsulanPengabdianPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -362,7 +363,7 @@ function App() {
         />
         <Route
           path="/monitoring/pengabdian/perbaikan-usulan"
-          element={<PerbaikanUsulan />}
+          element={<PerbaikanUsulanPengabdianPage />}
         />
         <Route
           path="/monitoring-perbaikan-usulan-penelitian"

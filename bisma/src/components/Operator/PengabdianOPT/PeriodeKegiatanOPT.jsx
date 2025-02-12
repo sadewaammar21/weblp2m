@@ -8,6 +8,8 @@ const PeriodeKegiatanOPT = () => {
 
   const [selectedOption, setSelectedOption] = useState("");
 
+  const [year, setYear] = useState(null);
+
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
@@ -16,6 +18,10 @@ const PeriodeKegiatanOPT = () => {
     { label: "Option 1", value: "1" },
     { label: "Option 2", value: "2" },
     { label: "Option 3", value: "3" },
+  ];
+  const Years = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
   ];
 
   const metrics = [
@@ -49,13 +55,12 @@ const PeriodeKegiatanOPT = () => {
 
       <div className="flex justify-end items-start space-x-5 my-5">
         <DropdownCmp
-          label="Tahun Pelaksanaan *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="2024"
-          className="w-72 border border-black" // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          label="Tahun Usulan *"
+          options={Years}
+          selectedOption={Years.find((opt) => opt.value === year)}
+          onChange={(selected) => setYear(selected.value)}
+          placeholder="Pilih Tahun Usulan"
+          className="w-72 border border-black"
         />
       </div>
       <div className="grid grid-cols-3 gap-4 my-10">

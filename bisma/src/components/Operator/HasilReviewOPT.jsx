@@ -14,7 +14,12 @@ const HasilReviewOPT = () => {
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
   };
-
+  const [jmlBaris, setJmlBaris] = useState(null);
+  const jumlahBarisOptions = [
+    { label: "5", value: "5" },
+    { label: "10", value: "10" },
+    { label: "15", value: "15" },
+  ];
   //   const handleInputChange = (setter) => (e) => {
   //     setter(e.target.value);
   //   };
@@ -94,12 +99,15 @@ const HasilReviewOPT = () => {
             </div>
             <div className="mx-2 my-2">
               <DropdownCmp
-                options={options}
-                selectedOption={selectedOption}
-                onChange={(e) => handleDropdownChange(e.target.value)}
+                label="Jumlah Baris *"
+                options={jumlahBarisOptions}
+                selectedOption={jumlahBarisOptions.find(
+                  (opt) => opt.value === jmlBaris
+                )}
+                onChange={(selected) => setJmlBaris(selected.value)}
                 placeholder="Jumlah Baris"
-                className=" border border-black "
-                controlClassName="bg-white text-black"
+                className="w-72 border border-black" // Panjang dropdown
+                controlClassName="bg-neutral-30 text-black"
               />
             </div>
           </div>

@@ -7,6 +7,34 @@ import { saveAs } from "file-saver";
 const MonitoringUsulanPengabdian = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState("");
+  const [year, setYear] = useState(null);
+  const [startYear, setStartYear] = useState(null);
+  const [prohibs, setProhibs] = useState(null);
+  const [jenisKegiatan, setJenisKegiatan] = useState(null);
+  const [statuses, setStatuses] = useState(null);
+  const [jmlBaris, setJmlBaris] = useState(null);
+
+  const optionsJenisKegiatan = [
+    { label: "Penelitian", value: "Penelitian" },
+    { label: "Pengabdian", value: "Pengabdian" },
+  ];
+
+  const Years = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+
+  const startYears = [
+    { label: "2024", value: "2024" },
+    { label: "2025", value: "2025" },
+  ];
+
+  const ProHib = [
+    {
+      label: "Penelitian Kompetitif Nasional",
+      value: "Penelitian Kompetitif Nasional",
+    },
+  ];
 
   const handleExportExcel = () => {
     const tableData = [
@@ -74,42 +102,43 @@ const MonitoringUsulanPengabdian = () => {
       </div>
       <div className="flex justify-end items-start mb-4 mx-10">
         <DropdownCmp
-          label="Jenis Kegiatan"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={handleDropdownChange}
-          placeholder="Pilih Jenis Kegiatan"
-          className="w-72 border border-black" // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          label="Jenis Kegiatan *"
+          options={optionsJenisKegiatan}
+          selectedOption={optionsJenisKegiatan.find(
+            (opt) => opt.value === jenisKegiatan
+          )}
+          onChange={(selected) => setProhibs(selected.value)}
+          className="w-72 border border-black"
         />
       </div>
       <div className="flex justify-end items-start mb-4">
         <DropdownCmp
-          label="Tahun Pelaksanaan"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={handleDropdownChange}
-          placeholder="Pilih Jenis Kegiatan"
-          className="w-72 border border-black" // Panjang dropdown
-          controlClassName="bg-neutral-30 text-black"
+          label="Tahun Pelaksanaan *"
+          options={startYears}
+          selectedOption={startYears.find((opt) => opt.value === startYear)}
+          onChange={(selected) => setStartYear(selected.value)}
+          placeholder="Pilih Tahun Pelaksanaan"
+          className="w-72 border border-black"
         />
       </div>
 
       <div className="flex justify-end items-start space-x-5">
         <DropdownCmp
           label="Status *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
-          placeholder="Penelitian Kompetitif Nasional"
+          options={statusOptions}
+          selectedOption={statusOptions.find((opt) => opt.value === statuses)}
+          onChange={(selected) => setStatuses(selected.value)}
+          placeholder="pilih status"
           className="w-72 border border-black " // Panjang dropdown
           controlClassName="bg-neutral-30 text-black"
         />
         <DropdownCmp
           label="Jumlah Baris *"
-          options={options}
-          selectedOption={selectedOption}
-          onChange={(e) => handleDropdownChange(e.target.value)}
+          options={jumlahBarisOptions}
+          selectedOption={jumlahBarisOptions.find(
+            (opt) => opt.value === jmlBaris
+          )}
+          onChange={(selected) => setJmlBaris(selected.value)}
           placeholder="Penelitian"
           className="w-72 border border-black" // Panjang dropdown
           controlClassName="bg-neutral-30 text-black"
