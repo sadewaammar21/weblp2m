@@ -517,11 +517,11 @@ const NavBar = ({ children }) => {
                                 Perbaikan Usulan
                               </Link>
                             </li>
-                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                            {/* <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring-usulan-reguler-hasil-review">
                                 Hasil Review
                               </Link>
-                            </li>
+                            </li> */}
                             <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring/penelitian/periode-kegiatan">
                                 Periode Kegiatan
@@ -560,11 +560,11 @@ const NavBar = ({ children }) => {
                                 Perbaikan Usulan
                               </Link>
                             </li>
-                            <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
+                            {/* <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring/pengabdian/hasil-review">
                                 Hasil Review
                               </Link>
-                            </li>
+                            </li> */}
                             <li className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white">
                               <Link to="/monitoring/pengabdian/periode-kegiatan">
                                 <div className="flex items-center justify-between">
