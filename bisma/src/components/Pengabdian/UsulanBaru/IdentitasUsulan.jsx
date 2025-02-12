@@ -434,7 +434,32 @@ const IdentitasUsulan = ({ data, setData }) => {
                   <td className="border border-black px-4 py-2">
                     {item.pivot.status}
                   </td>
-                  <td className="border border-black px-4 py-2">action here</td>
+                  <td className="border border-black px-4 py-2">
+                    <div className="flex justify-center gap-x-4">
+                      <button
+                        // onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+                        className=" px-2 py-1 rounded-md text-white"
+                      >
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/edit_perusl.svg"
+                          }
+                          alt="logo"
+                          className="w-7 h-7 mr-2"
+                        />
+                      </button>
+                      <button
+                      // onClick={() => handleDelete(item.id)}
+                      // className={` px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+                      >
+                        <img
+                          src={process.env.PUBLIC_URL + "/assets/remove.svg"}
+                          alt="logo"
+                          className="w-7 h-7 mr-2"
+                        />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -476,7 +501,32 @@ const IdentitasUsulan = ({ data, setData }) => {
                     {item.prodi}
                   </td>
                   <td className="border border-black px-4 py-2">{item.task}</td>
-                  <td className="border border-black px-4 py-2">action here</td>
+                  <td className="border border-black px-4 py-2">
+                    <div className="flex justify-center gap-x-4">
+                      <button
+                        // onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+                        className=" px-2 py-1 rounded-md text-white"
+                      >
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/edit_perusl.svg"
+                          }
+                          alt="logo"
+                          className="w-7 h-7 mr-2"
+                        />
+                      </button>
+                      <button
+                      // onClick={() => handleDelete(item.id)}
+                      // className={` px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+                      >
+                        <img
+                          src={process.env.PUBLIC_URL + "/assets/remove.svg"}
+                          alt="logo"
+                          className="w-7 h-7 mr-2"
+                        />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

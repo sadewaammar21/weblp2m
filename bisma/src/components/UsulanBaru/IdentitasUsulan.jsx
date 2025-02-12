@@ -446,7 +446,30 @@ const IdentitasUsulan = ({ data, setData }) => {
                     {item.pivot.status}
                   </td>
                   <td clasname="border border-neutral-100 px-4 py-2">
-                    action here
+                    <div className="flex justify-center gap-x-4">
+                      <button
+                        // onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+                        className=" px-2 py-1 rounded-md text-white"
+                      >
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/edit_perusl.svg"
+                          }
+                          alt="logo"
+                          className="w-7 h-7 mr-2"
+                        />
+                      </button>
+                      <button
+                      // onClick={() => handleDelete(item.id)}
+                      // className={` px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+                      >
+                        <img
+                          src={process.env.PUBLIC_URL + "/assets/remove.svg"}
+                          alt="logo"
+                          className="w-7 h-7 mr-2"
+                        />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -500,7 +523,30 @@ const IdentitasUsulan = ({ data, setData }) => {
                     {item.task}
                   </td>
                   <td clasname="border border-neutral-100 px-4 py-2">
-                    action here
+                    <div className="flex justify-center gap-x-4">
+                      <button
+                        // onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+                        className=" px-2 py-1 rounded-md text-white"
+                      >
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/edit_perusl.svg"
+                          }
+                          alt="logo"
+                          className="w-7 h-7 mr-2"
+                        />
+                      </button>
+                      <button
+                      // onClick={() => handleDelete(item.id)}
+                      // className={` px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+                      >
+                        <img
+                          src={process.env.PUBLIC_URL + "/assets/remove.svg"}
+                          alt="logo"
+                          className="w-7 h-7 mr-2"
+                        />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
