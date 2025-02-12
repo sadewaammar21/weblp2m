@@ -22,7 +22,7 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
     try {
       const response = await updateStatus({
         researchId: data.id,
-        newStatus: 6,
+        newStatus: 3,
         note: note,
       });
       console.log("Response:", response);
@@ -73,7 +73,7 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
           />
           <h2 className="text-md font-bold text-violet-800">Informasi</h2>
         </div>
-        <div className="flex my-2">
+        {/* <div className="flex my-2">
           <h2 className="text-sm font-medium text-violet-800 mr-1">
             {" "}
             Dana Direncanakan Tahun ke-1
@@ -82,10 +82,10 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
             {" "}
             Rp. {totalBudget}
           </h2>
-        </div>
+        </div> */}
       </div>
-      <h2 className="text-lg font-bold my-5">Persetujuan Dana</h2>
-      <label htmlFor="comment" className="block text-sm font-semibold mb-2">
+      <h2 className="text-lg font-bold my-5">Persetujuan Usulan </h2>
+      {/* <label htmlFor="comment" className="block text-sm font-semibold mb-2">
         Masukkan dana yang disetujui oleh kepala LPPM
       </label>
       <TextfieldCmp
@@ -93,7 +93,7 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
         onChange={(e) => setFunds(e.target.value)}
         className="w-full"
         placeholder="Rp. 10.000.000,00"
-      />
+      /> */}
 
       {/* Comment Section */}
       <div className="mb-4">

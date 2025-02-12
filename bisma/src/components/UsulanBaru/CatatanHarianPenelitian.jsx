@@ -20,7 +20,7 @@ const UsulanBaruList = () => {
       const result = await getResearch({
         pageSize: 5,
         currentPage: 1,
-        status: 7,
+        status: 10,
         // year: 2024,
         userId: user.id,
       });
@@ -95,7 +95,7 @@ const UsulanBaruList = () => {
               {data.map((item, index) => (
                 <tr key={index}>
                   <td className="border border-black px-4 py-2 align-middle">
-                    {index+1}
+                    {index + 1}
                   </td>
                   <td className="border border-black px-4 py-2 align-middle break-words">
                     {item.scheme.name}

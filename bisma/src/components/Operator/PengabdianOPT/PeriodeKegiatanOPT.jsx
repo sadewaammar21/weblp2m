@@ -54,14 +54,14 @@ const PeriodeKegiatanOPT = () => {
       </div>
 
       <div className="flex justify-end items-start space-x-5 my-5">
-        <DropdownCmp
+        {/* <DropdownCmp
           label="Tahun Usulan *"
           options={Years}
           selectedOption={Years.find((opt) => opt.value === year)}
           onChange={(selected) => setYear(selected.value)}
           placeholder="Pilih Tahun Usulan"
           className="w-72 border border-black"
-        />
+        /> */}
       </div>
       <div className="grid grid-cols-3 gap-4 my-10">
         {metrics.map((metric, index) => (

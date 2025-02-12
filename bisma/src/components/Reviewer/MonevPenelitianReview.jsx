@@ -3,11 +3,14 @@ import TextAreaCmp from "../TextAreaCmp";
 import ModalMonevPenelitian from "./ModalMonevPenelitian";
 import { FaChevronRight } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addMonevResearch, getResearchDetail } from "../../Features/ResearchSlice";
+import {
+  addMonevResearch,
+  getResearchDetail,
+} from "../../Features/ResearchSlice";
 import TextfieldCmp from "../TextfieldCmp";
- 
+
 const MonevPenelitianReview = () => {
-    const location = useLocation();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState({});
   const [reviewData, setReviewData] = useState({});
@@ -15,30 +18,30 @@ const MonevPenelitianReview = () => {
   const [error, setError] = useState(null);
 
   const id = location.state.id;
-  console.log(id)
+  console.log(id);
   const user = JSON.parse(localStorage.getItem("user"));
-  const fetchData = async() =>{
-      try {
-        setLoading(true);
-        const response = await getResearchDetail(id);
-        setData(response.data);
-        console.log(data);
-      } catch (error) {
-        setError(true)
-      }finally{
-        setLoading(false)
-      }
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await getResearchDetail(id);
+      setData(response.data);
+      console.log(data);
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoading(false);
     }
+  };
   useEffect(() => {
     fetchData();
-    setReviewData({...reviewData, ['research_id']: id})
+    setReviewData({ ...reviewData, ["research_id"]: id });
     // return () => console.log(data);
   }, []);
-  
+
   const openModal = () => {
     setIsOpen(true);
   };
-  
+
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -54,14 +57,14 @@ const MonevPenelitianReview = () => {
   };
 
   const navigate = useNavigate(); // Hook untuk navigasi
-  
+
   const handleSave = async () => {
-    console.log(reviewData)
+    console.log(reviewData);
     const response = await addMonevResearch(reviewData);
     console.log(response.message);
     navigate(-1);
   };
-  
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   return (
@@ -237,12 +240,37 @@ const MonevPenelitianReview = () => {
                 </thead>
                 <tbody>
                   {[
-                    {label: "Kemajuan ketercapaian luaran wajib yang dijanjikan", name: "comment1", value: reviewData.comment1},
-                    {label: "Kesesuaian penelitian dengan usulan", name: "comment2", value: reviewData.comment2},
-                    {label: "Potensi keberlanjutan hasil penelitian", name: "comment3", value: reviewData.comment3},
-                    {label: "Level TKT saat ini (monev)", name: "comment4", value: reviewData.comment4},
-                    {label: "Persentase serapan anggaran belanja", name: "comment5", value: reviewData.comment5},
-                    {label: "Realisasi keterlibatan/kontribusi mitra", name: "comment6", value: reviewData.comment6},
+                    {
+                      label:
+                        "Kemajuan ketercapaian luaran wajib yang dijanjikan",
+                      name: "comment1",
+                      value: reviewData.comment1,
+                    },
+                    {
+                      label: "Kesesuaian penelitian dengan usulan",
+                      name: "comment2",
+                      value: reviewData.comment2,
+                    },
+                    {
+                      label: "Potensi keberlanjutan hasil penelitian",
+                      name: "comment3",
+                      value: reviewData.comment3,
+                    },
+                    {
+                      label: "Level TKT saat ini (monev)",
+                      name: "comment4",
+                      value: reviewData.comment4,
+                    },
+                    {
+                      label: "Persentase serapan anggaran belanja",
+                      name: "comment5",
+                      value: reviewData.comment5,
+                    },
+                    {
+                      label: "Realisasi keterlibatan/kontribusi mitra",
+                      name: "comment6",
+                      value: reviewData.comment6,
+                    },
                   ].map((komponen, index) => (
                     <tr key={index}>
                       <td className="border border-black px-4 py-2 text-center">
@@ -256,9 +284,7 @@ const MonevPenelitianReview = () => {
                           className="w-full border rounded p-2"
                           name={komponen.name}
                           value={komponen.value}
-                          onChange={
-                            handleInputChange()
-                          }
+                          onChange={handleInputChange()}
                         />
                       </td>
                     </tr>
@@ -403,7 +429,13 @@ const MonevPenelitianReview = () => {
               Catatan Review
             </h1>
             <div>
-              <TextAreaCmp name='reviewer_note' value={reviewData.reviewer_note} rows={10} placeholder={`fill`} onChange={handleInputChange()}/>
+              <TextAreaCmp
+                name="reviewer_note"
+                value={reviewData.reviewer_note}
+                rows={10}
+                placeholder={`fill`}
+                onChange={handleInputChange()}
+              />
             </div>
             <div className="flex justify-between my-10">
               <button
@@ -423,7 +455,7 @@ const MonevPenelitianReview = () => {
           </div>
         </div>
       </div>
-      <ModalMonevPenelitian isOpen={isOpen} closeModal={closeModal} />
+      <ModalMonevPenelitian isOpen={isOpen} onRequestClose={closeModal} />
     </div>
   );
 };

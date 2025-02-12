@@ -48,42 +48,43 @@ const ProgressBarPerbaikanUsulan = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const fetchServiceDetail = async () => {
-      const response = await getServiceDetail(id);
-      setService({
-        ...response.data,
-        cluster_lv1: response.data.cluster_lv1.id,
-        cluster_lv2: response.data.cluster_lv2.id,
-        cluster_lv3: response.data.cluster_lv3.id});
-      console.log(service);
-    };
-    useEffect(() => {
-      fetchServiceDetail();
-    }, []);
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      if (e.target.name === "ajukan") {
-        const response = await addService({
-          data: service,
-          isEdit: true,
-          serviceId: service.id,
-          isSubmit: true,
-          newStatus: 7,
-        });
-        console.log(response);
-        navigate(-1);
-      } else {
-        const response = await addService({
-          data: service,
-          isEdit: true,
-          serviceId: service.id,
-          isSubmit: false,
-          newStatus: 7,
-        });
-        console.log(response);
-        navigate(-1);
-      }
-    };
+    const response = await getServiceDetail(id);
+    setService({
+      ...response.data,
+      cluster_lv1: response.data.cluster_lv1.id,
+      cluster_lv2: response.data.cluster_lv2.id,
+      cluster_lv3: response.data.cluster_lv3.id,
+    });
+    console.log(service);
+  };
+  useEffect(() => {
+    fetchServiceDetail();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (e.target.name === "ajukan") {
+      const response = await addService({
+        data: service,
+        isEdit: true,
+        serviceId: service.id,
+        isSubmit: true,
+        newStatus: 10,
+      });
+      console.log(response);
+      navigate(-1);
+    } else {
+      const response = await addService({
+        data: service,
+        isEdit: true,
+        serviceId: service.id,
+        isSubmit: false,
+        newStatus: 7,
+      });
+      console.log(response);
+      navigate(-1);
+    }
+  };
 
   const handleNextStep = () => {
     setCurrentStep((prev) => (prev < steps.length ? prev + 1 : prev));
@@ -96,15 +97,32 @@ const ProgressBarPerbaikanUsulan = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return <PerbaikanSubstansi service={service} setService={setService}/>;
+        return <PerbaikanSubstansi service={service} setService={setService} />;
       case 2:
-        return <PerbaikanRancanganAnggaranBi service={service} setService={setService} />;
+        return (
+          <PerbaikanRancanganAnggaranBi
+            service={service}
+            setService={setService}
+          />
+        );
       case 3:
-        return <PerbaikanSuratKesanggupan service={service} setService={setService} />;
+        return (
+          <PerbaikanSuratKesanggupan
+            service={service}
+            setService={setService}
+          />
+        );
       case 4:
-        return <KonfirmasiPerUslPengabdian service={service} setService={setService} />;
+        return (
+          <KonfirmasiPerUslPengabdian
+            service={service}
+            setService={setService}
+          />
+        );
       default:
-        return <ListPerUsPengabdian service={service} setService={setService} />;
+        return (
+          <ListPerUsPengabdian service={service} setService={setService} />
+        );
     }
   };
 

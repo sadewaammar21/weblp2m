@@ -229,7 +229,7 @@ const SBRPelaksanaan2 = () => {
             onRequestClose={closeModalInt}
           />
           <div className="grid grid-cols-2 gap-4 mx-10">
-            <div>
+            {/* <div>
               <SearchInput
                 label="NIDN"
                 placeholder="select NIDN"
@@ -246,10 +246,10 @@ const SBRPelaksanaan2 = () => {
               onChange={(value) => setTasul(value)}
               name="skema"
               placeholder="Pilih Tahun"
-            />
+            /> */}
           </div>
           <div className="flex mx-5 ">
-            <div className="mx-2 my-2">
+            {/* <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}
                 className="flex items-center px-2 py-1 bg-cyan-500 text-white rounded-md hover:bg-cyan-600"
@@ -270,7 +270,7 @@ const SBRPelaksanaan2 = () => {
                 <FaPlus size={15} />
                 Beban Reviewer
               </button>
-            </div>
+            </div> */}
           </div>
           <div className="mx-5 my-5">
             <TextfieldCmp
@@ -319,8 +319,13 @@ const SBRPelaksanaan2 = () => {
                   ))}
               </tbody>
             </table>
-            <button onClick={() => handleAddReviewer(location.state.id)}>
-              submit button
+          </div>
+          <div className="flex justify-end items-end mx-2 my-2">
+            <button
+              className={`flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-cyan-600 ${reviewer.length > 2 ? "hidden" : ""}`}
+              onClick={() => handleAddReviewer(location.state.id)}
+            >
+              simpan
             </button>
           </div>
         </div>

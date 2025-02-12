@@ -39,7 +39,7 @@ const ListLaporanKemajuanInternal = () => {
         const result = await getService({
           pageSize: 5,
           currentPage: 1,
-          // status: 1,
+          status: 10,
           // year: 2024,
           userId: user.id,
         });

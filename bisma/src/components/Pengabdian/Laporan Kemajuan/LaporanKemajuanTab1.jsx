@@ -437,8 +437,8 @@ const LaporanKemajuanTab1 = ({ service, data, setData }) => {
             </tr>
           </thead>
           <tbody className="text-black">
-            {console.log(`Datanya adalah : ${data?.output_progress_report1s}`)}
-            {(data?.output_progress_report1s || []).map((item, index) => (
+            {console.log(`Datanya adalah : ${service?.output_partner}`)}
+            {(service?.output_partner || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {1}
@@ -466,8 +466,8 @@ const LaporanKemajuanTab1 = ({ service, data, setData }) => {
                 </td>
               </tr>
             ))}
-            {console.log(data?.output_progress_report2s)}
-            {(data?.output_progress_report2s || []).map((item, index) => (
+            {console.log(service?.output_publication)}
+            {(service?.output_publication || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {1}
@@ -496,7 +496,7 @@ const LaporanKemajuanTab1 = ({ service, data, setData }) => {
               </tr>
             ))}
             {console.log(data?.output_progress_report3s)}
-            {(data?.output_progress_report3s || []).map((item, index) => (
+            {(service?.output_media || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {2}
@@ -525,7 +525,7 @@ const LaporanKemajuanTab1 = ({ service, data, setData }) => {
               </tr>
             ))}
             {console.log(data?.output_progress_report4s)}
-            {(data?.output_progress_report4s || []).map((item, index) => (
+            {(service?.output_video || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {3}

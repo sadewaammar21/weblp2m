@@ -64,20 +64,20 @@ const ProgressBarPerbUsulan = () => {
         isEdit: true,
         researchId: research.id,
         isSubmit: true,
-        newStatus: 7,
+        newStatus: 10,
       });
       console.log(response);
-      navigate(-1);
+      navigate("/penelitian/perbaikan");
     } else {
       const response = await addResearch({
         data: research,
         isEdit: true,
         researchId: research.id,
         isSubmit: false,
-        newStatus: 7,
+        newStatus: 6,
       });
       console.log(response);
-      navigate(-1);
+      navigate("/penelitian/perbaikan");
     }
   };
 

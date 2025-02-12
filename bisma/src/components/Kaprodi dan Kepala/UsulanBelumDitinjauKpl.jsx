@@ -47,27 +47,26 @@ const UsulanBelumDitinjauKpl = () => {
   const [status, setStatus] = useState(0);
   const [selectedData, setSelectedData] = useState({});
 
+  const user = localStorage.getItem("user");
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const result = await getResearch({
+        page_size: 5,
+        current_page: 1,
+        status: 5,
+      });
+      setData(result.data);
+      console.log(result);
+      console.log(data);
+      console.log(typeof data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const result = await getResearch({
-          page_size: 5,
-          current_page: 1,
-          status: 5,
-        });
-        setData(result.data);
-        console.log(result);
-        console.log(data);
-        console.log(typeof data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -213,7 +212,7 @@ const UsulanBelumDitinjauKpl = () => {
                     </td>
                     <td className="border border-gray-300 p-2 text-center">
                       <div
-                        className={`flex justify-center space-x-2 ${item.status == 5 ? "" : "hidden"}`}
+                        className={`flex justify-center space-x-2 ${item.status === 5 ? "" : "hidden"}`}
                       >
                         <button
                           onClick={() => openModal(item)}

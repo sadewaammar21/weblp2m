@@ -348,7 +348,7 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
           </thead>
           <tbody className="text-black">
             {console.log(data?.output_final_report1s)}
-            {(data?.output_final_report1s || []).map((item, index) => (
+            {(service?.output_partner || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {1}
@@ -377,7 +377,7 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
               </tr>
             ))}
             {console.log(data?.output_final_report2s)}
-            {(data?.output_final_report2s || []).map((item, index) => (
+            {(service?.output_publication || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {2}
@@ -406,7 +406,7 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
               </tr>
             ))}
             {console.log(data?.output_final_report3s)}
-            {(data?.output_final_report3s || []).map((item, index) => (
+            {(service?.output_media || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {3}
@@ -435,7 +435,7 @@ const LaporanAkhirTab1 = ({ service, data, setData }) => {
               </tr>
             ))}
             {console.log(data?.output_final_report4s)}
-            {(data?.output_final_report4s || []).map((item, index) => (
+            {(service?.output_video || []).map((item, index) => (
               <tr key={index}>
                 <td className="border border-black px-4 py-2 align-middle">
                   {4}

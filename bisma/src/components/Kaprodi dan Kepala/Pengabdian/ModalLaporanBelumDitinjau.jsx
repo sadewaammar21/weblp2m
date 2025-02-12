@@ -1,27 +1,37 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { setResearchApprovalFunds, updateStatus } from "../../../Features/ResearchSlice";
+// import { setResearchApprovalFunds, updateStatus } from "../../../Features/ResearchSlice";
 import TextfieldCmp from "../../TextfieldCmp";
+import {
+  setServiceApprovalFunds,
+  updateStatus,
+} from "../../../Features/ServiceSlice";
 
 Modal.setAppElement("#root");
 
-const ModalLaporanBelumDitinjau = ({
-  data,
-  isOpen,
-  onRequestClose,
-}) => {
+const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
   const [note, setNote] = useState("");
   const [funds, setFunds] = useState(0);
 
-  const totalBudget = (data?.budgetPlan || []).reduce((sum, item) => sum + item.total, 0);
+  const totalBudget = (data?.budgetPlan || []).reduce(
+    (sum, item) => sum + item.total,
+    0
+  );
 
   const handleSubmit = async () => {
     try {
-      const response = await updateStatus({ researchId: data.id, newStatus: 6, note: note});
+      const response = await updateStatus({
+        serviceId: data.id,
+        newStatus: 6,
+        note: note,
+      });
       console.log("Response:", response);
-      const setFunds = setResearchApprovalFunds({researchId: data.id, approval_funds: funds})
+      const setFunds = setServiceApprovalFunds({
+        serviceId: data.id,
+        approval_funds: funds,
+      });
       console.log(setFunds);
-      setNote('');
+      setNote("");
       onRequestClose();
     } catch (error) {
       console.error("Error updating status:", error);

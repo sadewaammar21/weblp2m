@@ -66,7 +66,7 @@ const PerKegLaporanKemajuanOPT = () => {
         <div className="mx-5 my-5">
           {/* Header dengan Tombol Ekspor dan Dropdown */}
           <div className="flex justify-end w-full items-start space-x-5 mt-5">
-            <DropdownCmp
+            {/* <DropdownCmp
               label="Jenis Kegiatan *"
               options={options}
               selectedOption={selectedOption}
@@ -83,7 +83,7 @@ const PerKegLaporanKemajuanOPT = () => {
               placeholder="2024"
               className="w-72 border border-black" // Panjang dropdown
               controlClassName="bg-neutral-30 text-black"
-            />
+            /> */}
           </div>
           <div className="flex justify-end w-full items-start space-x-5 ">
             <h1 className="text-md font-bold  mb-4">{`Proposal 0`}</h1>

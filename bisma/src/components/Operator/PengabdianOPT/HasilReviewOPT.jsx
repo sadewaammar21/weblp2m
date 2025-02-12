@@ -87,7 +87,7 @@ const HasilReviewOPT = () => {
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
           <div className="flex justify-between mx-5 ">
             <div className="mx-2 my-2">
-              <button
+              {/* <button
                 onClick={handleExportExcel}
                 className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
               >
@@ -97,10 +97,10 @@ const HasilReviewOPT = () => {
                   className="w-5 h-5 mr-2"
                 />
                 Excel
-              </button>
+              </button> */}
             </div>
             <div className="mx-2 my-2">
-              <DropdownCmp
+              {/* <DropdownCmp
                 label="Jumlah Baris *"
                 options={jumlahBarisOptions}
                 selectedOption={jumlahBarisOptions.find(
@@ -110,7 +110,7 @@ const HasilReviewOPT = () => {
                 placeholder="Jumlah Baris"
                 className="w-72 border border-black" // Panjang dropdown
                 controlClassName="bg-neutral-30 text-black"
-              />
+              /> */}
             </div>
           </div>
           <div className="mx-5 my-5">
