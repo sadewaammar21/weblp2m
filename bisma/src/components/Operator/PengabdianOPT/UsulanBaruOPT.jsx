@@ -22,10 +22,11 @@ const UsulanBaruOPT = () => {
     { label: "Option 3", value: "3" },
   ];
 
+  const user = JSON.parse(localStorage.getItem("user"));
   const metrics = [
     {
       title: "Usulan Draft",
-      count: "Rapek",
+      count: 0,
       icon: <FaFileAlt size={24} className="text-violet-800" />,
     },
     {

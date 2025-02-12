@@ -122,11 +122,11 @@ const UsulanBelumDitinjauKpl = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-[1430px]">
+        <div className="w-full flex justify-end border-b max-w-[1150px] mx-auto">
           <button
             onClick={handleBack}
-            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
-      hover:bg-white hover:text-bluef-500"
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white 
+    hover:bg-white hover:text-bluef-500"
           >
             <FaLessThan className="mr-2" />
             Kembali

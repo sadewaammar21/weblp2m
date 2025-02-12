@@ -11,8 +11,8 @@ const PerbaikanSubstansi = ({ service, setService }) => {
   
   const fetchReview = async(id) => {
     const response = await getReviewByService(id);
-    console.log(response.data);
-    setReview(response.data);
+    console.log(response);
+    setReview(response);
   } 
   
   // const fetchSubstance = async() =>{

@@ -75,7 +75,7 @@ export const addService = async ({
   formData.append("cluster_lv3", data.cluster_lv3);
   formData.append("leader_name", data.leader_name);
   formData.append("leader_task", data.leader_task);
-  formData.append("status", 1);
+  formData.append("status", newStatus? newStatus:1);
   formData.append("approval_funds", data.approval_funds);
   formData.append("letter_of_intent", data.letter_of_intent);
 
@@ -425,8 +425,8 @@ export const getReviewByService = async (serviceId) => {
       getToken()
     );
     console.log(response);
-    console.log("respon message :", response.data.message);
-    return response.data.message;
+    console.log("respon message :", response.data);
+    return response.data;
   } catch (error) {
     console.log(error);
   }

@@ -50,10 +50,11 @@ const UsulanRegulerPengabdian = () => {
       value: "Penelitian Kompetitif Nasional",
     },
   ];
+  const user = JSON.parse(localStorage.getItem("user"));
   const metrics = [
     {
       title: "Usulan Draft",
-      count: "Rapek",
+      count: 1,
       icon: <FaFileAlt size={24} />,
       path: "/monitoring/pengabdian/usulan-draft",
     },
