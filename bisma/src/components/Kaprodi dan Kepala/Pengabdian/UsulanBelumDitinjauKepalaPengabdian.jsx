@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import DropdownCmp from "../../DropdownCmp";
 import TextfieldCmp from "../../TextfieldCmp";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaLessThan } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Library for Excel
 import { saveAs } from "file-saver";
 import ModalLaporanBelumDitinjau from "./ModalLaporanBelumDitinjau";
 import ModalLaporanBelumDitinjauDitolak from "./ModalLaporanBelumDitinjauDitolak";
-import { getService, downloadServiceDocument } from "../../../Features/ServiceSlice";
+import {
+  getService,
+  downloadServiceDocument,
+} from "../../../Features/ServiceSlice";
 
-const UsulanBelumDitinjauKepalaPengabdian = () => { 
+const UsulanBelumDitinjauKepalaPengabdian = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
@@ -28,7 +31,7 @@ const UsulanBelumDitinjauKepalaPengabdian = () => {
     setIsDitolak(false);
   };
   const openModal = (item) => {
-    console.log(item)
+    console.log(item);
     setSelectedData(item);
     setIsOpen(true);
   };
@@ -36,40 +39,40 @@ const UsulanBelumDitinjauKepalaPengabdian = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
-  
+
   const [data, setData] = useState([]);
-      const [loading, setLoading] = useState(true);
-      const [error, setError] = useState(null);
-      const [isAccepted, setIsAccepted] = useState(false);
-      const [status, setStatus] = useState(0);
-      const [selectedData, setSelectedData] = useState({});
-  
-    useEffect(() => {
-      const user = localStorage.getItem("user");
-      const fetchData = async () => {
-        try {
-          setLoading(true)
-          const result = await getService({
-            page_size: 5,       
-            current_page: 1,
-            status: 5
-          } );
-          setData(result.data);
-          console.log(result);
-          console.log(data);
-          console.log(typeof data);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchData();
-    }, []);
-  
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isAccepted, setIsAccepted] = useState(false);
+  const [status, setStatus] = useState(0);
+  const [selectedData, setSelectedData] = useState({});
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const result = await getService({
+          page_size: 5,
+          current_page: 1,
+          status: 5,
+        });
+        setData(result.data);
+        console.log(result);
+        console.log(data);
+        console.log(typeof data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   // Fungsi untuk ekspor data ke Excel
   const handleExportExcel = () => {
@@ -119,20 +122,15 @@ const UsulanBelumDitinjauKepalaPengabdian = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
-          <div>
-            <button
-              onClick={handleBack}
-              className={`flex items-center px-4 py-2 rounded-md border border-1 border-bluef-500 ${
-                "Kembali"
-                  ? "bg-bluef-500 text-white"
-                  : "bg-white text-bluef-500"
-              }`}
-            >
-              <FaArrowLeft className="mr-2" /> {/* Add the arrow icon */}
-              Kembali
-            </button>
-          </div>
+        <div className="flex justify-end border-b max-w-[1430px]">
+          <button
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
+              hover:bg-white hover:text-bluef-500"
+          >
+            <FaLessThan className="mr-2" />
+            Kembali
+          </button>
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
@@ -182,67 +180,67 @@ const UsulanBelumDitinjauKepalaPengabdian = () => {
                 </tr>
               </thead>
               <tbody>
-                {data
-                .map(
-                  (
-                    item,
-                    index 
-                  ) => (
-                    <tr key={index}>
-                      <td className="border border-gray-300 p-2 text-center">
-                        {index + 1}
-                      </td>
-                      <td className="border border-gray-300 p-2">
-                        <p>Ketua: {item.user?.name}</p>
-                        <p>NIDN: {item.user?.nidn}</p>
-                        <p>Tahun Pelaksanaan: {item.year}</p>
-                        <p>Lama Kegiatan: {item.duration}</p>
-                        {/* <p>Bidang Fokus: {item.focus.name}</p> */}
-                      </td>
-                      <td className="border border-gray-300 p-2">
-                        <p className="text-blue-600 font-bold">{item.title}</p>
-                        <p className="text-blue-600 font-bold">
-                          {item.scheme.name}
-                        </p>
-                      </td>
-                      <td className="border border-gray-300 p-2 text-center">
-                        <button
-                          onClick={() => downloadServiceDocument(item.id)}
-                          className="text-red-600 text-2xl"
+                {data.map((item, index) => (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2 text-center">
+                      {index + 1}
+                    </td>
+                    <td className="border border-gray-300 p-2">
+                      <p>Ketua: {item.user?.name}</p>
+                      <p>NIDN: {item.user?.nidn}</p>
+                      <p>Tahun Pelaksanaan: {item.year}</p>
+                      <p>Lama Kegiatan: {item.duration}</p>
+                      {/* <p>Bidang Fokus: {item.focus.name}</p> */}
+                    </td>
+                    <td className="border border-gray-300 p-2">
+                      <p className="text-blue-600 font-bold">{item.title}</p>
+                      <p className="text-blue-600 font-bold">
+                        {item.scheme.name}
+                      </p>
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <button
+                        onClick={() => downloadServiceDocument(item.id)}
+                        className="text-red-600 text-2xl"
+                      >
+                        <a
+                          href={`http://localhost:8000/api/comunity-service/download/${item.id}`}
+                          target="_blank"
                         >
-                          <a
-                            href={`http://localhost:8000/api/comunity-service/download/${item.id}`}
-                            target="_blank"
-                          >
-                            📄
-                          </a>
+                          📄
+                        </a>
+                      </button>
+                    </td>
+                    <td className="border border-gray-300 p-2 text-center">
+                      <div
+                        className={`flex justify-center space-x-2 ${item.status == 5 ? "" : "hidden"}`}
+                      >
+                        <button
+                          onClick={() => openModal(item)}
+                          className="bg-bluef-500 text-white px-4 py-2 rounded-md"
+                        >
+                          Disetujui
                         </button>
-                      </td>
-                      <td className="border border-gray-300 p-2 text-center">
-                        <div className={`flex justify-center space-x-2 ${item.status == 5 ? '': 'hidden'}`}>
-                      <button
-                        onClick={() => openModal(item)}
-                        className="bg-bluef-500 text-white px-4 py-2 rounded-md"
-                      >
-                        Disetujui
-                      </button>
-                      <button
-                        onClick={() => openModalDitolak(item)}
-                        className="bg-reds-500 text-white px-4 py-2 rounded-md"
-                      >
-                        Ditolak
-                      </button>
-                    </div>
-                      </td>
-                    </tr>
-                  )
-                )}
+                        <button
+                          onClick={() => openModalDitolak(item)}
+                          className="bg-reds-500 text-white px-4 py-2 rounded-md"
+                        >
+                          Ditolak
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      <ModalLaporanBelumDitinjau data={selectedData} isOpen={isOpen} onRequestClose={closeModal} />
+      <ModalLaporanBelumDitinjau
+        data={selectedData}
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+      />
       <ModalLaporanBelumDitinjauDitolak
         data={selectedData}
         isOpen={isTolak}
@@ -251,6 +249,5 @@ const UsulanBelumDitinjauKepalaPengabdian = () => {
     </div>
   );
 };
-
 
 export default UsulanBelumDitinjauKepalaPengabdian;
