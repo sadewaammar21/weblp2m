@@ -35,8 +35,8 @@ const KonfirmasiUsulan = ({ data }) => {
                   Kelompok Skema
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data.scheme.name || "Riset Dasar"}
-                  {console.log(`data dari skema adalah ${data.scheme.name}`)}
+                  {data.scheme_id || "Riset Dasar"}
+                  {console.log(`data dari skema adalah ${data.scheme_id}`)}
                 </td>
               </tr>
 
@@ -45,14 +45,14 @@ const KonfirmasiUsulan = ({ data }) => {
                   Ruang Lingkup
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
-                  {data.scope.name}
+                  {data.scope_id}
                 </td>
               </tr>
 
               <tr className=" boder border-black border-b-2">
                 <td className="px-6 py-4 text-sm font-sans ">Bidang Fokus</td>
                 <td className="px-6 py-4 text-sm font-bold whitespace-normal break-words text-right">
-                  {data.focus_thematic?.name || data.focus_r_i_r_n_s?.name}
+                  {data.focus_thematic_id || data.focus_rirn_id}
                 </td>
               </tr>
             </tbody>
@@ -88,14 +88,14 @@ const KonfirmasiUsulan = ({ data }) => {
                 </td>
               </tr>
 
-              <tr className="boder border-black border-b-2">
+              {/* <tr className="boder border-black border-b-2">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-sans ">
                   URL Profil Sinta Ketua Pengusul
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-right">
                   {data.user.sinta_id}
                 </td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
         </div>
@@ -137,10 +137,10 @@ const KonfirmasiUsulan = ({ data }) => {
                     {item.id}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2 text-neutral-500">
-                    {item.name}
+                    {item.pivot.name}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2 text-neutral-500">
-                    {item.id_prodi}
+                    {/* {item.id_prodi} */}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2 text-neutral-500">
                     {item.pivot.task}
@@ -192,7 +192,7 @@ const KonfirmasiUsulan = ({ data }) => {
                     {item.name}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
-                    {item.email}
+                    {/* {item.email} */}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
                     {item.prodi}
@@ -201,7 +201,7 @@ const KonfirmasiUsulan = ({ data }) => {
                     {item.task}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
-                    {item.role}
+                    {/* {item.role} */}
                   </td>
                 </tr>
               ))}
@@ -445,17 +445,17 @@ const KonfirmasiUsulan = ({ data }) => {
                     {item.name}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
-                    {item.city} {item.province}
+                    {/* {item.city} {item.province} */}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
                     {" "}
-                    {item.province}
+                    {/* {item.province} */}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
                     {item.email}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
-                    <button
+                    {/* <button
                       className="cursor-pointer"
                       onClick={() => {
                         console.log("Downloading:", item.document);
@@ -469,7 +469,7 @@ const KonfirmasiUsulan = ({ data }) => {
                         alt="user"
                         className="w-10 h-10"
                       />
-                    </button>
+                    </button> */}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
                     {item.funding_contribution}
@@ -500,7 +500,7 @@ const KonfirmasiUsulan = ({ data }) => {
                     {item.type_id}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
-                    {item.document}
+                    {/* {item.document} */}
                   </td>
                 </tr>
               ))}

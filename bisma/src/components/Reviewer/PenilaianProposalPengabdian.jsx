@@ -119,7 +119,7 @@ const PenilaianProposalPengabdian = () => {
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
           <div className="flex justify-between mx-5 ">
             <div className="mx-2 my-2">
-              <button
+              {/* <button
                 onClick={handleExportExcel}
                 className="flex items-center px-2 py-1 bg-cyan-500 text-white rounded-md hover:bg-cyan-600"
               >
@@ -129,10 +129,10 @@ const PenilaianProposalPengabdian = () => {
                   className="w-5 h-5 mr-2"
                 />
                 Excel
-              </button>
+              </button> */}
             </div>
             <div className="mx-2 my-2">
-              <DropdownCmp
+              {/* <DropdownCmp
                 label="Jumlah Baris *"
                 options={jumlahBarisOptions}
                 selectedOption={jumlahBarisOptions.find(
@@ -142,7 +142,7 @@ const PenilaianProposalPengabdian = () => {
                 placeholder="Jumlah Baris"
                 className="w-72 border border-black" // Panjang dropdown
                 controlClassName="bg-neutral-30 text-black"
-              />
+              /> */}
             </div>
           </div>
           <div className="mx-5 my-5">
@@ -199,7 +199,7 @@ const PenilaianProposalPengabdian = () => {
                         </button>
                       </td>
                       <td
-                        className={`border px-4 py-2 text-center ${item.status == 3 ? "" : "hidden"}`}
+                        className={`border px-4 py-2 text-center ${item.status == 4 ? "" : "hidden"}`}
                       >
                         <button
                           onClick={() => handleAction(item.id)}

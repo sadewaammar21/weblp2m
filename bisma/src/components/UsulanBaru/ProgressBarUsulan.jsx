@@ -125,6 +125,7 @@ const ProgressBarUsulan = () => {
         setTimeout(() => {
           toast.success(response || "Berhasil!");
         }, 100);
+        navigate("/penelitian/usulan");
       } catch (error) {
         // toast.error("Terjadi Kesalahan Ketika Mengirim Data.");
       }

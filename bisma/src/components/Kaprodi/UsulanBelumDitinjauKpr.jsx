@@ -38,7 +38,7 @@ const UsulanBelumDitinjauKpr = () => {
   };
   const openModal = (item) => {
     console.log(item);
-    // setSelectedData(item);
+    setSelectedData(item);
     setIsOpen(true);
   };
 
@@ -47,10 +47,10 @@ const UsulanBelumDitinjauKpr = () => {
     fetchData();
   };
 
-  const handleModal = (accepted, status) => {
+  const handleModal = (accepted, status, item) => {
     setIsAccepted(accepted);
     setStatus(status);
-    openModal();
+    openModal(item);
   };
 
   const [data, setData] = useState([]);
@@ -149,7 +149,7 @@ const UsulanBelumDitinjauKpr = () => {
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md">
           <div className="flex justify-between mx-5 ">
-            <div className="mx-2 my-2">
+            {/* <div className="mx-2 my-2">
               <button
                 onClick={handleExportExcel}
                 className="flex items-center px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"
@@ -161,7 +161,7 @@ const UsulanBelumDitinjauKpr = () => {
                 />
                 Excel
               </button>
-            </div>
+            </div> */}
             <div className="mx-2 my-2">
               <DropdownCmp
                 options={options}
@@ -228,13 +228,13 @@ const UsulanBelumDitinjauKpr = () => {
                     <td className="border border-gray-300 p-2 text-center">
                       <div className="flex justify-center space-x-2">
                         <button
-                          onClick={() => handleModal(true, 3)}
+                          onClick={() => handleModal(true, 3, item)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"
                         >
                           Disetujui
                         </button>
                         <button
-                          onClick={() => handleModal(false, 8)}
+                          onClick={() => handleModal(false, 8, item)}
                           className="bg-reds-500 text-white px-4 py-2 rounded-md"
                         >
                           Ditolak

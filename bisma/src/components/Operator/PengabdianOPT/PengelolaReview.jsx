@@ -123,18 +123,18 @@ const PengelolaReview = () => {
 
       <div>
         <div className="flex justify-end border-b max-w-[1430px]">
-          <button
+          {/* <button
             onClick={handleBack}
             className="flex items-center px-4 py-2 rounded-md border border-bluef-500 bg-bluef-500 text-white
               hover:bg-white hover:text-bluef-500"
           >
             <FaLessThan className="mr-2" />
             Kembali
-          </button>
+          </button> */}
         </div>
 
         <div className="bg-white max-w-6xl mx-auto shadow-md rounded-md ">
-          <div className="grid grid-cols-3 gap-4 mx-10">
+          {/* <div className="grid grid-cols-3 gap-4 mx-10">
             <DropdownCmp
               label="Tahun Usulan *"
               options={Years}
@@ -159,10 +159,10 @@ const PengelolaReview = () => {
               name="skema"
               placeholder="Pilih Tahapan"
             />
-          </div>
+          </div> */}
           <div className="flex mx-5 ">
             <div className="mx-2 my-2">
-              <button
+              {/* <button
                 onClick={handleExportExcel}
                 className="flex items-center px-2 py-1 bg-cyan-800 text-white rounded-md hover:bg-cyan-600"
               >
@@ -172,16 +172,16 @@ const PengelolaReview = () => {
                   className="w-5 h-5 mr-2"
                 />
                 Excel
-              </button>
+              </button> */}
             </div>
             <div className="mx-2 my-2">
-              <button
+              {/* <button
                 onClick={handleplus}
                 className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
               >
                 <FaPlus size={15} />
                 Beban Reviewer
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="mx-5 my-5">
@@ -221,7 +221,10 @@ const PengelolaReview = () => {
                           <p>NIDN: {item.user?.nidn}</p>
                           <p>Tahun Pelaksanaan: {item.year}</p>
                           <p>Lama Kegiatan: {item.duration}</p>
-                          <p>Bidang Fokus: {item.focus_thematic.name || item.focus_rirn.name}</p>
+                          <p>
+                            Bidang Fokus:{" "}
+                            {item.focus_thematic.name || item.focus_rirn.name}
+                          </p>
                         </td>
                         <td className="border border-gray-300 p-2">
                           <p className="text-blue-600 font-bold">

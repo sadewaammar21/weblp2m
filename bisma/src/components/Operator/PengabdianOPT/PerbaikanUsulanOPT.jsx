@@ -60,7 +60,7 @@ const PerbaikanUsulanOPT = () => {
         </h2>
       </div>
       <div className="flex justify-end items-start mb-4">
-        <DropdownCmp
+        {/* <DropdownCmp
           label="Jenis Kegiatan"
           options={options}
           selectedOption={selectedOption}
@@ -68,12 +68,12 @@ const PerbaikanUsulanOPT = () => {
           placeholder="Pilih Jenis Kegiatan"
           className="w-72 border border-black" // Panjang dropdown
           controlClassName="bg-neutral-30 text-black"
-        />
+        /> */}
       </div>
       <div>
         <div className="flex justify-between my-5">
           <div className="mx-2">
-            <button
+            {/* <button
               onClick={handleExportExcel}
               className="flex items-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-green-600"
             >
@@ -83,7 +83,7 @@ const PerbaikanUsulanOPT = () => {
                 className="w-5 h-5 mr-2"
               />
               Excel
-            </button>
+            </button> */}
           </div>
           <div>
             <h2 className="text-bluef-600">Jumlah Proposal : 0</h2>

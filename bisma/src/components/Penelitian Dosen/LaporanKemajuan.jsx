@@ -33,7 +33,7 @@ const LaporanKemajuan = () => {
       const result = await getResearch({
         pageSize: 5,
         currentPage: 1,
-        status: 7,
+        status: 10,
         // year: 2025,
         userId: user.id,
       });

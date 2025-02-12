@@ -6,16 +6,20 @@ import { useNavigate } from "react-router-dom";
 
 const LaporanAkhirList = () => {
   const [data, setData] = useState([]);
-  const navigate = useNavigate(); // Hook untuk navigasi 
+  const navigate = useNavigate(); // Hook untuk navigasi
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const handleView = (researchId, report) => {
-    console.log(report)
-    if(report != null){
-      navigate("/penelitian/laporan-akhir/edit", { state: { id: researchId, reportId: report } })
-    }else{
-      navigate("/penelitian/laporan-akhir/baru", { state: { id: researchId, reportId: null } }); // Arahkan ke halaman 'usulan-baru-penelitian'
+    console.log(report);
+    if (report != null) {
+      navigate("/penelitian/laporan-akhir/edit", {
+        state: { id: researchId, reportId: report },
+      });
+    } else {
+      navigate("/penelitian/laporan-akhir/baru", {
+        state: { id: researchId, reportId: null },
+      }); // Arahkan ke halaman 'usulan-baru-penelitian'
     }
   };
 
@@ -23,27 +27,26 @@ const LaporanAkhirList = () => {
     navigate("/penelitian/laporan-akhir"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
-  const user = JSON.parse(localStorage.getItem('user'));
-    const fetchData = async () => {
-      try {
-        const result = await getResearch({
-          pageSize: 5,
-          currentPage: 1,
-          status: 11,
-          // year: 2025,
-          userId: user.id,
-        });
-        setData(result.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    useEffect(() => {
-  
-      fetchData();
-    }, []);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const fetchData = async () => {
+    try {
+      const result = await getResearch({
+        pageSize: 5,
+        currentPage: 1,
+        status: 10,
+        // year: 2025,
+        userId: user.id,
+      });
+      setData(result.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="mx-5">
@@ -109,7 +112,7 @@ const LaporanAkhirList = () => {
               {data.map((item, index) => (
                 <tr key={index}>
                   <td className="border border-black px-4 py-2 align-middle">
-                    {index+1}
+                    {index + 1}
                   </td>
                   <td className="border border-black px-4 py-2 align-middle break-words">
                     {item.scheme.name}
@@ -134,7 +137,12 @@ const LaporanAkhirList = () => {
                   </td>
                   <td className="border border-black px-4 py-2 align-middle">
                     <button
-                      onClick={() => handleView(item.id, item.finalReport[0] ? item.finalReport[0].id : null )}
+                      onClick={() =>
+                        handleView(
+                          item.id,
+                          item.finalReport[0] ? item.finalReport[0].id : null
+                        )
+                      }
                       className="flex items-center px-2 py-1 rounded-md hover:text-cyan-500"
                     >
                       <img

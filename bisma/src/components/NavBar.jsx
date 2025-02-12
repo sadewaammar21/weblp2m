@@ -690,17 +690,19 @@ const NavBar = ({ children }) => {
                       <li
                         className=" px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
                         onClick={() =>
-                          navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
+                          navigate("/kepala-lppm-usulan-belum-ditinjau")
                         }
                       >
-                        <Link to="/kaprodi/penelitian/usulan-belum-ditinjau">
+                        <Link to="/kepala-lppm-usulan-belum-ditinjau">
                           Penelitian
                         </Link>
                       </li>
                       <li
                         className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
                         onClick={() =>
-                          navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
+                          navigate(
+                            "/kepala-lppm/pengabdian/usulan-belum-ditinjau"
+                          )
                         }
                       >
                         <Link>Pengabdian</Link>
