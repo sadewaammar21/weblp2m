@@ -65,12 +65,8 @@ const ProgressLaporanAkhir = () => {
   const fetchService = async () => {
     try {
       const response = await getServiceDetail(id);
-      if (response && response.id) {
-        setService(response);
-        console.log("Service ID:", response.id);
-      } else {
-        console.log("Tidak ada service id");
-      }
+      setService(response.data);
+      console.log("Service ID:", response.data.id);
     } catch (error) {
       console.error("Error fetching service:", error);
       console.log("Tidak ada service id");
@@ -117,16 +113,16 @@ const ProgressLaporanAkhir = () => {
           partner_role_passive: "",
           government_local_role: "",
           funding_contribution: "",
-          outputs1: [],
-          outputs2: [],
-          outputs3: [],
-          outputs4: [],
-          outputs5: [],
-          outputs6: [],
-          outputs7: [],
-          outputs8: [],
-          outputs9: [],
-          outputs10: [],
+          output_final_report1s: [],
+          output_final_report2s: [],
+          output_final_report3s: [],
+          output_final_report4s: [],
+          // output_final_report5s: [],
+          // output_final_report6s: [],
+          // output_final_report7s: [],
+          // output_final_report8s: [],
+          // output_final_report9s: [],
+          // output_final_report10s: [],
         });
         setLoading(false);
       }
@@ -202,8 +198,8 @@ const ProgressLaporanAkhir = () => {
   const handleSubmit = async (status) => {
     try {
       if (reportId) {
-        setReport((prevReport) => ({ ...prevReport, status: status }));
-        // setReport({ ...report, status: status });
+        // setReport((prevReport) => ({ ...prevReport, status: status }));
+        setReport({ ...report, status: status });
         console.log(report);
         const response = await addServiceFinalReport({
           serviceId: service.id,
@@ -223,8 +219,8 @@ const ProgressLaporanAkhir = () => {
         navigate("/pengabdian/laporan-akhir");
         // navigate(-1);
       } else {
-        setReport((prevReport) => ({ ...prevReport, status: status }));
-        // setReport({ ...report, status: status });
+        // setReport((prevReport) => ({ ...prevReport, status: status }));
+        setReport({ ...report, status: status });
         console.log(report);
         const response = await addServiceFinalReport({
           serviceId: service.id,

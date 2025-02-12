@@ -87,8 +87,8 @@ const ModalLuaranElektronik = ({
           <TextfieldCmp placeholder="Judul Publikasi" />
           <label className="block text-gray-700 mb-2">Nama Media Masa</label>
           <TextfieldCmp placeholder="Nama Media Masa" />
-          <label className="block text-gray-700 mb-2">Tahun Publikasi</label>
-          <TextfieldCmp placeholder="Tahun" />
+          {/* <label className="block text-gray-700 mb-2">Tahun Publikasi</label>
+          <TextfieldCmp placeholder="Tahun" /> */}
         </div>
 
         {/* File Upload */}

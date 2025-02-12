@@ -204,7 +204,7 @@ const LaporanAkhirProgress = () => {
   return (
     <div>
       <div>
-        <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
+        <h1 className="text-h5 text-violet-800 mx-5 my-5">
           LAPORAN AKHIR KEGIATAN PENELITIAN
         </h1>
         <div className="container mx-auto">
