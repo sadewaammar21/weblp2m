@@ -101,6 +101,7 @@ import PengelolaReviewPengadianPage from "./pages/PengelolaReviewPengadianPage";
 import PengelolaReviewPengabdianSBR1Page from "./pages/PengelolaReviewPengabdianSBR1Page";
 import PengelolaReviewPengabdianSBR2Page from "./pages/PengelolaReviewPengabdianSBR2Page";
 import PengelolaReviewPengabdianInternal from "./pages/PengelolaReviewPengabdianInternal";
+import KepalaLPPMDashboardPage from "./pages/KepalaLPPMDashboardPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -431,6 +432,7 @@ function App() {
           element={<ReviewerEksternalPage />}
         />
         {/* Reviewer */}
+
         <Route
           path="/review-penilaian-proposal"
           element={<PenilaianProposalPage />}
@@ -469,6 +471,10 @@ function App() {
           element={<EditProfileUserPage />}
         />
         {/* kepla LPPM */}
+        <Route
+          path="/kepala-lppm-dashboard"
+          element={<KepalaLPPMDashboardPage />}
+        />
         <Route
           path="/kepala-lppm-usulan-belum-ditinjau"
           element={<UsulanBelumDitinjauKepalaLPPMPage />}

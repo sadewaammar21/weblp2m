@@ -149,15 +149,30 @@ const NavBar = ({ children }) => {
       Dosen: "/dashboard",
       Operator: "/dashboard-operator",
       Reviewer: "/dashboard-reviewer",
-      KepalaLPPM: "/dashboard-kepala-lppm",
+      "Kepala LPPM": "/dashboard-kepala-lppm",
       Kaprodi: "/dashboard-kaprodi",
     };
 
     // Cari role berdasarkan id
     const selectedRole = parseUser.roles.find((role) => role.id === id);
 
+    console.log("Selected Role:", selectedRole); // Debugging
+    // Cari role berdasarkan id
+    // const selectedRole = parseUser.roles.find((role) => role.id === id);
+
+    //   if (selectedRole) {
+    //     const targetPath = roleMapping[selectedRole.name] || "/dashboard"; // Default ke "/dashboard" jika role tidak ditemukan
+    //     localStorage.setItem("currentRole", id);
+    //     navigate(targetPath);
+    //     window.location.reload();
+    //   }
+    // };
+
     if (selectedRole) {
-      const targetPath = roleMapping[selectedRole.name] || "/dashboard"; // Default ke "/dashboard" jika role tidak ditemukan
+      const targetPath = roleMapping[selectedRole.name] || "/dashboard";
+
+      console.log("Navigating to:", targetPath); // Debugging
+
       localStorage.setItem("currentRole", id);
       navigate(targetPath);
       window.location.reload();
@@ -673,7 +688,7 @@ const NavBar = ({ children }) => {
                       ref={dropdownRef}
                     >
                       <li
-                        className="px-4 py-2 hover:bg-violet-800"
+                        className=" px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
                         onClick={() =>
                           navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
                         }
@@ -683,7 +698,7 @@ const NavBar = ({ children }) => {
                         </Link>
                       </li>
                       <li
-                        className="px-4 py-2 hover:bg-violet-800"
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
                         onClick={() =>
                           navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
                         }
@@ -716,7 +731,7 @@ const NavBar = ({ children }) => {
                       ref={dropdownRef}
                     >
                       <li
-                        className="px-4 py-2 hover:bg-violet-800"
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
                         onClick={() =>
                           navigate("/kaprodi/penelitian/usulan-belum-ditinjau")
                         }
@@ -726,7 +741,7 @@ const NavBar = ({ children }) => {
                         </Link>
                       </li>
                       <li
-                        className="px-4 py-2 hover:bg-violet-800"
+                        className="px-2 py-2 text-violet-800   hover:bg-violet-800 hover:text-white"
                         onClick={() =>
                           navigate("/kaprodi/pengabdian/usulan-belum-ditinjau")
                         }

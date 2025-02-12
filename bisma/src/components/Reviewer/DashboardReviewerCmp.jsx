@@ -40,7 +40,7 @@ const DashboardReviewerCmp = () => {
           {
             title: "Penilaian Proposal Pengabdian",
             count: 3,
-            icon: <FaHdd size={24} className="ext-white" />,
+            icon: <FaHdd size={24} className="text-white" />,
             path: "/review/penilaian-proposal-pengabdian",
           },
           {

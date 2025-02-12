@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import DropdownCmp from "../DropdownCmp";
-import {
-  FaBullseye,
-  FaFileAlt,
-  FaHdd,
-  FaChartBar,
-  FaRegBookmark,
-  FaRecycle,
-} from "react-icons/fa";
+import { FaBullseye, FaChartBar, FaHdd } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import DropdownCmp from "../DropdownCmp";
 
-const DashboardKaprodi = () => {
+const KepalaLPPMDashboard = () => {
   const navigate = useNavigate();
 
   const [selectedOption, setSelectedOption] = useState("");
@@ -29,28 +22,27 @@ const DashboardKaprodi = () => {
     {
       title: "Usulan Belum Ditinjau",
       count: 0,
-      icon: <FaHdd size={24} />,
-      path: "/kaprodi/usulan-belum-ditinjau",
+      icon: <FaHdd size={24} className="text-violet-800" />,
+      path: "/kepala-lppm-usulan-belum-ditinjau",
     },
     {
       title: "Usulan Disetujui",
       count: 1,
-      icon: <FaBullseye size={24} />,
-      path: "/kaprodi/usulan-disetujui",
+      icon: <FaBullseye size={24} className="text-violet-800" />,
+      path: "/kepala-lppm-usulan-disetujui",
     },
     {
       title: "Usulan Ditolak",
       count: 0,
-      icon: <FaChartBar size={24} />,
-      path: "/kaprodi/usulan-ditolak",
+      icon: <FaChartBar size={24} className="text-violet-800" />,
+      path: "/kepala-lppm-usulan-ditolak",
     },
   ];
-
   return (
     <div className="mx-10 my-10">
       <div>
-        <h2 className="text-violet-800 font-bold text-h5 mb-4">
-          DASHBOARD KAPRODI
+        <h2 className="text-violet-800 font-bold text-lg mb-4">
+          DASHBOARD LPPM
         </h2>
       </div>
       <div className="flex justify-end items-start space-x-5">
@@ -102,10 +94,7 @@ const DashboardKaprodi = () => {
             onClick={() => navigate(metric.path)} // Navigasi ke halaman tertentu
             className="bg-gray-100 rounded-lg shadow-lg p-5 flex flex-col items-center text-center cursor-pointer hover:bg-gray-200"
           >
-            <div className="bg-violet-800 rounded-full p-4 flex items-center justify-center mb-3">
-              {/* Pastikan ikon memiliki ukuran sesuai */}
-              <div className="text-white w-6 h-6">{metric.icon}</div>
-            </div>
+            {metric.icon}
             <p className="text-violet-800 font-semibold mt-2">{metric.title}</p>
             <p className="text-3xl font-bold text-violet-800">{metric.count}</p>
           </div>
@@ -146,4 +135,4 @@ const DashboardKaprodi = () => {
   );
 };
 
-export default DashboardKaprodi;
+export default KepalaLPPMDashboard;
