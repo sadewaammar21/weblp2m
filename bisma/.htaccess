@@ -3,15 +3,15 @@
 
     AddType text/css .css
 
-    # Handle documentation assets
-    RewriteCond %{REQUEST_URI} ^/api/docs/.*
-    RewriteCond %{REQUEST_FILENAME} -f
+    # Allow direct access to files and directories
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
     
     # Handle Laravel API requests
     RewriteCond %{REQUEST_URI} ^/api/
     RewriteRule ^api/(.*)$ /api/index.php [L]
-
+    
     RewriteCond %{REQUEST_URI} ^/api/storage/.*
     RewriteRule ^ - [L]
 
@@ -20,5 +20,6 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-l
-    RewriteRule . /index.html [L]
+    RewriteRule . /index.html [L]
+
 </IfModule>

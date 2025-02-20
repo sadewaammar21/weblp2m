@@ -157,13 +157,13 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
             label="Item"
             value={item.item}
             onChange={(e) => handleBudgetChange(index, "item", e.target.value)}
-            width="w-64" // Custom width untuk text input
+            // width="w-64" // Custom width untuk text input
           />
           <TextfieldCmp
             label="Satuan"
             value={item.unit}
             onChange={(e) => handleBudgetChange(index, "unit", e.target.value)}
-            width="w-20" // Custom width untuk text input
+            // width="w-20" // Custom width untuk text input
           />
           <TextfieldCmp
             label="Volume"
@@ -171,7 +171,7 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
             onChange={(e) =>
               handleBudgetChange(index, "volume", e.target.value)
             }
-            width="w-20" // Custom width untuk text input
+            // width="w-20" // Custom width untuk text input
           />
           <TextfieldCmp
             label="Harga Satuan"
@@ -179,13 +179,13 @@ const RencanaAnggranBi = ({ navigate, data, setData }) => {
             onChange={(e) =>
               handleBudgetChange(index, "price_unit", e.target.value)
             }
-            width="w-full" // Lebar penuh untuk text input
+            // width="w-full" // Lebar penuh untuk text input
           />
           <TextfieldCmp
             label="Total"
             value={item.total}
             onChange={(e) => handleBudgetChange(index, "total", e.target.value)}
-            width="w-full" // Lebar penuh untuk text input
+            // width="w-full" // Lebar penuh untuk text input
           />
         </div>
       ))}

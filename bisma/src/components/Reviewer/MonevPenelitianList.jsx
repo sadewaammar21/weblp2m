@@ -164,7 +164,7 @@ const MonevPenelitianList = () => {
               </thead>
               <tbody>
                 {data.data &&
-                  data.data.map((item) => (
+                  data.data.filter((item) => item.status == 11).map((item) => (
                     <tr key={item.id}>
                       <td className="border px-4 py-2 text-center">
                         {item.id}

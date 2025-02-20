@@ -76,7 +76,7 @@ export const addResearch = async ({
   formData.append("leader_name", data.leader_name);
   formData.append("leader_task", data.leader_task);
   formData.append("substance_id", data.substance_id);
-  formData.append("status", newStatus? newStatus:1);
+  formData.append("status", newStatus ? newStatus : 1);
   formData.append("approval_funds", data.approval_funds);
   formData.append("letter_of_intent", data.letter_of_intent);
 
@@ -540,14 +540,27 @@ export const addResearchProgressReport = async ({
         formData,
         getToken()
       );
-      console.log("responnya", response.data.message);
-      return response.data.message;
+      if (data.status === "submitted") {
+        updateStatus({
+          researchId: researchId,
+          newStatus: 11,
+          note: "laporan kemajuan disubmit",
+        });
+      }
+      return response.data;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/progress-report`,
         formData,
         getToken()
       );
+      if (data.status === "submitted") {
+        updateStatus({
+          researchId: researchId,
+          newStatus: 11,
+          note: "laporan kemajuan disubmit",
+        });
+      }
       console.log(response);
       console.log("responnya", response.data.message);
       return response.data.message;
@@ -608,8 +621,12 @@ export const addMonevResearch = async (monevData) => {
       getToken()
     );
     console.log(response.data);
-    console.log("responnya", response.data.message);
-    return response.data.message;
+    updateStatus({
+      researchId: monevData.research_id,
+      newStatus: 12,
+      note: "monev telah disubmit",
+    });
+    return response.data;
   } catch (error) {
     console.log(error);
     return error.message;
@@ -709,9 +726,14 @@ export const addResearchFinalReport = async ({
         formData,
         getToken()
       );
-      console.log(response);
-      console.log("responnya", response.data.message);
-      return response.data.message;
+      if (data.status === "submitted") {
+        updateMemberStatus({
+          researchId: researchId,
+          newStatus: 13,
+          note: "selesai cuy",
+        });
+      }
+      return response.data;
     } else {
       const response = await axios.post(
         `${apiUrl}/api/research-final-report`,

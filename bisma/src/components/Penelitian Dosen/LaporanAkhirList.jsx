@@ -27,26 +27,27 @@ const LaporanAkhirList = () => {
     navigate("/penelitian/laporan-akhir"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const fetchData = async () => {
-    try {
-      const result = await getResearch({
-        pageSize: 5,
-        currentPage: 1,
-        status: 10,
-        // year: 2025,
-        userId: user.id,
-      });
-      setData(result.data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const user = JSON.parse(localStorage.getItem('user'));
+    const fetchData = async () => {
+      try {
+        const result = await getResearch({
+          pageSize: 5,
+          currentPage: 1,
+          status: 12,
+          // year: 2025,
+          userId: user.id,
+        });
+        setData(result.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    useEffect(() => {
+  
+      fetchData();
+    }, []);
 
   return (
     <div className="mx-5">

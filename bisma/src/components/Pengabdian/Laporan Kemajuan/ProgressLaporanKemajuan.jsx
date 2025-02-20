@@ -355,13 +355,13 @@ const ProgressLaporanKemajuan = () => {
                   Next
                 </button>
                 <button
-                  onClick={() => handleSubmit(1)}
+                  onClick={() => handleSubmit('draft')}
                   className={`px-4 py-2 bg-blue-600 text-white rounded ${currentStep === 2 ? "" : "hidden"}`}
                 >
                   Simpan
                 </button>
                 <button
-                  onClick={() => handleSubmit(2)}
+                  onClick={() => handleSubmit('submitted')}
                   className={`px-4 py-2 bg-green-600 text-white rounded ${currentStep === 2 ? "" : "hidden"}`}
                 >
                   Submit
