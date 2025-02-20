@@ -170,18 +170,12 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   const [outputPublicationType, setOutputPublicationType] = useState([]);
   const [outputMediaType, setOutputMediaType] = useState([]);
   const [outputVideoType, setOutputVideoType] = useState([]);
-  const statusPartnerOutput = [
-    { value: "Tercapai", label: "Tercapai" },
-  ];
-  const statusPublicationOutput = [
-    { value: "Published", label: "Published" },
-  ];
+  const statusPartnerOutput = [{ value: "Tercapai", label: "Tercapai" }];
+  const statusPublicationOutput = [{ value: "Published", label: "Published" }];
   const statusMediaOutput = [
     { value: "Online/bisa diakses", label: "Online/bisa diakses" },
   ];
-  const statusVideoOutput = [
-    { value: "Published", label: "Published" },
-  ];
+  const statusVideoOutput = [{ value: "Published", label: "Published" }];
 
   // const [status, setStatus] = useState([]);
   const year = [
@@ -207,23 +201,29 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     //   setOutputPartnerCtg(error.message);
     // }
     try {
-      const response = await axios.get(`${apiUrl}/api/partner-output-category`, getToken());
+      const response = await axios.get(
+        `${apiUrl}/api/partner-output-category`,
+        getToken()
+      );
       const data = Array.isArray(response.data) ? response.data : [];
       setOutputPartnerCtg(data);
-  } catch (error) {
-      console.error('Error fetching :', error);
+    } catch (error) {
+      console.error("Error fetching :", error);
       setOutputPartnerCtg([]);
-  }
+    }
   };
   const fetchCtgType = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/partner-output-type`, getToken());
+      const response = await axios.get(
+        `${apiUrl}/api/partner-output-type`,
+        getToken()
+      );
       const data = Array.isArray(response.data) ? response.data : [];
       setOutputPartnerType(data);
-  } catch (error) {
-      console.error('Error fetching :', error);
+    } catch (error) {
+      console.error("Error fetching :", error);
       setOutputPartnerType([]);
-  }
+    }
     // const response = await axios.get(
     //   `${apiUrl}/api/partner-output-type`,
     //   getToken()
@@ -232,13 +232,16 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   };
   const fetchPublic = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/publication-output-category`, getToken());
+      const response = await axios.get(
+        `${apiUrl}/api/publication-output-category`,
+        getToken()
+      );
       const data = Array.isArray(response.data) ? response.data : [];
       setOutputPublicationCtg(data);
-  } catch (error) {
-      console.error('Error fetching :', error);
+    } catch (error) {
+      console.error("Error fetching :", error);
       setOutputPublicationCtg([]);
-  }
+    }
     // const response = await axios.get(
     //   `${apiUrl}/api/publication-output-category`,
     //   getToken()
@@ -249,15 +252,15 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   const fetchPublicType = async (id_category_output) => {
     try {
       const response = await axios.get(
-          `${apiUrl}/api/publication-output-type/${id_category_output}`,
-          getToken()
+        `${apiUrl}/api/publication-output-type/${id_category_output}`,
+        getToken()
       );
       const data = Array.isArray(response.data) ? response.data : [];
       setOutputPublicationType(data);
-  } catch (error) {
-      console.error('Error fetching:', error);
+    } catch (error) {
+      console.error("Error fetching:", error);
       setOutputPublicationType([]);
-  }
+    }
     // try {
     //   const response = await axios.get(
     //     `${apiUrl}/api/publication-output-type/${id_category_output}`,
@@ -272,13 +275,16 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
 
   const fetchMedia = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/media-output-category`, getToken());
+      const response = await axios.get(
+        `${apiUrl}/api/media-output-category`,
+        getToken()
+      );
       const data = Array.isArray(response.data) ? response.data : [];
       setOutputMediaCtg(data);
-  } catch (error) {
-      console.error('Error fetching :', error);
+    } catch (error) {
+      console.error("Error fetching :", error);
       setOutputMediaCtg([]);
-  }
+    }
     // const response = await axios.get(
     //   `${apiUrl}/api/media-output-category`,
     //   getToken()
@@ -289,15 +295,15 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   const fetchMediaType = async (id_category_output) => {
     try {
       const response = await axios.get(
-          `${apiUrl}/api/media-output-type/${id_category_output}`,
-          getToken()
+        `${apiUrl}/api/media-output-type/${id_category_output}`,
+        getToken()
       );
       const data = Array.isArray(response.data) ? response.data : [];
       setOutputMediaType(data);
-  } catch (error) {
-      console.error('Error fetching:', error);
+    } catch (error) {
+      console.error("Error fetching:", error);
       setOutputMediaType([]);
-  }
+    }
     // try {
     //   const response = await axios.get(
     //     `${apiUrl}/api/media-output-type/${id_category_output}`,
@@ -311,13 +317,16 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   };
   const fetchVideo = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/video-output-category`, getToken());
+      const response = await axios.get(
+        `${apiUrl}/api/video-output-category`,
+        getToken()
+      );
       const data = Array.isArray(response.data) ? response.data : [];
       setOutputVideoCtg(data);
-  } catch (error) {
-      console.error('Error fetching :', error);
+    } catch (error) {
+      console.error("Error fetching :", error);
       setOutputVideoCtg([]);
-  }
+    }
     // const response = await axios.get(
     //   `${apiUrl}/api/video-output-category`,
     //   getToken()
@@ -326,13 +335,16 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   };
   const fetchVideoType = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/video-output-type`, getToken());
+      const response = await axios.get(
+        `${apiUrl}/api/video-output-type`,
+        getToken()
+      );
       const data = Array.isArray(response.data) ? response.data : [];
       setOutputVideoType(data);
-  } catch (error) {
-      console.error('Error fetching :', error);
+    } catch (error) {
+      console.error("Error fetching :", error);
       setOutputVideoType([]);
-  }
+    }
     // const response = await axios.get(
     //   `${apiUrl}/api/video-output-type`,
     //   getToken()
@@ -444,8 +456,12 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           <DropdownCmp
             label="Status *"
             options={statusPartnerOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusPartnerOutput.find((option) => option.value === data.output_partner[0].status)} // Cocokkan nilai yang dipilih
-            onChange={(option) => handleOutputChangePatner("status", option.value)} // Tangani perubahan
+            value={statusPartnerOutput.find(
+              (option) => option.value === data.output_partner[0].status
+            )} // Cocokkan nilai yang dipilih
+            onChange={(option) =>
+              handleOutputChangePatner("status", option.value)
+            } // Tangani perubahan
             placeholder="Pilih Status"
           />
 
@@ -493,7 +509,9 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           <DropdownCmp
             label="Status *"
             options={statusPublicationOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusPublicationOutput.find((option) => option.value === data.output_publication[0].status)} // Cocokkan nilai yang dipilih
+            value={statusPublicationOutput.find(
+              (option) => option.value === data.output_publication[0].status
+            )} // Cocokkan nilai yang dipilih
             onChange={(option) =>
               handleOutputChangePublication("status", option.value)
             } // Tangani perubahan
@@ -542,8 +560,12 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           <DropdownCmp
             label="Status *"
             options={statusMediaOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusMediaOutput.find((option) => option.value === data.output_media[0].status)} // Cocokkan nilai yang dipilih
-            onChange={(option) => handleOutputChangeMedia("status", option.value)} // Tangani perubahan
+            value={statusMediaOutput.find(
+              (option) => option.value === data.output_media[0].status
+            )} // Cocokkan nilai yang dipilih
+            onChange={(option) =>
+              handleOutputChangeMedia("status", option.value)
+            } // Tangani perubahan
             placeholder="Pilih Status"
           />
           <TextAreaCmp
@@ -589,8 +611,12 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           <DropdownCmp
             label="Status *"
             options={statusVideoOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusVideoOutput.find((option) => option.value === data.output_video[0].status)} // Cocokkan nilai yang dipilih
-            onChange={(option) => handleOutputChangeVideo("status", option.value)} // Tangani perubahan
+            value={statusVideoOutput.find(
+              (option) => option.value === data.output_video[0].status
+            )} // Cocokkan nilai yang dipilih
+            onChange={(option) =>
+              handleOutputChangeVideo("status", option.value)
+            } // Tangani perubahan
             placeholder="Pilih Status"
           />
           <TextAreaCmp
