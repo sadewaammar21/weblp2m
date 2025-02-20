@@ -133,9 +133,12 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
               Unggah Substansi Laporan *
             </label>
             <a
+              without
+              rel="noopener noreferrer"
+              target="_blank"
               href={
                 process.env.PUBLIC_URL +
-                "/assets/Isian Substansi Proposal - LPPM SINUS.docx"
+                "/assets/Isian Substansi Proposal - LPPM SINUS-v2.pdf"
               }
               className="text-blue-600 hover:underline flex items-center"
             >
