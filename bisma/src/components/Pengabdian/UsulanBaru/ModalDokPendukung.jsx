@@ -48,9 +48,24 @@ const ModalDokMitra = ({
     }));
   };
 
+  // const handleInputChange = (e) => {
+  //   const inputName = e.target.name;
+  //   const inputValue = e.target.value;
+
+  //   setDocumentData((prevData) => ({
+  //     ...prevData,
+  //     [inputName]: inputValue,
+  //   }));
+  // };
   const handleInputChange = (e) => {
     const inputName = e.target.name;
-    const inputValue = e.target.value;
+    let inputValue = e.target.value;
+
+    // Hanya ubah nilai jika inputName adalah "funding_contribution"
+    if (inputName === "funding_contribution") {
+      // Parse input menjadi angka setelah menghapus format "Rp."
+      inputValue = parseFormattedNumber(inputValue);
+    }
 
     setDocumentData((prevData) => ({
       ...prevData,
@@ -77,6 +92,28 @@ const ModalDokMitra = ({
     onSave(index, documentData);
     onRequestClose();
     console.log(documentData);
+  };
+
+  const formatNumber = (num) => {
+    if (num === null || num === undefined || num === "") return "";
+    const parsed = parseFloat(num);
+    return isNaN(parsed)
+      ? ""
+      : `Rp. ${parsed.toLocaleString("id-ID", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })}`;
+  };
+
+  // Parse input string "Rp 10.000,00" → 10000.00
+  const parseFormattedNumber = (str) => {
+    if (!str) return "";
+    const cleaned = str
+      .replace(/[^0-9,]/g, "")
+      .replace(/\./g, "")
+      .replace(",", "."); // hapus Rp dan spasi
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? "" : parsed;
   };
 
   return (
@@ -153,10 +190,10 @@ const ModalDokMitra = ({
           <h1 className="text-xl font-bold my-5">Kontribusi Pendanaan</h1>
           <TextfieldCmp
             label="Tahun"
-            value={documentData.funding_contribution}
+            value={formatNumber(documentData.funding_contribution)}
             name="funding_contribution"
             onChange={handleInputChange}
-            placeholder="Tahun 1"
+            placeholder="Rp. 1.000"
           />
         </div>
         {/* Label dan Link untuk Unduh Template */}
