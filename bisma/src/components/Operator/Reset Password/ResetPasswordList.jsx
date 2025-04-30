@@ -18,10 +18,6 @@ const ProfileUserList = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [data, setData] = useState([]);
 
-  const handleEdit = () => {
-    navigate("/monitoring/data-pendukung/edit-profil-user"); // Arahkan ke halaman 'usulan-baru-penelitian'
-  };
-
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -67,35 +63,6 @@ const ProfileUserList = () => {
   //   };
 
   // Fungsi untuk ekspor data ke Excel
-  const handleExportExcel = (dataExport) => {
-    const tableData = [
-      ["No", "Pengusul", "Skema", "Judul", "Berkas"],
-      [
-        "1",
-        `Ketua: SRI HARJANTO
-        NIDN: 0626016803
-        Tahun Pelaksanaan: 2024
-        Lama Kegiatan: 1 Tahun
-        Bidang Fokus: Teknologi Informasi dan Komunikasi`,
-        "Penelitian Dasar - Penelitian Dosen Pemula",
-        "Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa Sekolah Dasar",
-        "-",
-      ],
-    ];
-
-    // Membuat worksheet dan workbook
-    const worksheet = XLSX.utils.json_to_sheet(dataExport);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Usulan Draft");
-
-    // Menyimpan file Excel
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
-    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(data, "UsulanDraftMonitoring.xlsx");
-  };
 
   // Fungsi untuk kembali ke halaman sebelumnya
   const handleBack = () => {
@@ -111,7 +78,7 @@ const ProfileUserList = () => {
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        LIST USULAN DRAFT MONITORING
+        RESET PASSWORD USER
       </h1>
 
       <div>

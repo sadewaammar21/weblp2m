@@ -380,7 +380,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
           {/* Label dan Link untuk Unduh Template */}
           <div className="flex justify-between items-center mb-2">
             <label className="font-medium text-gray-700">
-              Unggah Substansi Laporan *
+              Unggah Substansi Usulan *
             </label>
             <a
               href={
