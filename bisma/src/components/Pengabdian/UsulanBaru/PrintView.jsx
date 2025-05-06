@@ -35,14 +35,14 @@ const PrintView = () => {
     <div className="p-8 print:p-0">
       <div className="text-center mb-6 border-b border-black pb-4">
         <img
-          src="/logo-kampus.png"
+          src={process.env.PUBLIC_URL + "/LOGO TSU.png"}
           alt="Logo Kampus"
           className="w-20 mx-auto mb-2"
         />
         <h1 className="text-base font-bold uppercase">
           Lembaga Penelitian dan Pengabdian kepada Masyarakat
         </h1>
-        <h2 className="text-sm font-medium">STMIK Sinar Nusantara</h2>
+        <h2 className="text-sm font-medium">Universitas Tiga Serangkai</h2>
         <p className="text-xs">
           Jl. Slamet Riyadi No.123, Surakarta, Jawa Tengah
         </p>
@@ -82,17 +82,20 @@ const PrintView = () => {
           ))}
         </tbody>
       </table>
-      <div className="mt-12 text-right pr-8">
-        <p>
-          Surakarta,{" "}
-          {new Date().toLocaleDateString("id-ID", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
-        </p>
-        <p className="mt-16">________________________</p>
-        <p className="text-sm">Tanda Tangan</p>
+      <div className="mt-12 pr-8 flex flex-col items-end">
+        <div className="text-left">
+          <p>
+            Surakarta,{" "}
+            {new Date().toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
+          <p className="mb-20">Ketua LPPM,</p>
+          {/* <p>___________________</p> */}
+          <p className=" text-sm">(Dr. Ir. Muhammad Hasbi, M.Kom)</p>
+        </div>
       </div>
     </div>
   );
