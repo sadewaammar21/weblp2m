@@ -11,12 +11,20 @@ import {
   getResearch,
 } from "../../../Features/ResearchSlice";
 import ModalReset from "./ModalReset";
+import axios from "axios";
+import { getToken } from "../../../Features/AuthSlice";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const ProfileUserList = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [data, setData] = useState([]);
+  const [user, setUser] = useState([]);
+  const [filters, setFilters] = useState({ name: "", kategori: "" });
+  const [filteredData, setFilteredData] = useState([]);
+  const [kategoriOptions, setKategoriOptions] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,30 +36,56 @@ const ProfileUserList = () => {
     setIsOpen(false);
   };
 
+  const fetchUsers = async () => {
+    const response = await axios.get(`${apiUrl}/api/users`, getToken());
+    setUser(response.data);
+    console.log(response.data);
+    setFilteredData(response.data);
+  };
+
+  useEffect(() => {
+    const lowerName = filters.name.toLowerCase();
+    const selectedKategori = filters.kategori?.value?.toLowerCase() || "";
+
+    const filtered = user.filter((item) => {
+      const nameMatch = item.name?.toLowerCase().includes(lowerName);
+      const kategoriMatch = selectedKategori
+        ? item.roles.some((role) =>
+            role.name.toLowerCase().includes(selectedKategori)
+          )
+        : true;
+
+      return nameMatch && kategoriMatch;
+    });
+
+    setFilteredData(filtered);
+  }, [filters.name, filters.kategori, user]);
+
   //get data from db
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getResearch({
-          pageSize: 10,
-          currentPage: 1,
-          // status: 1,
-          year: 2025,
-        });
-        setData(result.data);
-        console.log(data);
-      } catch (err) {
-        // setError(err.message);
-      } finally {
-        // setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await getResearch({
+  //         pageSize: 10,
+  //         currentPage: 1,
+  //         // status: 1,
+  //         year: 2025,
+  //       });
+  //       setData(result.data);
+  //       console.log(data);
+  //     } catch (err) {
+  //       // setError(err.message);
+  //     } finally {
+  //       // setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
+    fetchUsers();
   }, []);
 
   const handleDropdownChange = (option) => {
@@ -70,9 +104,12 @@ const ProfileUserList = () => {
   };
 
   const options = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
+    { label: "Pilih Kategori", value: "" },
+    { label: "Dosen", value: "dosen" },
+    { label: "Reviewer", value: "reviewer" },
+    { label: "Kaprodi", value: "kaprodi" },
+    { label: "Kepala LPPM", value: "kepala lppm" },
+    { label: "Operator", value: "operator" },
   ];
 
   return (
@@ -82,7 +119,7 @@ const ProfileUserList = () => {
       </h1>
 
       <div>
-        <div className="flex justify-end border-b max-w-6xl">
+        <div className="flex justify-end border-b max-w-[1430px]">
           <div>
             <button
               onClick={handleBack}
@@ -102,11 +139,13 @@ const ProfileUserList = () => {
           <div className="flex justify-between mx-5 ">
             <div className="mx-2 my-2">
               <DropdownCmp
-                // options={options}
-                // selectedOption={selectedOption}
-                // onChange={(e) => handleDropdownChange(e.target.value)}
+                options={options}
+                selectedOption={filters.kategori}
+                onChange={(val) =>
+                  setFilters((prev) => ({ ...prev, kategori: val }))
+                }
                 placeholder="Kategori"
-                className=" border border-black "
+                className="border border-black"
                 controlClassName="bg-white text-black"
                 width="w-64 p-2"
               />
@@ -114,15 +153,17 @@ const ProfileUserList = () => {
           </div>
           <div className="mx-5 my-5">
             <TextfieldCmp
-              // value={judul}
-              // onChange={(e) => setJudul(e.target.value)}
+              value={filters.name}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, name: e.target.value }))
+              }
               placeholder="Cari nama user"
-              width="w-64 p-2"
+              width="w-64 p-2 sm:w-64 md:w-80 lg:w-96 xl:w-96 2xl:w-96"
             />
           </div>
           {/* Tabel */}
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500 border border-black">
+            <table className="w-full text-sm text-center text-gray-500 border border-black">
               <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                 <tr>
                   <th className="border px-4 py-2">No</th>
@@ -132,8 +173,22 @@ const ProfileUserList = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="text-center">
-                  <td></td>
+                {filteredData.map((item, index) => (
+                  <tr key={index} className="text-center">
+                    <td className="border px-4 py-2">{index + 1}</td>
+                    <td className="border px-4 py-2">{item.name}</td>
+                    <td className="border px-4 py-2 text-center">
+                      {item.roles.map((role) => role.name).join(", ")}
+                    </td>
+                    <td className="items-center border px-4 py-2 text-center">
+                      <button
+                        onClick={openModal}
+                        className="flex items-center text-center px-2 py-1 bg-bluef-500 text-white rounded-md hover:bg-cyan-600"
+                      >
+                        Reset
+                      </button>
+                    </td>
+                    {/* <td></td>
                   <td>Yustina Retno Wahyu Utami, S.Kom, M.Cs</td>
                   <td>Dosen</td>
                   <td>
@@ -146,8 +201,9 @@ const ProfileUserList = () => {
                         Reset
                       </button>
                     </div>
-                  </td>
-                </tr>
+                  </td> */}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

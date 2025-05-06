@@ -10,42 +10,73 @@ import {
   downloadResearchDocument,
   getResearch,
 } from "../../../Features/ResearchSlice";
+import axios from "axios";
+import { getToken } from "../../../Features/AuthSlice";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const ProfileUserList = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [filters, setFilters] = useState({ name: "" });
 
   const handleEdit = () => {
     navigate("/monitoring/data-pendukung/edit-profil-user"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
 
+  const [user, setUser] = useState([]);
+
   //get data from db
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getResearch({
-          pageSize: 10,
-          currentPage: 1,
-          // status: 1,
-          year: 2025,
-        });
-        setData(result.data);
-        console.log(data);
-      } catch (err) {
-        // setError(err.message);
-      } finally {
-        // setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await getResearch({
+  //         pageSize: 10,
+  //         currentPage: 1,
+  //         // status: 1,
+  //         year: 2025,
+  //       });
+  //       setData(result.data);
+  //       console.log(data);
+  //     } catch (err) {
+  //       // setError(err.message);
+  //     } finally {
+  //       // setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
+  //   fetchData();
+  // }, []);
+  const fetchUsers = async () => {
+    const response = await axios.get(`${apiUrl}/api/users`, getToken());
+    setUser(response.data);
+    console.log(response.data);
+    setFilteredData(response.data);
+  };
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   useEffect(() => {
-    console.log(data);
-  }, []);
+    const lowerName = filters.name.toLowerCase();
+    const selectedKategori = filters.kategori?.value?.toLowerCase() || "";
+
+    const filtered = user.filter((item) => {
+      const nameMatch = item.name?.toLowerCase().includes(lowerName);
+      const kategoriMatch = selectedKategori
+        ? item.roles.some((role) =>
+            role.name.toLowerCase().includes(selectedKategori)
+          )
+        : true;
+
+      return nameMatch && kategoriMatch;
+    });
+
+    setFilteredData(filtered);
+  }, [filters.name, filters.kategori, user]);
 
   const handleDropdownChange = (option) => {
     setSelectedOption(option);
@@ -92,15 +123,18 @@ const ProfileUserList = () => {
   };
 
   const options = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
+    { label: "Pilih Kategori", value: "" },
+    { label: "Dosen", value: "dosen" },
+    { label: "Reviewer", value: "reviewer" },
+    { label: "Kaprodi", value: "kaprodi" },
+    { label: "Kepala LPPM", value: "kepala lppm" },
+    { label: "Operator", value: "operator" },
   ];
 
   return (
     <div className="min-h-screen p-5 mx-10 my-5">
       <h1 className="text-xl font-bold text-violet-800 mb-4">
-        LIST USULAN DRAFT MONITORING
+        LIST EDIT PROFIL USER
       </h1>
 
       <div>
@@ -119,11 +153,13 @@ const ProfileUserList = () => {
           <div className="flex justify-between mx-5 ">
             <div className="mx-2 my-2">
               <DropdownCmp
-                // options={options}
-                // selectedOption={selectedOption}
-                // onChange={(e) => handleDropdownChange(e.target.value)}
+                options={options}
+                selectedOption={filters.kategori}
+                onChange={(val) =>
+                  setFilters((prev) => ({ ...prev, kategori: val }))
+                }
                 placeholder="Kategori"
-                className=" border border-black "
+                className="border border-black"
                 controlClassName="bg-white text-black"
                 width="w-64 p-2"
               />
@@ -131,15 +167,15 @@ const ProfileUserList = () => {
           </div>
           <div className="mx-5 my-5">
             <TextfieldCmp
-              // value={judul}
-              // onChange={(e) => setJudul(e.target.value)}
+              value={filters.name}
+              onChange={(e) => setFilters({ ...filters, name: e.target.value })}
               placeholder="Cari nama user"
               width="w-64 p-2"
             />
           </div>
           {/* Tabel */}
           <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500 border border-black">
+            <table className="w-full text-sm text-center text-gray-500 border border-black">
               <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                 <tr>
                   <th className="border px-4 py-2">No</th>
@@ -149,6 +185,30 @@ const ProfileUserList = () => {
                 </tr>
               </thead>
               <tbody>
+                {filteredData.map((item, index) => (
+                  <tr key={index} className="text-center">
+                    <td className="border px-4 py-2">{index + 1}</td>
+                    <td className="border px-4 py-2">{item.name}</td>
+                    <td className="border px-4 py-2 text-center">
+                      {item.roles.map((role) => role.name).join(", ")}
+                    </td>
+                    <td className="border px-4 py-2 text-center">
+                      <div className="space-y-2 space-x-5 my-2">
+                        <button
+                          className="border border-bluef-600 text-white bg-bluef-600 px-2 py-1 text-sm rounded hover:bg-bluef-100"
+                          onClick={handleEdit}
+                        >
+                          Edit
+                        </button>
+                        <button className="border border-bluef-600 text-white bg-bluef-600 px-2 py-1 text-sm rounded hover:bg-bluef-100">
+                          Role
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              {/* <tbody>
                 <tr className="text-center">
                   <td></td>
                   <td>Yustina Retno Wahyu Utami, S.Kom, M.Cs</td>
@@ -171,7 +231,7 @@ const ProfileUserList = () => {
                     </div>
                   </td>
                 </tr>
-              </tbody>
+              </tbody> */}
             </table>
           </div>
         </div>

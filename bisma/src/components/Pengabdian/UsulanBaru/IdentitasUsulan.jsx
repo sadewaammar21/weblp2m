@@ -17,6 +17,8 @@ const IdentitasUsulan = ({ data, setData }) => {
   const [isOpenDos, setIsOpenDos] = useState(false);
   const [isOpenMhs, setIsOpenMhs] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [editIndex, setEditIndex] = useState(null);
 
   const handleRadioChange = (value) => {
     setSelectedOption(value);
@@ -36,12 +38,19 @@ const IdentitasUsulan = ({ data, setData }) => {
     setIsOpen(false);
   };
 
+  // const openModalDos = () => {
+  //   setIsOpenDos(true);
+  // };
   const openModalDos = () => {
+    setSelectedMember(null);
+    setEditIndex(null);
     setIsOpenDos(true);
   };
 
   const closeModalDos = () => {
     setIsOpenDos(false);
+    setSelectedMember(null);
+    setEditIndex(null);
   };
 
   const openModalMhs = () => {
@@ -52,6 +61,11 @@ const IdentitasUsulan = ({ data, setData }) => {
     setIsOpenMhs(false);
   };
 
+  const openModalEditDos = (member, index) => {
+    setSelectedMember(member);
+    setEditIndex(index);
+    setIsOpenDos(true);
+  };
   const handleInputChange = () => (e) => {
     const inputName = e.target.name;
     const inputValue = e.target.value;
@@ -60,6 +74,23 @@ const IdentitasUsulan = ({ data, setData }) => {
       ...prevData,
       [inputName]: inputValue,
     }));
+  };
+
+  const handleMembersChanges = (index, updatedMember) => {
+    const newMembers = [...data.members];
+
+    if (index !== null && index >= 0 && index < newMembers.length) {
+      newMembers[index] = updatedMember; // edit
+    } else {
+      newMembers.push(updatedMember); // tambah
+    }
+
+    setData((prev) => ({
+      ...prev,
+      members: newMembers,
+    }));
+
+    setIsOpenDos(false); // atau panggil closeModalDos()
   };
 
   const handleDelete = (index) => {
@@ -444,6 +475,7 @@ const IdentitasUsulan = ({ data, setData }) => {
                     <div className="flex justify-center gap-x-4">
                       <button
                         // onClick={() => navigate(`/penelitian/detail/${item.id}`)}
+                        onClick={() => openModalEditDos(item, index)}
                         className=" px-2 py-1 rounded-md text-white"
                       >
                         <img
@@ -539,7 +571,7 @@ const IdentitasUsulan = ({ data, setData }) => {
           </table>
         </div>
       </div>
-      <ModalTambahDosen
+      {/* <ModalTambahDosen
         isOpen={isOpenDos} // Gunakan state boolean isModalOpenMitra
         onRequestClose={closeModalDos}
         index={data["members"].length}
@@ -548,7 +580,20 @@ const IdentitasUsulan = ({ data, setData }) => {
         clusters2={cluster2}
         clusters3={cluster3}
         setData={setData}
+      /> */}
+
+      <ModalTambahDosen
+        isOpen={isOpenDos}
+        onRequestClose={closeModalDos}
+        index={editIndex} // ← bisa null saat tambah, angka saat edit
+        onSave={handleMembersChanges}
+        clusters1={cluster1}
+        clusters2={cluster2}
+        clusters3={cluster3}
+        setData={setData}
+        initialData={selectedMember} // ← item yang akan diedit, null saat tambah
       />
+
       <ModalTambahMahasiswa
         isOpen={isOpenMhs} // Gunakan state boolean isModalOpenMitra
         onRequestClose={closeModalMhs}
