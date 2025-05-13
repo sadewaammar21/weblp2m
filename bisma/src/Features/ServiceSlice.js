@@ -83,63 +83,77 @@ export const addService = async ({
     formData.append("substance_document", data.substance_document);
   }
 
-  data.output_partner.forEach((partner, index) => {
-    formData.append(`outputPartner[${index}][year]`, partner.year);
-    formData.append(
-      `outputPartner[${index}][id_category_output]`,
-      partner.id_category_output
-    );
-    formData.append(
-      `outputPartner[${index}][id_type_output]`,
-      partner.id_type_output
-    );
-    formData.append(`outputPartner[${index}][status]`, partner.status);
-    formData.append(
-      `outputPartner[${index}][description]`,
-      partner.description
-    );
-  });
+  // data.output_partner.forEach((partner, index) => {
+  //   formData.append(`outputPartner[${index}][year]`, partner.year);
+  //   formData.append(
+  //     `outputPartner[${index}][id_category_output]`,
+  //     partner.id_category_output
+  //   );
+  //   formData.append(
+  //     `outputPartner[${index}][id_type_output]`,
+  //     partner.id_type_output
+  //   );
+  //   formData.append(`outputPartner[${index}][status]`, partner.status);
+  //   formData.append(
+  //     `outputPartner[${index}][description]`,
+  //     partner.description
+  //   );
+  // });
 
-  data.output_publication.forEach((publication, index) => {
-    formData.append(
-      `outputPublication[${index}][id_category_output]`,
-      publication.id_category_output
-    );
-    formData.append(
-      `outputPublication[${index}][id_type_output]`,
-      publication.id_type_output
-    );
-    formData.append(`outputPublication[${index}][status]`, publication.status);
-    formData.append(
-      `outputPublication[${index}][description]`,
-      publication.description
-    );
-  });
+  // data.output_publication.forEach((publication, index) => {
+  //   formData.append(
+  //     `outputPublication[${index}][id_category_output]`,
+  //     publication.id_category_output
+  //   );
+  //   formData.append(
+  //     `outputPublication[${index}][id_type_output]`,
+  //     publication.id_type_output
+  //   );
+  //   formData.append(`outputPublication[${index}][status]`, publication.status);
+  //   formData.append(
+  //     `outputPublication[${index}][description]`,
+  //     publication.description
+  //   );
+  // });
 
-  data.output_media.forEach((media, index) => {
-    formData.append(
-      `outputMedia[${index}][id_category_output]`,
-      media.id_category_output
-    );
-    formData.append(
-      `outputMedia[${index}][id_type_output]`,
-      media.id_type_output
-    );
-    formData.append(`outputMedia[${index}][status]`, media.status);
-    formData.append(`outputMedia[${index}][description]`, media.description);
-  });
+  // data.output_media.forEach((media, index) => {
+  //   formData.append(
+  //     `outputMedia[${index}][id_category_output]`,
+  //     media.id_category_output
+  //   );
+  //   formData.append(
+  //     `outputMedia[${index}][id_type_output]`,
+  //     media.id_type_output
+  //   );
+  //   formData.append(`outputMedia[${index}][status]`, media.status);
+  //   formData.append(`outputMedia[${index}][description]`, media.description);
+  // });
 
-  data.output_video.forEach((video, index) => {
+  // data.output_video.forEach((video, index) => {
+  //   formData.append(
+  //     `outputVideo[${index}][id_category_output]`,
+  //     video.id_category_output
+  //   );
+  //   formData.append(
+  //     `outputVideo[${index}][id_type_output]`,
+  //     video.id_type_output
+  //   );
+  //   formData.append(`outputVideo[${index}][status]`, video.status);
+  //   formData.append(`outputVideo[${index}][description]`, video.description);
+  // });
+
+  data.output_service.forEach((service, index) => {
+    formData.append(`outputService[${index}][year]`, service.year);
     formData.append(
-      `outputVideo[${index}][id_category_output]`,
-      video.id_category_output
+      `outputService[${index}][id_category_output]`,
+      service.id_category_output
     );
     formData.append(
-      `outputVideo[${index}][id_type_output]`,
-      video.id_type_output
+      `outputService[${index}][id_type_output]`,
+      service.id_type_output
     );
-    formData.append(`outputVideo[${index}][status]`, video.status);
-    formData.append(`outputVideo[${index}][description]`, video.description);
+    formData.append(`outputService[${index}][status]`, service.status);
+    formData.append(`outputService[${index}][description]`, service.description);
   });
 
   data.budget_plan_service.forEach((budgetPlanService, index) => {
@@ -269,7 +283,7 @@ export const addService = async ({
           console.log("Response:", responseStatus);
         }
       }
-      console.log(response.data.message);
+      console.log(response.data);
       return response.data.message;
     }
   } catch (error) {
