@@ -4,14 +4,27 @@ import { deleteResearch, getResearch } from "../../Features/ResearchSlice";
 import { FaPlus, FaPen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ModalTerimaAnggotaPenelitian from "./ModalTerimaAnggotaPenelitian";
+import TextfieldCmp from "../TextfieldCmp";
 
 const UsulanBaruList = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate(); // Hook untuk navigasi
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState("");
+  const [filters, setFilters] = useState({
+    title: "",
+    name: "",
+    year: "",
+    status: "",
+  });
+
+  const years = Array.from({ length: 6 }, (_, i) => ({
+    value: (2024 + i).toString(),
+    label: (2024 + i).toString(),
+  }));
 
   const handleClick = () => {
     navigate("/penelitian/usulan/baru"); // Arahkan ke halaman 'usulan-baru-penelitian'
@@ -28,12 +41,25 @@ const UsulanBaruList = () => {
         userId: user.id,
       });
       setData(result.data);
+      setFilteredData(result.data);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setFilteredData(
+      data.filter(
+        (item) =>
+          item.title.toLowerCase().includes(filters.title.toLowerCase()) &&
+          item.user.name.toLowerCase().includes(filters.name.toLowerCase()) &&
+          (filters.year ? item.year.toString() === filters.year : true) &&
+          (filters.status ? item.status.toString() === filters.status : true)
+      )
+    );
+  }, [filters, data]);
 
   useEffect(() => {
     fetchData();
@@ -189,6 +215,36 @@ const UsulanBaruList = () => {
             </div>
           </div>
         </div>
+        <div className="grid grid-cols-4 gap-4 mb-4">
+          <TextfieldCmp
+            placeholder="Cari Judul"
+            value={filters.title}
+            onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+          />
+          <TextfieldCmp
+            placeholder="Cari Nama Dosen"
+            value={filters.name}
+            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+          />
+          <DropdownCmp
+            options={years}
+            value={years.find((option) => option.value === filters.year)}
+            onChange={(option) =>
+              setFilters({ ...filters, year: option.value })
+            }
+          />
+
+          <DropdownCmp
+            options={[
+              { label: "Semua Status", value: "" },
+              { label: "Pending", value: "pending" },
+              { label: "Disetujui", value: "approved" },
+              { label: "Ditolak", value: "rejected" },
+            ]}
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          />
+        </div>
 
         {/* Tabel */}
         <div className="relative overflow-x-auto  my-10">
@@ -212,30 +268,18 @@ const UsulanBaruList = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
-                <tr key={index} className="border-b text-center text-b3">
-                  <td className="border border-neutral-100 px-4 py-2">
-                    {index + 1}
-                  </td>
-                  <td className="border border-neutral-100 px-4 py-2">
-                    {item.user?.name}
-                  </td>
-                  <td className="border border-neutral-100 px-4 py-2">
-                    {item.title}
-                  </td>
-                  <td className="border border-neutral-100 px-4 py-2">
-                    {item.focus.name}
-                  </td>
-                  <td className="border border-neutral-100 px-4 py-2">
-                    {item.year}
-                  </td>
-                  <td className="border border-neutral-100 px-4 py-2">
+              {filteredData.map((item, index) => (
+                <tr key={index} className="border-b text-center">
+                  <td className="border px-4 py-2">{index + 1}</td>
+                  <td className="border px-4 py-2">{item.user?.name}</td>
+                  <td className="border px-4 py-2">{item.title}</td>
+                  <td className="border px-4 py-2">{item.focus.name}</td>
+                  <td className="border px-4 py-2">{item.year}</td>
+                  <td className="border px-4 py-2">
                     {user.id === item.user.id ? "Ketua" : "Anggota"}
                   </td>
-                  <td className="border border-neutral-100 px-4 py-2">
-                    {item.status}
-                  </td>
-                  <td className="flex space-x-2 justify-center border border-neutral-100 px-4 py-2">
+                  <td className="border px-4 py-2">{item.status}</td>
+                  <td className="border px-4 py-2 flex space-x-2 justify-center">
                     {renderActionButton(item)}
                   </td>
                 </tr>

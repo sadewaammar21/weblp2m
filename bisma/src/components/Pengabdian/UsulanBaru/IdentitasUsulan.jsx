@@ -62,6 +62,12 @@ const IdentitasUsulan = ({ data, setData }) => {
     }));
   };
 
+  const handleDelete = (index) => {
+    const updatedMembers = [...data.members];
+    updatedMembers.splice(index, 1);
+    setData({ ...data, members: updatedMembers });
+  };
+
   const handleDropdownChange = (option, fieldName) => {
     setData((prevData) => ({
       ...prevData,
@@ -449,8 +455,8 @@ const IdentitasUsulan = ({ data, setData }) => {
                         />
                       </button>
                       <button
-                      // onClick={() => handleDelete(item.id)}
-                      // className={` px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
+                        onClick={() => handleDelete(index)}
+                        // className={` px-2 py-1 rounded-md text-white ${item.status != 1 ? "hidden" : ""}`}
                       >
                         <img
                           src={process.env.PUBLIC_URL + "/assets/remove.svg"}

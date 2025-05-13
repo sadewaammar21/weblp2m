@@ -4,6 +4,7 @@ import { FaPlus } from "react-icons/fa";
 import { getService, deleteService } from "../../Features/ServiceSlice";
 import { useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import ExportModalUB from "./UsulanBaru/ExportModalUB";
 
 const UsulanBaruList = () => {
   const [data, setData] = useState([]);
@@ -11,6 +12,7 @@ const UsulanBaruList = () => {
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -139,6 +141,12 @@ const UsulanBaruList = () => {
             <FaPlus className="mr-2" /> Tambah Usulan
           </button>
         </div>
+        <button
+          className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-300 focus:outline-none"
+          onClick={() => navigate("/print-view", { state: { data, user } })}
+        >
+          Export PDF
+        </button>
 
         {error && <p className="text-red-500">{error}</p>}
         {loading ? (
@@ -210,6 +218,14 @@ const UsulanBaruList = () => {
           </div>
         )}
       </div>
+      {exportModalOpen && (
+        <ExportModalUB
+          isOpen={exportModalOpen}
+          onClose={() => setExportModalOpen(false)} // Close the modal
+          data={data}
+          user={user}
+        />
+      )}
       {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </div>
   );

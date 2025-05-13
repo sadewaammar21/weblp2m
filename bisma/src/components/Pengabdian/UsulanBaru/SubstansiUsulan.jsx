@@ -117,12 +117,12 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
         <div>
           <div className="flex justify-between items-center mb-2">
             <label className="font-medium text-gray-700">
-              Unggah Substansi Laporan *
+              Unggah Substansi Usulan *
             </label>
             <a
               href={
                 process.env.PUBLIC_URL +
-                "/assets/Isian Substansi Proposal - LPPM SINUS.docx"
+                "/assets/Isian Substansi Proposal - LPPM SINUS-v2.pdf"
               }
               className="text-blue-600 hover:underline flex items-center"
             >

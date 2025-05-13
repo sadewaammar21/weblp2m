@@ -103,6 +103,7 @@ import PengelolaReviewPengabdianSBR2Page from "./pages/PengelolaReviewPengabdian
 import PengelolaReviewPengabdianInternal from "./pages/PengelolaReviewPengabdianInternal";
 import KepalaLPPMDashboardPage from "./pages/KepalaLPPMDashboardPage";
 import PerbaikanUsulanPengabdianPage from "./pages/PerbaikanUsulanPengabdianPage";
+import PrintView from "./components/Pengabdian/UsulanBaru/PrintView";
 
 function App() {
   const dispatch = useDispatch();
@@ -514,6 +515,8 @@ function App() {
           path="/kepala-lppm/pengabdian/usulan-ditolak"
           element={<UsulanDitolakKepalaPage />}
         />
+        {/* print */}
+        <Route path="/print-view" element={<PrintView />} />
       </Routes>
       {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </BrowserRouter>

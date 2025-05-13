@@ -75,6 +75,27 @@ const DokumenPendukung = ({ data, setData }) => {
   const handleClick = () => {
     navigate("/usulan-baru-penelitian"); // Arahkan ke halaman 'usulan-baru-penelitian'
   };
+  const formatNumber = (num) => {
+    if (num === null || num === undefined || num === "") return "";
+    const parsed = parseFloat(num);
+    return isNaN(parsed)
+      ? ""
+      : `Rp. ${parsed.toLocaleString("id-ID", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })}`;
+  };
+
+  // Parse input string "Rp 10.000,00" → 10000.00
+  // const parseFormattedNumber = (str) => {
+  //   if (!str) return "";
+  //   const cleaned = str
+  //     .replace(/[^0-9,]/g, "")
+  //     .replace(/\./g, "")
+  //     .replace(",", "."); // hapus Rp dan spasi
+  //   const parsed = parseFloat(cleaned);
+  //   return isNaN(parsed) ? "" : parsed;
+  // };
   return (
     <div>
       <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">4.1 Mitra</h1>
@@ -118,7 +139,7 @@ const DokumenPendukung = ({ data, setData }) => {
                     ?.name || "Unknown"}
                 </td>
                 <td className="border border-black px-4 py-2">
-                  Tahun 1: {item.funding_contribution}
+                  Tahun 1: {formatNumber(item.funding_contribution)}
                 </td>
                 <td className="border border-black px-4 py-2">some action</td>
               </tr>

@@ -45,6 +45,20 @@ const RAB = ({ navigate, data, setData }) => {
     }));
   };
 
+  // const handleBudgetChange = (index, name, value) => {
+  //   const updatedBudgetPlan = [...data.budget_plan_service];
+  //   updatedBudgetPlan[index][name] = value;
+
+  //   // Hitung total otomatis untuk item
+  //   if (name === "volume" || name === "price_unit") {
+  //     const volume = parseFloat(updatedBudgetPlan[index].volume) || 0;
+  //     const priceUnit = parseFloat(updatedBudgetPlan[index].price_unit) || 0;
+  //     updatedBudgetPlan[index].total = volume * priceUnit;
+  //   }
+
+  //   setData({ ...data, budgetPlanService: updatedBudgetPlan });
+  // };
+
   const handleBudgetChange = (index, name, value) => {
     const updatedBudgetPlan = [...data.budget_plan_service];
     updatedBudgetPlan[index][name] = value;
@@ -56,7 +70,7 @@ const RAB = ({ navigate, data, setData }) => {
       updatedBudgetPlan[index].total = volume * priceUnit;
     }
 
-    setData({ ...data, budgetPlanService: updatedBudgetPlan });
+    setData({ ...data, budget_plan_service: updatedBudgetPlan });
   };
 
   const addBudgetField = () => {
@@ -98,8 +112,29 @@ const RAB = ({ navigate, data, setData }) => {
     calculateTotal();
   }, [data.budget_plan_service]);
 
+  // const formatNumber = (num) => {
+  //   return num ? parseFloat(num).toLocaleString() : "";
+  // };
   const formatNumber = (num) => {
-    return num ? parseFloat(num).toLocaleString() : "";
+    if (num === null || num === undefined || num === "") return "";
+    const parsed = parseFloat(num);
+    return isNaN(parsed)
+      ? ""
+      : `Rp. ${parsed.toLocaleString("id-ID", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })}`;
+  };
+
+  // Parse input string "Rp 10.000,00" → 10000.00
+  const parseFormattedNumber = (str) => {
+    if (!str) return "";
+    const cleaned = str
+      .replace(/[^0-9,]/g, "")
+      .replace(/\./g, "")
+      .replace(",", "."); // hapus Rp dan spasi
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? "" : parsed;
   };
 
   return (
@@ -201,9 +236,13 @@ const RAB = ({ navigate, data, setData }) => {
           />
           <TextfieldCmp
             label="Harga Satuan"
-            value={item.price_unit} // Biarkan nilai asli untuk input
+            value={formatNumber(item.price_unit)}
             onChange={(e) =>
-              handleBudgetChange(index, "price_unit", e.target.value)
+              handleBudgetChange(
+                index,
+                "price_unit",
+                parseFormattedNumber(e.target.value)
+              )
             }
           />
           <TextfieldCmp
@@ -218,7 +257,7 @@ const RAB = ({ navigate, data, setData }) => {
           Total Anggaran
         </h1>
         <h1 className="text-ml font-bold mx-5 my-5">
-          Rp. {totalBudget.toLocaleString()}
+          {formatNumber(totalBudget)}
         </h1>
       </div>
     </div>

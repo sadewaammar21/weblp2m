@@ -2,6 +2,27 @@ import React from "react";
 
 const KonfirmasiUsulan = ({ data }) => {
   console.log("Data di dalam KonfirmasiUsulan:", data);
+  const formatNumber = (num) => {
+    if (num === null || num === undefined || num === "") return "";
+    const parsed = parseFloat(num);
+    return isNaN(parsed)
+      ? ""
+      : `Rp. ${parsed.toLocaleString("id-ID", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })}`;
+  };
+
+  // Parse input string "Rp 10.000,00" → 10000.00
+  const parseFormattedNumber = (str) => {
+    if (!str) return "";
+    const cleaned = str
+      .replace(/[^0-9,]/g, "")
+      .replace(/\./g, "")
+      .replace(",", "."); // hapus Rp dan spasi
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? "" : parsed;
+  };
   return (
     <div className="px-10">
       <div className="">
@@ -369,13 +390,13 @@ const KonfirmasiUsulan = ({ data }) => {
                     {item.unit}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
-                    {item.price_unit}
+                    {formatNumber(item.price_unit)}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
                     {item.volume}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
-                    {item.total}
+                    {formatNumber(item.total)}
                   </td>
                 </tr>
               ))}
@@ -472,7 +493,7 @@ const KonfirmasiUsulan = ({ data }) => {
                     </button> */}
                   </td>
                   <td className="  border-neutral-100 border-[0.5px] px-4 py-2">
-                    {item.funding_contribution}
+                    {formatNumber(item.funding_contribution)}
                   </td>
                 </tr>
               ))}
