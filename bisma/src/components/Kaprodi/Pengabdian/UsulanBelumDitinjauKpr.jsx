@@ -212,7 +212,7 @@ const UsulanBelumDitinjauKpr = () => {
                         className="text-red-600 text-2xl"
                       >
                         <a
-                          // href={`http://localhost:8000/api/comunity-service/download/${item.id}`}
+                          href={`http://localhost:8000/api/comunity-service/download/${item.id}`}
                           target="_blank"
                         >
                           📄

@@ -1,120 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DropdownCmp from "../../DropdownCmp";
 import TextAreaCmp from "../../TextAreaCmp";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";
 import { getToken } from "../../../Features/AuthSlice";
-import { useEffect } from "react";
 
 const apiUrl = process.env.REACT_APP_API_URL;
+
 const SubtansiUsulan = ({ navigate, data, setData }) => {
   const [selectedOption, setSelectedOption] = useState("");
-  const [UTDP, setUTDP] = useState("");
-
-  // const handleDropdownChange = (option, fieldName) => {
-  //   setData((prevData) => ({
-  //     ...prevData,
-  //     [fieldName]: option,
-  //   }));
-  //   console.log("clicked" + option);
-  // };
-
-  const options = [
-    { label: "Option 1", value: "1" },
-    { label: "Option 2", value: "2" },
-    { label: "Option 3", value: "3" },
-  ];
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    setData((prevData) => ({
-      ...prevData,
-      substance_document: event.target.files[0],
-    }));
-  };
+  const [target, setTarget] = useState(0);
 
   const handleDropdownChange = (option, fieldName) => {
     setData((prevData) => ({
       ...prevData,
       [fieldName]: option.value,
     }));
-    console.log("clicked" + option);
   };
 
+  const [outputServiceCategory, setOutputServiceCategory] = useState([]);
+  const [outputServiceType, setOutputServiceType] = useState([]);
+
+  const fetchOutputServiceCategory = async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/output-service-category`,
+        getToken()
+      );
+      setOutputServiceCategory(response.data);
+    } catch (error) {
+      console.error("Error fetching output-service-category", error);
+    }
+  };
+
+  const fetchOutputServiceType = async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/output-service-type`,
+        getToken()
+      );
+      setOutputServiceType(response.data);
+    } catch (error) {
+      console.error("Error fetching output-service-type", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOutputServiceCategory();
+    fetchOutputServiceType();
+
+    // Inisialisasi output_service jika belum ada
+    if (!Array.isArray(data.output_service)) {
+      setData((prev) => ({
+        ...prev,
+        output_service: [],
+      }));
+    }
+  }, []);
+
+  const year = [
+    { id: 1, value: 1 },
+    { id: 2, value: 2 },
+    { id: 3, value: 3 },
+    { id: 4, value: 4 },
+    { id: 5, value: 5 },
+  ];
+
+  const status = [{ value: "Tercapai", label: "Tercapai" }];
+
   const mapToDropdown = (data, labelKey, valueKey) => {
-    return data.map((item) => ({
-      label: item[labelKey],
-      value: item[valueKey],
+    return Array.isArray(data)
+      ? data.map((item) => ({
+          label: item[labelKey],
+          value: item[valueKey],
+        }))
+      : [];
+  };
+
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setData((prevData) => ({
+      ...prevData,
+      substance_document: event.target.files[0],
     }));
   };
 
-  //tambah output
-  // const handleOutputChange = (index, name, value) => {
-
-  //   const updatedOutputPartner = [...data.output];
-  //   updatedOutputPartner[index][name] = value;
-  //   setData({ ...data, outputPartner: updatedOutputPartner });
-  //   console.log(data.outputPartner);
-
-  //   const updatedoutput_publication = [...data.output];
-  //   updatedOutputPublication[index][name] = value;
-  //   setData({ ...data, output: updatedOutputPublication });
-  //   console.log(data.outputPartner);
-
-  //   const updatedOutputMedia = [...data.output];
-  //   updatedOutputMedia[index][name] = value;
-  //   setData({ ...data, output: updatedOutputMedia });
-  //   console.log(data.outputPartner);
-
-  //   const updatedOutputVideo = [...data.output];
-  //   updatedOutputMedia[index][name] = value;
-  //   setData({ ...data, output: updatedOutputVideo });
-  //   console.log(data.outputPartner);
-  // };
-  const handleOutputChangePatner = (name, value) => {
-    const updatedOutputPartner = [...data.output_partner];
-    updatedOutputPartner[0][name] = value;
-    setData({ ...data, output_partner: updatedOutputPartner });
-    console.log(updatedOutputPartner);
+  const handleOutputChange = (index, name, value) => {
+    const updatedOutput = [...(data.output_service || [])];
+    updatedOutput[index][name] = value;
+    setData({ ...data, output_service: updatedOutput });
   };
-  const handleOutputChangePatners = (index, name, value) => {
-    const updatedOutputPartner = [...data.output_partner];
-    updatedOutputPartner[index][name] = value;
-    setData({ ...data, output_partner: updatedOutputPartner });
-  };
-
-  const handleOutputChangePublication = (name, value) => {
-    const updatedOutputPublication = [...data.output_publication];
-    updatedOutputPublication[0][name] = value;
-    setData({ ...data, output_publication: updatedOutputPublication });
-    console.log(updatedOutputPublication);
-  };
-
-  const handleOutputChangeMedia = (name, value) => {
-    const updatedOutputMedia = [...data.output_media];
-    updatedOutputMedia[0][name] = value;
-
-    setData({
-      ...data,
-      outputMedia: updatedOutputMedia,
-    });
-    console.log(updatedOutputMedia);
-  };
-  const handleOutputChangeVideo = (name, value) => {
-    const updatedOutputVideo = [...data.output_video];
-    updatedOutputVideo[0][name] = value;
-
-    setData({
-      ...data,
-      outputVideo: updatedOutputVideo,
-    });
-    console.log(updatedOutputVideo);
-  };
-
-  const status = [
-    { value: "submitted", label: "Submitted" },
-    { value: "draft", label: "Draft" },
-  ];
 
   const addOutputField = () => {
     // setData({
@@ -159,9 +136,10 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     // });
     setData({
       ...data,
-      output_partner: [
-        ...data.output_partner,
+      output_service: [
+        ...data.output_service,
         {
+          year: 0,
           id_category_output: 0,
           id_type_output: 0,
           status: "",
@@ -171,230 +149,10 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     });
   };
 
-  const handleClick = () => {
-    navigate("#"); // Arahkan ke halaman 'usulan-baru-penelitian'
-  };
-
-  const handleInputChange = (setter) => (e) => {
-    setter(e.target.value);
-  };
-
-  const [outputPatnerCtg, setOutputPartnerCtg] = useState([]);
-  const [outputPublicationCtg, setOutputPublicationCtg] = useState([]);
-  const [outputMediaCtg, setOutputMediaCtg] = useState([]);
-  const [outputVideoCtg, setOutputVideoCtg] = useState([]);
-  const [outputPatnerType, setOutputPartnerType] = useState([]);
-  const [outputPublicationType, setOutputPublicationType] = useState([]);
-  const [outputMediaType, setOutputMediaType] = useState([]);
-  const [outputVideoType, setOutputVideoType] = useState([]);
-  const statusPartnerOutput = [{ value: "Tercapai", label: "Tercapai" }];
-  const statusPublicationOutput = [{ value: "Published", label: "Published" }];
-  const statusMediaOutput = [
-    { value: "Online/bisa diakses", label: "Online/bisa diakses" },
-  ];
-  const statusVideoOutput = [{ value: "Published", label: "Published" }];
-
-  // const [status, setStatus] = useState([]);
-  const year = [
-    { id: 1, value: 1 },
-    { id: 2, value: 2 },
-    { id: 3, value: 3 },
-    { id: 4, value: 4 },
-    { id: 5, value: 5 },
-  ];
-  // const status = [
-  //   {value: 'submitted', label:'Submitted'},
-  //   {value: 'draft', label:'Draft'}
-  // ]
-
-  const fetchCtgPatner = async () => {
-    // try {
-    //   const response = await axios.get(
-    //     `${apiUrl}/api/partner-output-category`,
-    //     getToken()
-    //   );
-    //   setOutputPartnerCtg(response.data);
-    // } catch (error) {
-    //   setOutputPartnerCtg(error.message);
-    // }
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/partner-output-category`,
-        getToken()
-      );
-      const data = Array.isArray(response.data) ? response.data : [];
-      setOutputPartnerCtg(data);
-    } catch (error) {
-      console.error("Error fetching :", error);
-      setOutputPartnerCtg([]);
-    }
-  };
-  const fetchCtgType = async () => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/partner-output-type`,
-        getToken()
-      );
-      const data = Array.isArray(response.data) ? response.data : [];
-      setOutputPartnerType(data);
-    } catch (error) {
-      console.error("Error fetching :", error);
-      setOutputPartnerType([]);
-    }
-    // const response = await axios.get(
-    //   `${apiUrl}/api/partner-output-type`,
-    //   getToken()
-    // );
-    // setOutputPartnerType(response.data);
-  };
-  const fetchPublic = async () => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/publication-output-category`,
-        getToken()
-      );
-      const data = Array.isArray(response.data) ? response.data : [];
-      setOutputPublicationCtg(data);
-    } catch (error) {
-      console.error("Error fetching :", error);
-      setOutputPublicationCtg([]);
-    }
-    // const response = await axios.get(
-    //   `${apiUrl}/api/publication-output-category`,
-    //   getToken()
-    // );
-    // setOutputPublicationCtg(response.data);
-  };
-
-  const fetchPublicType = async (id_category_output) => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/publication-output-type/${id_category_output}`,
-        getToken()
-      );
-      const data = Array.isArray(response.data) ? response.data : [];
-      setOutputPublicationType(data);
-    } catch (error) {
-      console.error("Error fetching:", error);
-      setOutputPublicationType([]);
-    }
-    // try {
-    //   const response = await axios.get(
-    //     `${apiUrl}/api/publication-output-type/${id_category_output}`,
-    //     getToken()
-    //   );
-    //   setOutputPublicationType(response.data);
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
-
-  const fetchMedia = async () => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/media-output-category`,
-        getToken()
-      );
-      const data = Array.isArray(response.data) ? response.data : [];
-      setOutputMediaCtg(data);
-    } catch (error) {
-      console.error("Error fetching :", error);
-      setOutputMediaCtg([]);
-    }
-    // const response = await axios.get(
-    //   `${apiUrl}/api/media-output-category`,
-    //   getToken()
-    // );
-    // setOutputMediaCtg(response.data);
-  };
-
-  const fetchMediaType = async (id_category_output) => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/media-output-type/${id_category_output}`,
-        getToken()
-      );
-      const data = Array.isArray(response.data) ? response.data : [];
-      setOutputMediaType(data);
-    } catch (error) {
-      console.error("Error fetching:", error);
-      setOutputMediaType([]);
-    }
-    // try {
-    //   const response = await axios.get(
-    //     `${apiUrl}/api/media-output-type/${id_category_output}`,
-    //     getToken()
-    //   );
-    //   setOutputMediaType(response.data);
-    //   console.log("Updated Output Media Type:", response.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
-  const fetchVideo = async () => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/video-output-category`,
-        getToken()
-      );
-      const data = Array.isArray(response.data) ? response.data : [];
-      setOutputVideoCtg(data);
-    } catch (error) {
-      console.error("Error fetching :", error);
-      setOutputVideoCtg([]);
-    }
-    // const response = await axios.get(
-    //   `${apiUrl}/api/video-output-category`,
-    //   getToken()
-    // );
-    // setOutputVideoCtg(response.data);
-  };
-  const fetchVideoType = async () => {
-    try {
-      const response = await axios.get(
-        `${apiUrl}/api/video-output-type`,
-        getToken()
-      );
-      const data = Array.isArray(response.data) ? response.data : [];
-      setOutputVideoType(data);
-    } catch (error) {
-      console.error("Error fetching :", error);
-      setOutputVideoType([]);
-    }
-    // const response = await axios.get(
-    //   `${apiUrl}/api/video-output-type`,
-    //   getToken()
-    // );
-    // setOutputVideoType(response.data);
-  };
-
-  useEffect(() => {
-    // // Fetch data only if category_id is defined
-    // if (data.category_id) {
-    //   fetchPublicType({ category: data.category_id });
-    //   fetchMediaType({ category: data.category_id });
-    // }
-
-    // // Other fetch functions that don't depend on data.category_id
-    fetchPublicType(data.output_publication[0].id_category_output);
-    fetchCtgPatner();
-    fetchCtgType();
-    fetchMedia();
-    fetchMediaType(data.output_media[0].id_category_output);
-    fetchPublic();
-    fetchVideo();
-    fetchVideoType();
-  }, [data.output_media, data.output_publication]);
-
   return (
     <div>
-      <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
-        2.1 Substansi Usulan
-      </h1>
-      <div className="grid grid-cols-2 gap-x-10  ">
+      <div className="grid grid-cols-2 gap-x-10">
         <div>
-          {/* Label dan Link untuk Unduh Template */}
           <div className="flex justify-between items-center mb-2">
             <label className="font-medium text-gray-700">
               Unggah Substansi Usulan *
@@ -414,249 +172,97 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
               Unduh Template
             </a>
           </div>
-
-          {/* Input untuk upload file */}
           <input
             type="file"
             onChange={handleFileChange}
             className="border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
             id="file-upload"
           />
+          {selectedFile && (
+            <p className="mt-2 text-gray-600">
+              File yang dipilih: {selectedFile.name}
+            </p>
+          )}
         </div>
       </div>
-      <div className="my-5">
-        <DropdownCmp
-          label="Tahun Ke"
-          options={year}
-          value={year.find(
-            (option) => option.value === data.output_partner[0].year
-          )}
-          onChange={(option) => handleOutputChangePatner("year", option.value)}
-          placeholder="Tahun"
-          width="w-32"
-        />
-        {/* options={statusPartnerOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusPartnerOutput.find((option) => option.value === data.status)} // Cocokkan nilai yang dipilih
-            onChange={(option) => handleOutputChangePatner(option, "status")} // Tangani perubahan
-            placeholder="Pilih Status" */}
+
+      <h1 className="text-xl font-bold text-violet-800 mx-5 my-5">
+        2.2 Luaran Target Capaian
+      </h1>
+      <label className="mx-10 my-10 font-medium text-gray-700">
+        Luaran Wajib
+      </label>
+
+      <div className="flex items-start space-x-4">
+        <div className="mt-7">
+          <button
+            className="flex items-center px-2 py-2 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
+            onClick={addOutputField}
+          >
+            <FaPlus className="mr-2" />
+            Tambah Usulan
+          </button>
+        </div>
       </div>
 
-      <div className="mt-7">
-        <button
-          className="flex items-center px-2 py-2 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
-          onClick={addOutputField}
-        >
-          <FaPlus className="mr-2" /> {/* Icon tambah */}
-          Tambah Luaran
-        </button>
-      </div>
-
-      {data.output_partner.map((output, index) => (
-        <div className="mx-10 my-3">
-          <div className="grid grid-cols-4 gap-x-10 mt-2">
+      {Array.isArray(data.output_service) &&
+        data.output_service.map((output_service, index) => (
+          <div className="grid grid-cols-4 gap-x-10" key={index}>
             <DropdownCmp
-              label="Kategori Luaran *"
-              options={mapToDropdown(outputPatnerCtg, "name", "id")}
-              value={mapToDropdown(outputPatnerCtg, "name", "id").find(
-                (option) => option.value === output.id_category_output
+              label="Tahun Ke*"
+              options={mapToDropdown(year, "value", "id")}
+              value={mapToDropdown(year, "value", "id").find(
+                (option) => option.value === output_service.year
               )}
               onChange={(option) =>
-                handleOutputChangePatners(
-                  index,
-                  "id_category_output",
-                  option.value
-                )
+                handleOutputChange(index, "year", option.value)
+              }
+              placeholder="Tahun"
+            />
+            <DropdownCmp
+              label="Kategori Luaran *"
+              options={mapToDropdown(outputServiceCategory, "name", "id")}
+              value={mapToDropdown(outputServiceCategory, "name", "id").find(
+                (option) => option.value === output_service.id_category_output
+              )}
+              onChange={(option) =>
+                handleOutputChange(index, "id_category_output", option.value)
               }
               placeholder="Pilih Kategori Luaran"
             />
             <DropdownCmp
-              label="Jenis Luaran *"
-              options={mapToDropdown(outputPatnerType, "name", "id")}
-              value={mapToDropdown(outputPatnerType, "name", "id").find(
-                (option) => option.value === output.id_type_output
+              label="Tipe Luaran *"
+              options={mapToDropdown(outputServiceType, "name", "id")}
+              value={mapToDropdown(outputServiceType, "name", "id").find(
+                (option) => option.value === output_service.id_type_output
               )}
               onChange={(option) =>
-                handleOutputChangePatners(index, "id_type_output", option.value)
+                handleOutputChange(index, "id_type_output", option.value)
               }
-              placeholder="Pilih Jenis Luaran"
+              placeholder="Pilih Tipe Luaran"
             />
             <DropdownCmp
               label="Status *"
-              options={statusPartnerOutput}
-              value={statusPartnerOutput.find(
-                (option) => option.value === output.status
+              options={status}
+              value={status.find(
+                (option) => option.value === output_service.status
               )}
               onChange={(option) =>
-                handleOutputChangePatners(index, "status", option.value)
+                handleOutputChange(index, "status", option.value)
               }
               placeholder="Pilih Status"
             />
             <TextAreaCmp
-              label="Keterangan Optional"
-              value={output.description}
+              label="Keterangan (optional)"
+              value={output_service.description}
               onChange={(e) =>
-                handleOutputChangePatners(index, "description", e.target.value)
+                handleOutputChange(index, "description", e.target.value)
               }
-              placeholder="URL, nama jurnal, penerbit, dsb."
-              rows={2}
+              placeholder="url dan nama jurnal, penerbit, url paten"
+              rows={3}
             />
           </div>
-        </div>
-      ))}
-
-      <div className=" mx-10 my-2">
-        <label className=" font-bold text-md text-gray-700 ">
-          Kategori Luaran Publikasi
-        </label>
-        <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
-          <DropdownCmp
-            label="Kategori Luaran *"
-            options={mapToDropdown(outputPublicationCtg, "name", "id")}
-            value={mapToDropdown(outputPublicationCtg, "name", "id").find(
-              (option) =>
-                option.value === data.output_publication[0].id_category_output
-            )}
-            onChange={(option) =>
-              handleOutputChangePublication("id_category_output", option.value)
-            }
-            placeholder="Pilih Kategori Luaran"
-          />
-          <DropdownCmp
-            label="Jenis Luaran *"
-            options={mapToDropdown(outputPublicationType, "name", "id")}
-            value={mapToDropdown(outputPublicationType, "name", "id").find(
-              (option) =>
-                option.value === data.output_publication[0].id_type_output
-            )}
-            onChange={(option) =>
-              handleOutputChangePublication("id_type_output", option.value)
-            }
-            placeholder="Pilih Luaran"
-          />
-          <DropdownCmp
-            label="Status *"
-            options={statusPublicationOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusPublicationOutput.find(
-              (option) => option.value === data.output_publication[0].status
-            )} // Cocokkan nilai yang dipilih
-            onChange={(option) =>
-              handleOutputChangePublication("status", option.value)
-            } // Tangani perubahan
-            placeholder="Pilih Status"
-          />
-          <TextAreaCmp
-            label="Keterangan Optional"
-            value={data.output_publication[0].description}
-            onChange={(e) =>
-              handleOutputChangePublication("description", e.target.value)
-            }
-            placeholder="url dan nama jurnal, penerbit, url paten"
-            rows={2}
-          />
-        </div>
-      </div>
-
-      <div className="my-3 mx-10">
-        <label className=" font-bold text-md text-gray-700 ">
-          Kategori Luaran Publikasi Media
-        </label>
-        <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
-          <DropdownCmp
-            label="Kategori Luaran *"
-            options={mapToDropdown(outputMediaCtg, "name", "id")}
-            value={mapToDropdown(outputMediaCtg, "name", "id").find(
-              (option) =>
-                option.value === data.output_media[0].id_category_output
-            )}
-            onChange={(option) =>
-              handleOutputChangeMedia("id_category_output", option.value)
-            }
-            placeholder="Pilih Kategori Luaran"
-          />
-          <DropdownCmp
-            label="Jenis Luaran *"
-            options={mapToDropdown(outputMediaType, "name", "id")}
-            value={mapToDropdown(outputMediaType, "name", "id").find(
-              (option) => option.value === data.output_media[0].id_type_output
-            )}
-            onChange={(option) =>
-              handleOutputChangeMedia("id_type_output", option.value)
-            }
-            placeholder="Pilih Luaran"
-          />
-          <DropdownCmp
-            label="Status *"
-            options={statusMediaOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusMediaOutput.find(
-              (option) => option.value === data.output_media[0].status
-            )} // Cocokkan nilai yang dipilih
-            onChange={(option) =>
-              handleOutputChangeMedia("status", option.value)
-            } // Tangani perubahan
-            placeholder="Pilih Status"
-          />
-          <TextAreaCmp
-            label="Keterangan Optional"
-            value={data.output_media[0].description}
-            onChange={(e) =>
-              handleOutputChangeMedia("description", e.target.value)
-            }
-            placeholder="url dan nama jurnal, penerbit, url paten"
-            rows={2}
-          />
-        </div>
-      </div>
-
-      <div className="my-3 mx-10">
-        <label className=" font-bold text-md text-gray-700 ">
-          Kategori Luaran Publikasi Video
-        </label>
-        <div className="grid grid-cols-4 gap-x-10 -5 mt-2">
-          <DropdownCmp
-            label="Kategori Luaran *"
-            options={mapToDropdown(outputVideoCtg, "name", "id")}
-            value={mapToDropdown(outputVideoCtg, "name", "id").find(
-              (option) =>
-                option.value === data.output_video[0].id_category_output
-            )}
-            onChange={(option) =>
-              handleOutputChangeVideo("id_category_output", option.value)
-            }
-            placeholder="Pilih Kategori Luaran"
-          />
-          <DropdownCmp
-            label="Jenis Luaran *"
-            options={mapToDropdown(outputVideoType, "name", "id")}
-            value={mapToDropdown(outputVideoType, "name", "id").find(
-              (option) => option.value === data.output_video[0].id_type_output
-            )}
-            onChange={(option) =>
-              handleOutputChangeVideo("id_type_output", option.value)
-            }
-            placeholder="Pilih Luaran"
-          />
-          <DropdownCmp
-            label="Status *"
-            options={statusVideoOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusVideoOutput.find(
-              (option) => option.value === data.output_video[0].status
-            )} // Cocokkan nilai yang dipilih
-            onChange={(option) =>
-              handleOutputChangeVideo("status", option.value)
-            } // Tangani perubahan
-            placeholder="Pilih Status"
-          />
-          <TextAreaCmp
-            label="Keterangan Optional"
-            value={data.output_video[0].description}
-            onChange={(e) =>
-              handleOutputChangeVideo("description", e.target.value)
-            }
-            placeholder="url dan nama jurnal, penerbit, url paten"
-            rows={2}
-          />
-        </div>
-      </div>
+        ))}
     </div>
   );
 };
