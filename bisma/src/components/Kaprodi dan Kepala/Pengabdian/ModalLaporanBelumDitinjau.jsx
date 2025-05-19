@@ -13,6 +13,28 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
   const [note, setNote] = useState("");
   const [funds, setFunds] = useState(0);
 
+  const formatNumber = (num) => {
+    if (num === null || num === undefined || num === "") return "";
+    const parsed = parseFloat(num);
+    return isNaN(parsed)
+      ? ""
+      : `Rp. ${parsed.toLocaleString("id-ID", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })}`;
+  };
+
+  // Parse input string "Rp 10.000,00" → 10000.00
+  const parseFormattedNumber = (str) => {
+    if (!str) return "";
+    const cleaned = str
+      .replace(/[^0-9,]/g, "")
+      .replace(/\./g, "")
+      .replace(",", "."); // hapus Rp dan spasi
+    const parsed = parseFloat(cleaned);
+    return isNaN(parsed) ? "" : parsed;
+  };
+
   const totalBudget = (data?.budgetPlan || []).reduce(
     (sum, item) => sum + item.total,
     0
@@ -80,8 +102,8 @@ const ModalLaporanBelumDitinjau = ({ data, isOpen, onRequestClose }) => {
         Masukkan dana yang disetujui oleh kepala LPPM
       </label>
       <TextfieldCmp
-        // label={`Masukkan dana yang disetujui oleh kepala LPPM`}
-        onChange={(e) => setFunds(e.target.value)}
+        value={formatNumber(funds)}
+        onChange={(e) => setFunds(parseFormattedNumber(e.target.value))}
         className="w-full"
         placeholder="Rp. 10.000.000,00"
       />

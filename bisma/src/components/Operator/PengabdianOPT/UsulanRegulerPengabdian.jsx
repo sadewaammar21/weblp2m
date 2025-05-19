@@ -106,7 +106,7 @@ const UsulanRegulerPengabdian = () => {
           placeholder="Pilih Program Hibah"
           className="w-72 border border-black"
         />
-        <DropdownCmp
+        {/* <DropdownCmp
           label="Jenis Kegiatan *"
           options={optionsJenisKegiatan}
           selectedOption={optionsJenisKegiatan.find(
@@ -114,7 +114,7 @@ const UsulanRegulerPengabdian = () => {
           )}
           onChange={(selected) => setProhibs(selected.value)}
           className="w-72 border border-black"
-        />
+        /> */}
       </div>
 
       {/* Baris Kedua */}

@@ -172,7 +172,7 @@ const MonevPengabdianList = () => {
                         {item.id}
                       </td>
                       <td className="border px-4 py-2">
-                        {item.user.name}
+                        {item.user?.name}
                         <br />
                         NIDN: {item.user.nidn}
                         <br />
@@ -180,13 +180,15 @@ const MonevPengabdianList = () => {
                         <br />
                         Lama Kegiatan: {item.duration} Tahun
                         <br />
-                        Bidang Fokus:{" "}
-                        {item.focus_thematic.name || item.focus_rirn.name}
+                        Bidang Fokus:
+                        {item.focus_thematic?.name ??
+                          item.focus_rirn?.name ??
+                          "-"}
                       </td>
                       <td className="border px-4 py-2 text-bluef-500">
                         {item.title}
                         <br />
-                        {item.scope.name}
+                        {item.scope?.name}
                       </td>
                       <td className="border px-4 py-2 items-center">
                         <button>
@@ -197,7 +199,9 @@ const MonevPengabdianList = () => {
                           />
                         </button>
                       </td>
-                      <td className="border px-4 py-2 text-center">
+                      <td
+                        className={`border px-4 py-2 text-center ${item.status == 12 ? "" : "hidden"}`}
+                      >
                         <button
                           onClick={() => handleAction(item.id)}
                           className="bg-bluef-500 text-white px-4 py-2 rounded-md"

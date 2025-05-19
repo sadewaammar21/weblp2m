@@ -17,6 +17,21 @@ const UsulanBaruList = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+  const statusLabels = {
+    1: "Draft",
+    2: "Diajukan ke Kaprodi",
+    3: "Disetujui Kaprodi",
+    4: "Direview",
+    5: "Disetujui Reviewer",
+    6: "Perbaikan",
+    7: "Proposal",
+    8: "Ditolak",
+    9: "Didanai",
+    10: "Dilaksanakan",
+    11: "Laporan Kemajuan",
+    12: "Monev",
+    13: "Selesai",
+  };
 
   useEffect(() => {
     if (location.state?.success) {
@@ -34,7 +49,10 @@ const UsulanBaruList = () => {
         currentPage: 1,
         userId: user.id,
       });
-      setData(result.data);
+      const filteredData = result.data.filter(
+        (item) => item.user.id === user.id
+      );
+      setData(filteredData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -148,11 +166,11 @@ const UsulanBaruList = () => {
           Export PDF
         </button>
 
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 py-2">{error}</p>}
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <div className="relative overflow-x-auto">
+          <div className="relative overflow-x-auto py-5">
             <table className="w-full text-sm text-left bg-neutral-20 text-gray-500 border border-gray-300">
               <thead className="border-b text-xs text-neutral-700 uppercase bg-neutral-20 text-center">
                 <tr>
@@ -204,7 +222,7 @@ const UsulanBaruList = () => {
                       {user.id === item.user.id ? "Ketua" : "Anggota"}
                     </td>
                     <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
-                      {item.status}
+                      {statusLabels[item.status] || "Status tidak diketahui"}
                     </td>
                     <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
                       <div className="inline-block">

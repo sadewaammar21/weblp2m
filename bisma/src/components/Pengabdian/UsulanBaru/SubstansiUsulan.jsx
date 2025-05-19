@@ -77,6 +77,11 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
     setData({ ...data, output_partner: updatedOutputPartner });
     console.log(updatedOutputPartner);
   };
+  const handleOutputChangePatners = (index, name, value) => {
+    const updatedOutputPartner = [...data.output_partner];
+    updatedOutputPartner[index][name] = value;
+    setData({ ...data, output_partner: updatedOutputPartner });
+  };
 
   const handleOutputChangePublication = (name, value) => {
     const updatedOutputPublication = [...data.output_publication];
@@ -112,41 +117,53 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
   ];
 
   const addOutputField = () => {
+    // setData({
+    //   ...data,
+    //   outputSubstansi: [
+    //     ...data.output_partner,
+    //     {
+    //       year: "",
+    //       id_category_output: "",
+    //       id_type_output: "",
+    //       status: "",
+    //       description: "",
+    //     },
+    //   ],
+    // outputPublication: [
+    //   ...data.output_publication,
+    //   {
+    //     id_category_output: "",
+    //     id_type_output: "",
+    //     status: "",
+    //     description: "",
+    //   },
+    // ],
+    // outputMedia: [
+    //   ...data.output_media,
+    //   {
+    //     id_category_output: "",
+    //     id_type_output: "",
+    //     status: "",
+    //     description: "",
+    //   },
+    // ],
+    // outputVideo: [
+    //   ...data.output_media,
+    //   {
+    //     id_category_output: "",
+    //     id_type_output: "",
+    //     status: "",
+    //     description: "",
+    //   },
+    // ],
+    // });
     setData({
       ...data,
-      outputSubstansi: [
+      output_partner: [
         ...data.output_partner,
         {
-          year: "",
-          id_category_output: "",
-          id_type_output: "",
-          status: "",
-          description: "",
-        },
-      ],
-      outputPublication: [
-        ...data.output_publication,
-        {
-          id_category_output: "",
-          id_type_output: "",
-          status: "",
-          description: "",
-        },
-      ],
-      outputMedia: [
-        ...data.output_media,
-        {
-          id_category_output: "",
-          id_type_output: "",
-          status: "",
-          description: "",
-        },
-      ],
-      outputVideo: [
-        ...data.output_media,
-        {
-          id_category_output: "",
-          id_type_output: "",
+          id_category_output: 0,
+          id_type_output: 0,
           status: "",
           description: "",
         },
@@ -415,7 +432,7 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             (option) => option.value === data.output_partner[0].year
           )}
           onChange={(option) => handleOutputChangePatner("year", option.value)}
-          placeholder="1"
+          placeholder="Tahun"
           width="w-32"
         />
         {/* options={statusPartnerOutput} // Gunakan array `statuses` yang sudah didefinisikan
@@ -424,58 +441,68 @@ const SubtansiUsulan = ({ navigate, data, setData }) => {
             placeholder="Pilih Status" */}
       </div>
 
-      <div className="mx-10 my-3">
-        <label className="font-bold text-md text-gray-700">
-          Kategori Luaran Peningkatan Pemberdayaan Mitra
-        </label>
-        <div className="grid grid-cols-4 gap-x-10 mt-2">
-          <DropdownCmp
-            label="Kategori Luaran *"
-            options={mapToDropdown(outputPatnerCtg, "name", "id")}
-            value={mapToDropdown(outputPatnerCtg, "name", "id").find(
-              (option) =>
-                option.value === data.output_partner[0].id_category_output
-            )}
-            onChange={(option) =>
-              handleOutputChangePatner("id_category_output", option.value)
-            }
-            placeholder="Pilih Kategori Luaran"
-          />
-          <DropdownCmp
-            label="Jenis Luaran *"
-            options={mapToDropdown(outputPatnerType, "name", "id")}
-            value={mapToDropdown(outputPatnerType, "name", "id").find(
-              (option) => option.value === data.output_partner[0].id_type_output
-            )}
-            onChange={(option) =>
-              handleOutputChangePatner("id_type_output", option.value)
-            }
-            placeholder="Pilih Luaran"
-          />
-
-          <DropdownCmp
-            label="Status *"
-            options={statusPartnerOutput} // Gunakan array `statuses` yang sudah didefinisikan
-            value={statusPartnerOutput.find(
-              (option) => option.value === data.output_partner[0].status
-            )} // Cocokkan nilai yang dipilih
-            onChange={(option) =>
-              handleOutputChangePatner("status", option.value)
-            } // Tangani perubahan
-            placeholder="Pilih Status"
-          />
-
-          <TextAreaCmp
-            label="Keterangan Optional"
-            value={data.output_partner[0].description}
-            onChange={(e) =>
-              handleOutputChangePatner("description", e.target.value)
-            }
-            placeholder="url dan nama jurnal, penerbit, url paten"
-            rows={2}
-          />
-        </div>
+      <div className="mt-7">
+        <button
+          className="flex items-center px-2 py-2 bg-bluef-500 text-white rounded-lg hover:bg-bluef-300 focus:outline-none"
+          onClick={addOutputField}
+        >
+          <FaPlus className="mr-2" /> {/* Icon tambah */}
+          Tambah Luaran
+        </button>
       </div>
+
+      {data.output_partner.map((output, index) => (
+        <div className="mx-10 my-3">
+          <div className="grid grid-cols-4 gap-x-10 mt-2">
+            <DropdownCmp
+              label="Kategori Luaran *"
+              options={mapToDropdown(outputPatnerCtg, "name", "id")}
+              value={mapToDropdown(outputPatnerCtg, "name", "id").find(
+                (option) => option.value === output.id_category_output
+              )}
+              onChange={(option) =>
+                handleOutputChangePatners(
+                  index,
+                  "id_category_output",
+                  option.value
+                )
+              }
+              placeholder="Pilih Kategori Luaran"
+            />
+            <DropdownCmp
+              label="Jenis Luaran *"
+              options={mapToDropdown(outputPatnerType, "name", "id")}
+              value={mapToDropdown(outputPatnerType, "name", "id").find(
+                (option) => option.value === output.id_type_output
+              )}
+              onChange={(option) =>
+                handleOutputChangePatners(index, "id_type_output", option.value)
+              }
+              placeholder="Pilih Jenis Luaran"
+            />
+            <DropdownCmp
+              label="Status *"
+              options={statusPartnerOutput}
+              value={statusPartnerOutput.find(
+                (option) => option.value === output.status
+              )}
+              onChange={(option) =>
+                handleOutputChangePatners(index, "status", option.value)
+              }
+              placeholder="Pilih Status"
+            />
+            <TextAreaCmp
+              label="Keterangan Optional"
+              value={output.description}
+              onChange={(e) =>
+                handleOutputChangePatners(index, "description", e.target.value)
+              }
+              placeholder="URL, nama jurnal, penerbit, dsb."
+              rows={2}
+            />
+          </div>
+        </div>
+      ))}
 
       <div className=" mx-10 my-2">
         <label className=" font-bold text-md text-gray-700 ">

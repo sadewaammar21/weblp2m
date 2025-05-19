@@ -195,7 +195,7 @@ const PengelolaReview = () => {
             />
           </div>
           {/* Tabel */}
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto overflow-scroll ">
             <table className="w-full text-sm text-left text-gray-500 border border-black">
               <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                 <tr>

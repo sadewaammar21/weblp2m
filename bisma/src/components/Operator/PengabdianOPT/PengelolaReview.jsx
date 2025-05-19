@@ -223,12 +223,12 @@ const PengelolaReview = () => {
                           <p>Lama Kegiatan: {item.duration}</p>
                           <p>
                             Bidang Fokus:{" "}
-                            {item.focus_thematic.name || item.focus_rirn.name}
+                            {item.focus_thematic?.name || item.focus_rirn?.name}
                           </p>
                         </td>
                         <td className="border border-gray-300 p-2">
                           <p className="text-blue-600 font-bold">
-                            {item.scheme.name}
+                            {item.scheme?.name}
                           </p>
                         </td>
                         <td className="border border-gray-300 p-2 text-center">

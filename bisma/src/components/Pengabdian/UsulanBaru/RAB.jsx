@@ -193,7 +193,7 @@ const RAB = ({ navigate, data, setData }) => {
             onChange={(option) =>
               handleBudgetChange(index, "year", option.value)
             }
-            placeholder="1"
+            placeholder="pilih tahun"
             width="w-32"
           />
           <DropdownCmp

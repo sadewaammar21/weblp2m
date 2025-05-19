@@ -101,7 +101,7 @@ const MonitoringUsulanPengabdian = () => {
         </h2>
       </div>
       <div className="flex justify-end items-start mb-4 mx-10">
-        <DropdownCmp
+        {/* <DropdownCmp
           label="Jenis Kegiatan *"
           options={optionsJenisKegiatan}
           selectedOption={optionsJenisKegiatan.find(
@@ -109,7 +109,7 @@ const MonitoringUsulanPengabdian = () => {
           )}
           onChange={(selected) => setProhibs(selected.value)}
           className="w-72 border border-black"
-        />
+        /> */}
       </div>
       <div className="flex justify-end items-start mb-4">
         <DropdownCmp

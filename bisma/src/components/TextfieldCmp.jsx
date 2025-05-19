@@ -7,7 +7,7 @@ const TextfieldCmp = ({
   onChange,
   placeholder,
   type = "text",
-  width = "w-full",
+  width = "w-full ",
   height = "h-10",
 }) => {
   return (

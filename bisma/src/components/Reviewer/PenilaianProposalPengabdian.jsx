@@ -173,7 +173,7 @@ const PenilaianProposalPengabdian = () => {
                         {index + 1}
                       </td>
                       <td className="border px-4 py-2">
-                        {item.user.name}
+                        {item.user?.name}
                         <br />
                         NIDN: {item.user.nidn}
                         <br />
@@ -182,12 +182,13 @@ const PenilaianProposalPengabdian = () => {
                         Lama Kegiatan: {item.duration} Tahun
                         <br />
                         Bidang Fokus:{" "}
-                        {item.focus_thematic.name || item.focus_r_i_r_n_s.name}
+                        {item.focus_thematic?.name ||
+                          item.focus_r_i_r_n_s?.name}
                       </td>
                       <td className="border px-4 py-2 text-bluef-500">
                         Judul: {item.title}
                         <br />
-                        Ruang Lingkup: {item.scope.name}
+                        Ruang Lingkup: {item.scope?.name}
                       </td>
                       <td className="border px-4 py-2 items-center">
                         <button>
