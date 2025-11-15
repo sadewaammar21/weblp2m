@@ -104,6 +104,7 @@ import PengelolaReviewPengabdianInternal from "./pages/PengelolaReviewPengabdian
 import KepalaLPPMDashboardPage from "./pages/KepalaLPPMDashboardPage";
 import PerbaikanUsulanPengabdianPage from "./pages/PerbaikanUsulanPengabdianPage";
 import PrintView from "./components/Pengabdian/UsulanBaru/PrintView";
+import Error404 from "./pages/Error404";
 
 function App() {
   const dispatch = useDispatch();
@@ -517,6 +518,8 @@ function App() {
         />
         {/* print */}
         <Route path="/print-view" element={<PrintView />} />
+        {/* error */}
+        <Route path="*" element={<Error404 />} />
       </Routes>
       {/* <ToastContainer position="top-right" autoClose={3000} /> */}
     </BrowserRouter>

@@ -3,12 +3,16 @@ import React from "react";
 const OperatorDashbordPenelitian = () => {
   const DataOpPenelitian = [
     { P1: "Nomer SK Pendirian Lembaga", P2: ":", P3: "Nomor 01 Tahun 2023" },
-    { P1: "Nama Lembaga", P2: ":", P3: "Lembaga Penelitian dan Pengabdian Kepada Masyarakat" },
+    {
+      P1: "Nama Lembaga",
+      P2: ":",
+      P3: "Lembaga Penelitian dan Pengabdian Kepada Masyarakat",
+    },
     { P1: "Alamat Lembaga", P2: ":", P3: "JL. KH. Samanhudi 84-86 Surakarta" },
     { P1: "No Telepon", P2: ":", P3: "0271716500" },
     { P1: "No Fax", P2: ":", P3: "0271716500" },
-    { P1: "Email", P2: ":", P3: "lppm@sinus.ac.id" },
-    { P1: "Website", P2: ":", P3: "www.sinus.ac.id" },
+    { P1: "Email", P2: ":", P3: "lppm@tsu.ac.id" },
+    { P1: "Website", P2: ":", P3: "www.tsu.ac.id" },
     { P1: "Nama Jabatan Pimpinan", P2: ":", P3: "Kepala" },
   ];
 

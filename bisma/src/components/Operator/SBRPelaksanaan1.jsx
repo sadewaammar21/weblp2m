@@ -81,7 +81,7 @@ const SBRPelaksanaan1 = () => {
       reviewer: "Sri Siswanti S.Kom, M.Kom",
       kompetensi: 1,
       beban: "1 skema",
-      institusi: "STMIK Sinar Nusantara Surakarta",
+      institusi: "Tiga Serangkai University Surakarta",
     },
   ];
 

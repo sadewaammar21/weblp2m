@@ -244,7 +244,7 @@ const LoginForm = () => {
 
       {/* Footer */}
       <p className="text-xs text-neutral-900 text-center mt-4">
-        © 2024 LPPM SINUS
+        © {new Date().getFullYear()} LPPM TSU
       </p>
 
       {/* Toast Container */}

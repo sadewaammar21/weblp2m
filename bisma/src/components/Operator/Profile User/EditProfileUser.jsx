@@ -53,7 +53,9 @@ const EditProfileUser = () => {
               </p>
               <p className="font-semibold text-gray-700 mb-3">
                 Institusi: <br />
-                <span className="text-violet-800">STMIK Sinar Nusantara</span>
+                <span className="text-violet-800">
+                  Tiga Serangkai University
+                </span>
               </p>
               <p className="font-semibold text-gray-700 mb-3">
                 Program Studi: <br />

@@ -193,7 +193,7 @@ const ModalReviewerEksternal = ({ isOpen, onRequestClose }) => {
                     <td className="border px-4 py-2">
                       Sri Siswanti S.Kom, M.Kom
                       <br />
-                      STMIK Sinar Nusantara Surakarta
+                      Tiga Serangkai University Surakarta
                     </td>
                     <td className="border px-4 py-2 text-center">
                       Bidang Ilmu Komputer

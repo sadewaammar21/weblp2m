@@ -16,7 +16,7 @@ const ExportModalUB = ({ isOpen, onClose, data, user }) => {
 
     // Header kiri atas
     pdf.setFontSize(10);
-    pdf.text("LPPM STMIK Sinar Nusantara", 10, 10); // x=10, y=10
+    pdf.text("LPPM Tiga Serangkai University", 10, 10); // x=10, y=10
 
     // Footer kanan bawah
     const footerText = `Dicetak: ${new Date().toLocaleDateString()}`;
@@ -59,7 +59,7 @@ const ExportModalUB = ({ isOpen, onClose, data, user }) => {
             <h1 className="text-base font-bold uppercase">
               Lembaga Penelitian dan Pengabdian kepada Masyarakat
             </h1>
-            <h2 className="text-sm font-medium">STMIK Sinar Nusantara</h2>
+            <h2 className="text-sm font-medium">Tiga Serangkai University</h2>
             <p className="text-xs">
               Jl. Slamet Riyadi No.123, Surakarta, Jawa Tengah
             </p>

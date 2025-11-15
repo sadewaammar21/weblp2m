@@ -42,7 +42,7 @@ const ModalEditDPPenelitian = ({ isOpen, onRequestClose }) => {
         <div className="flex items-center gap-x-4">
           <p className=" w-1/3">Nama PT</p>
           <p className="text-center">:</p>
-          <p className="w-2/3">STMIK Sinar Nusantara</p>
+          <p className="w-2/3">Tiga Serangkai University</p>
         </div>
 
         <div className="flex items-center gap-x-4">
@@ -80,13 +80,13 @@ const ModalEditDPPenelitian = ({ isOpen, onRequestClose }) => {
         <div className="flex items-center gap-x-4">
           <p className=" w-1/3">Email</p>
           <p className="text-center">:</p>
-          <p className="w-2/3">lppm@sinus.ac.id</p>
+          <p className="w-2/3">lppm@tsu.ac.id</p>
         </div>
 
         <div className="flex items-center gap-x-4">
           <p className=" w-1/3">Website</p>
           <p className="text-center">:</p>
-          <p className="w-2/3">www.sinus.ac.id</p>
+          <p className="w-2/3">www.tsu.ac.id</p>
         </div>
 
         <div className="flex items-center gap-x-4">
