@@ -278,7 +278,9 @@ const UsulanBaruList = () => {
                   <td className="border px-4 py-2">
                     {user.id === item.user.id ? "Ketua" : "Anggota"}
                   </td>
-                  <td className="border px-4 py-2">{item.status}</td>
+                  <td className="border px-4 py-2">
+                    {item.status || "Status tidak diketahui"}
+                  </td>
                   <td className="border px-4 py-2 flex space-x-2 justify-center">
                     {renderActionButton(item)}
                   </td>

@@ -17,21 +17,6 @@ const UsulanBaruList = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-  const statusLabels = {
-    1: "Draft",
-    2: "Diajukan ke Kaprodi",
-    3: "Disetujui Kaprodi",
-    4: "Direview",
-    5: "Disetujui Reviewer",
-    6: "Perbaikan",
-    7: "Proposal",
-    8: "Ditolak",
-    9: "Didanai",
-    10: "Dilaksanakan",
-    11: "Laporan Kemajuan",
-    12: "Monev",
-    13: "Selesai",
-  };
 
   useEffect(() => {
     if (location.state?.success) {
@@ -222,7 +207,7 @@ const UsulanBaruList = () => {
                       {user.id === item.user.id ? "Ketua" : "Anggota"}
                     </td>
                     <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
-                      {statusLabels[item.status] || "Status tidak diketahui"}
+                      {item.status || "Status tidak diketahui"}
                     </td>
                     <td className="border border-neutral-100 border-[0.5px] px-4 py-2">
                       <div className="inline-block">
