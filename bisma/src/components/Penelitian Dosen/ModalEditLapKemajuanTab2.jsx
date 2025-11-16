@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import TextfieldCmp from "../TextfieldCmp"; // Komponen TextField yang Anda buat
 
 Modal.setAppElement("#root");
 
-const ModalEditLapKemajuanTab2 = ({ research, data, isOpen, onRequestClose, onSave }) => {
+const user = JSON.parse(localStorage.getItem("user"));
+
+const ModalEditLapKemajuanTab2 = ({
+  research,
+  data,
+  isOpen,
+  onRequestClose,
+  onSave,
+}) => {
   const [items, setItems] = useState({});
-  useEffect(()=>{
+  useEffect(() => {
     setItems({
       no_sk: data.no_sk,
       no_contract: data.no_contract,
@@ -24,8 +32,8 @@ const ModalEditLapKemajuanTab2 = ({ research, data, isOpen, onRequestClose, onSa
       realization_4: data.realization_4,
       realization_5: data.realization_5,
       realization_6: data.realization_6,
-    })
-  },[])
+    });
+  }, []);
 
   const handleSave = () => {
     onSave(items);
@@ -55,8 +63,8 @@ const ModalEditLapKemajuanTab2 = ({ research, data, isOpen, onRequestClose, onSa
         SURAT PERNYATAAN TANGGUNG JAWAB BELANJA
       </h2>
       <div className="mb-4 text-sm">
-        <p>Nama : Yustina Retno Wahyu Utami</p>
-        <p>Alamat : Griya Kelapa Gading No. 6 Blulukan Colomadu</p>
+        <p>Nama : {user?.name ?? "-"}</p>
+        <p>Alamat : {user?.address ?? "-"}</p>
         <p>
           Judul : Pengembangan Aplikasi Gamifikasi Pembelajaran Bahasa Inggris
           Berbasis Digital Visual Literacy dan Keterampilan 5C untuk Siswa
@@ -72,37 +80,41 @@ const ModalEditLapKemajuanTab2 = ({ research, data, isOpen, onRequestClose, onSa
             <label className="block text-gray-700 mb-2">
               Nomor Surat Keputusan
             </label>
-            <TextfieldCmp 
+            <TextfieldCmp
               value={items.no_sk}
-              name={'no_sk'}
+              name={"no_sk"}
               onChange={(e) => handleInputChange(e)}
-              placeholder='No Surat Keputusan' />
+              placeholder="No Surat Keputusan"
+            />
           </div>
           <div>
             <label className="block text-gray-700 mb-2">
               Nomor Perjanjian Kontrak
             </label>
-            <TextfieldCmp 
+            <TextfieldCmp
               value={items.no_contract}
-              name={'no_contract'}
+              name={"no_contract"}
               onChange={(e) => handleInputChange(e)}
-              placeholder='No Perjanjian Kontrak' />
+              placeholder="No Perjanjian Kontrak"
+            />
           </div>
           <div>
             <label className="block text-gray-700 mb-2">Tempat / Tanggal</label>
-            <TextfieldCmp 
+            <TextfieldCmp
               value={items.place_date}
-              name={'place_date'}
+              name={"place_date"}
               onChange={(e) => handleInputChange(e)}
-              placeholder='Tempat / Tanggal' />
+              placeholder="Tempat / Tanggal"
+            />
           </div>
           <div>
             <label className="block text-gray-700 mb-2">NIP / NIPK</label>
-            <TextfieldCmp 
+            <TextfieldCmp
               value={items.nip}
-              name={'nip'}
+              name={"nip"}
               onChange={(e) => handleInputChange(e)}
-              placeholder='NIP / NIPK' />
+              placeholder="NIP / NIPK"
+            />
           </div>
         </div>
 
@@ -118,12 +130,54 @@ const ModalEditLapKemajuanTab2 = ({ research, data, isOpen, onRequestClose, onSa
             </thead>
             <tbody>
               {[
-                { no: 1, descriptionName: "description_1", descriptionValue: items.description_1, uraian: "Bahan", realizationName: "realization_1", realizationValue: items.realization_1 },
-                { no: 2, descriptionName: "description_2", descriptionValue: items.description_2, uraian: "Pengumpulan Data", realizationName: "realization_2", realizationValue: items.realization_2 },
-                { no: 3, descriptionName: "description_3", descriptionValue: items.description_3, uraian: "Analisis Data", realizationName: "realization_3", realizationValue: items.realization_3 },
-                { no: 4, descriptionName: "description_4", descriptionValue: items.description_4, uraian: "Sewa Peralatan", realizationName: "realization_4", realizationValue: items.realization_4 },
-                { no: 5, descriptionName: "description_5", descriptionValue: items.description_5, uraian: "Pelaporan Luaran Wajib", realizationName: "realization_5", realizationValue: items.realization_5 },
-                { no: 6, descriptionName: "description_6", descriptionValue: items.description_6, uraian: "Lain-lain", realizationName: "realization_6", realizationValue: items.realization_6 },
+                {
+                  no: 1,
+                  descriptionName: "description_1",
+                  descriptionValue: items.description_1,
+                  uraian: "Bahan",
+                  realizationName: "realization_1",
+                  realizationValue: items.realization_1,
+                },
+                {
+                  no: 2,
+                  descriptionName: "description_2",
+                  descriptionValue: items.description_2,
+                  uraian: "Pengumpulan Data",
+                  realizationName: "realization_2",
+                  realizationValue: items.realization_2,
+                },
+                {
+                  no: 3,
+                  descriptionName: "description_3",
+                  descriptionValue: items.description_3,
+                  uraian: "Analisis Data",
+                  realizationName: "realization_3",
+                  realizationValue: items.realization_3,
+                },
+                {
+                  no: 4,
+                  descriptionName: "description_4",
+                  descriptionValue: items.description_4,
+                  uraian: "Sewa Peralatan",
+                  realizationName: "realization_4",
+                  realizationValue: items.realization_4,
+                },
+                {
+                  no: 5,
+                  descriptionName: "description_5",
+                  descriptionValue: items.description_5,
+                  uraian: "Pelaporan Luaran Wajib",
+                  realizationName: "realization_5",
+                  realizationValue: items.realization_5,
+                },
+                {
+                  no: 6,
+                  descriptionName: "description_6",
+                  descriptionValue: items.description_6,
+                  uraian: "Lain-lain",
+                  realizationName: "realization_6",
+                  realizationValue: items.realization_6,
+                },
               ].map((item) => (
                 <tr key={item.no}>
                   <td className="border border-black px-4 py-2 text-center">
@@ -132,20 +186,22 @@ const ModalEditLapKemajuanTab2 = ({ research, data, isOpen, onRequestClose, onSa
                   <td className="border border-black px-4 py-2">
                     <div>{item.uraian}</div>
                     <div>
-                      <TextfieldCmp 
+                      <TextfieldCmp
                         value={item.descriptionValue}
                         name={item.descriptionName}
                         onChange={(e) => handleInputChange(e)}
-                        placeholder={item.uraian} />
+                        placeholder={item.uraian}
+                      />
                     </div>
                   </td>
                   <td className="border border-black px-4 py-2"></td>
                   <td className="border border-black px-4 py-2">
-                    <TextfieldCmp 
-                        value={item.realizationValue}
-                        name={item.realizationName}
-                        onChange={(e) => handleInputChange(e)}
-                        placeholder='0' />
+                    <TextfieldCmp
+                      value={item.realizationValue}
+                      name={item.realizationName}
+                      onChange={(e) => handleInputChange(e)}
+                      placeholder="0"
+                    />
                   </td>
                 </tr>
               ))}

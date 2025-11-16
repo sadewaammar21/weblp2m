@@ -11,6 +11,8 @@ import {
   downloadResearchDocument,
 } from "../../../Features/ResearchSlice";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const UsulanDisetujuiKepalaPengabdian = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
@@ -150,7 +152,7 @@ const UsulanDisetujuiKepalaPengabdian = () => {
                           className="text-red-600 text-2xl"
                         >
                           <a
-                            href={`http://localhost:8000/api/research/download/${item.id}`}
+                            href={`${apiUrl}/api/research/download/${item.id}`}
                             target="_blank"
                           >
                             📄

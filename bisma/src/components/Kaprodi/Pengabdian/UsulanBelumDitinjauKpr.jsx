@@ -17,6 +17,8 @@ import {
 } from "../../../Features/ServiceSlice";
 import { ToastContainer } from "react-toastify";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const UsulanBelumDitinjauKpr = () => {
   const navigate = useNavigate();
   const [judul, setJudul] = useState("");
@@ -212,7 +214,7 @@ const UsulanBelumDitinjauKpr = () => {
                         className="text-red-600 text-2xl"
                       >
                         <a
-                          href={`http://localhost:8000/api/comunity-service/download/${item.id}`}
+                          href={`${apiUrl}/api/comunity-service/download/${item.id}`}
                           target="_blank"
                         >
                           📄
