@@ -10,6 +10,7 @@ import {
   getResearch,
   downloadResearchDocument,
 } from "../../Features/ResearchSlice";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const UsulanDisetujuiKpr = () => {
   const navigate = useNavigate();
@@ -150,7 +151,7 @@ const UsulanDisetujuiKpr = () => {
                           className="text-red-600 text-2xl"
                         >
                           <a
-                            href={`http://localhost:8000/api/research/download/${item.id}`}
+                            href={`${apiUrl}/api/research/download/${item.id}`}
                             target="_blank"
                           >
                             📄

@@ -13,6 +13,19 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 // import { useNavigate } from 'react-router-dom';
 
+const prodiList = [
+  { id: 1, name: "D3 - Sistem Informasi Akuntantsi" },
+  { id: 2, name: "D3 - Sistem Informasi" },
+  { id: 3, name: "D3 - Teknologi Informasi" },
+  { id: 4, name: "S1 - Sistem Informasi" },
+  { id: 5, name: "S1 - Informatika" },
+];
+
+const getProdiName = (id) => {
+  const prodi = prodiList.find((p) => p.id === id);
+  return prodi ? prodi.name : "-";
+};
+
 const DashboardComponent = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -200,10 +213,10 @@ const DashboardComponent = () => {
           <div className="flex justify-between">
             <div className="mx-5 my-5">
               <h1 className=" font-poppins text-h5 text-violet-800 ">
-                Yustina Retno Wahyu Utami
+                {user?.name ?? "-"}
               </h1>
               <h1 className="text-b1 my-3 text-violet-800 ">
-                Program Studi: {user.prodi ?? "INFORMATIKA"}
+                Program Studi: {getProdiName(user?.id_prodi)}
               </h1>
             </div>
             <div>
@@ -222,33 +235,41 @@ const DashboardComponent = () => {
               <p className=" text-b1 text-neutral-400 mb-5">
                 NIDN/NIDK:
                 <br />
-                <span className="text-violet-800 text-b2 ">0020337801</span>
+                <span className="text-violet-800 text-b2 ">
+                  {user?.nidn ?? "-"}
+                </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 Klaster: <br />
                 <span className="text-violet-800 text-b2 ">
-                  Kelompok PT Madya
+                  {user?.cluster ?? "-"}
                 </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 Institusi: <br />
                 <span className="text-violet-800 text-b2 ">
-                  Tiga Serangkai University
+                  {user?.institution ?? "Tiga Serangkai University"}
                 </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 Program Studi: <br />
-                <span className="text-violet-800 text-b2 ">Informatika</span>
+                <span className="text-violet-800 text-b2 ">
+                  {getProdiName(user?.id_prodi)}
+                </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 Jenjang Pendidikan:
                 <br />
-                <span className="text-violet-800 text-b2 ">S2</span>
+                <span className="text-violet-800 text-b2 ">
+                  {user?.education_level ?? "-"}
+                </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 Jabatan Akademik:
                 <br />
-                <span className="text-violet-800 text-b2 ">Lektor</span>
+                <span className="text-violet-800 text-b2 ">
+                  {user?.position ?? "-"}
+                </span>
               </p>
             </div>
           </div>
@@ -258,34 +279,40 @@ const DashboardComponent = () => {
               <p className=" text-b1 text-neutral-400 mb-5">
                 Tempat Tanggal Lahir: <br />
                 <span className="text-violet-800 text-b2 ">
-                  Semarang, 23 Maret 1978
+                  {user?.place_of_birth ?? "-"}, {user?.date_of_birth ?? "-"}
                 </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 No KTP:
                 <br />
-                <span className="text-violet-800 text-b2 ">33223111111</span>
+                <span className="text-violet-800 text-b2 ">
+                  {user?.nik ?? "-"}
+                </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 No Telepon:
                 <br />
-                <span className="text-violet-800 text-b2 ">0271-9993333</span>
+                <span className="text-violet-800 text-b2 ">
+                  {user?.phone ?? "-"}
+                </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 No HP:
                 <br />
-                <span className="text-violet-800 text-b2 ">08223332222</span>
+                <span className="text-violet-800 text-b2 ">
+                  {user?.phone ?? "-"}
+                </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 Alamat Surel: <br />
                 <span className="text-violet-800 text-b2 ">
-                  yust.retno@gmail.com
+                  {user?.email ?? "-"}
                 </span>
               </p>
               <p className=" text-b1 text-neutral-400 mb-5">
                 Alamat: <br />
                 <span className="text-violet-800 text-b2 ">
-                  Griya Kelapa Gading No. 6 Blulukan Colomadu
+                  {user?.address ?? "-"}
                 </span>
               </p>
             </div>

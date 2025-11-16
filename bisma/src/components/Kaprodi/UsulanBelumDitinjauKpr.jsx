@@ -12,6 +12,7 @@ import {
   downloadResearchDocument,
 } from "../../Features/ResearchSlice";
 import { ToastContainer } from "react-toastify";
+const apiUrl = process.env.REACT_APP_API_URL;
 // import {
 //   getService,
 //   downloadServiceDocument,
@@ -218,7 +219,7 @@ const UsulanBelumDitinjauKpr = () => {
                         className="text-red-600 text-2xl"
                       >
                         <a
-                          href={`http://localhost:8000/api/research/download/${item.id}`}
+                          href={`${apiUrl}/api/research/download/${item.id}`}
                           target="_blank"
                         >
                           📄

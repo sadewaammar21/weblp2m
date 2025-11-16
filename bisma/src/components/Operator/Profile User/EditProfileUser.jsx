@@ -1,121 +1,148 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import ModalEditProfileUser from "./ModalEditProfileUser";
 
 const EditProfileUser = () => {
-  const navigate = useNavigate();
-
   const [isOpen, setIsOpen] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user")); // ambil user dari localStorage
 
-  const openModal = () => {
-    setIsOpen(true);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  const handleUpdateUser = (updatedUser) => {
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    window.location.reload();
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
+  const getProdiName = (id) => {
+    const prodiList = [
+      { id: 1, name: "D3 - Sistem Informasi Akuntantsi" },
+      { id: 2, name: "D3 - Sistem Informasi" },
+      { id: 3, name: "D3 - Teknologi Informasi" },
+      { id: 4, name: "S1 - Sistem Informasi" },
+      { id: 5, name: "S1 - Informatika" },
+    ];
+    const result = prodiList.find((p) => p.id === id);
+    return result ? result.name : "-";
   };
 
   return (
     <div>
-      <div className=" bg-white rounded-lg shadow-lg p-5">
-        {/* <h1 className="text-xl font-bold text-violet-800 mb-4">Profil Anda</h1> */}
-        <div className="bg-bluef-50 rounded-lg shadow-lg w-full p-10">
+      <div className="bg-white rounded-lg shadow-lg p-5">
+        {/* HEADER */}
+        <div className="bg-bluef-50 rounded-lg shadow-lg w-full p-2">
           <div className="flex justify-between">
             <div className="mx-5 my-5">
-              <h1 className="text-2xl font-bold text-violet-800 ">
-                Yustina Retno Wahyu Utami
+              <h1 className="font-poppins text-h5 text-violet-800">
+                {user?.name ?? "-"}
               </h1>
-              <h1 className="text-xl font-bold text-violet-800 ">
-                Program Studi Informatika
+
+              <h1 className="text-b1 my-3 text-violet-800">
+                Program Studi: {getProdiName(user?.id_prodi)}
               </h1>
             </div>
+
             <div>
               <img
                 src={process.env.PUBLIC_URL + "/assets/user_profil.png"}
                 alt="logo"
-                className=""
               />
             </div>
           </div>
         </div>
-        <div className=" mx-5 my-5 grid grid-cols-2 gap-4">
-          {/* Kiri - Informasi Profil */}
-          <div className="space-y-2">
-            <div className="space-y-1">
-              <p className="font-semibold text-gray-700 mb-3">
-                NIDN/NIDK:
-                <br />
-                <span className="text-violet-800">0020337801</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Klaster: <br />
-                <span className="text-violet-800">Kelompok PT Madya</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Institusi: <br />
-                <span className="text-violet-800">
-                  Tiga Serangkai University
-                </span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Program Studi: <br />
-                <span className="text-violet-800">Informatika</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Jenjang Pendidikan:
-                <br />
-                <span className="text-violet-800">S2</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Jabatan Akademik:
-                <br />
-                <span className="text-violet-800">Lektor</span>
-              </p>
-            </div>
+
+        {/* DETAIL USER */}
+        <div className="mx-5 my-5 grid grid-cols-2 gap-4">
+          <div className="space-y-5">
+            <p className="text-b1 text-neutral-400">
+              NIDN
+              <br />
+              <span className="text-violet-800">{user?.nidn ?? "-"}</span>
+            </p>
+
+            <p className="text-b1 text-neutral-400">
+              NIK
+              <br />
+              <span className="text-violet-800">{user?.nik ?? "-"}</span>
+            </p>
+
+            <p className="text-b1 text-neutral-400">
+              Institusi
+              <br />
+              <span className="text-violet-800">
+                {user?.institution ?? "-"}
+              </span>
+            </p>
+
+            <p className="text-b1 text-neutral-400">
+              Cluster
+              <br />
+              <span className="text-violet-800">{user?.cluster ?? "-"}</span>
+            </p>
+
+            <p className="text-b1 text-neutral-400">
+              Education Level
+              <br />
+              <span className="text-violet-800">
+                {user?.education_level ?? "-"}
+              </span>
+            </p>
           </div>
-          {/* Kanan - Kontak dan Informasi Tambahan */}
-          <div className="space-y-2">
-            <div className="space-y-1">
-              <p className="font-semibold text-gray-700 mb-3">
-                Tempat Tanggal Lahir: <br />
-                <span className="text-violet-800">Semarang, 23 Maret 1978</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                No KTP:
-                <br />
-                <span className="text-violet-800">33223111111</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                No Telepon:
-                <br />
-                <span className="text-violet-800">0271-9993333</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                No HP:
-                <br />
-                <span className="text-violet-800">08223332222</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Alamat Surel: <br />
-                <span className="text-violet-800">yust.retno@gmail.com</span>
-              </p>
-              <p className="font-semibold text-gray-700 mb-3">
-                Alamat: <br />
-                <span className="text-violet-800">
-                  Griya Kelapa Gading No. 6 Blulukan Colomadu
-                </span>
-              </p>
-            </div>
+
+          <div className="space-y-5">
+            <p className="text-b1 text-neutral-400">
+              Tempat Lahir
+              <br />
+              <span className="text-violet-800">
+                {user?.place_of_birth ?? "-"}
+              </span>
+            </p>
+
+            <p className="text-b1 text-neutral-400">
+              Tanggal Lahir
+              <br />
+              <span className="text-violet-800">
+                {user?.date_of_birth ?? "-"}
+              </span>
+            </p>
+
+            <p className="text-b1 text-neutral-400">
+              No HP
+              <br />
+              <span className="text-violet-800">{user?.phone ?? "-"}</span>
+            </p>
+
+            <p className="text-b1 text-neutral-400">
+              Email
+              <br />
+              <span className="text-violet-800">{user?.email ?? "-"}</span>
+            </p>
+
+            <p className="text-b1 text-neutral-400">
+              Website
+              <br />
+              <span className="text-violet-800">{user?.website ?? "-"}</span>
+            </p>
           </div>
         </div>
+
         <hr className="border-gray-300 my-2" />
-        <div className="flex justify-end" onClick={openModal}>
-          <button className="bg-yellow-500 text-white py-2 px-4 rounded-md">
+
+        <div className="flex justify-end">
+          <button
+            onClick={openModal}
+            className="bg-yellow-500 text-white py-2 px-4 rounded-md"
+          >
             Sunting
           </button>
         </div>
       </div>
-      <ModalEditProfileUser isOpen={isOpen} onRequestClose={closeModal} />
+
+      <ModalEditProfileUser
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+        user={user}
+        onSave={handleUpdateUser}
+      />
     </div>
   );
 };
