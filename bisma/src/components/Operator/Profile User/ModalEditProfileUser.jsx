@@ -1,63 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import SearchInput from "../../SearchInput";
+import axios from "axios";
 import TextfieldCmp from "../../TextfieldCmp";
 import TextAreaCmp from "../../TextAreaCmp";
+import { getToken } from "../../../Features/AuthSlice";
 
 Modal.setAppElement("#root");
+const apiUrl = process.env.REACT_APP_API_URL;
 
-const ModalEditProfileUser = ({ isOpen, onRequestClose, index, onSave }) => {
-  const [studentData, setStudentData] = useState({
-    name: "",
-    nim: "",
-    address: "",
+const ModalEditProfileUser = ({ isOpen, onRequestClose, user, onSave }) => {
+  const [form, setForm] = useState({
+    nik: "",
     email: "",
+    place_of_birth: "",
+    date_of_birth: "",
+    website: "",
     phone: "",
-    prodi: "",
-    role: "",
-    task: "",
+    address: "",
+    telp: "",
   });
 
-  const handleSearch = () => {
-    // console.log("Search for:", NIM);
-    // Add search logic here
-  };
+  // Prefill ketika modal dibuka
+  useEffect(() => {
+    if (user) {
+      setForm({
+        nik: user.nik ?? "",
+        email: user.email ?? "",
+        place_of_birth: user.place_of_birth ?? "",
+        date_of_birth: user.date_of_birth ?? "",
+        website: user.website ?? "",
+        phone: user.phone ?? "",
+        address: user.address ?? "",
+        telp: user.telp ?? "",
+      });
+    }
+  }, [user]);
 
-  const handleInputChange = (e) => {
-    const inputName = e.target.name;
-    const inputValue = e.target.value;
-
-    setStudentData((prevData) => ({
-      ...prevData,
-      [inputName]: inputValue,
+  const handleChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
     }));
   };
 
-  const handleSave = () => {
-    onSave(index, studentData);
-    onRequestClose();
-    console.log(studentData);
+  // ==================== SAFE UPDATE TO API ====================
+  const handleSubmit = async () => {
+    try {
+      let payload = { ...form };
+
+      // Hapus field yang kosong agar tidak divalidasi backend
+      Object.keys(payload).forEach((key) => {
+        if (
+          payload[key] === "" ||
+          payload[key] === null ||
+          payload[key] === undefined
+        ) {
+          delete payload[key];
+        }
+      });
+
+      // Jangan kirim email kalau tidak berubah
+      if (payload.email === user.email) {
+        delete payload.email;
+      }
+
+      const res = await axios.post(
+        `${apiUrl}/api/update-profile`,
+        payload,
+        getToken()
+      );
+
+      // Update local user
+      const updatedUser = { ...user, ...payload };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      onSave(updatedUser);
+      onRequestClose();
+    } catch (err) {
+      console.error("UPDATE ERROR:", err.response?.data || err);
+    }
   };
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="bg-white rounded-lg shadow-lg p-6 w-[50%] mx-auto mt-20 max-h-[80vh] overflow-y-auto" // Added height limit and scrolling
+      className="bg-white rounded-lg shadow-lg p-6 w-[50%] mx-auto mt-20 max-h-[80vh] overflow-y-auto"
       overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
+      {/* ================= HEADER ================= */}
       <div className="bg-bluef-50 rounded-lg shadow-lg w-full p-4">
-        {" "}
-        {/* Mengurangi padding */}
         <div className="flex justify-between items-center">
           <div className="flex-1 pr-4">
-            {" "}
-            {/* Menambahkan padding kanan untuk sedikit spasi */}
+            <h1 className="text-md font-bold text-violet-800">{user?.name}</h1>
             <h1 className="text-md font-bold text-violet-800">
-              Yustina Retno Wahyu Utami
-            </h1>
-            <h1 className="text-md font-bold text-violet-800">
-              Program Studi Informatika
+              Program Studi: {user?.prodi_name ?? "-"}
             </h1>
           </div>
           <div className="flex-shrink-0">
@@ -70,68 +107,76 @@ const ModalEditProfileUser = ({ isOpen, onRequestClose, index, onSave }) => {
         </div>
       </div>
 
+      {/* ================= FORM ================= */}
       <div className="grid grid-cols-2 gap-x-10 my-5">
         <TextfieldCmp
           label="No KTP"
-          //   value={studentData.name}
-          //   name="name"
-          //   onChange={handleInputChange}
-          placeholder="3311*****"
+          name="nik"
+          value={form.nik}
+          onChange={handleChange}
+          placeholder="3311xxxxxxx"
         />
+
         <TextfieldCmp
           label="Alamat Surel"
-          // value={studentData.email}
-          // name="email"
-          // onChange={handleInputChange}
-          placeholder="Nama Instansi"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="email@example.com"
         />
-        <div className="grid grid-cols-2 gap-x-3 ">
+
+        <div className="grid grid-cols-2 gap-x-3">
           <TextfieldCmp
             label="Tempat Lahir"
-            // value={studentData.email}
-            // name="email"
-            // onChange={handleInputChange}
-            placeholder="Tempat Lahir"
+            name="place_of_birth"
+            value={form.place_of_birth}
+            onChange={handleChange}
+            placeholder="Kota"
           />
+
           <TextfieldCmp
             label="Tanggal Lahir"
-            // value={studentData.phone}
-            // name="phone"
-            // onChange={handleInputChange}
-            placeholder="Masukkan Nama Lengkap"
+            name="date_of_birth"
+            value={form.date_of_birth}
+            onChange={handleChange}
+            placeholder="yyyy-mm-dd"
           />
         </div>
+
         <TextfieldCmp
           label="Website Personal"
-          value={studentData.role}
-          name="role"
-          onChange={handleInputChange}
-          placeholder="-"
+          name="website"
+          value={form.website}
+          onChange={handleChange}
+          placeholder="https://"
         />
+
         <TextfieldCmp
-          label="No Hp"
-          //   value={studentData.role}
-          //   name="role"
-          //   onChange={handleInputChange}
-          placeholder="0821****"
+          label="No HP"
+          name="phone"
+          value={form.phone}
+          onChange={handleChange}
+          placeholder="08xxxx"
         />
+
         <TextAreaCmp
           label="Alamat"
-          //   value={studentData.task}
-          //   name="task"
-          //   onChange={handleInputChange}
-          //   placeholder="Enter your description here..."
+          name="address"
+          value={form.address}
+          onChange={handleChange}
           rows={3}
         />
+
         <TextfieldCmp
-          label="No telp"
-          //   value={studentData.role}
-          //   name="role"
-          //   onChange={handleInputChange}
-          placeholder="0271-****"
+          label="No Telp"
+          name="telp"
+          value={form.telp}
+          onChange={handleChange}
+          placeholder="0271xxxx"
         />
       </div>
 
+      {/* ================= ACTIONS ================= */}
       <div className="flex justify-end space-x-4 mt-5">
         <button
           className="bg-white text-bluef-500 border border-bluef-500 px-4 py-2 rounded hover:bg-bluef-100"
@@ -141,7 +186,7 @@ const ModalEditProfileUser = ({ isOpen, onRequestClose, index, onSave }) => {
         </button>
         <button
           className="bg-bluef-500 text-white px-4 py-2 rounded hover:bg-bluef-100"
-          onClick={handleSave} // Replace with the desired action
+          onClick={handleSubmit}
         >
           Submit Form
         </button>

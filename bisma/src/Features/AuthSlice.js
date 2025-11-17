@@ -146,7 +146,7 @@ export const getToken = () => {
     headers: {
       Authorization: `Bearer ${accessToken}`,
       "x-api-key": process.env.REACT_APP_API_KEY,
-    },  
+    },
   };
 };
 
